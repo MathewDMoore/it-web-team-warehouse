@@ -1,0 +1,587 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>9.0.30729</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{622BA529-E8CC-4410-924B-95772E4C15D7}</ProjectGuid>
+    <ProjectTypeGuids>{349c5851-65df-11da-9384-00065b846f21};{fae04ec0-301f-11d3-bf4b-00c04f79efbc}</ProjectTypeGuids>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>C4InventorySerialization</RootNamespace>
+    <AssemblyName>C4InventorySerialization</AssemblyName>
+    <FileUpgradeFlags>
+    </FileUpgradeFlags>
+    <OldToolsVersion>3.5</OldToolsVersion>
+    <UpgradeBackupLocation>
+    </UpgradeBackupLocation>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <TargetFrameworkProfile />
+    <UseIISExpress>false</UseIISExpress>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Microsoft.ReportViewer.WebForms, Version=9.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\..\..\..\Windows\assembly\GAC_MSIL\Microsoft.ReportViewer.WebForms\9.0.0.0__b03f5f7f11d50a3a\Microsoft.ReportViewer.WebForms.dll</HintPath>
+    </Reference>
+    <Reference Include="obout_AJAXPage, Version=1.8.7.0, Culture=neutral, PublicKeyToken=597a97d56362c7e5, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\..\..\oboutSuite_FullVersion_330\bin\obout_AJAXPage.dll</HintPath>
+    </Reference>
+    <Reference Include="obout_Calendar2_Net, Version=2.9.2.0, Culture=neutral, PublicKeyToken=b114d8766feff9ce, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\..\..\oboutSuite_FullVersion_330\bin\obout_Calendar2_Net.dll</HintPath>
+    </Reference>
+    <Reference Include="obout_ComboBox, Version=4.0.7.0, Culture=neutral, PublicKeyToken=8921cd007946710d, processorArchitecture=MSIL" />
+    <Reference Include="obout_Combobox_NET, Version=3.0.0.0, Culture=neutral, PublicKeyToken=cb1d0e380bf9f9e1, processorArchitecture=MSIL" />
+    <Reference Include="obout_EasyMenu_Pro, Version=3.10.9.0, Culture=neutral, PublicKeyToken=b76d93635057b0c1, processorArchitecture=MSIL" />
+    <Reference Include="obout_Grid_NET, Version=7.0.5.0, Culture=neutral, PublicKeyToken=5ddc49d3b53e3f98, processorArchitecture=MSIL" />
+    <Reference Include="obout_Interface, Version=4.0.9.0, Culture=neutral, PublicKeyToken=d5dff6913a9d6649, processorArchitecture=MSIL" />
+    <Reference Include="System" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Data.Linq">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.DirectoryServices" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Web.ApplicationServices" />
+    <Reference Include="System.Web.DynamicData" />
+    <Reference Include="System.Web.Entity" />
+    <Reference Include="System.Web.Extensions" />
+    <Reference Include="System.Web.Extensions.Design" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml" />
+    <Reference Include="System.Configuration" />
+    <Reference Include="System.Web.Services" />
+    <Reference Include="System.EnterpriseServices" />
+    <Reference Include="System.Web.Mobile" />
+    <Reference Include="System.Xml.Linq" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Web.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="App_Code\BLL\InventoryHeaderBLL.cs" />
+    <Content Include="App_Code\BLL\InventoryDetailBLL.cs" />
+    <Content Include="App_Code\DAL\C4SQL01.cs">
+      <DependentUpon>C4SQL01.xsd</DependentUpon>
+    </Content>
+    <Content Include="App_Code\DAL\Reporting.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Reporting.xsd</DependentUpon>
+    </Content>
+    <Content Include="App_Code\Alert.cs" />
+    <Content Include="App_Code\DAL\C4SQL01.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>C4SQL01.xsd</DependentUpon>
+    </Content>
+    <Content Include="App_Code\DAL\C4SerialNumbers.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>C4SerialNumbers.xsd</DependentUpon>
+    </Content>
+    <Content Include="App_Code\DAL\C4SerialNumbers.cs">
+      <DependentUpon>C4SerialNumbers.xsd</DependentUpon>
+    </Content>
+    <Compile Include="Content\ExportMacAddresses.aspx.cs">
+      <DependentUpon>ExportMacAddresses.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Content\ExportMacAddresses.aspx.designer.cs">
+      <DependentUpon>ExportMacAddresses.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Admin\ProductIDHistory.aspx.cs">
+      <DependentUpon>ProductIDHistory.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Admin\ProductIDHistory.aspx.designer.cs">
+      <DependentUpon>ProductIDHistory.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Admin\ReturnInventoryRequest.aspx.cs">
+      <DependentUpon>ReturnInventoryRequest.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Admin\ReturnInventoryRequest.aspx.designer.cs">
+      <DependentUpon>ReturnInventoryRequest.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Admin\ReturnIRByLineItem.aspx.cs">
+      <DependentUpon>ReturnIRByLineItem.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Admin\ReturnIRByLineItem.aspx.designer.cs">
+      <DependentUpon>ReturnIRByLineItem.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Admin\ReturnDeliveryByLineItem.aspx.cs">
+      <DependentUpon>ReturnDeliveryByLineItem.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Admin\ReturnDeliveryByLineItem.aspx.designer.cs">
+      <DependentUpon>ReturnDeliveryByLineItem.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Admin\MaintainProductId.aspx.cs">
+      <DependentUpon>MaintainProductId.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Admin\MaintainProductId.aspx.designer.cs">
+      <DependentUpon>MaintainProductId.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="LdapAuthentication.cs" />
+    <Compile Include="Serialization.designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Serialization.dbml</DependentUpon>
+    </Compile>
+    <Compile Include="History\IRHistory.aspx.cs">
+      <DependentUpon>IRHistory.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="History\IRHistory.aspx.designer.cs">
+      <DependentUpon>IRHistory.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="History\DeliveryHistory.aspx.cs">
+      <DependentUpon>DeliveryHistory.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="History\DeliveryHistory.aspx.designer.cs">
+      <DependentUpon>DeliveryHistory.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Content\ScanInventoryRequest.aspx.cs">
+      <DependentUpon>ScanInventoryRequest.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Content\ScanInventoryRequest.aspx.designer.cs">
+      <DependentUpon>ScanInventoryRequest.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Content\Logout.aspx.cs">
+      <DependentUpon>Logout.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Content\Logout.aspx.designer.cs">
+      <DependentUpon>Logout.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Admin\MaintainKits.aspx.cs">
+      <DependentUpon>MaintainKits.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Admin\MaintainKits.aspx.designer.cs">
+      <DependentUpon>MaintainKits.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Admin\ReturnDelivery.aspx.cs">
+      <DependentUpon>ReturnDelivery.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Admin\ReturnDelivery.aspx.designer.cs">
+      <DependentUpon>ReturnDelivery.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Content\PackingSlip.aspx.cs">
+      <DependentUpon>PackingSlip.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Content\PackingSlip.aspx.designer.cs">
+      <DependentUpon>PackingSlip.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Content\ScanSerialNumber.aspx.cs">
+      <DependentUpon>ScanSerialNumber.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Content\ScanSerialNumber.aspx.designer.cs">
+      <DependentUpon>ScanSerialNumber.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="default.aspx.cs">
+      <DependentUpon>default.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="default.aspx.designer.cs">
+      <DependentUpon>default.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Global.asax.cs">
+      <DependentUpon>Global.asax</DependentUpon>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Compile>
+    <Compile Include="Content\Login.aspx.cs">
+      <DependentUpon>Login.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Content\Login.aspx.designer.cs">
+      <DependentUpon>Login.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Master\Site.Master.cs">
+      <DependentUpon>Site.Master</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Master\Site.Master.designer.cs">
+      <DependentUpon>Site.Master</DependentUpon>
+    </Compile>
+    <Compile Include="Properties\Settings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+      <DependentUpon>Settings.settings</DependentUpon>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App_Code\DAL\C4SerialNumbers.xsc">
+      <DependentUpon>C4SerialNumbers.xsd</DependentUpon>
+    </None>
+    <None Include="App_Code\DAL\C4SerialNumbers.xsd">
+      <SubType>Designer</SubType>
+      <Generator>MSDataSetGenerator</Generator>
+      <LastGenOutput>C4SerialNumbers.Designer.cs</LastGenOutput>
+    </None>
+    <None Include="App_Code\DAL\C4SerialNumbers.xss">
+      <DependentUpon>C4SerialNumbers.xsd</DependentUpon>
+    </None>
+    <None Include="App_Code\DAL\C4SQL01.xsc">
+      <DependentUpon>C4SQL01.xsd</DependentUpon>
+    </None>
+    <None Include="App_Code\DAL\C4SQL01.xsd">
+      <SubType>Designer</SubType>
+      <Generator>MSDataSetGenerator</Generator>
+      <LastGenOutput>C4SQL01.Designer.cs</LastGenOutput>
+    </None>
+    <None Include="App_Code\DAL\C4SQL01.xss">
+      <DependentUpon>C4SQL01.xsd</DependentUpon>
+    </None>
+    <None Include="App_Code\DAL\Reporting.xsc">
+      <DependentUpon>Reporting.xsd</DependentUpon>
+    </None>
+    <None Include="App_Code\DAL\Reporting.xsd">
+      <SubType>Designer</SubType>
+      <Generator>MSDataSetGenerator</Generator>
+      <LastGenOutput>Reporting.Designer.cs</LastGenOutput>
+    </None>
+    <None Include="App_Code\DAL\Reporting.xss">
+      <DependentUpon>Reporting.xsd</DependentUpon>
+    </None>
+    <None Include="Serialization.dbml">
+      <Generator>MSLinqToSQLGenerator</Generator>
+      <LastGenOutput>Serialization.designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
+    <None Include="styles\grand_gray\interface\OboutTextBox\images\Thumbs.db" />
+    <Content Include="Content\ExportMacAddresses.aspx" />
+    <Content Include="Admin\ProductIDHistory.aspx" />
+    <Content Include="Admin\ReturnInventoryRequest.aspx" />
+    <Content Include="Admin\ReturnIRByLineItem.aspx" />
+    <Content Include="Admin\ReturnDeliveryByLineItem.aspx" />
+    <Content Include="Admin\MaintainProductId.aspx" />
+    <Content Include="History\IRHistory.aspx" />
+    <Content Include="History\DeliveryHistory.aspx" />
+    <Content Include="Content\ScanInventoryRequest.aspx" />
+    <Content Include="Content\Logout.aspx" />
+    <Content Include="Admin\MaintainKits.aspx" />
+    <Content Include="Admin\ReturnDelivery.aspx" />
+    <Content Include="Content\PackingSlip.aspx" />
+    <Content Include="Content\ScanSerialNumber.aspx" />
+    <Content Include="default.aspx" />
+    <Content Include="Global.asax">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="images\background1.png" />
+    <Content Include="images\backgroundtitle.jpg" />
+    <Content Include="images\bottomleftcorner.jpg" />
+    <Content Include="images\bottommiddle.jpg" />
+    <Content Include="images\bottomrightcorner.jpg" />
+    <Content Include="images\button.gif" />
+    <Content Include="images\c4ContentTopRightBackground.gif" />
+    <Content Include="images\CalendarPopup.gif" />
+    <Content Include="images\contact-us.gif" />
+    <Content Include="images\Control4Header.jpg" />
+    <Content Include="images\DeliveryVerified_0.jpg" />
+    <Content Include="images\DeliveryVerified_1.jpg" />
+    <Content Include="images\footer-div.gif" />
+    <Content Include="images\forum.gif" />
+    <Content Include="images\home.gif" />
+    <Content Include="images\leftborder.jpg" />
+    <Content Include="images\leftcornercurve.jpg" />
+    <Content Include="images\logo.bmp" />
+    <Content Include="images\logoBackground.gif" />
+    <Content Include="images\logout-button.gif" />
+    <Content Include="images\mainBackground.gif" />
+    <Content Include="images\marketing.gif" />
+    <Content Include="images\middlefill.jpg" />
+    <Content Include="images\my-account-on.gif" />
+    <Content Include="images\newsletter.gif" />
+    <Content Include="images\NotVerified_0.jpg" />
+    <Content Include="images\product-catalog.gif" />
+    <Content Include="images\rightborder.jpg" />
+    <Content Include="images\rightcornercurve.jpg" />
+    <Content Include="images\s.gif" />
+    <Content Include="images\support.gif" />
+    <Content Include="images\tab-div.gif" />
+    <Content Include="images\tab-left.gif" />
+    <Content Include="images\tab-right.gif" />
+    <Content Include="images\topNavItemActiveBackground.gif" />
+    <Content Include="images\what-help.gif" />
+    <Content Include="images\whats-new-with-control4.gif" />
+    <Content Include="Content\Login.aspx" />
+    <Content Include="interface\styles\black_glass\OboutButton\images\button.gif" />
+    <Content Include="interface\styles\black_glass\OboutButton\images\button.png" />
+    <Content Include="interface\styles\black_glass\OboutButton\images\overlay.gif" />
+    <Content Include="interface\styles\black_glass\OboutButton\style.css" />
+    <Content Include="App_Themes\GridView\GridView.skin" />
+    <Content Include="Master\Site.Master" />
+    <Content Include="C4Styles.css" />
+    <Content Include="styles\black_glass\asc.gif" />
+    <Content Include="styles\black_glass\desc.gif" />
+    <Content Include="styles\black_glass\details_btn_close.gif" />
+    <Content Include="styles\black_glass\details_btn_open.gif" />
+    <Content Include="styles\black_glass\filter.png" />
+    <Content Include="styles\black_glass\first_disabled.gif" />
+    <Content Include="styles\black_glass\first_normal.gif" />
+    <Content Include="styles\black_glass\first_over.gif" />
+    <Content Include="styles\black_glass\first_pressed.gif" />
+    <Content Include="styles\black_glass\footer.png" />
+    <Content Include="styles\black_glass\footer_corner_left.gif" />
+    <Content Include="styles\black_glass\footer_corner_left.png" />
+    <Content Include="styles\black_glass\footer_corner_middle.gif" />
+    <Content Include="styles\black_glass\footer_corner_middle.png" />
+    <Content Include="styles\black_glass\footer_corner_right.gif" />
+    <Content Include="styles\black_glass\footer_corner_right.png" />
+    <Content Include="styles\black_glass\form_bgr.png" />
+    <Content Include="styles\black_glass\grid_body_left.png" />
+    <Content Include="styles\black_glass\grid_body_right.png" />
+    <Content Include="styles\black_glass\grouping_area.gif" />
+    <Content Include="styles\black_glass\grouping_area.png" />
+    <Content Include="styles\black_glass\grouping_area_column.gif" />
+    <Content Include="styles\black_glass\grouping_area_column.png" />
+    <Content Include="styles\black_glass\grouping_area_column_dragging.gif" />
+    <Content Include="styles\black_glass\grouping_area_column_dragging.png" />
+    <Content Include="styles\black_glass\grouping_area_column_left.gif" />
+    <Content Include="styles\black_glass\grouping_area_column_left.png" />
+    <Content Include="styles\black_glass\grouping_area_column_left_dragging.gif" />
+    <Content Include="styles\black_glass\grouping_area_column_left_dragging.png" />
+    <Content Include="styles\black_glass\grouping_area_column_right.gif" />
+    <Content Include="styles\black_glass\grouping_area_column_right.png" />
+    <Content Include="styles\black_glass\grouping_area_column_right_dragging.gif" />
+    <Content Include="styles\black_glass\grouping_area_column_right_dragging.png" />
+    <Content Include="styles\black_glass\grouping_area_column_spacer.png" />
+    <Content Include="styles\black_glass\grouping_area_left.gif" />
+    <Content Include="styles\black_glass\grouping_area_left.png" />
+    <Content Include="styles\black_glass\grouping_area_right.gif" />
+    <Content Include="styles\black_glass\grouping_area_right.png" />
+    <Content Include="styles\black_glass\grouping_dragged_column.png" />
+    <Content Include="styles\black_glass\group_arrow_bottom.gif" />
+    <Content Include="styles\black_glass\group_arrow_bottom.png" />
+    <Content Include="styles\black_glass\group_arrow_top.gif" />
+    <Content Include="styles\black_glass\group_arrow_top.png" />
+    <Content Include="styles\black_glass\group_btn_close.gif" />
+    <Content Include="styles\black_glass\group_btn_open.gif" />
+    <Content Include="styles\black_glass\group_summary.png" />
+    <Content Include="styles\black_glass\header.png" />
+    <Content Include="styles\black_glass\header_corner_left.gif" />
+    <Content Include="styles\black_glass\header_corner_left.png" />
+    <Content Include="styles\black_glass\header_corner_middle.gif" />
+    <Content Include="styles\black_glass\header_corner_middle.png" />
+    <Content Include="styles\black_glass\header_corner_right.gif" />
+    <Content Include="styles\black_glass\header_corner_right.png" />
+    <Content Include="styles\black_glass\header_pressed.png" />
+    <Content Include="styles\black_glass\header_without_grouping.png" />
+    <Content Include="styles\black_glass\interface\OboutDropDownList\images\drop-down-horizontal.gif" />
+    <Content Include="styles\black_glass\interface\OboutDropDownList\images\drop-down-horizontal.png" />
+    <Content Include="styles\black_glass\interface\OboutDropDownList\images\drop-down-vertical.gif" />
+    <Content Include="styles\black_glass\interface\OboutDropDownList\images\drop-down-vertical.png" />
+    <Content Include="styles\black_glass\interface\OboutDropDownList\images\horizontal.gif" />
+    <Content Include="styles\black_glass\interface\OboutDropDownList\images\horizontal.png" />
+    <Content Include="styles\black_glass\interface\OboutDropDownList\images\lighted.gif" />
+    <Content Include="styles\black_glass\interface\OboutDropDownList\images\lighted.png" />
+    <Content Include="styles\black_glass\interface\OboutDropDownList\images\vertical.gif" />
+    <Content Include="styles\black_glass\interface\OboutDropDownList\images\vertical.png" />
+    <Content Include="styles\black_glass\interface\OboutDropDownList\style.css" />
+    <Content Include="styles\black_glass\interface\OboutTextBox\images\textarea-horizontal.gif" />
+    <Content Include="styles\black_glass\interface\OboutTextBox\images\textarea-horizontal.png" />
+    <Content Include="styles\black_glass\interface\OboutTextBox\images\textarea-vertical.gif" />
+    <Content Include="styles\black_glass\interface\OboutTextBox\images\textarea-vertical.png" />
+    <Content Include="styles\black_glass\interface\OboutTextBox\images\textbox.gif" />
+    <Content Include="styles\black_glass\interface\OboutTextBox\images\textbox.png" />
+    <Content Include="styles\black_glass\interface\OboutTextBox\style.css" />
+    <Content Include="styles\black_glass\interface\OboutTextBox\style_multiline.css" />
+    <Content Include="styles\black_glass\last_disabled.gif" />
+    <Content Include="styles\black_glass\last_normal.gif" />
+    <Content Include="styles\black_glass\last_over.gif" />
+    <Content Include="styles\black_glass\last_pressed.gif" />
+    <Content Include="styles\black_glass\left_side.gif" />
+    <Content Include="styles\black_glass\left_side.png" />
+    <Content Include="styles\black_glass\next_disabled.gif" />
+    <Content Include="styles\black_glass\next_normal.gif" />
+    <Content Include="styles\black_glass\next_over.gif" />
+    <Content Include="styles\black_glass\next_pressed.gif" />
+    <Content Include="styles\black_glass\page_number_normal.png" />
+    <Content Include="styles\black_glass\page_number_over.png" />
+    <Content Include="styles\black_glass\page_number_selected.png" />
+    <Content Include="styles\black_glass\placeholder.gif" />
+    <Content Include="styles\black_glass\placeholder_empty.gif" />
+    <Content Include="styles\black_glass\previous_disabled.gif" />
+    <Content Include="styles\black_glass\previous_normal.gif" />
+    <Content Include="styles\black_glass\previous_over.gif" />
+    <Content Include="styles\black_glass\previous_pressed.gif" />
+    <Content Include="styles\black_glass\record_group_header.png" />
+    <Content Include="styles\black_glass\record_group_header_padding.png" />
+    <Content Include="styles\black_glass\record_group_header_padding_right.png" />
+    <Content Include="styles\black_glass\right_side.gif" />
+    <Content Include="styles\black_glass\right_side.png" />
+    <Content Include="styles\black_glass\row1.png" />
+    <Content Include="styles\black_glass\row2.png" />
+    <Content Include="styles\black_glass\row_hover.png" />
+    <Content Include="styles\black_glass\row_selected.png" />
+    <Content Include="styles\black_glass\style.css" />
+    <Content Include="styles\black_glass\summary.png" />
+    <Content Include="styles\grand_gray\asc.gif" />
+    <Content Include="styles\grand_gray\desc.gif" />
+    <Content Include="styles\grand_gray\details_btn_close.gif" />
+    <Content Include="styles\grand_gray\details_btn_open.gif" />
+    <Content Include="styles\grand_gray\filter.gif" />
+    <Content Include="styles\grand_gray\first_disabled.gif" />
+    <Content Include="styles\grand_gray\first_normal.gif" />
+    <Content Include="styles\grand_gray\first_over.gif" />
+    <Content Include="styles\grand_gray\first_pressed.gif" />
+    <Content Include="styles\grand_gray\footer.gif" />
+    <Content Include="styles\grand_gray\footer_corner_left.gif" />
+    <Content Include="styles\grand_gray\footer_corner_middle.gif" />
+    <Content Include="styles\grand_gray\footer_corner_right.gif" />
+    <Content Include="styles\grand_gray\form_bgr.gif" />
+    <Content Include="styles\grand_gray\grouping_area.gif" />
+    <Content Include="styles\grand_gray\grouping_area_column.gif" />
+    <Content Include="styles\grand_gray\grouping_area_column_dragging.gif" />
+    <Content Include="styles\grand_gray\grouping_area_column_left.gif" />
+    <Content Include="styles\grand_gray\grouping_area_column_left_dragging.gif" />
+    <Content Include="styles\grand_gray\grouping_area_column_right.gif" />
+    <Content Include="styles\grand_gray\grouping_area_column_right_dragging.gif" />
+    <Content Include="styles\grand_gray\grouping_area_column_spacer.gif" />
+    <Content Include="styles\grand_gray\grouping_area_left.gif" />
+    <Content Include="styles\grand_gray\grouping_area_right.gif" />
+    <Content Include="styles\grand_gray\grouping_dragged_column.png" />
+    <Content Include="styles\grand_gray\group_arrow_bottom.gif" />
+    <Content Include="styles\grand_gray\group_arrow_top.gif" />
+    <Content Include="styles\grand_gray\group_btn_close.gif" />
+    <Content Include="styles\grand_gray\group_btn_open.gif" />
+    <Content Include="styles\grand_gray\group_summary.gif" />
+    <Content Include="styles\grand_gray\header.gif" />
+    <Content Include="styles\grand_gray\header_corner_left.gif" />
+    <Content Include="styles\grand_gray\header_corner_middle.gif" />
+    <Content Include="styles\grand_gray\header_corner_right.gif" />
+    <Content Include="styles\grand_gray\header_pressed.gif" />
+    <Content Include="styles\grand_gray\header_without_grouping.gif" />
+    <Content Include="styles\grand_gray\interface\OboutDropDownList\images\drop-down-horizontal.gif" />
+    <Content Include="styles\grand_gray\interface\OboutDropDownList\images\drop-down-horizontal.png" />
+    <Content Include="styles\grand_gray\interface\OboutDropDownList\images\drop-down-vertical.gif" />
+    <Content Include="styles\grand_gray\interface\OboutDropDownList\images\drop-down-vertical.png" />
+    <Content Include="styles\grand_gray\interface\OboutDropDownList\images\horizontal.gif" />
+    <Content Include="styles\grand_gray\interface\OboutDropDownList\images\horizontal.png" />
+    <Content Include="styles\grand_gray\interface\OboutDropDownList\images\lighted.gif" />
+    <Content Include="styles\grand_gray\interface\OboutDropDownList\images\lighted.png" />
+    <Content Include="styles\grand_gray\interface\OboutDropDownList\images\vertical.gif" />
+    <Content Include="styles\grand_gray\interface\OboutDropDownList\images\vertical.png" />
+    <Content Include="styles\grand_gray\interface\OboutDropDownList\style.css" />
+    <Content Include="styles\grand_gray\interface\OboutTextBox\images\textarea-horizontal.gif" />
+    <Content Include="styles\grand_gray\interface\OboutTextBox\images\textarea-horizontal.png" />
+    <Content Include="styles\grand_gray\interface\OboutTextBox\images\textarea-vertical.gif" />
+    <Content Include="styles\grand_gray\interface\OboutTextBox\images\textarea-vertical.png" />
+    <Content Include="styles\grand_gray\interface\OboutTextBox\images\textbox.gif" />
+    <Content Include="styles\grand_gray\interface\OboutTextBox\images\textbox.png" />
+    <Content Include="styles\grand_gray\interface\OboutTextBox\style.css" />
+    <Content Include="styles\grand_gray\interface\OboutTextBox\style_multiline.css" />
+    <Content Include="styles\grand_gray\last_disabled.gif" />
+    <Content Include="styles\grand_gray\last_normal.gif" />
+    <Content Include="styles\grand_gray\last_over.gif" />
+    <Content Include="styles\grand_gray\last_pressed.gif" />
+    <Content Include="styles\grand_gray\next_disabled.gif" />
+    <Content Include="styles\grand_gray\next_normal.gif" />
+    <Content Include="styles\grand_gray\next_over.gif" />
+    <Content Include="styles\grand_gray\next_pressed.gif" />
+    <Content Include="styles\grand_gray\page_number_normal.gif" />
+    <Content Include="styles\grand_gray\page_number_over.gif" />
+    <Content Include="styles\grand_gray\placeholder.gif" />
+    <Content Include="styles\grand_gray\placeholder_empty.gif" />
+    <Content Include="styles\grand_gray\previous_disabled.gif" />
+    <Content Include="styles\grand_gray\previous_normal.gif" />
+    <Content Include="styles\grand_gray\previous_over.gif" />
+    <Content Include="styles\grand_gray\previous_pressed.gif" />
+    <Content Include="styles\grand_gray\record_group_header.gif" />
+    <Content Include="styles\grand_gray\record_group_header_padding.gif" />
+    <Content Include="styles\grand_gray\record_group_header_padding_right.gif" />
+    <Content Include="styles\grand_gray\row1.gif" />
+    <Content Include="styles\grand_gray\row2.gif" />
+    <Content Include="styles\grand_gray\row_hover.gif" />
+    <Content Include="styles\grand_gray\row_selected.gif" />
+    <Content Include="styles\grand_gray\style.css" />
+    <Content Include="styles\grand_gray\summary.gif" />
+    <Content Include="styles\header.png" />
+    <Content Include="styles\Horizontal1\margin.gif" />
+    <Content Include="styles\Horizontal1\mid.gif" />
+    <Content Include="styles\Horizontal1\mid_over.gif" />
+    <Content Include="styles\Horizontal1\style.css" />
+    <Content Include="styles\Horizontal1\submenu.gif" />
+    <Content Include="styles\Horizontal1\submenu_parent.gif" />
+    <Content Include="styles\Horizontal1\submenu_white.gif" />
+    <Content Include="styles\Horizontal1\s_bg.gif" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Serialization.dbml.layout">
+      <DependentUpon>Serialization.dbml</DependentUpon>
+    </None>
+    <EmbeddedResource Include="reports\Test.rdlc" />
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{3259AA49-8AA1-44D3-9025-A0B520596A8C}" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="App_Data\" />
+    <Folder Include="css\" />
+    <Folder Include="Exports\" />
+  </ItemGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v10.0\WebApplications\Microsoft.WebApplication.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+  <ProjectExtensions>
+    <VisualStudio>
+      <FlavorProperties GUID="{349c5851-65df-11da-9384-00065b846f21}">
+        <WebProjectProperties>
+          <UseIIS>False</UseIIS>
+          <AutoAssignPort>True</AutoAssignPort>
+          <DevelopmentServerPort>59602</DevelopmentServerPort>
+          <DevelopmentServerVPath>/inventory/</DevelopmentServerVPath>
+          <IISUrl>
+          </IISUrl>
+          <NTLMAuthentication>False</NTLMAuthentication>
+          <UseCustomServer>False</UseCustomServer>
+          <CustomServerUrl>
+          </CustomServerUrl>
+          <SaveServerSettingsInUserFile>False</SaveServerSettingsInUserFile>
+        </WebProjectProperties>
+      </FlavorProperties>
+    </VisualStudio>
+  </ProjectExtensions>
+</Project>

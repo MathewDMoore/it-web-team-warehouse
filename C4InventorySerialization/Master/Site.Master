@@ -1,0 +1,79 @@
+<%@ Master Language="C#" AutoEventWireup="true" CodeBehind="Site.Master.cs" Inherits="C4InventorySerialization.Master.Site1" %>
+<%@ Register Assembly="obout_EasyMenu_Pro" Namespace="OboutInc.EasyMenu_Pro" TagPrefix="oem" %>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" >
+<head runat="server">
+    <title>C4 Serialization Application</title>
+    <link href="../C4Styles.css" rel="stylesheet" type="text/css" />
+
+
+</head>
+<body>
+    <div id="wrapper" class="wrapper">
+    <div id="middle">
+        <form id="form1" runat="server">
+
+            <div id="header">
+                <img id="logo" alt="logo" src="../images/c4-logo.png" />
+                <div id="loggedUser"></div>	
+
+		<!--// The head of the menus //-->
+		<div id="menu">
+				<oem:EasyMenu id="EasymenuMain" runat="server" ShowEvent="Always" StyleFolder="../styles/horizontal1"
+			Position="Horizontal" CSSMenu="ParentMenu" CSSMenuItemContainer="ParentItemContainer" Width="700">
+			<CSSClassesCollection>
+				<oem:CSSClasses ObjectType="OboutInc.EasyMenu_Pro.MenuItem" ComponentSubMenuCellOver="ParentItemSubMenuCellOver"
+					ComponentContentCell="ParentItemContentCell" Component="ParentItem" ComponentSubMenuCell="ParentItemSubMenuCell"
+					ComponentIconCellOver="ParentItemIconCellOver" ComponentIconCell="ParentItemIconCell"
+					ComponentOver="ParentItemOver" ComponentContentCellOver="ParentItemContentCellOver"></oem:CSSClasses>
+				<oem:CSSClasses ObjectType="OboutInc.EasyMenu_Pro.MenuSeparator" ComponentSubMenuCellOver="ParentSeparatorSubMenuCellOver"
+					ComponentContentCell="ParentSeparatorContentCell" Component="ParentSeparator"
+					ComponentSubMenuCell="ParentSeparatorSubMenuCell" ComponentIconCellOver="ParentSeparatorIconCellOver"
+					ComponentIconCell="ParentSeparatorIconCell" ComponentOver="ParentSeparatorOver"
+					ComponentContentCellOver="ParentSeparatorContentCellOver"></oem:CSSClasses>
+			</CSSClassesCollection>
+			<Components>
+
+			<oem:MenuItem InnerHtml="Deliveries" ID="MenuItem1" Url="../Content/ScanSerialNumber.aspx"></oem:MenuItem>
+			<oem:MenuSeparator InnerHtml="|" ID="mainMenuSeparator1"></oem:MenuSeparator>
+			<oem:MenuItem InnerHtml="Inventory Requests" ID="MenuItem2" Url="../Content/ScanInventoryRequest.aspx"></oem:MenuItem>
+			<oem:MenuSeparator InnerHtml="|" ID="MenuSeparator2"></oem:MenuSeparator>
+			<oem:MenuItem InnerHtml="Maintain Product IDs" ID="MenuItem3" Url="../Admin/MaintainProductId.aspx"></oem:MenuItem>
+			<oem:MenuSeparator InnerHtml="|" ID="mainMenuSeparator2"></oem:MenuSeparator>
+			<oem:MenuItem InnerHtml="Maintain Kits" ID="MenuItem4" Url="../Admin/MaintainKits.aspx"></oem:MenuItem>
+			<oem:MenuSeparator InnerHtml="|" ID="MenuSeparator3"></oem:MenuSeparator>
+			<oem:MenuItem InnerHtml="Delivery History" ID="MenuItem5" Url="../History/DeliveryHistory.aspx"></oem:MenuItem>
+			<oem:MenuSeparator InnerHtml="|" ID="MenuSeparator5"></oem:MenuSeparator>
+			<oem:MenuItem InnerHtml="IR History" ID="MenuItem6" Url="../History/IRHistory.aspx"></oem:MenuItem>				
+			<oem:MenuSeparator InnerHtml="|" ID="MenuSeparator4"></oem:MenuSeparator>
+			<oem:MenuItem InnerHtml="Export Mac ID" ID="MenuItem8" Url="../Content/ExportMacAddresses.aspx"></oem:MenuItem>				
+			<oem:MenuSeparator InnerHtml="|" ID="MenuSeparator6"></oem:MenuSeparator>
+			<oem:MenuItem InnerHtml="Logout" ID="MenuItem7" Url="../Content/Logout.aspx"></oem:MenuItem>
+		
+			</Components>
+		</oem:EasyMenu>
+		</div>
+
+            </div>
+
+            <div id="content">
+                <asp:contentplaceholder id="MainContent"
+                 runat="server">
+                  <!-- Page-specific content will go here... -->
+                </asp:contentplaceholder>
+            </div>
+
+            <div id="navigation">
+                
+            </div>
+        </form>
+    </div>
+    <div id="bottom">
+    Created by the Control4 IT Team | Copyright © 2011 Control4 Corp.
+    </div>
+    </div>
+
+    
+</body>
+</html>

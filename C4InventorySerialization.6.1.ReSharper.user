@@ -1,0 +1,337 @@
+<Configuration>
+  <SettingsComponent>
+    <string />
+    <integer />
+    <boolean>
+      <setting name="livetemplates.csharp.usevar">True</setting>
+      <setting name="SolutionAnalysisEnabled">False</setting>
+    </boolean>
+  </SettingsComponent>
+  <NAntValidationSettings>
+    <NAntPath value="" />
+  </NAntValidationSettings>
+  <RecentFiles>
+    <RecentFiles>
+      <File id="622BA529-E8CC-4410-924B-95772E4C15D7/f:LdapAuthentication.cs" caret="0" fromTop="0" />
+      <File id="622BA529-E8CC-4410-924B-95772E4C15D7/f:Web.config" caret="1244" fromTop="17" />
+      <File id="622BA529-E8CC-4410-924B-95772E4C15D7/d:Admin/f:MaintainProductId.aspx.cs" caret="9097" fromTop="12" />
+      <File id="622BA529-E8CC-4410-924B-95772E4C15D7/d:Content/f:Logout.aspx.cs" caret="496" fromTop="11" />
+      <File id="622BA529-E8CC-4410-924B-95772E4C15D7/f:Global.asax.cs" caret="2097" fromTop="1" />
+    </RecentFiles>
+    <RecentEdits>
+      <File id="622BA529-E8CC-4410-924B-95772E4C15D7/d:Admin/f:MaintainProductId.aspx.cs" caret="3956" fromTop="12" />
+      <File id="622BA529-E8CC-4410-924B-95772E4C15D7/d:Admin/f:MaintainProductId.aspx.cs" caret="5397" fromTop="12" />
+      <File id="622BA529-E8CC-4410-924B-95772E4C15D7/d:Admin/f:MaintainProductId.aspx.cs" caret="7399" fromTop="12" />
+      <File id="622BA529-E8CC-4410-924B-95772E4C15D7/d:Admin/f:MaintainProductId.aspx.cs" caret="9097" fromTop="12" />
+    </RecentEdits>
+  </RecentFiles>
+  <UnitTestRunner>
+    <Providers />
+  </UnitTestRunner>
+  <CompletionStatisticsManager>
+    <ItemStatistics item="Default">
+      <Item value="ID" priority="1" />
+      <Item value="int" priority="4" />
+      <Item value="LineNum" priority="9" />
+      <Item value="lineNum" priority="3" />
+      <Item value="queryString" priority="5" />
+      <Item value="Request" priority="1" />
+      <Item value="string" priority="18" />
+      <Item value="Convert" priority="2" />
+      <Item value="foreach" priority="1" />
+      <Item value="Length" priority="0" />
+      <Item value="i" priority="0" />
+      <Item value="new" priority="6" />
+      <Item value="Array" priority="0" />
+      <Item value="qString" priority="0" />
+      <Item value="using" priority="6" />
+      <Item value="System" priority="0" />
+      <Item value="Drawing" priority="0" />
+      <Item value="Printing" priority="0" />
+      <Item value="pd1" priority="1" />
+      <Item value="deliveryNumber" priority="0" />
+      <Item value="verifiedimg" priority="0" />
+      <Item value="Boolean" priority="1" />
+      <Item value="false" priority="9" />
+      <Item value="VerifiedDelivery" priority="1" />
+      <Item value="true" priority="10" />
+      <Item value="verifyBoolean" priority="0" />
+      <Item value="UserSettingsGroup" priority="2" />
+      <Item value="public" priority="0" />
+      <Item value="User" priority="7" />
+      <Item value="var" priority="7" />
+      <Item value="Username" priority="4" />
+      <Item value="SqlDbType" priority="1" />
+      <Item value="if" priority="8" />
+      <Item value="UserAuth" priority="0" />
+      <Item value="else" priority="1" />
+      <Item value="Response" priority="3" />
+      <Item value="Login" priority="0" />
+      <Item value="Grid3" priority="0" />
+      <Item value="CreateDetailGrid" priority="0" />
+      <Item value="sCmd" priority="0" />
+      <Item value="ComboBox" priority="4" />
+      <Item value="OboutInc" priority="0" />
+      <Item value="Interface" priority="2" />
+      <Item value="Obout" priority="5" />
+      <Item value="grid1" priority="1" />
+      <Item value="CreateGrid" priority="1" />
+      <Item value="Page" priority="2" />
+      <Item value="MPIGrid" priority="12" />
+      <Item value="MPI" priority="2" />
+      <Item value="db" priority="16" />
+      <Item value="SerializationDataContext" priority="1" />
+      <Item value="from" priority="1" />
+      <Item value="select" priority="1" />
+      <Item value="mpi" priority="0" />
+      <Item value="where" priority="1" />
+      <Item value="p" priority="3" />
+      <Item value="protected" priority="0" />
+      <Item value="PRODUCTID" priority="0" />
+      <Item value="ITEMCODE" priority="0" />
+      <Item value="COLOR" priority="0" />
+      <Item value="NOSERIALIZATION" priority="0" />
+      <Item value="SMARTCODEONLY" priority="0" />
+      <Item value="e" priority="3" />
+      <Item value="product_history" priority="3" />
+      <Item value="MPI_History" priority="3" />
+      <Item value="productHistory" priority="3" />
+      <Item value="tID" priority="0" />
+      <Item value="tId" priority="1" />
+      <Item value="product" priority="4" />
+      <Item value="afterUpdate" priority="2" />
+      <Item value="bool" priority="3" />
+      <Item value="Record" priority="0" />
+      <Item value="noSerial" priority="5" />
+      <Item value="noSerialBool" priority="12" />
+      <Item value="smartCodeBool" priority="5" />
+      <Item value="case" priority="2" />
+      <Item value="break" priority="1" />
+      <Item value="smartCode" priority="2" />
+      <Item value="IEnumerable" priority="1" />
+      <Item value="Grid" priority="2" />
+      <Item value="query" priority="0" />
+      <Item value="Byte" priority="0" />
+      <Item value="da" priority="0" />
+      <Item value="reader1" priority="2" />
+      <Item value="return" priority="1" />
+      <Item value="IDataAdapter`0" priority="2" />
+      <Item value="DataBind`0" priority="0" />
+      <Item value="dataAdapter" priority="0" />
+      <Item value="DataSet`0" priority="0" />
+      <Item value="ds" priority="1" />
+      <Item value="LoadOption`0" priority="0" />
+      <Item value="Upsert" priority="0" />
+      <Item value="Design" priority="1" />
+      <Item value="ComboBox`0" priority="5" />
+      <Item value="comboBox" priority="0" />
+      <Item value="C4InventorySerialization" priority="1" />
+      <Item value="MaintainProductId`0" priority="0" />
+      <Item value="EnvironmentVariableTarget`0" priority="0" />
+      <Item value="ComboBox1Load" priority="5" />
+      <Item value="Combo" priority="0" />
+      <Item value="TemplatesCollection`0" priority="0" />
+      <Item value="GridTemplate`0" priority="0" />
+      <Item value="Add`0" priority="0" />
+      <Item value="combo" priority="2" />
+      <Item value="Controls" priority="0" />
+      <Item value="UserName" priority="0" />
+      <Item value="Password" priority="0" />
+      <Item value="Common" priority="0" />
+      <Item value="RoleManagerEventArgs`0" priority="0" />
+      <Item value="Security" priority="1" />
+      <Item value="Principal" priority="1" />
+      <Item value="PropertyValueOrigin`0" priority="0" />
+      <Item value="manager" priority="0" />
+      <Item value="user" priority="0" />
+      <Item value="groupNames" priority="1" />
+      <Item value="HttpCookie`0" priority="0" />
+      <Item value="FormsAuth" priority="0" />
+      <Item value="adAuthCookie" priority="1" />
+      <Item value="Context" priority="2" />
+      <Item value="Session" priority="3" />
+      <Item value="DateTime`0" priority="3" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:System.String">
+      <Item value="Split" priority="2" />
+      <Item value="Replace" priority="0" />
+      <Item value="Indexer" priority="0" />
+      <Item value="Equals`0" priority="0" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:System.Web.HttpRequest">
+      <Item value="QueryString" priority="2" />
+      <Item value="Params" priority="0" />
+      <Item value="Cookies" priority="2" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:@System.Convert">
+      <Item value="ToString" priority="1" />
+      <Item value="ToInt32" priority="0" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:System.Windows.Forms.PrintDialog">
+      <Item value="Document" priority="1" />
+      <Item value="ShowDialog" priority="0" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:System.Object">
+      <Item value="Equals" priority="0" />
+      <Item value="GetType" priority="1" />
+      <Item value="ToString" priority="4" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:System.Boolean">
+      <Item value="Equals" priority="1" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:System.Int32">
+      <Item value="ToString" priority="1" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:System.Security.Principal.IPrincipal">
+      <Item value="Identity" priority="10" />
+      <Item value="IsInRole`0" priority="0" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:System.Security.Principal.IIdentity">
+      <Item value="Name" priority="7" />
+      <Item value="IsAuthenticated" priority="0" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:@System.Data.SqlDbType">
+      <Item value="NVarChar" priority="3" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:System.Web.HttpResponse">
+      <Item value="Redirect" priority="0" />
+      <Item value="Cookies" priority="2" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:Obout.Grid.DetailGrid">
+      <Item value="DetailGrids" priority="0" />
+      <Item value="DataBinding" priority="0" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:System.Data.SqlClient.SqlCommand">
+      <Item value="Parameters" priority="0" />
+      <Item value="ExecuteReader`0" priority="0" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:System.Data.SqlClient.SqlParameterCollection">
+      <Item value="Add" priority="0" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:Obout.Grid.Grid">
+      <Item value="ClientSideEvents" priority="0" />
+      <Item value="Controls" priority="1" />
+      <Item value="Columns" priority="1" />
+      <Item value="DataSource" priority="0" />
+      <Item value="Templates" priority="1" />
+      <Item value="TemplateControl" priority="1" />
+      <Item value="FindControl`0" priority="0" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:System.Web.UI.Page">
+      <Item value="IsPostBack" priority="0" />
+      <Item value="LoadControl`0" priority="0" />
+      <Item value="LoadTemplate`0" priority="0" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:Obout.Grid.ColumnCollection">
+      <Item value="Add" priority="0" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:C4InventorySerialization.Admin.NorthwindDataContext">
+      <Item value="Equals" priority="0" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:C4InventorySerialization.SerializationDataContext">
+      <Item value="ChangeConflicts" priority="0" />
+      <Item value="MPIs" priority="11" />
+      <Item value="MPI_Histories" priority="6" />
+      <Item value="GetServerDate" priority="0" />
+      <Item value="SubmitChanges" priority="1" />
+      <Item value="Deliveries" priority="0" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:C4InventorySerialization.MPI">
+      <Item value="PRODUCTID" priority="2" />
+      <Item value="ITEMCODE" priority="2" />
+      <Item value="COLOR" priority="1" />
+      <Item value="SMARTCODEONLY" priority="2" />
+      <Item value="NOSERIALIZATION" priority="3" />
+      <Item value="ID" priority="2" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:Obout.Grid.GridRecordEventArgs">
+      <Item value="RecordsCollection" priority="0" />
+      <Item value="Record" priority="3" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:System.Linq.IQueryable`1">
+      <Item value="First" priority="0" />
+      <Item value="Take" priority="0" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:C4InventorySerialization.MPI_History">
+      <Item value="ID" priority="0" />
+      <Item value="DATE" priority="1" />
+      <Item value="TYPE" priority="1" />
+      <Item value="USERNAME" priority="1" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:System.Data.Linq.Table`1">
+      <Item value="InsertOnSubmit" priority="1" />
+      <Item value="InsertAllOnSubmit" priority="1" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:System.Data.OleDb.OleDbDataAdapter">
+      <Item value="SelectCommand" priority="0" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:System.Data.DataSet">
+      <Item value="Load`0" priority="1" />
+      <Item value="Tables" priority="0" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:@System.Data.LoadOption">
+      <Item value="Upsert" priority="0" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:Obout.Grid.TemplatesCollection">
+      <Item value="GetById`0" priority="1" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:System.Web.UI.TemplateControl">
+      <Item value="FindControl`0" priority="0" />
+      <Item value="Init" priority="0" />
+      <Item value="Load" priority="0" />
+      <Item value="UniqueID" priority="0" />
+      <Item value="LoadTemplate`0" priority="0" />
+      <Item value="LoadControl`0" priority="0" />
+      <Item value="NamingContainer" priority="0" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:System.Web.UI.ControlCollection">
+      <Item value="Equals`0" priority="0" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:System.Web.UI.Control">
+      <Item value="TemplateControl" priority="1" />
+      <Item value="ClientID" priority="0" />
+      <Item value="Items" priority="0" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:Obout.Grid.GridTemplate">
+      <Item value="ControlID" priority="0" />
+      <Item value="Controls" priority="0" />
+      <Item value="Template" priority="0" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:System.Web.UI.ITemplate">
+      <Item value="InstantiateIn`0" priority="0" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:System.Web.UI.WebControls.TextBox">
+      <Item value="Text" priority="1" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:System.Text.StringBuilder">
+      <Item value="Append`0" priority="1" />
+      <Item value="ToString`0" priority="0" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:System.Web.HttpCookieCollection">
+      <Item value="Clear`0" priority="4" />
+      <Item value="Indexer" priority="0" />
+      <Item value="AllKeys" priority="0" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:System.Web.HttpCookie">
+      <Item value="Expires" priority="1" />
+      <Item value="Name" priority="0" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:System.Web.HttpContext">
+      <Item value="Request" priority="1" />
+      <Item value="User" priority="0" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:System.Web.SessionState.HttpSessionState">
+      <Item value="Clear`0" priority="0" />
+      <Item value="CookieMode" priority="0" />
+      <Item value="RemoveAll`0" priority="0" />
+      <Item value="Abandon`0" priority="0" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:@System.DateTime">
+      <Item value="Now" priority="2" />
+    </ItemStatistics>
+  </CompletionStatisticsManager>
+  <UnitTestRunnerNUnit>
+    <NUnitInstallDir IsNull="False" />
+    <UseAddins>Never</UseAddins>
+  </UnitTestRunnerNUnit>
+</Configuration>

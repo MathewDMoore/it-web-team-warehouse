@@ -1,0 +1,13 @@
+C:\Users\jcargile.CONTROL4\Documents\Visual Studio 2008\C4InventorySerialization\C4InventorySerialization\obj\Release\ResolveAssemblyReference.cache
+C:\Users\jcargile.CONTROL4\Documents\Visual Studio 2008\C4InventorySerialization\C4InventorySerialization\obj\Release\RdlCompile.cache
+C:\Users\jcargile.CONTROL4\Documents\Visual Studio 2008\C4InventorySerialization\C4InventorySerialization\obj\Release\RdlCompile.compiled
+C:\Users\jcargile.CONTROL4\Documents\Visual Studio 2008\C4InventorySerialization\C4InventorySerialization\bin\C4InventorySerialization.dll
+C:\Users\jcargile.CONTROL4\Documents\Visual Studio 2008\C4InventorySerialization\C4InventorySerialization\bin\C4InventorySerialization.pdb
+C:\Users\jcargile.CONTROL4\Documents\Visual Studio 2008\C4InventorySerialization\C4InventorySerialization\bin\obout_AJAXPage.dll
+C:\Users\jcargile.CONTROL4\Documents\Visual Studio 2008\C4InventorySerialization\C4InventorySerialization\bin\obout_Calendar2_Net.dll
+C:\Users\jcargile.CONTROL4\Documents\Visual Studio 2008\C4InventorySerialization\C4InventorySerialization\bin\obout_ComboBox.dll
+C:\Users\jcargile.CONTROL4\Documents\Visual Studio 2008\C4InventorySerialization\C4InventorySerialization\bin\obout_EasyMenu_Pro.dll
+C:\Users\jcargile.CONTROL4\Documents\Visual Studio 2008\C4InventorySerialization\C4InventorySerialization\bin\obout_Grid_NET.dll
+C:\Users\jcargile.CONTROL4\Documents\Visual Studio 2008\C4InventorySerialization\C4InventorySerialization\bin\obout_Interface.dll
+C:\Users\jcargile.CONTROL4\Documents\Visual Studio 2008\C4InventorySerialization\C4InventorySerialization\obj\Release\C4InventorySerialization.dll
+C:\Users\jcargile.CONTROL4\Documents\Visual Studio 2008\C4InventorySerialization\C4InventorySerialization\obj\Release\C4InventorySerialization.pdb

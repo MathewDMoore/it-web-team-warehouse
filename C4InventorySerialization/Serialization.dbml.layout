@@ -1,0 +1,48 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ordesignerObjectsDiagram dslVersion="1.0.0.0" absoluteBounds="0, 0, 11, 9.25" name="DataClasses1">
+  <DataContextMoniker Name="/SerializationDataContext" />
+  <nestedChildShapes>
+    <classShape Id="b34f724e-2ab3-48d2-ac8d-f2b82de7fb47" absoluteBounds="0.5, 0.5, 2, 1.75354248046875">
+      <DataClassMoniker Name="/SerializationDataContext/MPI" />
+      <nestedChildShapes>
+        <elementListCompartment Id="393c999f-de95-4359-b98f-30409af1c90f" absoluteBounds="0.51500000000000012, 0.96, 1.9700000000000002, 1.19354248046875" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <classShape Id="7d7a83e2-a808-4fb2-b0b6-178c1834f4bf" absoluteBounds="2.625, 0.5, 2, 2.24658447265625">
+      <DataClassMoniker Name="/SerializationDataContext/MPI_History" />
+      <nestedChildShapes>
+        <elementListCompartment Id="f9c04db1-09d3-4604-a34b-7bf1e2ab56ea" absoluteBounds="2.6399999999999997, 0.96, 1.9700000000000002, 1.68658447265625" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <classShape Id="cf65136f-4a99-45b9-bde0-3734c52182e2" absoluteBounds="4.75, 5, 2, 4.0544051106770826">
+      <DataClassMoniker Name="/SerializationDataContext/IR" />
+      <nestedChildShapes>
+        <elementListCompartment Id="41b4f96e-3477-4469-af35-0210dac7cd1e" absoluteBounds="4.765, 5.46, 1.9700000000000002, 3.494405110677083" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <classShape Id="7575fef6-ffcb-436e-98f3-715edf9e0634" absoluteBounds="6.875, 5, 2, 3.8900577799479166">
+      <DataClassMoniker Name="/SerializationDataContext/IR_History" />
+      <nestedChildShapes>
+        <elementListCompartment Id="a99ca267-3c8d-49d2-9719-bf19843a46d2" absoluteBounds="6.8900000000000006, 5.46, 1.9700000000000002, 3.3300577799479165" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <classShape Id="904bcbb8-33ac-4458-a0a7-2f56beccfe40" absoluteBounds="0.5, 2.625, 2, 1.5891951497395827">
+      <DataClassMoniker Name="/SerializationDataContext/Kits" />
+      <nestedChildShapes>
+        <elementListCompartment Id="5bd3f3b5-ec31-45c2-a7c8-3e7b0fd9a32e" absoluteBounds="0.51500000000000012, 3.085, 1.9700000000000002, 1.0291951497395833" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <classShape Id="7235a0fb-2723-4f19-85ce-f3b8e0ca9e26" absoluteBounds="0.5, 5, 2, 4.0544051106770826">
+      <DataClassMoniker Name="/SerializationDataContext/Delivery" />
+      <nestedChildShapes>
+        <elementListCompartment Id="e0d8496c-fc1e-4261-a043-c69643d1815c" absoluteBounds="0.51500000000000012, 5.46, 1.9700000000000002, 3.494405110677083" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <classShape Id="932cb480-190f-48a2-93ca-f007a80e5f05" absoluteBounds="2.625, 5, 2, 3.8900577799479166">
+      <DataClassMoniker Name="/SerializationDataContext/Delivery_History" />
+      <nestedChildShapes>
+        <elementListCompartment Id="75431efb-f17c-4912-8d89-d5913d7d931f" absoluteBounds="2.6399999999999997, 5.46, 1.9700000000000002, 3.3300577799479165" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+  </nestedChildShapes>
+</ordesignerObjectsDiagram>

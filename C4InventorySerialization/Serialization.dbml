@@ -1,0 +1,263 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Database Name="Inventory" Class="SerializationDataContext" xmlns="http://schemas.microsoft.com/linqtosql/dbml/2007">
+  <Connection Mode="WebSettings" ConnectionString="Data Source=c4sql01.control4.com;Initial Catalog=Inventory;Persist Security Info=True;User ID=salesforce" SettingsObjectName="System.Configuration.ConfigurationManager.ConnectionStrings" SettingsPropertyName="InventoryConnectionString2" Provider="System.Data.SqlClient" />
+  <Table Name="dbo.C4_MaintainProductID" Member="MPIs">
+    <Type Name="MPI">
+      <Column Name="ID" AutoSync="Never" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="PRODUCTID" Type="System.String" DbType="NVarChar(20) NOT NULL" CanBeNull="false" />
+      <Column Name="ITEMCODE" Type="System.String" DbType="NVarChar(20) NOT NULL" CanBeNull="false" />
+      <Column Name="COLOR" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
+      <Column Name="NOSERIALIZATION" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
+      <Column Name="SMARTCODEONLY" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.C4_MAINTAINPRODUCTID_HISTORY" Member="MPI_Histories">
+    <Type Name="MPI_History">
+      <Column Name="ID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="TYPE" Type="System.String" DbType="NVarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="DATE" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Column Name="PRODUCTID" Type="System.String" DbType="NVarChar(20) NOT NULL" CanBeNull="false" />
+      <Column Name="ITEMCODE" Type="System.String" DbType="NVarChar(20) NOT NULL" CanBeNull="false" />
+      <Column Name="COLOR" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
+      <Column Name="NOSERIALIZATION" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
+      <Column Name="SMARTCODEONLY" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
+      <Column Name="USERNAME" Type="System.String" DbType="NVarChar(50) NOT NULL" CanBeNull="false" />
+    </Type>
+  </Table>
+  <Table Name="dbo.C4_GOODSISSUE_IR_OUT" Member="IRs">
+    <Type Name="IR">
+      <Column Name="ID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="DOCTYPE" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
+      <Column Name="DATE" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Column Name="DOCNUM" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="SERIALNUM" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="DOCENTRY" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="DOCDATE" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Column Name="LINENUM" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="ITEMCODE" Type="System.String" DbType="NVarChar(20)" CanBeNull="true" />
+      <Column Name="DSCRIPTION" Type="System.String" DbType="NVarChar(100)" CanBeNull="true" />
+      <Column Name="ALTTEXT" Type="System.String" DbType="NVarChar(100)" CanBeNull="true" />
+      <Column Name="QUANTITY" Type="System.Decimal" DbType="Decimal(19,6)" CanBeNull="true" />
+      <Column Name="PRODUCTID" Type="System.String" DbType="NVarChar(20)" CanBeNull="true" />
+      <Column Name="COLOR" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
+      <Column Name="NOSERIALIZATION" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
+      <Column Name="SMARTCODEONLY" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
+      <Column Name="SERIALCODE" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
+      <Column Name="VERIFIED" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
+      <Column Name="USERNAME" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
+      <Column Name="VERIFIEDBY" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.C4_GOODSISSUE_IR_OUT_HISTORY" Member="IR_Histories">
+    <Type Name="IR_History">
+      <Column Name="ID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="DOCTYPE" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
+      <Column Name="DATE" Type="System.DateTime" DbType="DateTime NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="DOCNUM" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="SERIALNUM" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="DOCENTRY" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="DOCDATE" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Column Name="LINENUM" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="ITEMCODE" Type="System.String" DbType="NVarChar(20)" CanBeNull="true" />
+      <Column Name="DSCRIPTION" Type="System.String" DbType="NVarChar(100)" CanBeNull="true" />
+      <Column Name="ALTTEXT" Type="System.String" DbType="NVarChar(100)" CanBeNull="true" />
+      <Column Name="QUANTITY" Type="System.Decimal" DbType="Decimal(19,6)" CanBeNull="true" />
+      <Column Name="PRODUCTID" Type="System.String" DbType="NVarChar(20)" CanBeNull="true" />
+      <Column Name="COLOR" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
+      <Column Name="NOSERIALIZATION" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
+      <Column Name="SMARTCODEONLY" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
+      <Column Name="SERIALCODE" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
+      <Column Name="VERIFIED" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
+      <Column Name="USERNAME" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.C4_MAINTAINKITS" Member="Kits">
+    <Type Name="Kits">
+      <Column Name="ID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="ITEMCODE" Type="System.String" DbType="NVarChar(20) NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="ALTERNATETEXT" Type="System.String" DbType="NVarChar(100) NOT NULL" CanBeNull="false" />
+      <Column Name="PRODUCTID" Type="System.String" DbType="NVarChar(20)" CanBeNull="true" />
+      <Column Name="QUANTITY" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+    </Type>
+  </Table>
+  <Table Name="dbo.C4_SERIALNUMBERS_OUT" Member="Deliveries">
+    <Type Name="Delivery">
+      <Column Name="ID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="DOCTYPE" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
+      <Column Name="DATE" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Column Name="DOCNUM" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="SERIALNUM" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="DOCENTRY" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="DOCDATE" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Column Name="LINENUM" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="ITEMCODE" Type="System.String" DbType="NVarChar(20)" CanBeNull="true" />
+      <Column Name="DSCRIPTION" Type="System.String" DbType="NVarChar(100)" CanBeNull="true" />
+      <Column Name="ALTTEXT" Type="System.String" DbType="NVarChar(100)" CanBeNull="true" />
+      <Column Name="QUANTITY" Type="System.Decimal" DbType="Decimal(19,6)" CanBeNull="true" />
+      <Column Name="PRODUCTID" Type="System.String" DbType="NVarChar(20)" CanBeNull="true" />
+      <Column Name="COLOR" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
+      <Column Name="NOSERIALIZATION" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
+      <Column Name="SMARTCODEONLY" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
+      <Column Name="SERIALCODE" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
+      <Column Name="VERIFIED" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
+      <Column Name="USERNAME" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
+      <Column Name="VERIFIEDBY" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.C4_SERIALNUMBERS_OUT_HISTORY" Member="Delivery_Histories">
+    <Type Name="Delivery_History">
+      <Column Name="ID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="DOCTYPE" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
+      <Column Name="DATE" Type="System.DateTime" DbType="DateTime NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="DOCNUM" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="SERIALNUM" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="DOCENTRY" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="DOCDATE" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Column Name="LINENUM" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="ITEMCODE" Type="System.String" DbType="NVarChar(20)" CanBeNull="true" />
+      <Column Name="DSCRIPTION" Type="System.String" DbType="NVarChar(100)" CanBeNull="true" />
+      <Column Name="ALTTEXT" Type="System.String" DbType="NVarChar(100)" CanBeNull="true" />
+      <Column Name="QUANTITY" Type="System.Decimal" DbType="Decimal(19,6)" CanBeNull="true" />
+      <Column Name="PRODUCTID" Type="System.String" DbType="NVarChar(20)" CanBeNull="true" />
+      <Column Name="COLOR" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
+      <Column Name="NOSERIALIZATION" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
+      <Column Name="SMARTCODEONLY" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
+      <Column Name="SERIALCODE" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
+      <Column Name="VERIFIED" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
+      <Column Name="USERNAME" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
+    </Type>
+  </Table>
+  <Function Name="dbo.sp_Delivery_Header" Method="sp_Delivery_Header">
+    <Parameter Name="DOCNUM" Parameter="dOCNUM" Type="System.String" DbType="NVarChar(50)" />
+    <ElementType Name="sp_Delivery_HeaderResult">
+      <Column Name="COLUMN1" Type="System.String" DbType="VarChar(16) NOT NULL" CanBeNull="false" />
+      <Column Name="COLUMN2" Type="System.String" DbType="NVarChar(254)" CanBeNull="true" />
+      <Column Name="DOCNUM" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+    </ElementType>
+  </Function>
+  <Function Name="dbo.sp_Delivery_History" Method="sp_Delivery_History">
+    <ElementType Name="sp_Delivery_HistoryResult">
+      <Column Name="ID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="DATE" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Column Name="DOCNUM" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="SERIALNUM" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="DOCENTRY" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="DOCDATE" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Column Name="LINENUM" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="ITEMCODE" Type="System.String" DbType="NVarChar(20)" CanBeNull="true" />
+      <Column Name="DSCRIPTION" Type="System.String" DbType="NVarChar(100)" CanBeNull="true" />
+      <Column Name="ALTTEXT" Type="System.String" DbType="NVarChar(100)" CanBeNull="true" />
+      <Column Name="QUANTITY" Type="System.Decimal" DbType="Decimal(0,0)" CanBeNull="true" />
+      <Column Name="PRODUCTID" Type="System.String" DbType="NVarChar(20)" CanBeNull="true" />
+      <Column Name="SERIALCODE" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
+      <Column Name="VERIFIED" Type="System.String" DbType="VarChar(8)" CanBeNull="true" />
+      <Column Name="USERNAME" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
+      <Column Name="VERIFIEDBY" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
+    </ElementType>
+  </Function>
+  <Function Name="dbo.sp_Delivery_Synch" Method="sp_Delivery_Synch">
+    <Parameter Name="DOCNUM" Parameter="dOCNUM" Type="System.Int32" DbType="Int" />
+    <Parameter Name="USERNAME" Parameter="uSERNAME" Type="System.String" DbType="NVarChar(50)" />
+    <ElementType Name="sp_Delivery_SynchResult">
+      <Column Name="ID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="DOCNUM" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="DOCDATE" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Column Name="ITEMCODE" Type="System.String" DbType="NVarChar(20)" CanBeNull="true" />
+      <Column Name="DSCRIPTION" Type="System.String" DbType="NVarChar(100)" CanBeNull="true" />
+      <Column Name="ALTTEXT" Type="System.String" DbType="NVarChar(100)" CanBeNull="true" />
+      <Column Name="SERIALNUM" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="SERIALCODE" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
+      <Column Name="QUANTITY" Type="System.Decimal" DbType="Decimal(0,0)" CanBeNull="true" />
+      <Column Name="PRODUCTID" Type="System.String" DbType="NVarChar(20)" CanBeNull="true" />
+      <Column Name="COLOR" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
+      <Column Name="NOSERIALIZATION" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
+      <Column Name="SMARTCODEONLY" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
+    </ElementType>
+  </Function>
+  <Function Name="dbo.sp_Delivery_Verify" Method="sp_Delivery_Verify">
+    <Parameter Name="DOCNUM" Parameter="dOCNUM" Type="System.Int32" DbType="Int" />
+    <Parameter Name="USERNAME" Parameter="uSERNAME" Type="System.String" DbType="NVarChar(50)" />
+    <ElementType Name="sp_Delivery_VerifyResult">
+      <Column Name="VERIFIEDCOUNT" Type="System.Int32" DbType="Int" CanBeNull="true" />
+    </ElementType>
+  </Function>
+  <Function Name="dbo.sp_GetSAPItems" Method="sp_GetSAPItems">
+    <ElementType Name="sp_GetSAPItemsResult">
+      <Column Name="sapitemcode" Type="System.String" DbType="NVarChar(20) NOT NULL" CanBeNull="false" />
+    </ElementType>
+  </Function>
+  <Function Name="dbo.sp_GoodsIssue_IR_Synch" Method="sp_GoodsIssue_IR_Synch">
+    <Parameter Name="DOCNUM" Parameter="dOCNUM" Type="System.Int32" DbType="Int" />
+    <Parameter Name="USERNAME" Parameter="uSERNAME" Type="System.String" DbType="NVarChar(50)" />
+    <ElementType Name="sp_GoodsIssue_IR_SynchResult">
+      <Column Name="ID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="DOCNUM" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="DOCDATE" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Column Name="ITEMCODE" Type="System.String" DbType="NVarChar(20)" CanBeNull="true" />
+      <Column Name="DSCRIPTION" Type="System.String" DbType="NVarChar(100)" CanBeNull="true" />
+      <Column Name="ALTTEXT" Type="System.String" DbType="NVarChar(100)" CanBeNull="true" />
+      <Column Name="SERIALNUM" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="SERIALCODE" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
+      <Column Name="QUANTITY" Type="System.Decimal" DbType="Decimal(0,0)" CanBeNull="true" />
+      <Column Name="PRODUCTID" Type="System.String" DbType="NVarChar(20)" CanBeNull="true" />
+      <Column Name="COLOR" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
+      <Column Name="NOSERIALIZATION" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
+      <Column Name="SMARTCODEONLY" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
+    </ElementType>
+  </Function>
+  <Function Name="dbo.sp_GoodsIssue_IR_Verify" Method="sp_GoodsIssue_IR_Verify">
+    <Parameter Name="DOCNUM" Parameter="dOCNUM" Type="System.Int32" DbType="Int" />
+    <Parameter Name="USERNAME" Parameter="uSERNAME" Type="System.String" DbType="NVarChar(50)" />
+    <ElementType Name="sp_GoodsIssue_IR_VerifyResult">
+      <Column Name="VERIFIEDCOUNT" Type="System.Int32" DbType="Int" CanBeNull="true" />
+    </ElementType>
+  </Function>
+  <Function Name="dbo.sp_ReturnIRByLineItem" Method="sp_ReturnIRByLineItem">
+    <Parameter Name="ID" Parameter="iD" Type="System.Int32" DbType="Int" />
+    <Parameter Name="USERNAME" Parameter="uSERNAME" Type="System.String" DbType="NVarChar(50)" />
+    <Return Type="System.Int32" />
+  </Function>
+  <Function Name="dbo.sp_IR_Header" Method="sp_IR_Header">
+    <Parameter Name="DOCNUM" Parameter="dOCNUM" Type="System.String" DbType="NVarChar(50)" />
+    <ElementType Name="sp_IR_HeaderResult">
+      <Column Name="COLUMN1" Type="System.String" DbType="VarChar(25) NOT NULL" CanBeNull="false" />
+      <Column Name="COLUMN2" Type="System.String" DbType="NVarChar(254)" CanBeNull="true" />
+      <Column Name="DOCNUM" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+    </ElementType>
+  </Function>
+  <Function Name="dbo.sp_IR_History" Method="sp_IR_History">
+    <ElementType Name="sp_IR_HistoryResult">
+      <Column Name="ID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="DATE" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Column Name="DOCNUM" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="SERIALNUM" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="DOCENTRY" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="DOCDATE" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Column Name="LINENUM" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="ITEMCODE" Type="System.String" DbType="NVarChar(20)" CanBeNull="true" />
+      <Column Name="DSCRIPTION" Type="System.String" DbType="NVarChar(100)" CanBeNull="true" />
+      <Column Name="ALTTEXT" Type="System.String" DbType="NVarChar(100)" CanBeNull="true" />
+      <Column Name="QUANTITY" Type="System.Decimal" DbType="Decimal(0,0)" CanBeNull="true" />
+      <Column Name="PRODUCTID" Type="System.String" DbType="NVarChar(20)" CanBeNull="true" />
+      <Column Name="SERIALCODE" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
+      <Column Name="VERIFIED" Type="System.String" DbType="VarChar(8)" CanBeNull="true" />
+      <Column Name="USERNAME" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
+      <Column Name="VERIFIEDBY" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
+    </ElementType>
+  </Function>
+  <Function Name="dbo.sp_ReturnDelivery" Method="sp_ReturnDelivery">
+    <Parameter Name="DOCNUM" Parameter="dOCNUM" Type="System.Int32" DbType="Int" />
+    <Parameter Name="USERNAME" Parameter="uSERNAME" Type="System.String" DbType="NVarChar(50)" />
+    <Return Type="System.Int32" />
+  </Function>
+  <Function Name="dbo.sp_ReturnDeliveryByLineItem" Method="sp_ReturnDeliveryByLineItem">
+    <Parameter Name="ID" Parameter="iD" Type="System.Int32" DbType="Int" />
+    <Parameter Name="USERNAME" Parameter="uSERNAME" Type="System.String" DbType="NVarChar(50)" />
+    <Return Type="System.Int32" />
+  </Function>
+  <Function Name="dbo.sp_ReturnGoodsIssue_IR" Method="sp_ReturnGoodsIssue_IR">
+    <Parameter Name="DOCNUM" Parameter="dOCNUM" Type="System.Int32" DbType="Int" />
+    <Parameter Name="USERNAME" Parameter="uSERNAME" Type="System.String" DbType="NVarChar(50)" />
+    <Return Type="System.Int32" />
+  </Function>
+</Database>
