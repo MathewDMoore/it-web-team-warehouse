@@ -3,16 +3,72 @@ Microsoft Visual Studio Solution File, Format Version 11.00
 # Visual Studio 2010
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "C4InventorySerialization", "C4InventorySerialization\C4InventorySerialization.csproj", "{622BA529-E8CC-4410-924B-95772E4C15D7}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "C4Inventory2.0", "C4Inventory2.0\C4Inventory2.0.csproj", "{DB241AE3-617B-4323-8F19-1F79C5F012ED}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "C4Inventory2.0.Tests", "C4Inventory2.0.Tests\C4Inventory2.0.Tests.csproj", "{35AAF200-A128-478C-96C1-6E916B73E18F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Persistence", "Persistence\Persistence.csproj", "{B1AA3487-CB02-48DC-8525-151B32859C0C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Domain", "Domain\Domain.csproj", "{1D3BCFE2-BC96-4D9C-BD03-F6D352635E0C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Common", "Common\Common.csproj", "{899B57C1-EA00-482C-B7D8-CEFCF03C46C6}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		ChromeTesting|Any CPU = ChromeTesting|Any CPU
 		Debug|Any CPU = Debug|Any CPU
 		Release|Any CPU = Release|Any CPU
+		Staging|Any CPU = Staging|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{622BA529-E8CC-4410-924B-95772E4C15D7}.ChromeTesting|Any CPU.ActiveCfg = Release|Any CPU
+		{622BA529-E8CC-4410-924B-95772E4C15D7}.ChromeTesting|Any CPU.Build.0 = Release|Any CPU
 		{622BA529-E8CC-4410-924B-95772E4C15D7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{622BA529-E8CC-4410-924B-95772E4C15D7}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{622BA529-E8CC-4410-924B-95772E4C15D7}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{622BA529-E8CC-4410-924B-95772E4C15D7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{622BA529-E8CC-4410-924B-95772E4C15D7}.Staging|Any CPU.ActiveCfg = Release|Any CPU
+		{622BA529-E8CC-4410-924B-95772E4C15D7}.Staging|Any CPU.Build.0 = Release|Any CPU
+		{DB241AE3-617B-4323-8F19-1F79C5F012ED}.ChromeTesting|Any CPU.ActiveCfg = Release|Any CPU
+		{DB241AE3-617B-4323-8F19-1F79C5F012ED}.ChromeTesting|Any CPU.Build.0 = Release|Any CPU
+		{DB241AE3-617B-4323-8F19-1F79C5F012ED}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DB241AE3-617B-4323-8F19-1F79C5F012ED}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DB241AE3-617B-4323-8F19-1F79C5F012ED}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DB241AE3-617B-4323-8F19-1F79C5F012ED}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DB241AE3-617B-4323-8F19-1F79C5F012ED}.Staging|Any CPU.ActiveCfg = Release|Any CPU
+		{DB241AE3-617B-4323-8F19-1F79C5F012ED}.Staging|Any CPU.Build.0 = Release|Any CPU
+		{35AAF200-A128-478C-96C1-6E916B73E18F}.ChromeTesting|Any CPU.ActiveCfg = Release|Any CPU
+		{35AAF200-A128-478C-96C1-6E916B73E18F}.ChromeTesting|Any CPU.Build.0 = Release|Any CPU
+		{35AAF200-A128-478C-96C1-6E916B73E18F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{35AAF200-A128-478C-96C1-6E916B73E18F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{35AAF200-A128-478C-96C1-6E916B73E18F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{35AAF200-A128-478C-96C1-6E916B73E18F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{35AAF200-A128-478C-96C1-6E916B73E18F}.Staging|Any CPU.ActiveCfg = Release|Any CPU
+		{35AAF200-A128-478C-96C1-6E916B73E18F}.Staging|Any CPU.Build.0 = Release|Any CPU
+		{B1AA3487-CB02-48DC-8525-151B32859C0C}.ChromeTesting|Any CPU.ActiveCfg = ChromeTesting|Any CPU
+		{B1AA3487-CB02-48DC-8525-151B32859C0C}.ChromeTesting|Any CPU.Build.0 = ChromeTesting|Any CPU
+		{B1AA3487-CB02-48DC-8525-151B32859C0C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B1AA3487-CB02-48DC-8525-151B32859C0C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B1AA3487-CB02-48DC-8525-151B32859C0C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B1AA3487-CB02-48DC-8525-151B32859C0C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B1AA3487-CB02-48DC-8525-151B32859C0C}.Staging|Any CPU.ActiveCfg = Staging|Any CPU
+		{B1AA3487-CB02-48DC-8525-151B32859C0C}.Staging|Any CPU.Build.0 = Staging|Any CPU
+		{1D3BCFE2-BC96-4D9C-BD03-F6D352635E0C}.ChromeTesting|Any CPU.ActiveCfg = Release|Any CPU
+		{1D3BCFE2-BC96-4D9C-BD03-F6D352635E0C}.ChromeTesting|Any CPU.Build.0 = Release|Any CPU
+		{1D3BCFE2-BC96-4D9C-BD03-F6D352635E0C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1D3BCFE2-BC96-4D9C-BD03-F6D352635E0C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1D3BCFE2-BC96-4D9C-BD03-F6D352635E0C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1D3BCFE2-BC96-4D9C-BD03-F6D352635E0C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1D3BCFE2-BC96-4D9C-BD03-F6D352635E0C}.Staging|Any CPU.ActiveCfg = Release|Any CPU
+		{1D3BCFE2-BC96-4D9C-BD03-F6D352635E0C}.Staging|Any CPU.Build.0 = Release|Any CPU
+		{899B57C1-EA00-482C-B7D8-CEFCF03C46C6}.ChromeTesting|Any CPU.ActiveCfg = Release|Any CPU
+		{899B57C1-EA00-482C-B7D8-CEFCF03C46C6}.ChromeTesting|Any CPU.Build.0 = Release|Any CPU
+		{899B57C1-EA00-482C-B7D8-CEFCF03C46C6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{899B57C1-EA00-482C-B7D8-CEFCF03C46C6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{899B57C1-EA00-482C-B7D8-CEFCF03C46C6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{899B57C1-EA00-482C-B7D8-CEFCF03C46C6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{899B57C1-EA00-482C-B7D8-CEFCF03C46C6}.Staging|Any CPU.ActiveCfg = Release|Any CPU
+		{899B57C1-EA00-482C-B7D8-CEFCF03C46C6}.Staging|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

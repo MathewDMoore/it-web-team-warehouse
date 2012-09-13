@@ -78,7 +78,12 @@
     <Reference Include="System.Xml.Linq" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Web.config" />
+    <Content Include="Content\Returns.aspx" />
+    <Content Include="scripts\ScanInventoryScript.js" />
+    <Content Include="scripts\ScanSerialScript.js" />
+    <Content Include="Web.config">
+      <SubType>Designer</SubType>
+    </Content>
   </ItemGroup>
   <ItemGroup>
     <Content Include="App_Code\BLL\InventoryHeaderBLL.cs" />
@@ -146,6 +151,13 @@
     </Compile>
     <Compile Include="Admin\MaintainProductId.aspx.designer.cs">
       <DependentUpon>MaintainProductId.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Content\Returns.aspx.cs">
+      <DependentUpon>Returns.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Content\Returns.aspx.designer.cs">
+      <DependentUpon>Returns.aspx</DependentUpon>
     </Compile>
     <Compile Include="LdapAuthentication.cs" />
     <Compile Include="Serialization.designer.cs">
@@ -552,7 +564,6 @@
     <Service Include="{3259AA49-8AA1-44D3-9025-A0B520596A8C}" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="App_Data\" />
     <Folder Include="css\" />
     <Folder Include="Exports\" />
   </ItemGroup>

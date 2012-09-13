@@ -39,6 +39,8 @@
 			<oem:MenuSeparator InnerHtml="|" ID="mainMenuSeparator1"></oem:MenuSeparator>
 			<oem:MenuItem InnerHtml="Inventory Requests" ID="MenuItem2" Url="../Content/ScanInventoryRequest.aspx"></oem:MenuItem>
 			<oem:MenuSeparator InnerHtml="|" ID="MenuSeparator2"></oem:MenuSeparator>
+			<oem:MenuItem InnerHtml="Returns" ID="MenuItem9" Url="../Content/Returns.aspx"></oem:MenuItem>
+			<oem:MenuSeparator InnerHtml="|" ID="MenuSeparator8"></oem:MenuSeparator>
 			<oem:MenuItem InnerHtml="Maintain Product IDs" ID="MenuItem3" Url="../Admin/MaintainProductId.aspx"></oem:MenuItem>
 			<oem:MenuSeparator InnerHtml="|" ID="mainMenuSeparator2"></oem:MenuSeparator>
 			<oem:MenuItem InnerHtml="Maintain Kits" ID="MenuItem4" Url="../Admin/MaintainKits.aspx"></oem:MenuItem>
