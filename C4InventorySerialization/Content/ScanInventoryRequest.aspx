@@ -6,7 +6,7 @@
 <%@ Register TagPrefix="obout" Namespace="Obout.Grid" Assembly="obout_Grid_NET" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="MainContent" runat="server">			
-<script type="text/javascript" src="./../scripts/ScanInventoryScript.js"> 
+<script type="text/javascript" src="/scripts/ScanInventoryScript.js"> 
 </script>
 
 <%
@@ -27,7 +27,7 @@
    <input type="hidden" id="VerifyError" value="<%=verifyError%>" />
    <input type="hidden" id="VerifiedDelivery" value="<%=verifyBoolean%>" />
    <input type="hidden" id="save_rownum" value="0" />
-   <div id="DeliveryEnter">
+   <div id="DeliveryEnter"> 
     Inventory Request Number:
     <input id="deliverytext" name="t1" type="text" size="10" onchange="SubmitDelivery(this.form.t1.value);" value="<%=deliveryNumber%>"/>
     <input type="button" width="175" value="Load Inventory Request" onclick="SubmitDelivery(this.form.t1.value);" />
@@ -61,10 +61,7 @@
     <asp:SqlDataSource ID="SqlDataSource3" runat="server" 
         ConnectionString="<%$ ConnectionStrings:InventoryConnectionString %>" 
         SelectCommand="sp_IR_Header" SelectCommandType="StoredProcedure">
-        <SelectParameters>
-            <asp:QueryStringParameter DefaultValue="0" Name="DOCNUM" 
-                QueryStringField="DeliveryNum" Type="Int32" />
-        </SelectParameters>
+        
     </asp:SqlDataSource>
     <br />
     

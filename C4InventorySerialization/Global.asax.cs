@@ -4,6 +4,7 @@ using System.Configuration;
 using System.Data;
 using System.Linq;
 using System.Security.Principal;
+using System.ServiceModel.Activation;
 using System.Web;
 using System.Web.Security;
 using System.Web.SessionState;
@@ -16,7 +17,6 @@ namespace C4InventorySerialization
 
         protected void Application_Start(object sender, EventArgs e)
         {
-
         }
 
         protected void Session_Start(object sender, EventArgs e)
@@ -31,8 +31,8 @@ namespace C4InventorySerialization
 
         protected void Application_AuthenticateRequest(object sender, EventArgs e)
         {
-            String cookieName = FormsAuthentication.FormsCookieName;
-            HttpCookie authCookie = Context.Request.Cookies[cookieName];
+            var cookieName = FormsAuthentication.FormsCookieName;
+            var authCookie = Context.Request.Cookies[cookieName];
 
             if (null == authCookie)
             {//There is no authentication cookie.
@@ -58,13 +58,13 @@ namespace C4InventorySerialization
 
             //When the ticket was created, the UserData property was assigned a
             //pipe-delimited string of group names.
-            String[] groups = authTicket.UserData.Split(new char[] { '|' });
+            var groups = authTicket.UserData.Split(new char[] { '|' });
 
             //Create an Identity.
-            GenericIdentity id = new GenericIdentity(authTicket.Name, "LdapAuthentication");
+            var id = new GenericIdentity(authTicket.Name, "LdapAuthentication");
 
             //This principal flows throughout the request.
-            GenericPrincipal principal = new GenericPrincipal(id, groups);
+            var principal = new GenericPrincipal(id, groups);
 
             Context.User = principal;
 
@@ -72,7 +72,7 @@ namespace C4InventorySerialization
 
         protected void Application_Error(object sender, EventArgs e)
         {
-            Exception ex = HttpContext.Current.Server.GetLastError();
+            var ex = HttpContext.Current.Server.GetLastError();
 
             // Do whatever with the exception here.
 
@@ -87,6 +87,7 @@ namespace C4InventorySerialization
             Session.Clear();
             Session.RemoveAll();
             Session.Abandon();
+            
         }
 
         protected void Application_End(object sender, EventArgs e)

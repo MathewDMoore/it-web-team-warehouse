@@ -24,7 +24,7 @@ namespace C4Inventory2._0
             routes.MapRoute(
                 "Default", // Route name
                 "{controller}/{action}/{id}", // URL with parameters
-                new { controller = "Home", action = "Index", id = UrlParameter.Optional } // Parameter defaults
+                new { controller = "Home", action = "Deliveries", id = UrlParameter.Optional } // Parameter defaults
             );
 
         }

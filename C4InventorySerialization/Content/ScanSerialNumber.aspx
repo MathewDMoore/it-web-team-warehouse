@@ -6,7 +6,7 @@
 
 <asp:Content ID="Content1" ContentPlaceHolderID="MainContent" runat="server">			
 
-<script type="text/javascript" src="./../scripts/ScanSerialScript.js">
+<script type="text/javascript" src="/scripts/ScanSerialScript.js">
 </script>
 
 <%  
@@ -52,7 +52,7 @@
     <asp:Image ID="verifiedimg" runat="server" ImageUrl="~/images/DeliveryVerified_0.jpg" Visible="false" />
     <asp:Image ID="notverifiedimg" runat="server" ImageUrl="~/images/NotVerified_0.jpg" Visible="false" />
     </td>
-    </tr></table>
+    </tr></table> 
     </div>
     
 
@@ -84,7 +84,7 @@
                 </obout:Column>
                 <obout:Column AllowEdit="true" HeaderText="Edit" Index="10" Width="130">
                     <TemplateSettings TemplateId="EditBtnTemplate" EditTemplateId="UpdateBtnTemplate" />
-                </obout:Column>
+                </obout:Column> 
                 <obout:Column DataField="PRODUCTID"  Visible="false" HeaderText="ID" Index="7" Width="60" ReadOnly="true">
                 </obout:Column>
                 <obout:Column DataField="NOSERIALIZATION" SortOrder="ASC" SortPriority="1" Visible="false" HeaderText="Items to Be Serialized" Index="8" Width="60" ReadOnly="true">

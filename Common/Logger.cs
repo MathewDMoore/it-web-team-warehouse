@@ -2,9 +2,8 @@
 using System.IO;
 using System.Text;
 using Common.Utils;
+using log4net;
 using log4net.Config;
-using ILog = log4net.ILog;
-using LogManager = log4net.LogManager;
 
 
 namespace Common

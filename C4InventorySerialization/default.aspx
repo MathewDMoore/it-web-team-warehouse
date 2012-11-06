@@ -6,7 +6,7 @@
 <head runat="server">
     <title>Default Page</title>
 
-<%Response.Redirect("../inventory/Content/ScanSerialNumber.aspx");%>
+<% Response.Redirect("/Content/ScanSerialNumber.aspx");%>
 
 </head>
 

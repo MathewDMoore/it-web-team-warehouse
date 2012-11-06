@@ -40,13 +40,13 @@ namespace C4InventorySerialization.Master {
         protected global::OboutInc.EasyMenu_Pro.MenuItem MenuItem1;
         
         /// <summary>
-        /// mainMenuSeparator1 control.
+        /// MenuSeparator1 control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::OboutInc.EasyMenu_Pro.MenuSeparator mainMenuSeparator1;
+        protected global::OboutInc.EasyMenu_Pro.MenuSeparator MenuSeparator1;
         
         /// <summary>
         /// MenuItem2 control.
@@ -67,24 +67,6 @@ namespace C4InventorySerialization.Master {
         protected global::OboutInc.EasyMenu_Pro.MenuSeparator MenuSeparator2;
         
         /// <summary>
-        /// MenuItem9 control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::OboutInc.EasyMenu_Pro.MenuItem MenuItem9;
-        
-        /// <summary>
-        /// MenuSeparator8 control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::OboutInc.EasyMenu_Pro.MenuSeparator MenuSeparator8;
-        
-        /// <summary>
         /// MenuItem3 control.
         /// </summary>
         /// <remarks>
@@ -94,13 +76,13 @@ namespace C4InventorySerialization.Master {
         protected global::OboutInc.EasyMenu_Pro.MenuItem MenuItem3;
         
         /// <summary>
-        /// mainMenuSeparator2 control.
+        /// MenuSeparator3 control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::OboutInc.EasyMenu_Pro.MenuSeparator mainMenuSeparator2;
+        protected global::OboutInc.EasyMenu_Pro.MenuSeparator MenuSeparator3;
         
         /// <summary>
         /// MenuItem4 control.
@@ -112,13 +94,13 @@ namespace C4InventorySerialization.Master {
         protected global::OboutInc.EasyMenu_Pro.MenuItem MenuItem4;
         
         /// <summary>
-        /// MenuSeparator3 control.
+        /// MenuSeparator4 control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::OboutInc.EasyMenu_Pro.MenuSeparator MenuSeparator3;
+        protected global::OboutInc.EasyMenu_Pro.MenuSeparator MenuSeparator4;
         
         /// <summary>
         /// MenuItem5 control.
@@ -148,24 +130,6 @@ namespace C4InventorySerialization.Master {
         protected global::OboutInc.EasyMenu_Pro.MenuItem MenuItem6;
         
         /// <summary>
-        /// MenuSeparator4 control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::OboutInc.EasyMenu_Pro.MenuSeparator MenuSeparator4;
-        
-        /// <summary>
-        /// MenuItem8 control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::OboutInc.EasyMenu_Pro.MenuItem MenuItem8;
-        
-        /// <summary>
         /// MenuSeparator6 control.
         /// </summary>
         /// <remarks>
@@ -182,6 +146,60 @@ namespace C4InventorySerialization.Master {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::OboutInc.EasyMenu_Pro.MenuItem MenuItem7;
+        
+        /// <summary>
+        /// MenuSeparator7 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::OboutInc.EasyMenu_Pro.MenuSeparator MenuSeparator7;
+        
+        /// <summary>
+        /// MenuItem8 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::OboutInc.EasyMenu_Pro.MenuItem MenuItem8;
+        
+        /// <summary>
+        /// MenuSeparator8 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::OboutInc.EasyMenu_Pro.MenuSeparator MenuSeparator8;
+        
+        /// <summary>
+        /// MenuItem9 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::OboutInc.EasyMenu_Pro.MenuItem MenuItem9;
+        
+        /// <summary>
+        /// MenuSeparator9 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::OboutInc.EasyMenu_Pro.MenuSeparator MenuSeparator9;
+        
+        /// <summary>
+        /// MenuItem10 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::OboutInc.EasyMenu_Pro.MenuItem MenuItem10;
         
         /// <summary>
         /// MainContent control.

@@ -2,53 +2,33 @@
     CodeBehind="Returns.aspx.cs" Inherits="C4InventorySerialization.Content.Returns" %>
 <%@ Register TagPrefix="obout" Namespace="Obout.Grid" Assembly="obout_Grid_NET, Version=7.0.5.0, Culture=neutral, PublicKeyToken=5ddc49d3b53e3f98" %>
 
+
 <asp:Content ID="Content1" ContentPlaceHolderID="MainContent" runat="server">
-    <asp:Label ID="CheckConfiguration" Visible="false" Text="" runat="server" />
-    <asp:Label ID="ErrorRecords" Visible="false" Text="" runat="server" />
-    <table width="100%">
-        <tr>
-            <td>
-                <div id="pgTitle">
-                    Returns</div>
-            </td>
-            <td>
-                <div id="loggedUser">
-                    Logged in as:
-                    <%=User.Identity.Name %></div>
-            </td>
-        </tr>
-    </table>
-    <input type="hidden" id="Warning" value="<%=warning%>" />
-    <input type="hidden" id="VerifyError" value="<%=verifyError%>" />
-    <div id="DeliveryEnter">
-        Delivery Number:
-        <input id="deliverytext" name="t1" type="text" size="10"/>
-        <input type="button" value="Return Item" onclick="ReturnDelivery(this.form.t1.value);" />
-        <input type="button" value="Return Entire Delivery" onclick="ReturnDelivery(this.form.t1.value);" />
-        <br />
+    <script type="text/javascript" src="/scripts/Returns.js"></script>
+
+   <div id ="returnCodes">
+       <!-- ko foreach: returnItems-->
+       <div id="smartCodeInput" >
+            Smart Code: <input type="text" data-bind="value: SmartMac, valueUpdate: 'afterkeydown', hasfocus: SmartMac.length == 0"/>
+            <span data-bind="visible: HasErrors, text: ErrorMessage"></span>
+            <span data-bind="visible: DocNum().length > 0 && !HasErrors()">Successfully returned item.</span>
+       </div>
+       <!-- /ko -->
+   </div>
+    <div id="addReturn">
+        <button id="addReturnButton" data-bind="click: addInput">Add Another Return</button>
     </div>
-    <div id="DeliveryDetails">
-        <table>
-            <tr>
-                <td>
-                    <obout:grid id="Grid2" allowaddingrecords="false" allowsorting="false" showfooter="false"
-                        allowdataaccessonserver="true" showheader="false" onrebind="RebindGrid" callbackmode="true"
-                        showcolumnsfooter="false" runat="server" autogeneratecolumns="False">
-        <Columns>
-            <obout:Column DataField="COLUMN1" Width="150" HeaderText=" " Index="0">
-            </obout:Column>
-            <obout:Column DataField="COLUMN2" Width="625" Wrap="true" HeaderText=" " Index="1">
-            </obout:Column>
-        </Columns>
-    </obout:grid>
-                </td>
-                <td>
-                    <asp:Image ID="verifiedimg" runat="server" ImageUrl="~/images/DeliveryVerified_0.jpg"
-                        Visible="false" />
-                    <asp:Image ID="notverifiedimg" runat="server" ImageUrl="~/images/NotVerified_0.jpg"
-                        Visible="false" />
-                </td>
-            </tr>
-        </table>
+    <div id="return">
+        <button id="returnButton" data-bind="click: submitItems">Return Items</button>
+        <button id="clearReturnsButton" data-bind="click: clearItems">Clear Items</button>
     </div>
+    <script type="text/javascript">
+        var model;
+        $(document).ready(function() {
+            model = new ReturnsModel();
+            model.addInput();
+            ko.applyBindings(model);
+        });
+        
+    </script>
 </asp:Content>

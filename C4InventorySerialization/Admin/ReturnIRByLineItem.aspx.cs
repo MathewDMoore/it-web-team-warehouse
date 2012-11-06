@@ -7,9 +7,9 @@ namespace C4InventorySerialization.Admin
 {
     public partial class ReturnIRByLineItem : System.Web.UI.Page
     {
-/*
-        int CountDOCNUM = 0;
-*/
+        /*
+                int CountDOCNUM = 0;
+        */
         string LineNum;
         private string Username;
 
@@ -23,8 +23,6 @@ namespace C4InventorySerialization.Admin
                 Username = User.Identity.Name;
                 string connStr = ConfigurationManager.ConnectionStrings["InventoryConnectionString"].ConnectionString;
                 var qString = LineNum.Split(' ');
-                
-
 
                 for (var i = 0; i < qString.Length; i++)
                 {
@@ -42,14 +40,10 @@ namespace C4InventorySerialization.Admin
 
                         }
                     }
-                
-            }
-            
 
-
-            
+                }
             }
-          
+
         }
 
         protected void Page_Load(object sender, EventArgs e)
@@ -63,5 +57,5 @@ namespace C4InventorySerialization.Admin
         }
     }
 
-    }
+}
 

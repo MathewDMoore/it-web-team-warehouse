@@ -1,4 +1,5 @@
 ﻿<%@ Master Language="C#" Inherits="System.Web.Mvc.ViewMasterPage" %>
+
 <%@ Import Namespace="C4Inventory2._0.Controllers" %>
 
 <!DOCTYPE html>
@@ -8,6 +9,7 @@
     <link href="./../../Content/C4Styles.css" rel="stylesheet" type="text/css" />
     <link href="../../Content/Site.css" rel="stylesheet" type="text/css" />
     <script src="<%: Url.Content("~/Scripts/jquery-1.4.4.min.js") %>" type="text/javascript"></script>
+    <script src="<%: Url.Content("~/Scripts/Warehouse.js") %>" type="text/javascript"></script>
 </head>
 
 <body>
@@ -17,39 +19,37 @@
 
                 <div id="header">
                     <img id="logo" alt="logo" src="./../../Content/images/c4-logo.png" />
-                    <div id="loggedUser"></div>	
-
-		    <!--// The head of the menus //-->
-
+                    <div id="loggedUser"></div>
+                    <div id="navigation">
+                        <ul id="menu">
+                            <li><%= Html.ActionLink("Deliveries", "Deliveries", "Home") %></li>
+                            <li><%= Html.ActionLink("Inventory Requests", "InventoryRequest", "Home") %></li>
+                            <li><%= Html.ActionLink("Returns", "Returns", "Home") %></li>
+                            <li><%= Html.ActionLink("Maintain Product IDs", "MaintainProductIds", "Home") %></li>
+                            <li><%= Html.ActionLink("Maintain Kits", "MaintainKits", "Home") %></li>
+                            <li><%= Html.ActionLink("Delivery History", "DeliveryHistory", "Home") %></li>
+                            <li><%= Html.ActionLink("IR History", "IRHistory", "Home") %></li>
+                            <li><%= Html.ActionLink("Export Mac ID", "ExportMacId", "Home") %></li>
+                            <li><%= Html.ActionLink("Search Mac ID", "SearchMacId", "Home") %></li>
+                            <li><%= Html.ActionLink("Logout", "Logout", "Home") %></li>
+                        </ul>
+                    </div>
                 </div>
-                <div id="menu">
-                    <ul>
-                        <li><% Html.ActionLink("Deliveries", "Index", "Home");%></li>
-                        <li><% Html.ActionLink("Inventory Requests", "InventoryRequest", "Home"); %>Inventory Requests</li>
-                        <li><% Html.ActionLink("Returns", "Index", "Home"; %>Returns</li>
-                        <li>Maintain Product IDs</li>
-                        <li>Maintain Kits</li>
-                        <li>Delivery History</li>
-                        <li>IR History</li>
-                        <li>Export Mac ID</li>
-                        <li>Logout</li>
-                    </ul>
-                </div>
-
                 <div id="content">
-                    <asp:contentplaceholder id="MainContent"
-                     runat="server">
-                      <!-- Page-specific content will go here... -->
-                    </asp:contentplaceholder>
+                     
+                    <asp:ContentPlaceHolder ID="MainContent"
+                        runat="server">
+                        <!-- Page-specific content will go here... -->
+                    </asp:ContentPlaceHolder>
                 </div>
 
             </form>
         </div>
         <div id="bottom">
-        Created by the Control4 IT Team | Copyright © 2011 Control4 Corp.
+            Created by the Control4 IT Team | Copyright © 2011 Control4 Corp.
         </div>
     </div>
 
-    
+
 </body>
 </html>

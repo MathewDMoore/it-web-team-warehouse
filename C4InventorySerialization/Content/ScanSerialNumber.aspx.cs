@@ -15,6 +15,7 @@ namespace C4InventorySerialization.Content
         private int _verifiedRecords;
         public int VerifiedDelivery;
         public string Username;
+        private string _serverLocation = ConfigurationManager.AppSettings["ServerLocation"];
 
         protected void Page_Load(object sender, EventArgs e)
         {
@@ -66,14 +67,18 @@ namespace C4InventorySerialization.Content
             if (_docnum != 0)
             {
                 string connStr = ConfigurationManager.ConnectionStrings["InventoryConnectionString"].ConnectionString;
+                
                 using (SqlConnection sConn = new SqlConnection(connStr))
                 {
                     sConn.Open();
                     SqlCommand sCmd = new SqlCommand("sp_delivery_synch", sConn);
                     sCmd.CommandType = CommandType.StoredProcedure;
                     sCmd.Parameters.Add("@DOCNUM", SqlDbType.Int);
-                    sCmd.Parameters["@DOCNUM"].Value = _docnum;
+                    sCmd.Parameters.Add("@SERVERLOCATION", SqlDbType.VarChar);
                     sCmd.Parameters.Add("@USERNAME", SqlDbType.NVarChar);
+
+                    sCmd.Parameters["@DOCNUM"].Value = _docnum;
+                    sCmd.Parameters["@SERVERLOCATION"].Value = _serverLocation;
                     sCmd.Parameters["@USERNAME"].Value = username;
 
                     using (IDataReader reader1 = sCmd.ExecuteReader())
@@ -103,7 +108,9 @@ namespace C4InventorySerialization.Content
                     SqlCommand sCmd = new SqlCommand("sp_delivery_header", sConn);
                     sCmd.CommandType = CommandType.StoredProcedure;
                     sCmd.Parameters.Add("@DOCNUM", SqlDbType.Int);
+                    sCmd.Parameters.Add("@SERVERLOCATION", SqlDbType.VarChar);
                     sCmd.Parameters["@DOCNUM"].Value = _docnum;
+                    sCmd.Parameters["@SERVERLOCATION"].Value = ConfigurationManager.AppSettings["ServerLocation"];
 
                     using (IDataReader reader1 = sCmd.ExecuteReader())
                     {
@@ -161,6 +168,8 @@ namespace C4InventorySerialization.Content
             {
                 sConn.Open();
 
+                sConn.BeginTransaction("TransactionFunction");
+                
                 SqlCommand sCmd = new SqlCommand(ValidMacID, sConn);
                 sCmd.Parameters.Add("@SERIALCODE", SqlDbType.VarChar);
                 sCmd.Parameters["@SERIALCODE"].Value = SERIALCODE;

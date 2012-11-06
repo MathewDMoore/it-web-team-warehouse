@@ -4,6 +4,7 @@ using System.Data.SqlClient;
 using System.Configuration;
 using Obout.Grid;
 using System.Security.Principal;
+using System.Web.UI.WebControls;
 
 namespace C4InventorySerialization.Content
 {
@@ -16,6 +17,8 @@ namespace C4InventorySerialization.Content
         private int _verifiedRecords;
         public int VerifiedDelivery;
         public string Username;
+
+        private string _serverLocation = ConfigurationManager.AppSettings["ServerLocation"];
 
 
         protected void Page_Load(object sender, EventArgs e)
@@ -43,9 +46,17 @@ namespace C4InventorySerialization.Content
                     }
                 }
 
+                LoadSQL();
                 CreateGrid();
                 
             }
+        }
+
+        private void LoadSQL()
+        {
+
+            SqlDataSource3.SelectParameters.Add(new Parameter("DeliveryNum", DbType.Int32));
+            SqlDataSource3.SelectParameters.Add(new Parameter(_serverLocation, DbType.String));
         }
 
         protected void RebindGrid(object sender, EventArgs e)
@@ -70,8 +81,10 @@ namespace C4InventorySerialization.Content
                     sConn.Open();
                     SqlCommand sCmd = new SqlCommand("sp_GoodsIssue_IR_synch", sConn);
                     sCmd.CommandType = CommandType.StoredProcedure;
-                    sCmd.Parameters.Add("@DOCNUM", SqlDbType.Int);
+                    sCmd.Parameters.Add("@DOCNUM", SqlDbType.Int);                    
                     sCmd.Parameters["@DOCNUM"].Value = _docnum;
+                    sCmd.Parameters.Add("@SERVERLOCATION", SqlDbType.Int);
+                    sCmd.Parameters["@SERVERLOCATION"].Value = _serverLocation;
                     sCmd.Parameters.Add("@USERNAME", SqlDbType.NVarChar);
                     sCmd.Parameters["@USERNAME"].Value = username;
 

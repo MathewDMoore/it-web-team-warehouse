@@ -1,5 +1,6 @@
 ﻿using System;
 using IBatisNet.DataMapper;
+using Persistence.Repositories.Interfaces;
 using log4net.Core;
 
 namespace Persistence
@@ -19,6 +20,11 @@ namespace Persistence
         public ITransaction BeginTransaction()
         {
             return _sqlMapper.BeginTransaction();
+        }
+
+        public IInventoryMasterMapper InventoryMasterMapper
+        {
+            get { return new InventoryMasterMapper(_sqlMapper); }
         }
     }
 }

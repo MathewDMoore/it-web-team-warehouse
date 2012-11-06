@@ -6,7 +6,10 @@
 <head runat="server">
     <title>C4 Serialization Application</title>
     <link href="../C4Styles.css" rel="stylesheet" type="text/css" />
-
+    <script type="text/javascript" src="/scripts/knockout-2.1.0.js"></script>
+    <script type="text/javascript" src="/scripts/jquery-1.8.2.min.js"></script>
+    <script type="text/javascript" src="/scripts/jquery.json-2.3.min.js"></script>
+    <script type="text/javascript" src="/scripts/json-min.js"></script>
 
 </head>
 <body>
@@ -36,22 +39,34 @@
 			<Components>
 
 			<oem:MenuItem InnerHtml="Deliveries" ID="MenuItem1" Url="../Content/ScanSerialNumber.aspx"></oem:MenuItem>
-			<oem:MenuSeparator InnerHtml="|" ID="mainMenuSeparator1"></oem:MenuSeparator>
+			<oem:MenuSeparator InnerHtml="|" ID="MenuSeparator1"></oem:MenuSeparator>
+
 			<oem:MenuItem InnerHtml="Inventory Requests" ID="MenuItem2" Url="../Content/ScanInventoryRequest.aspx"></oem:MenuItem>
 			<oem:MenuSeparator InnerHtml="|" ID="MenuSeparator2"></oem:MenuSeparator>
-			<oem:MenuItem InnerHtml="Returns" ID="MenuItem9" Url="../Content/Returns.aspx"></oem:MenuItem>
-			<oem:MenuSeparator InnerHtml="|" ID="MenuSeparator8"></oem:MenuSeparator>
-			<oem:MenuItem InnerHtml="Maintain Product IDs" ID="MenuItem3" Url="../Admin/MaintainProductId.aspx"></oem:MenuItem>
-			<oem:MenuSeparator InnerHtml="|" ID="mainMenuSeparator2"></oem:MenuSeparator>
-			<oem:MenuItem InnerHtml="Maintain Kits" ID="MenuItem4" Url="../Admin/MaintainKits.aspx"></oem:MenuItem>
+
+			<oem:MenuItem InnerHtml="Returns" ID="MenuItem3" Url="../Content/Returns.aspx"></oem:MenuItem>
 			<oem:MenuSeparator InnerHtml="|" ID="MenuSeparator3"></oem:MenuSeparator>
-			<oem:MenuItem InnerHtml="Delivery History" ID="MenuItem5" Url="../History/DeliveryHistory.aspx"></oem:MenuItem>
-			<oem:MenuSeparator InnerHtml="|" ID="MenuSeparator5"></oem:MenuSeparator>
-			<oem:MenuItem InnerHtml="IR History" ID="MenuItem6" Url="../History/IRHistory.aspx"></oem:MenuItem>				
+
+			<oem:MenuItem InnerHtml="Maintain Product IDs" ID="MenuItem4" Url="../Admin/MaintainProductId.aspx"></oem:MenuItem>
 			<oem:MenuSeparator InnerHtml="|" ID="MenuSeparator4"></oem:MenuSeparator>
-			<oem:MenuItem InnerHtml="Export Mac ID" ID="MenuItem8" Url="../Content/ExportMacAddresses.aspx"></oem:MenuItem>				
+
+			<oem:MenuItem InnerHtml="Maintain Kits" ID="MenuItem5" Url="../Admin/MaintainKits.aspx"></oem:MenuItem>
+			<oem:MenuSeparator InnerHtml="|" ID="MenuSeparator5"></oem:MenuSeparator>
+
+			<oem:MenuItem InnerHtml="Delivery History" ID="MenuItem6" Url="../History/DeliveryHistory.aspx"></oem:MenuItem>
 			<oem:MenuSeparator InnerHtml="|" ID="MenuSeparator6"></oem:MenuSeparator>
-			<oem:MenuItem InnerHtml="Logout" ID="MenuItem7" Url="../Content/Logout.aspx"></oem:MenuItem>
+
+			<oem:MenuItem InnerHtml="IR History" ID="MenuItem7" Url="../History/IRHistory.aspx"></oem:MenuItem>				
+			<oem:MenuSeparator InnerHtml="|" ID="MenuSeparator7"></oem:MenuSeparator>
+
+			<oem:MenuItem InnerHtml="Export Mac ID" ID="MenuItem8" Url="../Content/ExportMacAddresses.aspx"></oem:MenuItem>				
+			<oem:MenuSeparator InnerHtml="|" ID="MenuSeparator8"></oem:MenuSeparator>
+
+                
+			<oem:MenuItem InnerHtml="Search Mac ID" ID="MenuItem9" Url="../Content/SearchMac.aspx"></oem:MenuItem>				
+			<oem:MenuSeparator InnerHtml="|" ID="MenuSeparator9"></oem:MenuSeparator>
+
+			<oem:MenuItem InnerHtml="Logout" ID="MenuItem10" Url="../Content/Logout.aspx"></oem:MenuItem>
 		
 			</Components>
 		</oem:EasyMenu>

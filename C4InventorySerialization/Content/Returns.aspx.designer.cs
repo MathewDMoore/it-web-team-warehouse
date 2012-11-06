@@ -11,50 +11,5 @@ namespace C4InventorySerialization.Content {
     
     
     public partial class Returns {
-        
-        /// <summary>
-        /// CheckConfiguration control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Label CheckConfiguration;
-        
-        /// <summary>
-        /// ErrorRecords control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Label ErrorRecords;
-        
-        /// <summary>
-        /// Grid2 control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::Obout.Grid.Grid Grid2;
-        
-        /// <summary>
-        /// verifiedimg control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Image verifiedimg;
-        
-        /// <summary>
-        /// notverifiedimg control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Image notverifiedimg;
     }
 }
