@@ -54,7 +54,7 @@ namespace C4InventorySerialization
     #endregion
 		
 		public SerializationDataContext() : 
-				base(global::System.Configuration.ConfigurationManager.ConnectionStrings["InventoryConnectionString2"].ConnectionString, mappingSource)
+				base(global::System.Configuration.ConfigurationManager.ConnectionStrings["InventoryConnectionString"].ConnectionString, mappingSource)
 		{
 			OnCreated();
 		}

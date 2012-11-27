@@ -21,31 +21,36 @@ namespace C4InventorySerialization.Content
 
         private void CreateGrid2()
         {
-
-            if (Context.Request.QueryString["DeliveryNum"] != null)
-                _docnum = Convert.ToInt32(Context.Request.QueryString["DeliveryNum"]);
-            else
-                _docnum = 0;
-
-            if (_docnum != 0)
+            if (!string.IsNullOrEmpty(Context.Request.QueryString["DeliveryNum"]))
             {
-                string connStr = ConfigurationManager.ConnectionStrings["InventoryConnectionString"].ConnectionString;
-                using (SqlConnection sConn = new SqlConnection(connStr))
-                {
-                    sConn.Open();
-                    SqlCommand sCmd = new SqlCommand("sp_delivery_header", sConn);
-                    sCmd.CommandType = CommandType.StoredProcedure;
-                    sCmd.Parameters.Add("@DOCNUM", SqlDbType.Int);
-                    sCmd.Parameters.Add("@SERVERLOCATION", SqlDbType.NVarChar);
-                    sCmd.Parameters["@DOCNUM"].Value = _docnum;
-                    sCmd.Parameters["@SERVERLOCATION"].Value = ConfigurationManager.AppSettings["ServerLocation"];
+                _docnum = Convert.ToInt32(Context.Request.QueryString["DeliveryNum"]);
 
-                    using (IDataReader reader1 = sCmd.ExecuteReader())
+                if (_docnum == 0)
+                {
+                    macInputError.Visible = true;
+                    Grid2.ClearPreviousDataSource();
+                }
+
+                else
+                {
+                    string connStr = ConfigurationManager.ConnectionStrings["InventoryConnectionString"].ConnectionString;
+                    using (SqlConnection sConn = new SqlConnection(connStr))
                     {
-                        Grid2.DataSource = reader1;
-                        Grid2.DataBind();
+                        sConn.Open();
+                        SqlCommand sCmd = new SqlCommand("sp_delivery_header", sConn);
+                        sCmd.CommandType = CommandType.StoredProcedure;
+                        sCmd.Parameters.Add("@DOCNUM", SqlDbType.Int);
+                        sCmd.Parameters.Add("@SERVERLOCATION", SqlDbType.NVarChar);
+                        sCmd.Parameters["@DOCNUM"].Value = _docnum;
+                        sCmd.Parameters["@SERVERLOCATION"].Value = ConfigurationManager.AppSettings["ServerLocation"];
+
+                        using (IDataReader reader1 = sCmd.ExecuteReader())
+                        {
+                            Grid2.DataSource = reader1;
+                            Grid2.DataBind();
+                        }
+                        sConn.Close();
                     }
-                    sConn.Close();
                 }
             }
         }

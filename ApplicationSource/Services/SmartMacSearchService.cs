@@ -23,7 +23,7 @@ namespace ApplicationSource.Services
 
             foreach (var item in model)
             {
-                if (!string.IsNullOrEmpty(item.SmartMac))
+                if (!string.IsNullOrEmpty(item.SmartMac))   
                 {
                     try
                     {
@@ -38,14 +38,20 @@ namespace ApplicationSource.Services
                             {
                                 while (reader1.Read())
                                 {
-                                    item.DeliveryNumber = reader1["DOCNUM"].ToString();
+                                    var _docnum = reader1["DOCNUM"].ToString();
+                                    if (!string.IsNullOrEmpty(_docnum))
+                                    {
+                                        item.DeliveryNumber = _docnum;
+                                    }
+                                    else
+                                        item.ErrorMessage = "Delivery not found for this Smart Mac.";
                                 }
                             }
                         }
                     }
                     catch (Exception ex)
                     {
-                        item.ErrorMessage = "SmartMac not found, or and error exists on the code";
+                        item.ErrorMessage = "Delivery not found for this Smart Mac.";
                     }
                 }
             }

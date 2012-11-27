@@ -7,9 +7,13 @@
         <!-- ko foreach: model.searchItems-->
         <div id="smartMacInput">
             Smart Code:
-            <input type="text" data-bind="value: SmartMac, valueUpdate: 'afterkeydown' " /><span data-bind="visible: HasErrors, text: ErrorMessage, style: {color: 'red'}"></span>
+            <input type="text" size="40" data-bind="value: SmartMac, valueUpdate: 'afterkeydown' " /><span data-bind="visible: HasErrors, text: ErrorMessage, style: {color: 'red'}"></span>
+            <asp:label runat="server" id="macInputError" visible="false" forecolor="red" Text="Delivery not found for this Smart Mac. Please check the SmartMac code." ></asp:label>
         </div>
         <!-- /ko -->
+    </div>
+    <div id="searchingImage" style="display: none">
+        <img src="../images/searching.gif" id="searching_image" />
     </div>
     <div id="return">
         <button id="returnButton" data-bind="click: submitSearchMac">Search</button>

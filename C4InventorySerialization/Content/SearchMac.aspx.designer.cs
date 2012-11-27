@@ -13,6 +13,15 @@ namespace C4InventorySerialization.Content {
     public partial class SearchMac {
         
         /// <summary>
+        /// macInputError control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label macInputError;
+        
+        /// <summary>
         /// Grid2 control.
         /// </summary>
         /// <remarks>
