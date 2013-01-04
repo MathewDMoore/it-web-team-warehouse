@@ -19,5 +19,12 @@ namespace ApplicationSource.Models
             set { var hasErrors = value; }
             get { return !string.IsNullOrEmpty(ErrorMessage); }
         }
+
+        [DataMember]
+        public bool Success
+        {
+            get;
+            set;
+        }
     }
 }

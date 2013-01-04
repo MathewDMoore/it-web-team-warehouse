@@ -30,7 +30,7 @@ namespace ApplicationSource.Services
                         using (var sConn = new SqlConnection(connStr))
                         {
                             sConn.Open();
-                            //var modifiedMac = item.SmartMac.Substring(0, 12);
+
                             var sCmd = new SqlCommand("sp_LocateSmartMac", sConn) { CommandType = CommandType.StoredProcedure };
                             sCmd.Parameters.Add("@SmartMac", SqlDbType.NVarChar);
                             sCmd.Parameters["@SmartMac"].Value = item.SmartMac;

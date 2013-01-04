@@ -34,7 +34,7 @@
                     var newItem = new SmartMacItem(jsonResponse[x]);
                     self.searchItems.push(newItem);
                     if (newItem.DeliveryNumber() != 0 & newItem.DeliveryNumber() != '') {
-                        location.href = 'SearchMac.aspx?DeliveryNum=' + newItem.DeliveryNumber();
+                        location.href = 'ScanSerialNumber.aspx?DeliveryNum=' + newItem.DeliveryNumber();
                     }
                     else {
                         location.href = 'SearchMac.aspx?DeliveryNum=0';

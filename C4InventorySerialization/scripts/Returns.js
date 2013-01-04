@@ -3,11 +3,12 @@
     self.returnItems = ko.observableArray();
     self.addInput = function () {
         self.returnItems.push(
-            new ReturnItem({ SmartMac: '', ErrorMessage: '', HasErrors: false, DocNum: '' })
+            new ReturnItem({ SmartMac: '', ErrorMessage: '', HasErrors: false, DocNum: '', Success: false })
         );
     };
 
     self.submitItems = function () {
+        $('#searchingImage').show();
         var data = [];
 
         for (i = 0; i < self.returnItems().length; i++) {
@@ -16,6 +17,7 @@
             returnItem.ErrorMessage = self.returnItems()[i].ErrorMessage();
             returnItem.HasErrors = self.returnItems()[i].HasErrors();
             returnItem.DocNum = self.returnItems()[i].DocNum();
+            returnItem.Success = self.returnItems()[i].Success();
             data[i] = returnItem;
         };
 
@@ -33,6 +35,9 @@
                 for (var x = 0; x < jsonResponse.length; x++) {
                     self.returnItems.push(new ReturnItem(jsonResponse[x]));
                 }
+            },
+            complete: function () {
+                $('#searchingImage').hide();
             }
         });
     };
@@ -49,4 +54,5 @@ var ReturnItem = function (item) {
     self.ErrorMessage = ko.observable(item.ErrorMessage);
     self.HasErrors = ko.observable(item.HasErrors);
     self.DocNum = ko.observable(item.DocNum);
+    self.Success = ko.observable(item.Success);
 };
