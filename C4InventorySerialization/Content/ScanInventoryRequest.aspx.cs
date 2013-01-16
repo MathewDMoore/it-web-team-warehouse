@@ -83,7 +83,7 @@ namespace C4InventorySerialization.Content
                     sCmd.CommandType = CommandType.StoredProcedure;
                     sCmd.Parameters.Add("@DOCNUM", SqlDbType.Int);                    
                     sCmd.Parameters["@DOCNUM"].Value = _docnum;
-                    sCmd.Parameters.Add("@SERVERLOCATION", SqlDbType.Int);
+                    sCmd.Parameters.Add("@SERVERLOCATION", SqlDbType.NVarChar);
                     sCmd.Parameters["@SERVERLOCATION"].Value = _serverLocation;
                     sCmd.Parameters.Add("@USERNAME", SqlDbType.NVarChar);
                     sCmd.Parameters["@USERNAME"].Value = username;

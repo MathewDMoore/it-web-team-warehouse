@@ -5,7 +5,7 @@
 
 
 <asp:Content ID="Content1" ContentPlaceHolderID="MainContent" runat="server">
-    <script type="text/javascript" src="/scripts/Returns.js"></script>
+    <script type="text/javascript" src="../scripts/Returns.js"></script>
 
     <div id="returnCodes">
         <!-- ko foreach: returnItems-->
@@ -22,7 +22,7 @@
     </div>
     <div id="addReturn">
         <button id="addReturnButton" data-bind="click: addInput">Add Another Return</button>
-        <button id="returnButton" data-bind="click: submitItems">    Items</button>
+        <button id="returnButton" data-bind="click: submitItems">Return Items</button>
         <button id="clearReturnsButton" data-bind="click: clearItems">Clear Items</button>
     </div>
     <script type="text/javascript">
@@ -32,7 +32,5 @@
             model.addInput();   
             ko.applyBindings(model);
         });
-
-            
     </script>
 </asp:Content>

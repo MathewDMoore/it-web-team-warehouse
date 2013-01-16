@@ -168,7 +168,7 @@ namespace C4InventorySerialization.Content
             {
                 sConn.Open();
 
-                sConn.BeginTransaction("TransactionFunction");
+                //sConn.BeginTransaction("TransactionFunction");
                 
                 SqlCommand sCmd = new SqlCommand(ValidMacID, sConn);
                 sCmd.Parameters.Add("@SERIALCODE", SqlDbType.VarChar);

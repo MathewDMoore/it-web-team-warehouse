@@ -6,7 +6,7 @@
 
 <asp:Content ID="Content1" ContentPlaceHolderID="MainContent" runat="server">			
 
-<script type="text/javascript" src="/scripts/ScanSerialScript.js">
+<script type="text/javascript" src="../scripts/ScanSerialScript.js">
 </script>
 
 <%  

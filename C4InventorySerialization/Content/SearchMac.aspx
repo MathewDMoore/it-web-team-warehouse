@@ -2,7 +2,7 @@
 
 <%@ Register TagPrefix="obout" Namespace="Obout.Grid" Assembly="obout_Grid_NET" %>
 <asp:Content ID="Content1" ContentPlaceHolderID="MainContent" runat="server">
-    <script type="text/jscript" src="/scripts/SearchSmartMac.js"></script>
+    <script type="text/jscript" src="../scripts/SearchSmartMac.js"></script>
     <div id="searchMac">
         <!-- ko foreach: model.searchItems-->
         <div id="smartMacInput">
