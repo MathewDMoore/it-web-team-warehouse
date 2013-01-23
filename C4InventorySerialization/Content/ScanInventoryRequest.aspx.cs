@@ -88,12 +88,19 @@ namespace C4InventorySerialization.Content
                     sCmd.Parameters.Add("@USERNAME", SqlDbType.NVarChar);
                     sCmd.Parameters["@USERNAME"].Value = username;
 
-                    using (IDataReader reader1 = sCmd.ExecuteReader())
+                    try
                     {
-                        grid1.DataSource = reader1;
-                        grid1.DataBind();
+                        using (IDataReader reader1 = sCmd.ExecuteReader())
+                        {
+                            grid1.DataSource = reader1;
+                            grid1.DataBind();
+                        }
+                        sConn.Close();
                     }
-                    sConn.Close();
+                    catch (Exception ex)
+                    { 
+                    
+                    }
                 }
             }
         }
