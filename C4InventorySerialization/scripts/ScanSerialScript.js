@@ -281,31 +281,19 @@ function PrintGrid() {
 
 // Return Devliery By Line Item.
 function ReturnDeliveryByLineItem() {
-    var sRecordsIds = grid1.getRecordsIds();
-    var sDoc = document.getElementById("deliverytext").value;
-    var arrRecordsIds = sRecordsIds.split(",");
+    var arrRecordsIds = $(".ob_gMCont").find("input:checked");
     var queryString = '';
     var returnWarning = '';
     for (var i = 0; i < arrRecordsIds.length; i++) {
-        var oRecord = document.getElementById(arrRecordsIds[i]);
-        var oText = oRecord.innerText;
-        var oID = oText.split(" ", 1);
-        var oCB = document.getElementById("chk_grid_" + oID);
-        if (oCB != null) {
-            if (oCB.checked == true) {
-
-                if (queryString == '') {
-                    queryString = oID;
-                    returnWarning = oID;
-                }
-                else {
-                    queryString = queryString + "+" + oID;
-                    returnWarning = returnWarning + ", " + oID;
-                }
-            }
+        if (arrRecordsIds[i].id != "chkSelector") {
+            var oRecord = arrRecordsIds[i].id.replace("chk_grid_", "");
+            queryString += oRecord + "+";
+            returnWarning += oRecord + ", ";
         }
-    }
 
-    confirm("Return item ID " + returnWarning + "?");
-    location.href = '../Admin/ReturnDeliveryByLineItem.aspx?LineNum=' + queryString;
+    }
+    returnWarning = returnWarning.substring(0, returnWarning.length - 2);
+    if (confirm("Return item ID " + returnWarning + "?")) {
+        location.href = '../Admin/ReturnDeliveryByLineItem.aspx?LineNum=' + queryString;
+    };
 }

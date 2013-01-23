@@ -2,6 +2,7 @@
 using System.Configuration;
 using System.Data;
 using System.Data.SqlClient;
+using System.Linq;
 
 namespace C4InventorySerialization.Admin
 {
@@ -22,10 +23,11 @@ namespace C4InventorySerialization.Admin
                 LineNum = Request.QueryString["LineNum"];
                 Username = User.Identity.Name;
                 string connStr = ConfigurationManager.ConnectionStrings["InventoryConnectionString"].ConnectionString;
-                var qString = LineNum.Split(' ');
+                var qString = LineNum.Split(' ').Where(x => !string.IsNullOrEmpty(x));
 
-                for (var i = 0; i < qString.Length; i++)
-                {
+                qString.ToList().ForEach(s =>
+                    {
+
                     using (SqlConnection sConn = new SqlConnection(connStr))
                     {
                         sConn.Open();
@@ -34,14 +36,11 @@ namespace C4InventorySerialization.Admin
                         sCmd.Parameters.Add("@ID", SqlDbType.Int);
                         sCmd.Parameters.Add("@USERNAME", SqlDbType.NVarChar);
                         sCmd.Parameters["@USERNAME"].Value = Username;
-                        sCmd.Parameters["@ID"].Value = qString[i];
-                        using (IDataReader reader1 = sCmd.ExecuteReader())
-                        {
-
-                        }
+                        sCmd.Parameters["@ID"].Value = s;
+                        IDataReader reader1 = sCmd.ExecuteReader();
                     }
-
-                }
+                    }
+                        );
             }
 
         }

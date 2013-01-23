@@ -3,6 +3,7 @@ using System.Configuration;
 using System.Data;
 using System.Data.SqlClient;
 using System.Web;
+using System.Linq;
 
 namespace C4InventorySerialization.Admin
 {
@@ -20,26 +21,22 @@ namespace C4InventorySerialization.Admin
             if (!string.IsNullOrEmpty(_lineNum))
             {
                 string connStr = ConfigurationManager.ConnectionStrings["InventoryConnectionString"].ConnectionString;
-                var qString = _lineNum.Split(' ');
-
-                for (var i = 0; i < qString.Length; i++)
-                {
-                    using (SqlConnection sConn = new SqlConnection(connStr))
+                var qString = _lineNum.Split(' ').Where(x => !string.IsNullOrEmpty(x));
+                qString.ToList().ForEach(s =>
                     {
-                        sConn.Open();
-                        SqlCommand sCmd = new SqlCommand("sp_ReturnDeliveryByLineItem", sConn);
-                        sCmd.CommandType = CommandType.StoredProcedure;
-                        sCmd.Parameters.Add("@ID", SqlDbType.Int);
-                        sCmd.Parameters["@ID"].Value = qString[i];
-                        sCmd.Parameters.Add("@USERNAME", SqlDbType.NVarChar);
-                        sCmd.Parameters["@USERNAME"].Value = HttpContext.Current.User.Identity.Name;
-                        using (sCmd.ExecuteReader())
+                        using (SqlConnection sConn = new SqlConnection(connStr))
                         {
-
+                            sConn.Open();
+                            SqlCommand sCmd = new SqlCommand("sp_ReturnDeliveryByLineItem", sConn);
+                            sCmd.CommandType = CommandType.StoredProcedure;
+                            sCmd.Parameters.Add("@ID", SqlDbType.Int);
+                            sCmd.Parameters["@ID"].Value = s;
+                            sCmd.Parameters.Add("@USERNAME", SqlDbType.NVarChar);
+                            sCmd.Parameters["@USERNAME"].Value = HttpContext.Current.User.Identity.Name;
+                            sCmd.ExecuteReader();
                         }
                     }
-
-                }
+                    );
             }
         }
 

@@ -289,7 +289,7 @@ function ReturnDeliveryByLineItem() {
     for (var i = 0; i < arrRecordsIds.length; i++) {
         var oRecord = document.getElementById(arrRecordsIds[i]);
         var oText = oRecord.innerText;
-        var oID = oText.split(" ", 1);
+        var oID = oText.split("\n");
         var oCB = document.getElementById("chk_grid_" + oID);
         if (oCB != null) {
             if (oCB.checked == true) {
