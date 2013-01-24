@@ -1,6 +1,6 @@
 ﻿var SearchSmartMacModel = function () {
     var self = this;
-    self.searchItems = ko.observableArray([new SmartMacItem({ SmartMac: '', ErrorMessage: '', HasErrors: false, DeliveryNumber: '' })]);
+    self.searchItems = ko.observableArray([new SmartMacItem({ SmartMac: '', ErrorMessage: '', HasErrors: false, DeliveryNumber: '', IsIRDelivery: false })]);
     self.addInput = function () {
     };
 
@@ -15,6 +15,7 @@
             smartMacItem.HasErrors = self.searchItems()[i].HasErrors();
             smartMacItem.ErrorMessage = self.searchItems()[i].ErrorMessage();
             smartMacItem.DeliveryNumber = self.searchItems()[i].DeliveryNumber();
+            smartMacItem.IsIRDelivery = self.searchItems()[i].IsIRDelivery();
 
             data.push(smartMacItem);
         }
@@ -33,8 +34,12 @@
                 for (var x = 0; x < jsonResponse.length; x++) {
                     var newItem = new SmartMacItem(jsonResponse[x]);
                     self.searchItems.push(newItem);
-                    if (newItem.DeliveryNumber() != 0 & newItem.DeliveryNumber() != '') {
+                    if (newItem.DeliveryNumber() != 0 & newItem.DeliveryNumber() != '' & !newItem.IsIRDelivery() ) {
                         location.href = 'ScanSerialNumber.aspx?DeliveryNum=' + newItem.DeliveryNumber();
+                    }
+                    if(newItem.DeliveryNumber() != 0 & newItem.DeliveryNumber() != '' & newItem.IsIRDelivery() ) {
+                        location.href = 'ScanInventoryRequest.aspx?DeliveryNum=' + newItem.DeliveryNumber();
+                    
                     }
                     else {
                         location.href = 'SearchMac.aspx?DeliveryNum=0';
@@ -55,4 +60,5 @@ var SmartMacItem = function (item) {
     self.HasErrors = ko.observable(item.HasErrors);
     self.ErrorMessage = ko.observable(item.ErrorMessage);
     self.DeliveryNumber = ko.observable(item.DeliveryNumber);
+    self.IsIRDelivery = ko.observable(item.IsIRDelivery);
 };

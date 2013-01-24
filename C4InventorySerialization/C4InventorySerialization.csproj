@@ -89,7 +89,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\Returns.aspx" />
-    <Content Include="Content\SearchMac.aspx" />
+    <Content Include="Content\Search.aspx" />
     <Content Include="images\searching.gif" />
     <Content Include="scripts\jquery-1.8.2.min.js" />
     <Content Include="scripts\jquery.json-2.3.min.js" />
@@ -177,12 +177,12 @@
     <Compile Include="Content\Returns.aspx.designer.cs">
       <DependentUpon>Returns.aspx</DependentUpon>
     </Compile>
-    <Compile Include="Content\SearchMac.aspx.cs">
-      <DependentUpon>SearchMac.aspx</DependentUpon>
+    <Compile Include="Content\Search.aspx.cs">
+      <DependentUpon>Search.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="Content\SearchMac.aspx.designer.cs">
-      <DependentUpon>SearchMac.aspx</DependentUpon>
+    <Compile Include="Content\Search.aspx.designer.cs">
+      <DependentUpon>Search.aspx</DependentUpon>
     </Compile>
     <Compile Include="LdapAuthentication.cs" />
     <Compile Include="Serialization.designer.cs">

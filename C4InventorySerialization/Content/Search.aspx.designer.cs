@@ -10,7 +10,7 @@
 namespace C4InventorySerialization.Content {
     
     
-    public partial class SearchMac {
+    public partial class Search {
         
         /// <summary>
         /// macInputError control.

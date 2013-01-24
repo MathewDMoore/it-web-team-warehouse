@@ -39,9 +39,11 @@ namespace ApplicationSource.Services
                                 while (reader1.Read())
                                 {
                                     var _docnum = reader1["DOCNUM"].ToString();
+                                    var _isIrDelivery = reader1["ISIRDELIVERY"].ToString() == "1";
                                     if (!string.IsNullOrEmpty(_docnum))
                                     {
                                         item.DeliveryNumber = _docnum;
+                                        item.IsIRDelivery = _isIrDelivery;
                                     }
                                     else
                                         item.ErrorMessage = "Delivery not found for this Smart Mac.";

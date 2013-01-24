@@ -63,7 +63,7 @@
 			<oem:MenuSeparator InnerHtml="|" ID="MenuSeparator8"></oem:MenuSeparator>
 
                 
-			<oem:MenuItem InnerHtml="Search Mac ID" ID="MenuItem9" Url="../Content/SearchMac.aspx"></oem:MenuItem>				
+			<oem:MenuItem InnerHtml="Search by Code" ID="MenuItem9" Url="../Content/Search.aspx"></oem:MenuItem>				
 			<oem:MenuSeparator InnerHtml="|" ID="MenuSeparator9"></oem:MenuSeparator>
 
 			<oem:MenuItem InnerHtml="Logout" ID="MenuItem10" Url="../Content/Logout.aspx"></oem:MenuItem>

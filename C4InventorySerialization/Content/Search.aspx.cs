@@ -10,7 +10,7 @@ using System.Web.UI.WebControls;
 
 namespace C4InventorySerialization.Content
 {
-    public partial class SearchMac : System.Web.UI.Page
+    public partial class Search : System.Web.UI.Page
     {
         private int _docnum;
 
