@@ -11,7 +11,7 @@
         <!-- ko foreach: returnItems-->
         <div id="smartCodeInput">
             Smart Code:
-            <input type="text" data-bind="value: SmartMac, valueUpdate: 'afterkeydown', hasfocus: SmartMac.length == 0" />
+            <input type="text" size="40"data-bind="value: SmartMac, valueUpdate: 'afterkeydown', hasfocus: SmartMac.length == 0" />
             <span data-bind="visible: HasErrors, text: ErrorMessage" style="color: red; font-weight: bolder"></span>
             <span data-bind="visible: Success()" style="color: green; font-weight: bolder">Successfully returned item.</span>
         </div>
