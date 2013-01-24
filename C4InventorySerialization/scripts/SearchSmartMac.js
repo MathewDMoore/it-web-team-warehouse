@@ -42,7 +42,7 @@
                     
                     }
                     else {
-                        location.href = 'SearchMac.aspx?DeliveryNum=0';
+                        location.href = 'Search.aspx?DeliveryNum=0';
                     }
                 }
             },
