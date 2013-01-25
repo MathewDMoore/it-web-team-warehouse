@@ -23,7 +23,7 @@
         data = $.toJSON(data);
 
         $.ajax({
-            url: "/services/SmartMacSearchService.svc/LocateSmartMac",
+            url: " /ship/services/SmartMacSearchService.svc/LocateSmartMac",
             type: "POST",
             data: data,
             dataType: "html",
