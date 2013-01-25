@@ -294,6 +294,6 @@ function ReturnDeliveryByLineItem() {
     }
     returnWarning = returnWarning.substring(0, returnWarning.length - 2);
     if (confirm("Return item ID " + returnWarning + "?")) {
-        location.href = '../Admin/ReturnDeliveryByLineItem.aspx?LineNum=' + queryString;
+        location = '../Admin/ReturnDeliveryByLineItem.aspx?LineNum=' + queryString;
     };
 }

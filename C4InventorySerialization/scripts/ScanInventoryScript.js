@@ -318,6 +318,6 @@ function ReturnDeliveryByLineItem() {
     }
     returnWarning = returnWarning.substring(0, returnWarning.length - 2);
     if (confirm("Return item ID " + returnWarning + "?")) {
-        location.href = '../Admin/ReturnIRByLineItem.aspx?LineNum=' + queryString;
+        location = '../Admin/ReturnIRByLineItem.aspx?LineNum=' + queryString;
     };
 }

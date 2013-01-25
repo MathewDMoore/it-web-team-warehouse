@@ -35,14 +35,14 @@
                     var newItem = new SmartMacItem(jsonResponse[x]);
                     self.searchItems.push(newItem);
                     if (newItem.DeliveryNumber() != 0 & newItem.DeliveryNumber() != '' & !newItem.IsIRDelivery() ) {
-                        location.href = 'ScanSerialNumber.aspx?DeliveryNum=' + newItem.DeliveryNumber();
+                        location = 'ScanSerialNumber.aspx?DeliveryNum=' + newItem.DeliveryNumber();
                     }
                     if(newItem.DeliveryNumber() != 0 & newItem.DeliveryNumber() != '' & newItem.IsIRDelivery() ) {
-                        location.href = 'ScanInventoryRequest.aspx?DeliveryNum=' + newItem.DeliveryNumber();
+                        location = 'ScanInventoryRequest.aspx?DeliveryNum=' + newItem.DeliveryNumber();
                     
                     }
-                    else {
-                        location.href = 'Search.aspx?DeliveryNum=0';
+                    if (newItem.DeliveryNumber() == 0 || newItem.DeliveryNumber() == '') {
+                        location = 'Search.aspx?DeliveryNum=0';
                     }
                 }
             },
