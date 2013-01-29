@@ -24,7 +24,7 @@
         var parts = $.toJSON(data);
 
         $.ajax({
-            url: "/services/PartReturnService.svc/ReturnParts",
+            url: "ship/services/PartReturnService.svc/ReturnParts",
             type: "POST",
             data: parts,
             dataType: "html",
