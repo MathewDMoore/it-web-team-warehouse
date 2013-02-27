@@ -22,11 +22,22 @@ namespace ApplicationSource.Services
 
             var userName = HttpContext.Current.User.Identity.Name;
             string connStr = ConfigurationManager.ConnectionStrings["InventoryConnectionString"].ConnectionString;
+            var parsedMacID = "";
 
             foreach (var item in model)
             {
-                if (!string.IsNullOrEmpty(item.SmartMac))
+                if (!string.IsNullOrEmpty(item.MacId))
                 {
+                    var macId = item.MacId;
+                    if (macId.Length >= 29)
+                    {
+                        parsedMacID = macId.Remove(macId.Length - 17, 17);
+                    }
+                    else
+                    {
+                        parsedMacID = macId;
+                    }
+
                     try
                     {
                         using (var sConn = new SqlConnection(connStr))
@@ -34,8 +45,8 @@ namespace ApplicationSource.Services
                             sConn.Open();
 
                             var sCmd = new SqlCommand("sp_ReturnItemByMacId", sConn) { CommandType = CommandType.StoredProcedure };
-                            sCmd.Parameters.Add("@SmartMac", SqlDbType.NVarChar);
-                            sCmd.Parameters["@SmartMac"].Value = item.SmartMac;
+                            sCmd.Parameters.Add("@MACID", SqlDbType.NVarChar);
+                            sCmd.Parameters["@MACID"].Value = parsedMacID;
                             sCmd.Parameters.Add("@USERNAME", SqlDbType.NVarChar);
                             sCmd.Parameters["@USERNAME"].Value = HttpContext.Current.User.Identity.Name;
                             using (IDataReader reader1 = sCmd.ExecuteReader())
@@ -51,11 +62,11 @@ namespace ApplicationSource.Services
                     }
                     catch (Exception ex)
                     {
-                        item.ErrorMessage = "Error returning this item. Please Review SmartMac.";
+                        item.ErrorMessage = "Error returning this item. Please Review MacId.";
                     }
                 }
                 else
-                    item.ErrorMessage = "Error returning this item. Please Review SmartMac.";
+                    item.ErrorMessage = "Error returning this item. Please Review MacId.";
             }
             return model;
         }

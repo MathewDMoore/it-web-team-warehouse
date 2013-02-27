@@ -7,12 +7,12 @@ using System.Runtime.Serialization;
 namespace ApplicationSource.Models
 {
     [DataContract]
-    public class SmartMacItem
+    public class MacIdItem
     {
         [DataMember]
         public string DeliveryNumber { get; set; }
         [DataMember]
-        public string SmartMac { get; set; }
+        public string MacId { get; set; }
         [DataMember]
         public string ErrorMessage { get; set; }
         [DataMember]

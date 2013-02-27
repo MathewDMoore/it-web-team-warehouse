@@ -7,9 +7,9 @@ using System.Text;
 namespace ApplicationSource.Models
 {
     [DataContract]
-    class SmartMacSearchModel
+    class VerifyUniqueMacModel
     {
         [DataMember]
-        IList<SmartMacItem> SmartMacSearchItems { get; set; }
+        string MacId { get; set; }
     }
 }

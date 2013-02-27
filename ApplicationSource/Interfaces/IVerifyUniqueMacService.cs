@@ -11,10 +11,10 @@ using Domain;
 namespace ApplicationSource.Interfaces
 {
     [ServiceContract(Namespace = "http://Control4", SessionMode = SessionMode.Allowed)]
-    public interface ISmartMacSearchService
+    public interface IVerifyUniqueMacService
     {
         [OperationContract]
         [WebInvoke(Method = "POST", BodyStyle = WebMessageBodyStyle.Bare, ResponseFormat = WebMessageFormat.Json, RequestFormat = WebMessageFormat.Json)]
-        IList<SmartMacItem> LocateSmartMac(IList<SmartMacItem> model);
+        bool VerifyUniqueMac(string model);
     }
 }

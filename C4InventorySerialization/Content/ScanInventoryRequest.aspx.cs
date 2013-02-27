@@ -144,20 +144,20 @@ namespace C4InventorySerialization.Content
             }
         }
 
-        protected void ValidateRecord(String serialcode, String itemcode, int ID)
+        protected void ValidateRecord(String macId, String itemcode, int ID)
         {
             string username = User.Identity.Name;
             
             string connStr = ConfigurationManager.ConnectionStrings["InventoryConnectionString"].ConnectionString;
             string ValidMacID =
-                "select count(*) from C4_GOODSISSUE_IR_OUT T1, C4_MAINTAINPRODUCTID T2 where T1.ITEMCODE =T2.ITEMCODE AND T1.SERIALCODE = @SERIALCODE and T1.ITEMCODE = @ITEMCODE and T1.ID not in (@ID) AND T2.SMARTCODEONLY='false' ";
+                "select count(*) from C4_GOODSISSUE_IR_OUT T1, C4_MAINTAINPRODUCTID T2 where T1.ITEMCODE =T2.ITEMCODE AND T1.MACID = @MACID and T1.ITEMCODE = @ITEMCODE and T1.ID not in (@ID) AND T2.SMARTCODEONLY='false' ";
             using (SqlConnection sConn = new SqlConnection(connStr))
             {
                 sConn.Open();
 
                 SqlCommand sCmd = new SqlCommand(ValidMacID, sConn);
-                sCmd.Parameters.Add("@SERIALCODE", SqlDbType.VarChar);
-                sCmd.Parameters["@SERIALCODE"].Value = serialcode;
+                sCmd.Parameters.Add("@MACID", SqlDbType.VarChar);
+                sCmd.Parameters["@MACID"].Value = macId;
                 sCmd.Parameters.Add("@ITEMCODE", SqlDbType.VarChar);
                 sCmd.Parameters["@ITEMCODE"].Value = itemcode;
                 sCmd.Parameters.Add("@ID", SqlDbType.Int);
@@ -225,19 +225,22 @@ namespace C4InventorySerialization.Content
 
         protected void UpdateRecord(object sender, GridRecordEventArgs e)
         {
-
+            //TODO: Fix this code;
             string username = User.Identity.Name;
             string connStr = ConfigurationManager.ConnectionStrings["InventoryConnectionString"].ConnectionString;
             
+            var serialCode = e.Record["SERIALCODE"].ToString();
+            var itemCode =  e.Record["ITEMCODE"].ToString();
+            var id =  int.Parse(e.Record["ID"].ToString());
+            var macId = serialCode.Remove(serialCode.Length-17, 17);
 
-            ValidateRecord(e.Record["SERIALCODE"].ToString(), e.Record["ITEMCODE"].ToString(),
-                           int.Parse(e.Record["ID"].ToString()));
+            ValidateRecord(macId, itemCode, id);            
 
-            string text1 = "Update C4_GOODSISSUE_IR_OUT set SERIALCODE= UPPER(@SERIALCODE), [USERNAME]= @USERNAME where ID = @ID";
+            string text1 = "Update C4_GOODSISSUE_IR_OUT set SERIALCODE= UPPER(@SERIALCODE), [USERNAME]= @USERNAME, MACID = @MACID where ID = @ID";
 
             if (_countSerialcode > 0)
             {
-                MacIdErrorMessage(e.Record["SERIALCODE"].ToString(), e.Record["ITEMCODE"].ToString());
+                MacIdErrorMessage(serialCode, itemCode);
             }
             else
             {
@@ -247,9 +250,11 @@ namespace C4InventorySerialization.Content
 
                     SqlCommand sCmd = new SqlCommand(text1, sConn);
                     sCmd.Parameters.Add("@ID", SqlDbType.Int);
-                    sCmd.Parameters["@ID"].Value = e.Record["ID"];
+                    sCmd.Parameters["@ID"].Value = id;
                     sCmd.Parameters.Add("@SERIALCODE", SqlDbType.VarChar);
-                    sCmd.Parameters["@SERIALCODE"].Value = e.Record["SERIALCODE"];
+                    sCmd.Parameters["@SERIALCODE"].Value = serialCode;
+                    sCmd.Parameters.Add("@MACID", SqlDbType.VarChar);
+                    sCmd.Parameters["@MACID"].Value = macId;
                     sCmd.Parameters.Add("@USERNAME", SqlDbType.NVarChar);
                     sCmd.Parameters["@USERNAME"].Value = username;
                     int res = sCmd.ExecuteNonQuery();
@@ -260,6 +265,7 @@ namespace C4InventorySerialization.Content
 
         protected void MacIdErrorMessage(String serialcode, String itemcode)
         {
+            //TODO: Fix this code
             int docNumError = 0;
             int idError = 0;
             string username = User.Identity.Name;

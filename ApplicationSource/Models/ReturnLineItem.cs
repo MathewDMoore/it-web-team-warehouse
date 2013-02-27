@@ -7,7 +7,7 @@ namespace ApplicationSource.Models
     public class ReturnLineItem
     {
         [DataMember]
-        public string SmartMac { get; set; }
+        public string MacId { get; set; }
         [DataMember]
         public string DocNum { get; set; }
         [DataMember]

@@ -47,15 +47,18 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Class1.cs" />
+    <Compile Include="Interfaces\IVerifyUniqueMacService.cs" />
     <Compile Include="Interfaces\IPartReturnService.cs" />
-    <Compile Include="Interfaces\ISmartMacSearchService.cs" />
+    <Compile Include="Interfaces\IMacIdSearchService.cs" />
+    <Compile Include="Models\VerifyUniqueMacModel.cs" />
     <Compile Include="Models\PartReturnModel.cs" />
     <Compile Include="Models\ReturnLineItem.cs" />
-    <Compile Include="Models\SmartMacItem.cs" />
-    <Compile Include="Models\SmartMacSearchModel.cs" />
+    <Compile Include="Models\MacIdItem.cs" />
+    <Compile Include="Models\MacIdSearchModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Services\VerifyUniqueMacService.cs" />
     <Compile Include="Services\PartReturnService.cs" />
-    <Compile Include="Services\SmartMacSearchService.cs" />
+    <Compile Include="Services\MacIdSearchService.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Domain\Domain.csproj">

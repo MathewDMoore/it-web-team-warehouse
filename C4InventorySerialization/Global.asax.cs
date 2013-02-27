@@ -76,8 +76,6 @@ namespace C4InventorySerialization
 
             // Do whatever with the exception here.
 
-            
-
         }
 
         protected void Session_End(object sender, EventArgs e)

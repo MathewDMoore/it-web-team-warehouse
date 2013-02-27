@@ -1,58 +1,53 @@
-﻿var ReturnsModel = function () {
-    var self = this;
-    self.returnItems = ko.observableArray();
-    self.addInput = function () {
-        self.returnItems.push(
-            new ReturnItem({ SmartMac: '', ErrorMessage: '', HasErrors: false, DocNum: '', Success: false })
+﻿
+
+function ReturnsController($scope, $http) {
+    $scope.IsSearching = false;
+    $scope.returnItems = [];
+    $scope.addInput = function () {
+        $scope.returnItems.push(
+            new ReturnItem({ MacId: '', ErrorMessage: '', HasErrors: false, DocNum: '', Success: false })
         );
     };
 
-    self.submitItems = function () {
-        $('#searchingImage').show();
+    $scope.submitItems = function () {
+        $scope.IsSearching = true;
         var data = [];
 
-        for (i = 0; i < self.returnItems().length; i++) {
+        for (i = 0; i < $scope.returnItems.length; i++) {
             var returnItem = {};
-            returnItem.SmartMac = self.returnItems()[i].SmartMac();
-            returnItem.ErrorMessage = self.returnItems()[i].ErrorMessage();
-            returnItem.HasErrors = self.returnItems()[i].HasErrors();
-            returnItem.DocNum = self.returnItems()[i].DocNum();
-            returnItem.Success = self.returnItems()[i].Success();
+            returnItem.MacId = $scope.returnItems[i].MacId;   
+            returnItem.ErrorMessage = $scope.returnItems[i].ErrorMessage;
+            returnItem.HasErrors = $scope.returnItems[i].HasErrors;
+            returnItem.DocNum = $scope.returnItems[i].DocNum;
+            returnItem.Success = $scope.returnItems[i].Success;
             data[i] = returnItem;
         };
 
-        var parts = $.toJSON(data);
-
-        $.ajax({
-            url: "ship/services/PartReturnService.svc/ReturnParts",
-            type: "POST",
-            data: parts,
-            dataType: "html",
-            contentType: 'application/json; charset=utf-8',
-            success: function (response) {
-                var jsonResponse = $.parseJSON(response);
-                self.returnItems.removeAll();
-                for (var x = 0; x < jsonResponse.length; x++) {
-                    self.returnItems.push(new ReturnItem(jsonResponse[x]));
-                }
-            },
-            complete: function () {
-                $('#searchingImage').hide();
-            }
-        });
+        $http({
+            url: "/ship/services/PartReturnService.svc/ReturnParts",
+            method: "POST",
+            data: data
+        }).success(
+                function (response) {
+                    $scope.IsSearching = false;
+                    $scope.returnItems = [];
+                    for (var x = 0; x < response.length; x++) {
+                        $scope.returnItems.push(new ReturnItem(response[x]));
+                    }
+                });
     };
 
-    self.clearItems = function () {
-        self.returnItems.removeAll();
-        self.addInput();
+    $scope.clearItems = function () {
+        $scope.returnItems = [];
+        $scope.addInput();
     };
 };
 
 var ReturnItem = function (item) {
-    var self = this;
-    self.SmartMac = ko.observable(item.SmartMac);
-    self.ErrorMessage = ko.observable(item.ErrorMessage);
-    self.HasErrors = ko.observable(item.HasErrors);
-    self.DocNum = ko.observable(item.DocNum);
-    self.Success = ko.observable(item.Success);
+    var $scope = this;
+    $scope.SmartMac = item.MacId;
+    $scope.ErrorMessage = item.ErrorMessage;
+    $scope.HasErrors = item.HasErrors;
+    $scope.DocNum = item.DocNum;
+    $scope.Success =  item.Success;
 };

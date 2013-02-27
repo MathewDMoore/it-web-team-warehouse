@@ -1,6 +1,6 @@
-﻿var SearchSmartMacModel = function () {
+﻿var SearchMacIdModel = function () {
     var self = this;
-    self.searchItems = ko.observableArray([new SmartMacItem({ SmartMac: '', ErrorMessage: '', HasErrors: false, DeliveryNumber: '', IsIRDelivery: false })]);
+    self.searchItems = ko.observableArray([new MacIdItem({ MacId: '', ErrorMessage: '', HasErrors: false, DeliveryNumber: '', IsIRDelivery: false })]);
     self.addInput = function () {
     };
 
@@ -10,20 +10,20 @@
         var data = [];
 
         for (i = 0; i < self.searchItems().length; i++) {
-            var smartMacItem = {};
-            smartMacItem.SmartMac = self.searchItems()[i].SmartMac();
-            smartMacItem.HasErrors = self.searchItems()[i].HasErrors();
-            smartMacItem.ErrorMessage = self.searchItems()[i].ErrorMessage();
-            smartMacItem.DeliveryNumber = self.searchItems()[i].DeliveryNumber();
-            smartMacItem.IsIRDelivery = self.searchItems()[i].IsIRDelivery();
+            var macIdItem = {};
+            macIdItem.MacId = self.searchItems()[i].MacId();
+            macIdItem.HasErrors = self.searchItems()[i].HasErrors();
+            macIdItem.ErrorMessage = self.searchItems()[i].ErrorMessage();
+            macIdItem.DeliveryNumber = self.searchItems()[i].DeliveryNumber();
+            macIdItem.IsIRDelivery = self.searchItems()[i].IsIRDelivery();
 
-            data.push(smartMacItem);
+            data.push(macIdItem);
         }
 
         data = $.toJSON(data);
 
         $.ajax({
-            url: " /ship/services/SmartMacSearchService.svc/LocateSmartMac",
+            url: " /ship/services/MacIdSearchService.svc/LocateMacIds",
             type: "POST",
             data: data,
             dataType: "html",
@@ -32,7 +32,7 @@
                 var jsonResponse = $.parseJSON(response);
                 self.searchItems.removeAll();
                 for (var x = 0; x < jsonResponse.length; x++) {
-                    var newItem = new SmartMacItem(jsonResponse[x]);
+                    var newItem = new MacIdItem(jsonResponse[x]);
                     self.searchItems.push(newItem);
                     if (newItem.DeliveryNumber() != 0 & newItem.DeliveryNumber() != '' & !newItem.IsIRDelivery() ) {
                         location = 'ScanSerialNumber.aspx?DeliveryNum=' + newItem.DeliveryNumber();
@@ -54,9 +54,9 @@
 };
 
 
-var SmartMacItem = function (item) {
+var MacIdItem = function (item) {
     var self = this;
-    self.SmartMac = ko.observable(item.SmartMac);
+    self.MacId = ko.observable(item.MacId);
     self.HasErrors = ko.observable(item.HasErrors);
     self.ErrorMessage = ko.observable(item.ErrorMessage);
     self.DeliveryNumber = ko.observable(item.DeliveryNumber);

@@ -50,6 +50,7 @@
         "More than likely you are trying to insert a Product Code or Item Code that already exists.");
     }
 </script>
+    <form runat="server">
    <table width="100%"><tr>
    <td><div id="pgTitle">Maintain Product ID</div></td><td><div id="loggedUser">Logged in as: <%=User.Identity.Name %></div></td>
    </tr></table>
@@ -114,4 +115,5 @@
             </obout:GridTemplate>                
         </Templates>
     </obout:Grid>
+        </form>
 </asp:Content>

@@ -18,7 +18,7 @@ function capLock(e){
 
 
 </script>
-
+    <form runat="server">
  <h3><asp:Label ID="loggedUser" RunAt="server" ForeColor="Red"/></h3>
 <h1>Please Log In</h1>
     <hr>
@@ -39,5 +39,5 @@ function capLock(e){
     <hr>
     <h3><asp:Label ID="Output" RunAt="server" /></h3>
    
-
+        </form>
 </asp:Content>

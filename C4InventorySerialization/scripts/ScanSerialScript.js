@@ -8,7 +8,7 @@
 }
 
 
-function validate(record) {
+function validate(record, $http) {
     if (record.SERIALCODE == '') {
         alert("Serial Code is mandatory");
         return false;
@@ -24,9 +24,28 @@ function validate(record) {
         alert("You have scanned the wrong color of product.\n\n" + "Expecting Color: " + record.COLOR + "\n" + "You scanned : " + ValidColor);
         return false;
     }
+    var NotDuplicate = null;
 
+    var data = $.toJSON(record.SERIALCODE);
 
+    $.ajax({
+        url: "/ship/services/VerifyUniqueMacService.svc/VerifyUniqueMac",
+        type: "POST",
+        data: data,
+        dataType: "html",
+        contentType: 'application/json; charset=utf-8',
+        success: function (response) {
+            var jsonResponse = $.parseJSON(response);
+            NotDuplicate = jsonResponse;
+        }
+    });
+
+    if (NotDuplicate ==  false ) {
+        alert("This product currently exists on another delivery. Please return the product to proceed.");
+        return false;
+    }
 }
+
 
 function Right(str, n) {
     if (n <= 0)
@@ -127,6 +146,7 @@ function ReturnDelivery(sDoc) {
                     location.href = '../Admin/ReturnDelivery.aspx?DeliveryNum=' + sDoc;
                     break;
                 }
+
                 else { return false; }
             case false:
                 alert("The Delivery Number Must be Number");

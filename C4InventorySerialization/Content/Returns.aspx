@@ -1,4 +1,4 @@
-﻿    <%@ Page Title="" Language="C#" MasterPageFile="~/Master/Site.Master" AutoEventWireup="true"
+﻿<%@ Page Title="" Language="C#" MasterPageFile="~/Master/Site.Master" AutoEventWireup="true"
     CodeBehind="Returns.aspx.cs" Inherits="C4InventorySerialization.Content.Returns" %>
 
 <%@ Register TagPrefix="obout" Namespace="Obout.Grid" Assembly="obout_Grid_NET, Version=7.0.5.0, Culture=neutral, PublicKeyToken=5ddc49d3b53e3f98" %>
@@ -6,31 +6,22 @@
 
 <asp:Content ID="Content1" ContentPlaceHolderID="MainContent" runat="server">
     <script type="text/javascript" src="../scripts/Returns.js"></script>
-
-    <div id="returnCodes">
-        <!-- ko foreach: returnItems-->
-        <div id="smartCodeInput">
-            Smart Code:
-            <input type="text" size="40"data-bind="value: SmartMac, valueUpdate: 'afterkeydown', hasfocus: SmartMac.length == 0" />
-            <span data-bind="visible: HasErrors, text: ErrorMessage" style="color: red; font-weight: bolder"></span>
-            <span data-bind="visible: Success()" style="color: green; font-weight: bolder">Successfully returned item.</span>
+    <div ng-controller="ReturnsController">
+        <div id="returnCodes" ng-init="addInput()">
+            <div id="smartCodeInput" ng-repeat="item in returnItems">
+                Smart Code:
+            <input type="text" size="40" ng-model="item.MacId" on-enter="addInput"/>
+                <span ng-show="item.HasErrors" style="color: red; font-weight: bolder">{{item.ErrorMessage}}</span>
+                <span ng-show="item.Success" style="color: green; font-weight: bolder">Successfully returned item.</span>
+            </div>
         </div>
-        <!-- /ko --> 
+        <div id="searchingImage" ng-show="IsSearching">
+            <img src="../images/searching.gif" id="searching_image" />
+        </div>
+        <div id="addReturn">
+            <input type="button" value="Add Another Return" id="addReturnButton" ng-click="addInput()"/>
+            <input type="button" value="Return Items" id="returnButton" ng-click="submitItems()"/>
+            <input type="button" id="clearReturnsButton" value="Clear Items" ng-click="clearItems()" />
+        </div>
     </div>
-    <div id="searchingImage" style="display: none">
-        <img src="../images/searching.gif" id="searching_image" />
-    </div>
-    <div id="addReturn">
-        <button id="addReturnButton" data-bind="click: addInput">Add Another Return</button>
-        <button id="returnButton" data-bind="click: submitItems">Return Items</button>
-        <button id="clearReturnsButton" data-bind="click: clearItems">Clear Items</button>
-    </div>
-    <script type="text/javascript">
-        var model;
-        $(document).ready(function () {
-            model = new ReturnsModel();
-            model.addInput();   
-            ko.applyBindings(model);
-        });
-    </script>
 </asp:Content>
