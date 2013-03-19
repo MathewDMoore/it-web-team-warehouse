@@ -1,14 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
 using System.ServiceModel;
 using System.ServiceModel.Activation;
-using System.Web;
 using ApplicationSource.Interfaces;
-using ApplicationSource.Models;
 using System.Configuration;
-using Domain;
 
 namespace ApplicationSource.Services
 {
@@ -19,23 +15,14 @@ namespace ApplicationSource.Services
         public bool VerifyUniqueMac(string model)
         {
             var result = false;
-            var parsedMacID = "";
-
-            string connStr = ConfigurationManager.ConnectionStrings["InventoryConnectionString"].ConnectionString;
+            var connStr = ConfigurationManager.ConnectionStrings["InventoryConnectionString"].ConnectionString;
 
             if (!string.IsNullOrEmpty(model))
             {
-                if (model.Length >= 29)
-                {
-                    parsedMacID = model.Remove(model.Length -17, 17);
-                }
-                else
-                {
-                    parsedMacID = model;
-                }
+                var parsedMacId = model.Length >= 29 ? model.Remove(model.Length -17, 17) : model;
                 try
                 {
-                    if (parsedMacID.Length == 12 || parsedMacID.Length == 16)
+                    if (parsedMacId.Length == 12 || parsedMacId.Length == 16)
                     {
                         using (var sConn = new SqlConnection(connStr))
                         {
@@ -43,29 +30,22 @@ namespace ApplicationSource.Services
 
                             var sCmd = new SqlCommand("sp_LocateSmartMac", sConn) { CommandType = CommandType.StoredProcedure };
                             sCmd.Parameters.Add("@MACID", SqlDbType.NVarChar);
-                            sCmd.Parameters["@MACID"].Value = parsedMacID;
+                            sCmd.Parameters["@MACID"].Value = parsedMacId;
                             using (IDataReader reader1 = sCmd.ExecuteReader())
                             {
-                                if (reader1.RecordsAffected < 1)
-                                {
-                                    result = true;
-                                }
-                                else
-                                    result = false;
+                                result = reader1.RecordsAffected < 1;
                             }
                             sConn.Close();
                         }
                     }
-                    else
-                        result = true;
                 }
-                catch
+                catch (Exception)
                 {
 
                 }
             }
-
             return result;
         }
     }
 }
+    

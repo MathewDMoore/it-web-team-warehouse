@@ -15,19 +15,39 @@ function validate(record) {
         alert("Serial Code is mandatory");
         return false;
     }
-    var ValidProduct = Left(Right(record.SERIALCODE, 7), 5);
-    if (record.PRODUCTID != ValidProduct) {
-        alert("You have scanned the wrong product.\n\n" + "Expecting PRODUCTID: " + record.PRODUCTID + "\n" + "You scanned : " + ValidProduct);
+    var validProduct = Left(Right(record.SERIALCODE, 7), 5);
+    if (record.PRODUCTID != validProduct) {
+        alert("You have scanned the wrong product.\n\n" + "Expecting PRODUCTID: " + record.PRODUCTID + "\n" + "You scanned : " + validProduct);
         return false;
     }
-    var ValidColor = Left(Right(record.SERIALCODE, 2), 2);
-    ValidColor = ValidColor.toUpperCase();
-    if (record.COLOR != ValidColor) {
-        alert("You have scanned the wrong color of product.\n\n" + "Expecting Color: " + record.COLOR + "\n" + "You scanned : " + ValidColor);
+    var validColor = Left(Right(record.SERIALCODE, 2), 2);
+    validColor = validColor.toUpperCase();
+    if (record.COLOR != validColor) {
+        alert("You have scanned the wrong color of product.\n\n" + "Expecting Color: " + record.COLOR + "\n" + "You scanned : " + validColor);
         return false;
     }
+    var notDuplicate = false;
 
+    if (!record.NOSERIALIZATION) {
 
+        var data = $.toJSON(record.SERIALCODE);
+
+        $.ajax({
+            url: "/ship/services/VerifyUniqueMacService.svc/VerifyUniqueMac",
+            type: "POST",
+            data: data,
+            dataType: "html",
+            contentType: 'application/json; charset=utf-8',
+            success: function (response) {
+                var jsonResponse = $.parseJSON(response);
+                notDuplicate = jsonResponse;
+            }
+        });
+    }
+    if (record.NOSERIALIZATION == "False" & notDuplicate == false) {
+        alert("This product currently exists on another delivery, or is not the correct length. Please return the product or check the MacId or SerialCode.");
+        return false;
+    }
 }
 
 function Right(str, n) {
@@ -163,6 +183,7 @@ function SubmitDelivery(sDoc) {
 
 function FocusOnFirstEdit() {
     var row = document.getElementById('ctl00_MainContent_grid1_ctl02_ob_grid1_R_0');
+
 
     if (row != null) {
         var rowEdit = row.lastChild.innerText;

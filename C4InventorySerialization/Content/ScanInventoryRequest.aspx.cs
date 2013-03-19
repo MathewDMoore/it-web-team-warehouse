@@ -295,7 +295,7 @@ namespace C4InventorySerialization.Content
                 sConn.Close();
             }
 
-            throw new Exception("This Serial Number exists on Inventory Request#: " + docNumError.ToString() + ", ID: " +
+            throw new Exception("This Serial Number is a duplicate on Inventory Request#: " + docNumError.ToString() + ", ID: " +
                                 idError.ToString());
         }
 

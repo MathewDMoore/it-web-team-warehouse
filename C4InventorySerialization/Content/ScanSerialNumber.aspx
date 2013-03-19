@@ -96,7 +96,7 @@
                 </obout:Column>
                 <obout:Column DataField="PRODUCTID" Visible="false" HeaderText="ID" Index="7" Width="60" ReadOnly="true">
                 </obout:Column>
-                <obout:Column DataField="NOSERIALIZATION" SortOrder="ASC" SortPriority="1" Visible="false" HeaderText="Items to Be Serialized" Index="8" Width="60" ReadOnly="true">
+                <obout:Column DataField="NOSERIALIZATION" SortOrder="ASC" SortPriority="1" Visible="False" HeaderText="Items to Be Serialized" Index="8" Width="60" ReadOnly="true">
                 </obout:Column>
                 <obout:Column DataField="COLOR" Visible="false" HeaderText="COLOR" Index="9" Width="60" ReadOnly="true">
                 </obout:Column>

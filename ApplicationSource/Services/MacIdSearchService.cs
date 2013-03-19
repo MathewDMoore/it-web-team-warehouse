@@ -61,12 +61,16 @@ namespace ApplicationSource.Services
                                 }
                             }
                             else
-                                item.ErrorMessage = "Incorrect Mac Id Length, or Mac Id is not a serialized number.";
+                            {
+                                item.ErrorMessage += " Incorrect Mac Id Length, or Mac Id is not a serialized number.";
+                                item.DeliveryNumber = "0";
+                                item.HasErrors = true;
+                            }
                         }
                     }
                     catch (Exception ex)
                     {
-                        item.ErrorMessage = "Delivery not found for this Smart Mac.";
+                        item.ErrorMessage += "Delivery not found for this Smart Mac.";
                         item.DeliveryNumber = "0";
                         item.HasErrors = true;
                     }

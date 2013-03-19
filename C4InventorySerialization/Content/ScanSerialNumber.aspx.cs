@@ -306,7 +306,7 @@ namespace C4InventorySerialization.Content
                 sConn.Close();
             }
 
-            throw new Exception("This Serial Number exists on Delivery#: " + DocNumError.ToString() + ", ID: " +
+            throw new Exception("This Serial Number is a duplicate on Delivery #: " + DocNumError.ToString() + ", ID: " +
                                 IDError.ToString());
         }
 
