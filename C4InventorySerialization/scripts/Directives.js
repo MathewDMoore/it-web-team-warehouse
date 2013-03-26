@@ -15,3 +15,18 @@ Directives.directive('onEnter', function () {
         }
     };
 });
+
+
+//Directives.directive('onBlur', function () {
+//    return {
+//        link: function (scope, element, attrs) {
+//            element.bind('blur', function () {
+//                if (element.val()) {
+//                    scope.$apply(attrs.onBlur + '()');
+//                    var inputs = $('input:text');
+//                    inputs[inputs.length - 1].focus();
+//                }
+//            });
+//        }
+//    };
+//});

@@ -38,7 +38,7 @@ namespace ApplicationSource.Services
                             else
                                 modifiedMac = macId;
 
-                            if (modifiedMac.Length == 14 || modifiedMac.Length == 16)
+                            if (modifiedMac.Length == 12 || modifiedMac.Length == 16)
                             {
                                 sConn.Open();
                                 var sCmd = new SqlCommand("sp_LocateSmartMac", sConn) { CommandType = CommandType.StoredProcedure };

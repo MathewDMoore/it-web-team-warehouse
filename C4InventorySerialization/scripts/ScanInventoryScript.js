@@ -27,14 +27,15 @@ function validate(record) {
         return false;
     }
     var notDuplicate = false;
-
-    if (!record.NOSERIALIZATION) {
+    var isRequiredSmartCode = record.SMARTCODEONLY == "True";
+    if (!isRequiredSmartCode) {
 
         var data = $.toJSON(record.SERIALCODE);
 
         $.ajax({
             url: "/ship/services/VerifyUniqueMacService.svc/VerifyUniqueMac",
             type: "POST",
+            async: false,
             data: data,
             dataType: "html",
             contentType: 'application/json; charset=utf-8',
@@ -44,7 +45,7 @@ function validate(record) {
             }
         });
     }
-    if (record.NOSERIALIZATION == "False" & notDuplicate == false) {
+    if (!isRequiredSmartCode & notDuplicate == false) {
         alert("This product currently exists on another delivery, or is not the correct length. Please return the product or check the MacId or SerialCode.");
         return false;
     }

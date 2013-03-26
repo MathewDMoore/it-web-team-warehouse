@@ -98,6 +98,8 @@
                 </obout:Column>
                 <obout:Column DataField="NOSERIALIZATION" SortOrder="ASC" SortPriority="1" Visible="False" HeaderText="Items to Be Serialized" Index="8" Width="60" ReadOnly="true">
                 </obout:Column>
+                <obout:Column DataField="SMARTCODEONLY"  Visible="False" Index="8" Width="60" ReadOnly="true">
+                </obout:Column>
                 <obout:Column DataField="COLOR" Visible="false" HeaderText="COLOR" Index="9" Width="60" ReadOnly="true">
                 </obout:Column>
             </Columns>

@@ -9,7 +9,7 @@
         $('#macInputError').hide();
         var data = [];
 
-        for (i = 0; i < self.searchItems().length; i++) {
+        for (var i = 0; i < self.searchItems().length; i++) {
             var macIdItem = {};
             macIdItem.MacId = self.searchItems()[i].MacId();
             macIdItem.HasErrors = self.searchItems()[i].HasErrors();

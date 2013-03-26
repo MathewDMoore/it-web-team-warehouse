@@ -1,9 +1,6 @@
 ﻿<%@ Page Title="" Language="C#" MasterPageFile="~/Master/Site.Master" AutoEventWireup="true"
     CodeBehind="Returns.aspx.cs" Inherits="C4InventorySerialization.Content.Returns" %>
 
-<%@ Register TagPrefix="obout" Namespace="Obout.Grid" Assembly="obout_Grid_NET, Version=7.0.5.0, Culture=neutral, PublicKeyToken=5ddc49d3b53e3f98" %>
-
-
 <asp:Content ID="Content1" ContentPlaceHolderID="MainContent" runat="server">
     <script type="text/javascript" src="../scripts/Returns.js"></script>
     <div ng-controller="ReturnsController">
