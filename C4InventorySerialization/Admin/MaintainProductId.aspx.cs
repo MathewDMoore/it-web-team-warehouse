@@ -13,7 +13,7 @@ namespace C4InventorySerialization.Admin
 
         protected void Page_Load(object sender, EventArgs e)
         {
-                CreateGrid();
+            CreateGrid();
         }
 
         protected void RebindGrid(object sender, EventArgs e)
@@ -34,7 +34,7 @@ namespace C4InventorySerialization.Admin
                                        p.ITEMCODE,
                                        p.COLOR,
                                        p.SMARTCODEONLY,
-                                       p.NOSERIALIZATION                                       
+                                       p.NOSERIALIZATION
                                    };
 
             MPIGrid.DataSource = query;
@@ -43,14 +43,14 @@ namespace C4InventorySerialization.Admin
 
         protected void ComboBox1_LoadingItems(object sender, ComboBoxLoadingItemsEventArgs e)
         {
-            DataTable data = GetItems(e.Text);
-           
-            ComboBox ComboBox1Load = sender as ComboBox;
+            var data = GetItems(e.Text);
+
+            var comboBox1Load = sender as ComboBox;
             //ComboBox1Load.TemplateControl.NamingContainer.ClientID.Equals("ComboBox1Load");
-                
-            for (int i = 0; i < data.Rows.Count; i++)
+
+            for (var i = 0; i < data.Rows.Count; i++)
             {
-                ComboBox1Load.Items.Add(new ComboBoxItem(data.Rows[i]["itemcode"].ToString()));
+                comboBox1Load.Items.Add(new ComboBoxItem(data.Rows[i]["itemcode"].ToString()));
             }
 
             e.ItemsLoadedCount = data.Rows.Count;
@@ -58,14 +58,18 @@ namespace C4InventorySerialization.Admin
         }
         protected DataTable GetItems(string item)
         {
-                string connStr = ConfigurationManager.ConnectionStrings["InventoryConnectionString"].ConnectionString;
+                var connStr = ConfigurationManager.ConnectionStrings["InventoryConnectionString"].ConnectionString;
+            var serverLocation = ConfigurationManager.AppSettings["ServerLocation"];
                 using (SqlConnection sConn = new SqlConnection(connStr))
                 {
                     sConn.Open();
                     SqlCommand sCmd = new SqlCommand("sp_GetSapItemsOnDemand", sConn);
                     sCmd.CommandType = CommandType.StoredProcedure;
                     sCmd.Parameters.Add("@ITEM", SqlDbType.NVarChar);
-                    sCmd.Parameters["@ITEM"].Value = item;
+                    var modifiedItem = "'%" + item + "%'";
+                    sCmd.Parameters["@ITEM"].Value = modifiedItem;
+                    sCmd.Parameters.Add("@SERVERLOCATION", SqlDbType.NVarChar);
+                    sCmd.Parameters["@SERVERLOCATION"].Value = serverLocation;
 
 
                     using (IDataReader reader1 = sCmd.ExecuteReader())
@@ -101,8 +105,8 @@ namespace C4InventorySerialization.Admin
 
             //Pull up record prior to updating.
             var productBeforeUpdate = (from p in db.MPIs
-                                where p.ID == tId
-                                select p).First();
+                                       where p.ID == tId
+                                       select p).First();
 
             //Make a Record in the MaintainProductID_History table prior to updating.
             var productBeforeUpdateHistory = new MPI_History();
@@ -149,7 +153,7 @@ namespace C4InventorySerialization.Admin
         {
             var db = new SerializationDataContext();
             var username = User.Identity.Name;
-//            int tId = Convert.ToInt32(e.Record["ID"]);
+            //            int tId = Convert.ToInt32(e.Record["ID"]);
             bool smartCodeBool = false;
             bool noSerialBool = false;
             string noSerial = e.Record["NOSERIALIZATION"].ToString();

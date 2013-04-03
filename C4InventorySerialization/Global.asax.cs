@@ -1,18 +1,11 @@
 ﻿using System;
-using System.Collections;
-using System.Configuration;
-using System.Data;
-using System.Linq;
 using System.Security.Principal;
-using System.ServiceModel.Activation;
 using System.Web;
 using System.Web.Security;
-using System.Web.SessionState;
-using System.Xml.Linq;
 
 namespace C4InventorySerialization
 {
-    public class Global : System.Web.HttpApplication
+    public class Global : HttpApplication
     {
 
         protected void Application_Start(object sender, EventArgs e)

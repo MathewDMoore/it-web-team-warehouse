@@ -1,6 +1,4 @@
-﻿
-
-function ReturnsController($scope, $http) {
+﻿function ReturnsController($scope, $http) {
     $scope.IsSearching = false;
     $scope.returnItems = [];
     $scope.addInput = function () {
@@ -45,7 +43,7 @@ function ReturnsController($scope, $http) {
 
 var ReturnItem = function (item) {
     var $scope = this;
-    $scope.SmartMac = item.MacId;
+    $scope.MacId = item.MacId;
     $scope.ErrorMessage = item.ErrorMessage;
     $scope.HasErrors = item.HasErrors;
     $scope.DocNum = item.DocNum;

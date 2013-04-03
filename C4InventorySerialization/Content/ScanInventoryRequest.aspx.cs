@@ -76,10 +76,10 @@ namespace C4InventorySerialization.Content
             if (_docnum != 0)
             {
                 string connStr = ConfigurationManager.ConnectionStrings["InventoryConnectionString"].ConnectionString;
-                using (SqlConnection sConn = new SqlConnection(connStr))
+                using (var sConn = new SqlConnection(connStr))
                 {
                     sConn.Open();
-                    SqlCommand sCmd = new SqlCommand("sp_GoodsIssue_IR_synch", sConn);
+                    var sCmd = new SqlCommand("sp_GoodsIssue_IR_synch", sConn);
                     sCmd.CommandType = CommandType.StoredProcedure;
                     sCmd.Parameters.Add("@DOCNUM", SqlDbType.Int);                    
                     sCmd.Parameters["@DOCNUM"].Value = _docnum;

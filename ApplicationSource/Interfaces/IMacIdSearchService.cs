@@ -15,6 +15,6 @@ namespace ApplicationSource.Interfaces
     {
         [OperationContract]
         [WebInvoke(Method = "POST", BodyStyle = WebMessageBodyStyle.Bare, ResponseFormat = WebMessageFormat.Json, RequestFormat = WebMessageFormat.Json)]
-        IList<MacIdItem> LocateMacIds(IList<MacIdItem> model);
+        MacIdItem LocateMacIds(MacIdItem model);
     }
 }

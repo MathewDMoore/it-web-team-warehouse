@@ -56,5 +56,7 @@ namespace C4InventorySerialization.Admin {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::Obout.Grid.GridTemplate tplEditSmartCode;
+
+        protected global::OboutInc.Combobox.Combobox ComboBox1Load;
     }
 }

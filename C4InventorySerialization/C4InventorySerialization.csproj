@@ -91,8 +91,9 @@
   <ItemGroup>
     <Content Include="Content\Returns.aspx" />
     <Content Include="Content\Search.aspx" />
+    <Content Include="Content\History.aspx" />
     <Content Include="images\searching.gif" />
-    <Content Include="scripts\Directives.js" />
+    <Content Include="scripts\History.js" />
     <Content Include="scripts\jquery-1.8.2.min.js" />
     <Content Include="scripts\jquery.json-2.3.min.js" />
     <Content Include="scripts\json-min.js" />
@@ -185,6 +186,13 @@
     </Compile>
     <Compile Include="Content\Search.aspx.designer.cs">
       <DependentUpon>Search.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Content\History.aspx.cs">
+      <DependentUpon>History.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Content\History.aspx.designer.cs">
+      <DependentUpon>History.aspx</DependentUpon>
     </Compile>
     <Compile Include="LdapAuthentication.cs" />
     <Compile Include="Serialization.designer.cs">
@@ -624,7 +632,7 @@
         <WebProjectProperties>
           <UseIIS>False</UseIIS>
           <AutoAssignPort>True</AutoAssignPort>
-          <DevelopmentServerPort>59602</DevelopmentServerPort>
+          <DevelopmentServerPort>50657</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
           <IISUrl>
           </IISUrl>

@@ -1,24 +1,23 @@
 ﻿using System;
-using System.Configuration;
 using System.Data;
+using System.Configuration;
 using System.Web.UI.WebControls;
-
-namespace C4InventorySerialization.Content
+namespace C4InventorySerialization.Admin
 {
     public partial class MaintainKits : System.Web.UI.Page
     {
-        private string _serverLocation = ConfigurationManager.AppSettings["ServerLocation"];
+        private readonly string _serverLocation = ConfigurationManager.AppSettings["ServerLocation"].ToString();
 
         void Page_Load(object sender, EventArgs e)
         {
-            LoadSQL();
+            LoadSql();
             
         }
 
-        private void LoadSQL()
+        private void LoadSql()
         {
 
-            SqlDataSource2.SelectParameters.Add(new Parameter(_serverLocation, DbType.String));
+            SqlDataSource2.SelectParameters.Add("SERVERLOCATION", DbType.String, _serverLocation);
         }
     }
 }

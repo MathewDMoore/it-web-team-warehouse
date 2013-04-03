@@ -7,7 +7,7 @@
         <div id="returnCodes" ng-init="addInput()">
             <div id="smartCodeInput" ng-repeat="item in returnItems">
                 Smart Code:
-            <input type="text" size="40" ng-model="item.MacId" on-enter="addInput"/>
+            <input type="text" size="40" ng-model="item.MacId"/>
                 <span ng-show="item.HasErrors" style="color: red; font-weight: bolder">{{item.ErrorMessage}}</span>
                 <span ng-show="item.Success" style="color: green; font-weight: bolder">Successfully returned item.</span>
             </div>

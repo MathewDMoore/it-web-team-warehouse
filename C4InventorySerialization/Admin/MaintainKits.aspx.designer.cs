@@ -7,7 +7,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace C4InventorySerialization.Content {
+namespace C4InventorySerialization.Admin {
     
     
     public partial class MaintainKits {
