@@ -35,20 +35,20 @@ function validate(record) {
         $.ajax({
             url: "/ship/services/VerifyUniqueMacService.svc/VerifyUniqueMac",
             type: "POST",
-            async: false,
             data: data,
             dataType: "html",
             contentType: 'application/json; charset=utf-8',
             success: function (response) {
                 var jsonResponse = $.parseJSON(response);
                 notDuplicate = jsonResponse;
+                if (!isRequiredSmartCode & notDuplicate == false) {
+                    alert("This product currently exists on another delivery, or is not the correct length. Please return the product or check the MacId or SerialCode.");
+                    return false;
+                }
             }
         });
     }
-    if (!isRequiredSmartCode & notDuplicate == false) {
-        alert("This product currently exists on another delivery, or is not the correct length. Please return the product or check the MacId or SerialCode.");
-        return false;
-    }
+    
 }
 
 function Right(str, n) {

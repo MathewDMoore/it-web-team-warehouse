@@ -80,14 +80,3 @@ C:\src\C4WebServices\trunk\C4InventorySerialization\C4InventorySerialization\obj
 C:\src\C4WebServices\trunk\C4InventorySerialization\C4InventorySerialization\obj\Debug\RdlCompile.compiled
 C:\src\C4WebServices\trunk\C4InventorySerialization\C4InventorySerialization\obj\Debug\C4InventorySerialization.dll
 C:\src\C4WebServices\trunk\C4InventorySerialization\C4InventorySerialization\obj\Debug\C4InventorySerialization.pdb
-C:\src\C4InventorySerialization\C4InventorySerialization\bin\Global.asax
-C:\src\C4InventorySerialization\C4InventorySerialization\bin\Global.asax.cs
-C:\src\C4InventorySerialization\C4InventorySerialization\bin\C4InventorySerialization.dll
-C:\src\C4InventorySerialization\C4InventorySerialization\bin\C4InventorySerialization.pdb
-C:\src\C4InventorySerialization\C4InventorySerialization\bin\ApplicationSource.dll
-C:\src\C4InventorySerialization\C4InventorySerialization\bin\ApplicationSource.pdb
-C:\src\C4InventorySerialization\C4InventorySerialization\obj\Debug\C4InventorySerialization.csprojResolveAssemblyReference.cache
-C:\src\C4InventorySerialization\C4InventorySerialization\obj\Debug\RdlCompile.cache
-C:\src\C4InventorySerialization\C4InventorySerialization\obj\Debug\RdlCompile.compiled
-C:\src\C4InventorySerialization\C4InventorySerialization\obj\Debug\C4InventorySerialization.dll
-C:\src\C4InventorySerialization\C4InventorySerialization\obj\Debug\C4InventorySerialization.pdb

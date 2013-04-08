@@ -59,7 +59,7 @@
             <Templates>
                 <cc1:GridTemplate ID="ItemCodeEdit" runat="server" ControlID="ob_cbo1Textbox" ControlPropertyName="value">
                     <Template>
-                        <combo:Combobox AjaxMethod="" runat="server" id="cbo1" DataSourceID="SqlDataSource2"
+                        <combo:Combobox AjaxMethod="" runat="server" DataSourceID="SqlDataSource2"
                             EnableViewState="true" Validate="true" Width="160" Height="75"
                             DataField_Value="sapitemcode" DataField_Text="sapitemcode" Title="Item Codes"
                             AlignContainer="left" InnerWidth="150" CSSOption="cbo1Option" CSSTextbox="cbo1Textbox" CSSTopContainer="cbo1TopContainer">
