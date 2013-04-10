@@ -6,7 +6,7 @@ namespace C4InventorySerialization.Admin
 {
     public partial class MaintainKits : System.Web.UI.Page
     {
-        private readonly string _serverLocation = ConfigurationManager.AppSettings["ServerLocation"].ToString();
+        private readonly string _serverLocation = ConfigurationManager.AppSettings["ServerLocation"];
 
         void Page_Load(object sender, EventArgs e)
         {

@@ -5,7 +5,6 @@
 <asp:Content ID="Content1" ContentPlaceHolderID="MainContent" runat="server">
     <script type="text/javascript" src="../scripts/History.js">
     </script>
-    <form runat="server">
 
             <p>You can search history by using a Delivery Number, IR Number, SmartMac, MacId, or User name.</p>
             <p>Search Parameter:</p>
@@ -44,5 +43,4 @@
                 </obout:Column>
             </Columns>
         </obout:Grid>
-    </form>
 </asp:Content>

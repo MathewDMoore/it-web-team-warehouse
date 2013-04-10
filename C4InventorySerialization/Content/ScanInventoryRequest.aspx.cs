@@ -16,14 +16,14 @@ namespace C4InventorySerialization.Content
         private int _verifiedCount;
         private int _verifiedRecords;
         public int VerifiedDelivery;
-        public string Username;
+        public string _userName;
 
         private string _serverLocation = ConfigurationManager.AppSettings["ServerLocation"];
 
 
         protected void Page_Load(object sender, EventArgs e)
         {
-            Username = User.Identity.Name;
+            _userName = User.Identity.Name;
             if (!Page.IsPostBack)
             {
                 if (Context.Request.QueryString["DeliveryNum"] != null)
@@ -121,11 +121,11 @@ namespace C4InventorySerialization.Content
                 sCmd.Parameters.Add("@DOCNUM", SqlDbType.Int);
                 sCmd.Parameters["@DOCNUM"].Value = docnum;
                 sCmd.Parameters.Add("@USERNAME", SqlDbType.NVarChar);
-                sCmd.Parameters["@USERNAME"].Value = Username;
+                sCmd.Parameters["@USERNAME"].Value = _userName;
                 sCmd2.Parameters.Add("@DOCNUM", SqlDbType.Int);
                 sCmd2.Parameters["@DOCNUM"].Value = docnum;
                 sCmd2.Parameters.Add("@USERNAME", SqlDbType.NVarChar);
-                sCmd2.Parameters["@USERNAME"].Value = Username;
+                sCmd2.Parameters["@USERNAME"].Value = _userName;
                 using (IDataReader reader1 = sCmd.ExecuteReader())
                 {
                     if (reader1.Read())
@@ -193,7 +193,7 @@ namespace C4InventorySerialization.Content
                     sCmd.Parameters.Add("@DOCNUM", SqlDbType.Int);
                     sCmd.Parameters["@DOCNUM"].Value = _docnum;
                     sCmd.Parameters.Add("@USERNAME", SqlDbType.NVarChar);
-                    sCmd.Parameters["@USERNAME"].Value = Username;
+                    sCmd.Parameters["@USERNAME"].Value = _userName;
 
                     IDataReader reader1 = sCmd.ExecuteReader();
                     while (reader1.Read())
@@ -268,10 +268,8 @@ namespace C4InventorySerialization.Content
             //TODO: Fix this code
             int docNumError = 0;
             int idError = 0;
-            string username = User.Identity.Name;
             string connStr = ConfigurationManager.ConnectionStrings["InventoryConnectionString"].ConnectionString;
-            string ErrorMessage =
-                "select T1.DOCNUM, T1.ID from C4_GOODSISSUE_IR_OUT T1 LEFT OUTER JOIN C4_MAINTAINPRODUCTID T2 ON T1.ITEMCODE = T2.ITEMCODE WHERE T2.SMARTCODEONLY = 0 AND T1.SERIALCODE = @SERIALCODE and T1.ITEMCODE= @ITEMCODE";
+            string ErrorMessage ="select T1.DOCNUM, T1.ID from C4_GOODSISSUE_IR_OUT T1 LEFT OUTER JOIN C4_MAINTAINPRODUCTID T2 ON T1.ITEMCODE = T2.ITEMCODE WHERE T2.SMARTCODEONLY = 0 AND T1.SERIALCODE = @SERIALCODE and T1.ITEMCODE= @ITEMCODE";
             using (SqlConnection sConn = new SqlConnection(connStr))
             {
                 sConn.Open();
@@ -282,7 +280,7 @@ namespace C4InventorySerialization.Content
                 sCmd.Parameters.Add("@ITEMCODE", SqlDbType.VarChar);
                 sCmd.Parameters["@ITEMCODE"].Value = itemcode;
                 sCmd.Parameters.Add("@USERNAME", SqlDbType.NVarChar);
-                sCmd.Parameters["@USERNAME"].Value = Username;
+                sCmd.Parameters["@USERNAME"].Value = _userName;
                 using (IDataReader reader1 = sCmd.ExecuteReader())
                 {
                     if (reader1.Read())

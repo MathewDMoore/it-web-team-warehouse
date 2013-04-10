@@ -9,7 +9,6 @@
     <script type="text/javascript" src="../scripts/ScanInventoryScript.js"> 
     </script>
 
-    <form runat="server">
         <%
             String deliveryNumber = Request.QueryString["DeliveryNum"];
             String warning = CheckConfiguration.Text;
@@ -153,7 +152,6 @@
         <input type="button" value="Export To Excel" onclick="ExportToExcel()" />
         <input type="button" value="Print Inventory Request Verification" onclick="PrintGrid()" />
         <asp:Button ID="Button1" Width="175" Height="25" runat="server" Text="Verify Inventory Request" OnClientClick="SubmitDelivery(this.form.t1.value)" OnClick="VerifyRecord" />
-    </form>
 </asp:Content>
 
 
