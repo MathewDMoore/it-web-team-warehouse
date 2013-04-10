@@ -35,6 +35,7 @@
         <input type="button" value="Logout" onclick="location.href = '../Content/Logout.aspx';" />
         &nbsp; Logged in as: <%= User.Identity.Name %>
     </div>
+    <form runat="server">
         <cc1:Grid ID="Grid1" runat="server" AllowRecordSelection="False" AllowGrouping="true" GroupBy="ITEMCODE" ShowGroupsInfo="true" PageSize="50"
             AutoGenerateColumns="False" DataSourceID="SqlDataSource1">
             <ClientSideEvents OnBeforeClientInsert="validate" OnBeforeClientUpdate="validate" OnBeforeClientDelete="onBeforeClientDelete" />
@@ -94,4 +95,5 @@
             ConnectionString="<%$ ConnectionStrings:InventoryConnectionString %>"
             SelectCommand="sp_GetSAPItems" SelectCommandType="StoredProcedure">
         </asp:SqlDataSource>
+    </form>
 </asp:Content>
