@@ -28,14 +28,25 @@ function validate(record) {
     }
     var notDuplicate = false;
     var isRequiredSmartCode = record.SMARTCODEONLY == "True";
+   
+    
     if (!isRequiredSmartCode) {
-
+        var modifiedMac = record.SERIALCODE;
+        modifiedMac = modifiedMac.substring(0, modifiedMac.length - 17);
+        
+        if (modifiedMac.length != 12) {
+            if (modifiedMac.length != 16) {
+                alert("You have scanned in a code that is not the correct length!");
+                return false;
+            }
+        }
         var data = $.toJSON(record.SERIALCODE);
 
         $.ajax({
             url: "/ship/services/VerifyUniqueMacService.svc/VerifyUniqueMac",
             type: "POST",
             data: data,
+            async: false,
             dataType: "html",
             contentType: 'application/json; charset=utf-8',
             success: function (response) {

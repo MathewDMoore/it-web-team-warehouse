@@ -24,10 +24,22 @@ function validate(record, $http) {
         alert("You have scanned the wrong color of product.\n\n" + "Expecting Color: " + record.COLOR + "\n" + "You scanned : " + validColor);
         return false;
     }
-    var notDuplicate = false;
-    var isRequiredSmartCode = record.SMARTCODEONLY == "True";
-    if (!isRequiredSmartCode) {
 
+    var isRequiredSmartCode = record.SMARTCODEONLY == "True";
+    var notDuplicate = false;
+
+    if (!isRequiredSmartCode) {
+        
+        var modifiedMac = record.SERIALCODE;
+        modifiedMac = modifiedMac.substring(0, modifiedMac.length - 17);
+        
+        if (modifiedMac.length != 12) {
+            if (modifiedMac.length != 16) {
+                alert("You have scanned in a code that is not the correct length!");
+                return false;
+            }
+        }
+        
         var data = $.toJSON(record.SERIALCODE);
 
         $.ajax({
@@ -35,6 +47,7 @@ function validate(record, $http) {
             type: "POST",
             data: data,
             dataType: "html",
+            async: false,
             contentType: 'application/json; charset=utf-8',
             success: function (response) {
                 var jsonResponse = $.parseJSON(response);
@@ -47,7 +60,7 @@ function validate(record, $http) {
             }
         });
     }
-    
+
 }
 
 

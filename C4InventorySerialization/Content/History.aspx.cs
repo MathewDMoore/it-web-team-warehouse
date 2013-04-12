@@ -69,7 +69,7 @@ namespace C4InventorySerialization.Content
                 }
 
                 if (sCmd != null)
-                {
+                {   
                     sCmd.CommandType = CommandType.StoredProcedure;
                     sCmd.Parameters.Add("@SEARCHPARAMETER", SqlDbType.NVarChar);
                     sCmd.Parameters["@SEARCHPARAMETER"].Value = searchValue;

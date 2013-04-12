@@ -66,7 +66,7 @@ namespace C4InventorySerialization.Admin
                     SqlCommand sCmd = new SqlCommand("sp_GetSapItemsOnDemand", sConn);
                     sCmd.CommandType = CommandType.StoredProcedure;
                     sCmd.Parameters.Add("@ITEM", SqlDbType.NVarChar);
-                    var modifiedItem = "'%" + item + "%'";
+                    var modifiedItem = "%" + item + "%";
                     sCmd.Parameters["@ITEM"].Value = modifiedItem;
                     sCmd.Parameters.Add("@SERVERLOCATION", SqlDbType.NVarChar);
                     sCmd.Parameters["@SERVERLOCATION"].Value = serverLocation;

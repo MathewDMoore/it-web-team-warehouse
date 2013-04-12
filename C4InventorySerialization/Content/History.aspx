@@ -17,7 +17,6 @@
                 <option value="UserName">UserName</option>
             </select>
             <input id="searchButton" type="button" value="Search" onclick="SubmitSearch(this.form.searchParameter.value);" />
-        </div>
         <obout:Grid ID="grid1" runat="server" AllowDataAccessOnServer="true" KeepSelectedRecords="true" CallbackMode="true" AllowColumnResizing="false" Serialize="true"
             AutoGenerateColumns="false" AllowRecordSelection="true" AllowKeyNavigation="false" GenerateRecordIds="true" AllowGrouping="true" ShowGroupsInfo="true"
             ShowFooter="true" AllowSorting="true" PageSize="500" ShowLoadingMessage="false" AllowMultiRecordEditing="false" FolderExports="../Exports">

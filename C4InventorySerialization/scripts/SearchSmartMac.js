@@ -26,10 +26,10 @@
             success: function (response) {
                 var jsonResponse = $.parseJSON(response);
                 self.MacItem(new MacIdItem(jsonResponse));
-                if (self.MacItem().DeliveryNumber() != 0 & self.MacItem().DeliveryNumber() != '' & !self.MacItem().IsIRDelivery()) {
+                if (self.MacItem().DeliveryNumber() != 0 & self.MacItem().DeliveryNumber() != '' & self.MacItem().DeliveryNumber() != null & !self.MacItem().IsIRDelivery()) {
                     location = 'ScanSerialNumber.aspx?DeliveryNum=' + self.MacItem().DeliveryNumber();
                     }
-                if (self.MacItem().DeliveryNumber() != 0 & self.MacItem().DeliveryNumber() != '' & self.MacItem().IsIRDelivery()) {
+                if (self.MacItem().DeliveryNumber() != 0 & self.MacItem().DeliveryNumber() != null & self.MacItem().DeliveryNumber() != '' & self.MacItem().IsIRDelivery()) {
                     location = 'ScanInventoryRequest.aspx?DeliveryNum=' + self.MacItem().DeliveryNumber();
                     
                     }
