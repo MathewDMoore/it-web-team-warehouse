@@ -178,7 +178,7 @@ a.updatelink{ display: block; float: left;line-height: 22px; padding-top: 0;}
         color: #2b4c61;
         font: 7pt Verdana;
         vertical-align: middle;
-        
+    z-index: 16;
         padding-left:4px;
         padding-right:2px;
 }  

@@ -227,3 +227,7 @@ a.updatelink{ display: block; float: left;line-height: 22px; padding-top: 0;}
 	color: Red;
 }
 
+.ob_cbContainer {
+    z-index: 16;
+
+}
