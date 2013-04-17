@@ -104,6 +104,8 @@
                 <obout:Column AllowEdit="true" HeaderText="Edit" Index="9" Width="130">
                     <TemplateSettings TemplateId="EditBtnTemplate" EditTemplateId="UpdateBtnTemplate" />
                 </obout:Column>
+                 <obout:Column DataField="SMARTCODEONLY" Visible="False" Index="10" Width="60" ReadOnly="true">
+            </obout:Column>
             </Columns>
             <Templates>
                 <obout:GridTemplate runat="server" ID="GroupTemplate">

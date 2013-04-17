@@ -25,12 +25,19 @@ function validate(record, $http) {
         return false;
     }
 
-    var isRequiredSmartCode = record.SMARTCODEONLY == "True";
     var notDuplicate = false;
+    var isRequiredSmartCode = record.SMARTCODEONLY == "True";
+    var originalMac = record.SERIALCODE.trim();
+    var modifiedMac = $.trim(originalMac);
+    
+    //if (isRequiredSmartCode) {
+    //    if (modifiedMac.length != 17) {
+    //        alert("You must enter a SmartCode that is 17 characters in length!");
+    //        return false;
+    //    }
+    //}
 
     if (!isRequiredSmartCode) {
-        
-        var modifiedMac = record.SERIALCODE;
         modifiedMac = modifiedMac.substring(0, modifiedMac.length - 17);
         
         if (modifiedMac.length != 12) {
@@ -40,21 +47,20 @@ function validate(record, $http) {
             }
         }
         
-        var data = $.toJSON(record.SERIALCODE);
+        var smartMacData = $.toJSON(record.SERIALCODE);
 
         $.ajax({
             url: "/ship/services/VerifyUniqueMacService.svc/VerifyUniqueMac",
             type: "POST",
-            data: data,
+            data: smartMacData,
             dataType: "html",
             async: false,
             contentType: 'application/json; charset=utf-8',
             success: function (response) {
                 var jsonResponse = $.parseJSON(response);
                 notDuplicate = jsonResponse;
-
-                if (!isRequiredSmartCode & notDuplicate == false) {
-                    alert("This product currently exists on another delivery, or is not the correct length. Please return the product or check the MacId or SerialCode.");
+                if (notDuplicate == false) {
+                    alert("This product currently exists on another delivery. Please return the product or check the MacId or SerialCode.");
                     return false;
                 }
             }
