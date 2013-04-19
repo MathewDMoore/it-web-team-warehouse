@@ -71,6 +71,35 @@ function validate(record) {
     
 }
 
+function ClearIRDelivery(docNumber) {
+
+    if (docNumber == '') {
+        alert("Please enter a delivery number.");
+    }
+
+    if (confirm("Are you sure you want to clear(delete) this order? ")) {
+        var deliveryData = $.toJSON(docNumber);
+
+        $.ajax({
+            url: "/ship/services/PartReturnService.svc/ClearIRDelivery",
+            type: "POST",
+            data: deliveryData,
+            dataType: "html",
+            async: false,
+            contentType: 'application/json; charset=utf-8',
+            success: function (response) {
+                var jsonResponse = $.parseJSON(response);
+                if (jsonResponse == true) {
+                    alert("Successfully Cleared!");
+                    location.href = 'ScanInventoryRequest.aspx';
+                } else {
+                    alert("There was an error clearing this delivery.");
+                }
+            }
+        });
+    }
+}
+
 function Right(str, n) {
     if (n <= 0)
         return "";

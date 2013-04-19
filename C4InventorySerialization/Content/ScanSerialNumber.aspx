@@ -39,6 +39,7 @@
     <input id="deliverytext" name="t1" type="text" size="10" onchange="SubmitDelivery(this.form.t1.value);" value="<%=deliveryNumber%>" />
         <input type="button" value="Load Delivery" onclick="SubmitDelivery(this.form.t1.value);" />
         <input type="button" value="Return Entire Delivery" onclick="ReturnDelivery(this.form.t1.value);" />
+        <input type="button" value="Clear Delivery" onclick="ClearDelivery(this.form.t1.value);" />
         <asp:Button ID="VerifyDelivery" Width="150" Height="25" runat="server" Text="Verify Delivery" OnClientClick="SubmitDelivery(this.form.t1.value)" OnClick="VerifyRecord" />
         <br />
     </div>

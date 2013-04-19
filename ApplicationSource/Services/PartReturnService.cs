@@ -15,40 +15,29 @@ namespace ApplicationSource.Services
     [ServiceBehavior(IncludeExceptionDetailInFaults = true)]
     public class PartReturnService : IPartReturnService
     {
-
+        readonly string _userName = HttpContext.Current.User.Identity.Name;
+        readonly string _connStr = ConfigurationManager.ConnectionStrings["InventoryConnectionString"].ConnectionString;
 
         public IList<ReturnLineItem> ReturnParts(IList<ReturnLineItem> model)
         {
-
-            var userName = HttpContext.Current.User.Identity.Name;
-            string connStr = ConfigurationManager.ConnectionStrings["InventoryConnectionString"].ConnectionString;
-            var parsedMacID = "";
-
             foreach (var item in model)
             {
                 if (!string.IsNullOrEmpty(item.MacId))
                 {
                     var macId = item.MacId;
-                    if (macId.Length >= 29)
-                    {
-                        parsedMacID = macId.Remove(macId.Length - 17, 17);
-                    }
-                    else
-                    {
-                        parsedMacID = macId;
-                    }
+                    var parsedMacId = macId.Length >= 29 ? macId.Remove(macId.Length - 17, 17) : macId;
 
                     try
                     {
-                        using (var sConn = new SqlConnection(connStr))
+                        using (var sConn = new SqlConnection(_connStr))
                         {
                             sConn.Open();
 
                             var sCmd = new SqlCommand("sp_ReturnItemByMacId", sConn) { CommandType = CommandType.StoredProcedure };
                             sCmd.Parameters.Add("@MACID", SqlDbType.NVarChar);
-                            sCmd.Parameters["@MACID"].Value = parsedMacID;
+                            sCmd.Parameters["@MACID"].Value = parsedMacId;
                             sCmd.Parameters.Add("@USERNAME", SqlDbType.NVarChar);
-                            sCmd.Parameters["@USERNAME"].Value = HttpContext.Current.User.Identity.Name;
+                            sCmd.Parameters["@USERNAME"].Value = _userName;
                             using (IDataReader reader1 = sCmd.ExecuteReader())
                             {
                                 if (reader1.RecordsAffected < 1)
@@ -70,5 +59,76 @@ namespace ApplicationSource.Services
             }
             return model;
         }
+
+        public bool ClearDelivery(string docNumber)
+        {
+            if (!string.IsNullOrEmpty(docNumber))
+            {
+                bool success;
+
+                try
+                {
+                    using (var sConn = new SqlConnection(_connStr))
+                    {
+                        sConn.Open();
+
+                        var sCmd = new SqlCommand("sp_ClearDelivery", sConn) { CommandType = CommandType.StoredProcedure };
+                        sCmd.Parameters.Add("@DELIVERYNUMBER", SqlDbType.NVarChar);
+                        sCmd.Parameters["@DELIVERYNUMBER"].Value = docNumber;
+                        sCmd.Parameters.Add("@USERNAME", SqlDbType.NVarChar);
+                        sCmd.Parameters["@USERNAME"].Value = _userName;
+                        using (IDataReader reader1 = sCmd.ExecuteReader())
+                        {
+                            success = true;
+                        }
+                    }
+                }
+                catch (Exception)
+                {
+
+                    success = false;
+                }
+
+                return success;
+            }
+
+            return false;
+        }
+
+        public bool ClearIRDelivery(string docNumber)
+        {
+            if (!string.IsNullOrEmpty(docNumber))
+            {
+                bool success;
+
+                try
+                {
+                    using (var sConn = new SqlConnection(_connStr))
+                    {
+                        sConn.Open();
+
+                        var sCmd = new SqlCommand("sp_ClearIRDelivery", sConn) { CommandType = CommandType.StoredProcedure };
+                        sCmd.Parameters.Add("@DELIVERYNUMBER", SqlDbType.NVarChar);
+                        sCmd.Parameters["@DELIVERYNUMBER"].Value = docNumber;
+                        sCmd.Parameters.Add("@USERNAME", SqlDbType.NVarChar);
+                        sCmd.Parameters["@USERNAME"].Value = _userName;
+                        using (IDataReader reader1 = sCmd.ExecuteReader())
+                        {
+                            success = true;
+                        }
+                    }
+                }
+                catch (Exception e)
+                {
+
+                    success = false;
+                }
+
+                return success;
+            }
+
+            return false;
+        }
+
     }
 }
