@@ -7,9 +7,21 @@ using System.Text;
 namespace ApplicationSource.Models
 {
     [DataContract]
-    class VerifyUniqueMacModel
+    public class VerifyUniqueMacModel
     {
         [DataMember]
-        string MacId { get; set; }
+        public string MacId { get; set; }
+
+        [DataMember]
+        public string ProductCode { get; set; }
+
+        [DataMember]
+        public string ErrorMessage { get; set; }
+
+        [DataMember]
+        public bool IsUnique { get; set; }
+
+        [DataMember]
+        public string ErrorDeliveryNumber { get; set; }
     }
 }

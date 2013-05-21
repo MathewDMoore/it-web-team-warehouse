@@ -163,7 +163,7 @@ namespace C4InventorySerialization.Content
             
             string connStr = ConfigurationManager.ConnectionStrings["InventoryConnectionString"].ConnectionString;
             string ValidMacID =
-                "select count(*) from C4_SERIALNUMBERS_OUT T1, C4_MAINTAINPRODUCTID T2 where T1.ITEMCODE =T2.ITEMCODE AND T1.MACID = @MACID and T1.ITEMCODE = @ITEMCODE and T1.ID not in (@ID) AND T2.SMARTCODEONLY='false' ";
+                "select count(*) from C4_SERIALNUMBERS_OUT T1, C4_MAINTAINPRODUCTID T2 where T1.PRODUCTID =T2.PRODUCTID AND T1.MACID = @MACID and T1.ITEMCODE = @ITEMCODE and T1.ID not in (@ID) AND T2.SMARTCODEONLY='false' ";
             using (SqlConnection sConn = new SqlConnection(connStr))
             {
                 sConn.Open();
@@ -239,18 +239,18 @@ namespace C4InventorySerialization.Content
 
         protected void UpdateRecord(object sender, GridRecordEventArgs e)
         {
-            string username = User.Identity.Name;
-            string connStr = ConfigurationManager.ConnectionStrings["InventoryConnectionString"].ConnectionString;
+            var username = User.Identity.Name;
+            var connStr = ConfigurationManager.ConnectionStrings["InventoryConnectionString"].ConnectionString;
             
             var serialCode = e.Record["SERIALCODE"].ToString();
-            var itemCode = e.Record["ITEMCODE"].ToString();
+            var itemCode = e.Record["REALITEMCODE"].ToString();
             var id = int.Parse(e.Record["ID"].ToString());
-            var macId = serialCode.Remove(serialCode.Length - 17, 17);
-
+            
+            var macId = serialCode.Length > 17 ? serialCode.Remove(serialCode.Length - 17, 17) : string.Empty;
 
             ValidateRecord(macId, itemCode, id);
 
-            string text1 = "Update C4_SERIALNUMBERS_OUT set SERIALCODE= UPPER(@SERIALCODE), [USERNAME]= @USERNAME, MACID = @MACID where ID = @ID";
+            const string text1 = "Update C4_SERIALNUMBERS_OUT set SERIALCODE= UPPER(@SERIALCODE), [USERNAME]= @USERNAME, MACID = @MACID where ID = @ID";
 
             if (_countSerialcode > 0)
             {
@@ -271,7 +271,7 @@ namespace C4InventorySerialization.Content
                     sCmd.Parameters["@MACID"].Value = macId;
                     sCmd.Parameters.Add("@USERNAME", SqlDbType.NVarChar);
                     sCmd.Parameters["@USERNAME"].Value = username;
-                    int res = sCmd.ExecuteNonQuery();
+                    var res = sCmd.ExecuteNonQuery();
                     sConn.Close();
                 }
             }
@@ -280,16 +280,15 @@ namespace C4InventorySerialization.Content
         protected void MacIdErrorMessage(String SERIALCODE, String ITEMCODE)
         {
             
-            int DocNumError = 0;
-            int IDError = 0;
-            string connStr = ConfigurationManager.ConnectionStrings["InventoryConnectionString"].ConnectionString;
-            string ErrorMessage =
-                "select T1.DOCNUM, T1.ID from C4_SERIALNUMBERS_OUT T1 LEFT OUTER JOIN C4_MAINTAINPRODUCTID T2 ON T1.ITEMCODE = T2.ITEMCODE WHERE T2.SMARTCODEONLY = 0 AND T1.SERIALCODE = @SERIALCODE and T1.ITEMCODE= @ITEMCODE";
-            using (SqlConnection sConn = new SqlConnection(connStr))
+            var docNumError = 0;
+            var idError = 0;
+            var connStr = ConfigurationManager.ConnectionStrings["InventoryConnectionString"].ConnectionString;
+            const string errorMessage = "select T1.DOCNUM, T1.ID from C4_SERIALNUMBERS_OUT T1 LEFT OUTER JOIN C4_MAINTAINPRODUCTID T2 ON T1.ITEMCODE = T2.ITEMCODE WHERE T2.SMARTCODEONLY = 0 AND T1.SERIALCODE = @SERIALCODE and T1.ITEMCODE= @ITEMCODE";
+            using (var sConn = new SqlConnection(connStr))
             {
                 sConn.Open();
 
-                SqlCommand sCmd = new SqlCommand(ErrorMessage, sConn);
+                var sCmd = new SqlCommand(errorMessage, sConn);
                 sCmd.Parameters.Add("@SERIALCODE", SqlDbType.VarChar);
                 sCmd.Parameters["@SERIALCODE"].Value = SERIALCODE;
                 sCmd.Parameters.Add("@ITEMCODE", SqlDbType.VarChar);
@@ -298,16 +297,16 @@ namespace C4InventorySerialization.Content
                 {
                     if (reader1.Read())
                     {
-                        DocNumError = reader1.GetInt32(0);
-                        IDError = reader1.GetInt32(1);
+                        docNumError = reader1.GetInt32(0);
+                        idError = reader1.GetInt32(1);
                     }
                 }
 
                 sConn.Close();
             }
 
-            throw new Exception("This Serial Number is a duplicate on Delivery #: " + DocNumError.ToString() + ", ID: " +
-                                IDError.ToString());
+            throw new Exception("This Serial Number is a duplicate on Delivery #: " + docNumError.ToString() + ", ID: " +
+                                idError.ToString());
         }
 
         protected void InvalidItemcode()

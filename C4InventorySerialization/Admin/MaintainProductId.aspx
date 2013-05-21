@@ -12,7 +12,7 @@
         }
 
         function productHistory() {
-            window.location = "../Admin/ProductIDHistory.aspx"
+            window.location = "../Admin/ProductIDHistory.aspx";
         }
 
         function validateRecord(record) {

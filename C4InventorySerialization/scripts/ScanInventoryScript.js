@@ -49,27 +49,44 @@ function validate(record) {
             }
         }
         
-        var smartMacData = $.toJSON(record.SERIALCODE);
-
+        var smartMacData = {};
+        smartMacData.MacId = modifiedMac;
+        smartMacData.ProductCode = record.REALITEMCODE;
+        smartMacData.ErrorMessage = '';
+        smartMacData.IsUnique = false;
+        smartMacData.ErrorDeliveryNumber = '';
+        var preparedData = $.toJSON(smartMacData);
+        var isUniqueMac = false;
         $.ajax({
             url: "/ship/services/VerifyUniqueMacService.svc/VerifyUniqueMac",
             type: "POST",
-            data: smartMacData,
+            data: preparedData,
             dataType: "html",
             async: false,
             contentType: 'application/json; charset=utf-8',
             success: function (response) {
-                var jsonResponse = $.parseJSON(response);
-                notDuplicate = jsonResponse;
-                if (notDuplicate == false) {
-                    alert("This product currently exists on another delivery. Please return the product or check the MacId or SerialCode.");
+                var returnedItem = new SmartMacItem($.parseJSON(response));
+                isUniqueMac = returnedItem.IsUnique;
+                if (returnedItem.IsUnique == false) {
+                    alert(returnedItem.ErrorMessage + returnedItem.ErrorDeliveryNumber);
                     return false;
                 }
             }
         });
+
+        return isUniqueMac;
     }
-    
 }
+
+
+var SmartMacItem = function (item) {
+    var self = this;
+    self.MacId = item.MacId;
+    self.ProductCode = item.ProductCode;
+    self.ErrorMessage = item.ErrorMessage;
+    self.IsUnique = item.IsUnique;
+    self.ErrorDeliveryNumber = item.ErrorDeliveryNumber;
+};
 
 function ClearIRDelivery(docNumber) {
 

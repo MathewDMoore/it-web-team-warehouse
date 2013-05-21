@@ -39,7 +39,7 @@ namespace ApplicationSource.Services
                         if (modifiedMac.Length == 12 || modifiedMac.Length == 16)
                         {
                             sConn.Open();
-                            var sCmd = new SqlCommand("sp_LocateSmartMac", sConn) { CommandType = CommandType.StoredProcedure };
+                            var sCmd = new SqlCommand("sp_SearchForMacId", sConn) { CommandType = CommandType.StoredProcedure };
                             sCmd.Parameters.Add("@MACID", SqlDbType.NVarChar);
                             sCmd.Parameters["@MACID"].Value = modifiedMac;
                             using (IDataReader reader1 = sCmd.ExecuteReader())

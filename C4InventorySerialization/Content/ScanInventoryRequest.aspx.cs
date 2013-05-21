@@ -150,7 +150,7 @@ namespace C4InventorySerialization.Content
             
             string connStr = ConfigurationManager.ConnectionStrings["InventoryConnectionString"].ConnectionString;
             string ValidMacID =
-                "select count(*) from C4_GOODSISSUE_IR_OUT T1, C4_MAINTAINPRODUCTID T2 where T1.ITEMCODE =T2.ITEMCODE AND T1.MACID = @MACID and T1.ITEMCODE = @ITEMCODE and T1.ID not in (@ID) AND T2.SMARTCODEONLY='false' ";
+                "select count(*) from C4_GOODSISSUE_IR_OUT T1, C4_MAINTAINPRODUCTID T2 where T1.PRODUCTID =T2.PRODUCTID AND T1.MACID = @MACID and T1.ITEMCODE = @ITEMCODE and T1.ID not in (@ID) AND T2.SMARTCODEONLY='false' ";
             using (SqlConnection sConn = new SqlConnection(connStr))
             {
                 sConn.Open();
@@ -232,8 +232,8 @@ namespace C4InventorySerialization.Content
             var serialCode = e.Record["SERIALCODE"].ToString();
             var itemCode =  e.Record["ITEMCODE"].ToString();
             var id =  int.Parse(e.Record["ID"].ToString());
-            var macId = serialCode.Remove(serialCode.Length-17, 17);
-
+            var macId = serialCode.Length > 17 ? serialCode.Remove(serialCode.Length-17, 17) : String.Empty;
+            
             ValidateRecord(macId, itemCode, id);            
 
             string text1 = "Update C4_GOODSISSUE_IR_OUT set SERIALCODE= UPPER(@SERIALCODE), [USERNAME]= @USERNAME, MACID = @MACID where ID = @ID";

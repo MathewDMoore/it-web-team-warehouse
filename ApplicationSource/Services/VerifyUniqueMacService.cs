@@ -5,6 +5,7 @@ using System.ServiceModel;
 using System.ServiceModel.Activation;
 using ApplicationSource.Interfaces;
 using System.Configuration;
+using ApplicationSource.Models;
 
 namespace ApplicationSource.Services
 {
@@ -12,70 +13,62 @@ namespace ApplicationSource.Services
     [ServiceBehavior(IncludeExceptionDetailInFaults = true)]
     public class VerifyUniqueMacService : IVerifyUniqueMacService
     {
-        readonly string connStr = ConfigurationManager.ConnectionStrings["InventoryConnectionString"].ConnectionString;
-        private bool result = false;
+        readonly string _connStr = ConfigurationManager.ConnectionStrings["InventoryConnectionString"].ConnectionString;
 
-        public bool VerifyUniqueMac(string model)
+        public VerifyUniqueMacModel VerifyUniqueMac(VerifyUniqueMacModel model)
         {
-
-            if (!string.IsNullOrEmpty(model))
+            var macId = model.MacId;
+            var productCode = model.ProductCode;
+            if (!string.IsNullOrEmpty(model.MacId) || !string.IsNullOrEmpty(productCode))
             {
-                var parsedMacId = model.Length >= 29 ? model.Remove(model.Length - 17, 17) : model;
+                var parsedMacId = macId.Length >= 29 ? macId.Remove(macId.Length - 17, 17) : macId;
                 try
                 {
                     if (parsedMacId.Length == 12 || parsedMacId.Length == 16)
                     {
-                        using (var sConn = new SqlConnection(connStr))
+                        using (var sConn = new SqlConnection(_connStr))
                         {
                             sConn.Open();
 
                             var sCmd = new SqlCommand("sp_LocateSmartMac", sConn) { CommandType = CommandType.StoredProcedure };
                             sCmd.Parameters.Add("@MACID", SqlDbType.NVarChar);
-                            sCmd.Parameters["@MACID"].Value = parsedMacId;
+                            sCmd.Parameters["@MACID"].Value = parsedMacId;                            
+                            sCmd.Parameters.Add("@PRODUCTCODE", SqlDbType.NVarChar);
+                            sCmd.Parameters["@PRODUCTCODE"].Value = productCode;
                             using (IDataReader reader1 = sCmd.ExecuteReader())
                             {
-                                result = reader1.RecordsAffected < 1;
+                               
+                                while (reader1.Read())
+                                {
+                                    var item = reader1.GetInt32(0);
+                                    if (item  > 0)
+                                    {
+                                        model.IsUnique = false;
+                                        model.ErrorMessage = "This order exists on another order - #";
+                                    }
+                                    else
+                                    {
+                                        model.IsUnique = true;
+                                    }
+                                }
+                                reader1.NextResult();
+                                while (reader1.Read())
+                                {
+                                    model.ErrorDeliveryNumber = reader1["DOCNUM"].ToString();
+
+                                }
                             }
                             sConn.Close();
                         }
                     }
                 }
-                catch (Exception)
-                {
-
-                }
-            }
-            return result;
-        }
-
-        public bool VerifyUniqueSmartCode(string model)
-        {
-            if (!string.IsNullOrEmpty(model))
-            {
-                try
-                {
-                    using (var sConn = new SqlConnection(connStr))
-                    {
-                        sConn.Open();
-
-                        var sCmd = new SqlCommand("sp_LocateSmartCode", sConn) { CommandType = CommandType.StoredProcedure };
-                        sCmd.Parameters.Add("@SERIALCODE", SqlDbType.NVarChar);
-                        sCmd.Parameters["@SERIALCODE"].Value = model;
-                        using (IDataReader reader1 = sCmd.ExecuteReader())
-                        {
-                            result = reader1.RecordsAffected < 1;
-                        }
-                        sConn.Close();
-                    }
-                }
                 catch (Exception e)
                 {
-
+                    model.IsUnique = false;
+                    model.ErrorMessage = e.Message;
                 }
             }
-            return result;
+            return model;
         }
-
-
     }
 }

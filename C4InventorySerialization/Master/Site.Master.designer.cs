@@ -184,24 +184,6 @@ namespace C4InventorySerialization.Master {
         protected global::OboutInc.EasyMenu_Pro.MenuSeparator MenuSeparator9;
         
         /// <summary>
-        /// MenuItem11 control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::OboutInc.EasyMenu_Pro.MenuItem MenuItem11;
-        
-        /// <summary>
-        /// MenuSeparator10 control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::OboutInc.EasyMenu_Pro.MenuSeparator MenuSeparator10;
-        
-        /// <summary>
         /// MenuItem10 control.
         /// </summary>
         /// <remarks>

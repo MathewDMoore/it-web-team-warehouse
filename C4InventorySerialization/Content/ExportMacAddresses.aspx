@@ -67,7 +67,7 @@
                         <obout:FilterOption Type="Contains" IsDefault="true" />
                     </FilterOptions>
                 </obout:Column>
-                <obout:Column DataField="MacAddress" HeaderText="Mac Address" ShowFilterCriterias="false" Width="265">
+                <obout:Column DataField="MACID" HeaderText="Mac Address" ShowFilterCriterias="false" Width="265">
                     <FilterOptions>
                         <obout:FilterOption Type="Contains" IsDefault="true" />
                     </FilterOptions>

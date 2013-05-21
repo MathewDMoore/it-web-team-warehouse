@@ -186,6 +186,11 @@
       <Column Name="sapitemcode" Type="System.String" DbType="NVarChar(20) NOT NULL" CanBeNull="false" />
     </ElementType>
   </Function>
+	<Function Name="dbo.sp_GetProducts" Method="sp_GetProducts">
+		<ElementType Name="sp_GetProductsResult">
+			<Column Name="ItemCode" Type="System.String" DbType="NVarChar(20) NOT NULL" CanBeNull="false" />
+		</ElementType>
+	</Function>
   <Function Name="dbo.sp_GoodsIssue_IR_Synch" Method="sp_GoodsIssue_IR_Synch">
     <Parameter Name="DOCNUM" Parameter="dOCNUM" Type="System.Int32" DbType="Int" />
     <Parameter Name="USERNAME" Parameter="uSERNAME" Type="System.String" DbType="NVarChar(50)" />

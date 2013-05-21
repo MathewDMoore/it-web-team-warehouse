@@ -50,6 +50,7 @@
     <Compile Include="Interfaces\IVerifyUniqueMacService.cs" />
     <Compile Include="Interfaces\IPartReturnService.cs" />
     <Compile Include="Interfaces\IMacIdSearchService.cs" />
+    <Compile Include="Models\UniqueMacSearchItem.cs" />
     <Compile Include="Models\VerifyUniqueMacModel.cs" />
     <Compile Include="Models\PartReturnModel.cs" />
     <Compile Include="Models\ReturnLineItem.cs" />

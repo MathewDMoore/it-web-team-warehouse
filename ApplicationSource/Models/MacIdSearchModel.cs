@@ -6,10 +6,15 @@ using System.Text;
 
 namespace ApplicationSource.Models
 {
+
     [DataContract]
-    class MacIdSearchModel
+    public class MacIdSearchModel
     {
         [DataMember]
-        IList<MacIdItem> MacIdSearchItems { get; set; }
+        public string SerialCode { get; set; }
+        [DataMember]
+        public string ProductId { get; set; }
+        [DataMember]
+        public string Color { get; set; }
     }
 }
