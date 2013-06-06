@@ -93,7 +93,7 @@
                     <obout:FilterOption Type="Contains" IsDefault="true" />
                 </FilterOptions>
             </obout:Column>
-            <obout:Column HeaderText="No Serialization" DataField="NOSERIALIZATION" Index="4" AllowFilter="false" ShowFilterCriterias="false" TemplateId="tplNoSerial" EditTemplateId="tplEditNoSerial"></obout:Column>
+            <obout:Column HeaderText="No Scan Required" DataField="NOSERIALIZATION" Index="4" AllowFilter="false" ShowFilterCriterias="false" TemplateId="tplNoSerial" EditTemplateId="tplEditNoSerial"></obout:Column>
             <obout:Column HeaderText="Smart Code Only" DataField="SMARTCODEONLY" AllowFilter="false" ShowFilterCriterias="false" Index="5" TemplateId="tplNoSerial" EditTemplateId="tplEditSmartCode"></obout:Column>
             <obout:Column HeaderText="Edit" AllowEdit="true" Index="6" Width="115"></obout:Column>
             <obout:Column HeaderText="Delete" AllowDelete="true" Index="7" Width="90"></obout:Column>

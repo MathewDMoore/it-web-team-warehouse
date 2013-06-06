@@ -99,6 +99,7 @@
     <Content Include="scripts\jquery.json-2.3.min.js" />
     <Content Include="scripts\json-min.js" />
     <Content Include="scripts\knockout-2.1.0.js" />
+    <Content Include="scripts\MaintainKits.js" />
     <Content Include="scripts\Returns.js" />
     <Content Include="scripts\ScanInventoryScript.js" />
     <Content Include="scripts\ScanSerialScript.js" />
