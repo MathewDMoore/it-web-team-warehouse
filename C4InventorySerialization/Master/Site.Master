@@ -72,11 +72,15 @@
 
                                 <oem:MenuItem InnerHtml="Search by Mac" ID="MenuItem9" Url="../Content/Search.aspx"></oem:MenuItem>
                                 <oem:MenuSeparator InnerHtml="|" ID="MenuSeparator9"></oem:MenuSeparator>
+                                
+                                
+                                <oem:MenuItem InnerHtml="Duplicate Mac Report" ID="MenuItem10" Url="../Content/DuplicateMacReport.aspx"></oem:MenuItem>
+                                <oem:MenuSeparator InnerHtml="|" ID="MenuSeparator10"></oem:MenuSeparator>
 
 <%--                                <oem:MenuItem InnerHtml="History Search" ID="MenuItem11" Url="../Content/History.aspx"></oem:MenuItem>
                                 <oem:MenuSeparator InnerHtml="|" ID="MenuSeparator10"></oem:MenuSeparator>--%>
 
-                                <oem:MenuItem InnerHtml="Logout" ID="MenuItem10" Url="../Content/Logout.aspx"></oem:MenuItem>
+                                <oem:MenuItem InnerHtml="Logout" ID="MenuItem11" Url="../Content/Logout.aspx"></oem:MenuItem>
 
                             </Components>
                         </oem:EasyMenu>

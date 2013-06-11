@@ -10,6 +10,9 @@ namespace C4InventorySerialization.Admin
 {
     public partial class MaintainProductId : System.Web.UI.Page
     {
+        private readonly string _serverLocation = ConfigurationManager.AppSettings["ServerLocation"];
+        private readonly string _connStr = ConfigurationManager.ConnectionStrings["InventoryConnectionString"].ConnectionString;
+
 
         protected void Page_Load(object sender, EventArgs e)
         {
@@ -24,21 +27,41 @@ namespace C4InventorySerialization.Admin
 
         protected void CreateGrid()
         {
-            var db = new SerializationDataContext();
-            var query = from p in db.MPIs
-                        orderby p.ID
-                        select new
-                                   {
-                                       p.ID,
-                                       p.PRODUCTID,
-                                       p.ITEMCODE,
-                                       p.COLOR,
-                                       p.SMARTCODEONLY,
-                                       p.NOSERIALIZATION
-                                   };
+            //var db = new SerializationDataContext();
+            //var query = from p in db.MPIs
+            //            orderby p.ID
+            //            select new
+            //                       {
+            //                           p.ID,
+            //                           p.PRODUCTID,
+            //                           p.ITEMCODE,
+            //                           p.COLOR,
+            //                           p.SMARTCODEONLY,
+            //                           p.NOSERIALIZATION
+            //                       };
 
-            MPIGrid.DataSource = query;
-            MPIGrid.DataBind();
+            //MPIGrid.DataSource = query;
+            //MPIGrid.DataBind();
+
+            using (var sConn = new SqlConnection(_connStr))
+            {
+                sConn.Open();
+                var sCmd = new SqlCommand("sp_LoadProducts", sConn);
+
+                try
+                {
+                    using (IDataReader reader1 = sCmd.ExecuteReader())
+                    {
+                        MPIGrid.DataSource = reader1;
+                        MPIGrid.DataBind();
+                    }
+                    sConn.Close();
+                }
+                catch (Exception ex)
+                {
+
+                }
+            }
         }
 
         protected void ComboBox1_LoadingItems(object sender, ComboBoxLoadingItemsEventArgs e)
@@ -58,28 +81,28 @@ namespace C4InventorySerialization.Admin
         }
         protected DataTable GetItems(string item)
         {
-                var connStr = ConfigurationManager.ConnectionStrings["InventoryConnectionString"].ConnectionString;
+            var connStr = ConfigurationManager.ConnectionStrings["InventoryConnectionString"].ConnectionString;
             var serverLocation = ConfigurationManager.AppSettings["ServerLocation"];
-                using (SqlConnection sConn = new SqlConnection(connStr))
+            using (SqlConnection sConn = new SqlConnection(connStr))
+            {
+                sConn.Open();
+                SqlCommand sCmd = new SqlCommand("sp_GetSapItemsOnDemand", sConn);
+                sCmd.CommandType = CommandType.StoredProcedure;
+                sCmd.Parameters.Add("@ITEM", SqlDbType.NVarChar);
+                var modifiedItem = "%" + item + "%";
+                sCmd.Parameters["@ITEM"].Value = modifiedItem;
+                sCmd.Parameters.Add("@SERVERLOCATION", SqlDbType.NVarChar);
+                sCmd.Parameters["@SERVERLOCATION"].Value = serverLocation;
+
+
+                using (IDataReader reader1 = sCmd.ExecuteReader())
                 {
-                    sConn.Open();
-                    SqlCommand sCmd = new SqlCommand("sp_GetSapItemsOnDemand", sConn);
-                    sCmd.CommandType = CommandType.StoredProcedure;
-                    sCmd.Parameters.Add("@ITEM", SqlDbType.NVarChar);
-                    var modifiedItem = "%" + item + "%";
-                    sCmd.Parameters["@ITEM"].Value = modifiedItem;
-                    sCmd.Parameters.Add("@SERVERLOCATION", SqlDbType.NVarChar);
-                    sCmd.Parameters["@SERVERLOCATION"].Value = serverLocation;
-
-
-                    using (IDataReader reader1 = sCmd.ExecuteReader())
-                    {
-                        var ds = new DataSet();
-                        ds.Load(reader1, LoadOption.Upsert, "itemcode");
-                        return ds.Tables[0];
-                    }
-
+                    var ds = new DataSet();
+                    ds.Load(reader1, LoadOption.Upsert, "itemcode");
+                    return ds.Tables[0];
                 }
+
+            }
 
         }
 

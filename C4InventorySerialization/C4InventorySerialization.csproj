@@ -89,6 +89,7 @@
     <Reference Include="System.Xml.Linq" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Content\DuplicateMacReport.aspx" />
     <Content Include="Content\Returns.aspx" />
     <Content Include="Content\Search.aspx" />
     <Content Include="Content\History.aspx" />
@@ -134,6 +135,13 @@
     <Content Include="App_Code\DAL\C4SerialNumbers.cs">
       <DependentUpon>C4SerialNumbers.xsd</DependentUpon>
     </Content>
+    <Compile Include="Content\DuplicateMacReport.aspx.cs">
+      <DependentUpon>DuplicateMacReport.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Content\DuplicateMacReport.aspx.designer.cs">
+      <DependentUpon>DuplicateMacReport.aspx</DependentUpon>
+    </Compile>
     <Compile Include="Content\ExportMacAddresses.aspx.cs">
       <DependentUpon>ExportMacAddresses.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>

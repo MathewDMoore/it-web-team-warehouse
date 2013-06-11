@@ -245,16 +245,17 @@ namespace C4InventorySerialization.Content
             var serialCode = e.Record["SERIALCODE"].ToString();
             var itemCode = e.Record["REALITEMCODE"].ToString();
             var id = int.Parse(e.Record["ID"].ToString());
+            var isSmartCodeOnly = bool.Parse(e.Record["SMARTCODEONLY"].ToString());
             
-            var macId = serialCode.Length > 17 ? serialCode.Remove(serialCode.Length - 17, 17) : string.Empty;
+            var macId = serialCode.Length > 17 ? serialCode.Remove(serialCode.Length - 17, 17) : serialCode;
 
             ValidateRecord(macId, itemCode, id);
 
             const string text1 = "Update C4_SERIALNUMBERS_OUT set SERIALCODE= UPPER(@SERIALCODE), [USERNAME]= @USERNAME, MACID = @MACID where ID = @ID";
 
-            if (_countSerialcode > 0)
+            if (_countSerialcode > 0 && !isSmartCodeOnly)
             {
-                MacIdErrorMessage(e.Record["SERIALCODE"].ToString(), e.Record["ITEMCODE"].ToString());
+                MacIdErrorMessage(serialCode, itemCode);
             }
             else
             {
@@ -277,7 +278,7 @@ namespace C4InventorySerialization.Content
             }
         }
 
-        protected void MacIdErrorMessage(String SERIALCODE, String ITEMCODE)
+        protected void MacIdErrorMessage(String serialcode, String itemcode)
         {
             
             var docNumError = 0;
@@ -290,9 +291,9 @@ namespace C4InventorySerialization.Content
 
                 var sCmd = new SqlCommand(errorMessage, sConn);
                 sCmd.Parameters.Add("@SERIALCODE", SqlDbType.VarChar);
-                sCmd.Parameters["@SERIALCODE"].Value = SERIALCODE;
+                sCmd.Parameters["@SERIALCODE"].Value = serialcode;
                 sCmd.Parameters.Add("@ITEMCODE", SqlDbType.VarChar);
-                sCmd.Parameters["@ITEMCODE"].Value = ITEMCODE;
+                sCmd.Parameters["@ITEMCODE"].Value = itemcode;
                 using (IDataReader reader1 = sCmd.ExecuteReader())
                 {
                     if (reader1.Read())

@@ -232,16 +232,18 @@ namespace C4InventorySerialization.Content
             var serialCode = e.Record["SERIALCODE"].ToString();
             var itemCode =  e.Record["ITEMCODE"].ToString();
             var id =  int.Parse(e.Record["ID"].ToString());
-            var macId = serialCode.Length > 17 ? serialCode.Remove(serialCode.Length-17, 17) : String.Empty;
+            var macId = serialCode.Length > 17 ? serialCode.Remove(serialCode.Length-17, 17) : serialCode;
+            var isSmartCodeOnly = bool.Parse(e.Record["SMARTCODEONLY"].ToString());
             
             ValidateRecord(macId, itemCode, id);            
 
             string text1 = "Update C4_GOODSISSUE_IR_OUT set SERIALCODE= UPPER(@SERIALCODE), [USERNAME]= @USERNAME, MACID = @MACID where ID = @ID";
 
-            if (_countSerialcode > 0)
+            if (_countSerialcode > 0 && !isSmartCodeOnly)
             {
                 MacIdErrorMessage(serialCode, itemCode);
             }
+
             else
             {
                 using (SqlConnection sConn = new SqlConnection(connStr))
@@ -266,21 +268,19 @@ namespace C4InventorySerialization.Content
         protected void MacIdErrorMessage(String serialcode, String itemcode)
         {
             //TODO: Fix this code
-            int docNumError = 0;
-            int idError = 0;
-            string connStr = ConfigurationManager.ConnectionStrings["InventoryConnectionString"].ConnectionString;
-            string ErrorMessage ="select T1.DOCNUM, T1.ID from C4_GOODSISSUE_IR_OUT T1 LEFT OUTER JOIN C4_MAINTAINPRODUCTID T2 ON T1.ITEMCODE = T2.ITEMCODE WHERE T2.SMARTCODEONLY = 0 AND T1.SERIALCODE = @SERIALCODE and T1.ITEMCODE= @ITEMCODE";
-            using (SqlConnection sConn = new SqlConnection(connStr))
+            var docNumError = 0;
+            var idError = 0;
+            var connStr = ConfigurationManager.ConnectionStrings["InventoryConnectionString"].ConnectionString;
+            const string ErrorMessage = "select T1.DOCNUM, T1.ID from C4_GOODSISSUE_IR_OUT T1 LEFT OUTER JOIN C4_MAINTAINPRODUCTID T2 ON T1.ITEMCODE = T2.ITEMCODE WHERE T2.SMARTCODEONLY = 0 AND T1.SERIALCODE = @SERIALCODE and T1.ITEMCODE= @ITEMCODE";
+            using (var sConn = new SqlConnection(connStr))
             {
                 sConn.Open();
 
-                SqlCommand sCmd = new SqlCommand(ErrorMessage, sConn);
+                var sCmd = new SqlCommand(ErrorMessage, sConn);
                 sCmd.Parameters.Add("@SERIALCODE", SqlDbType.VarChar);
                 sCmd.Parameters["@SERIALCODE"].Value = serialcode;
                 sCmd.Parameters.Add("@ITEMCODE", SqlDbType.VarChar);
                 sCmd.Parameters["@ITEMCODE"].Value = itemcode;
-                sCmd.Parameters.Add("@USERNAME", SqlDbType.NVarChar);
-                sCmd.Parameters["@USERNAME"].Value = _userName;
                 using (IDataReader reader1 = sCmd.ExecuteReader())
                 {
                     if (reader1.Read())

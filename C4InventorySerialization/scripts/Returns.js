@@ -39,6 +39,23 @@
         $scope.returnItems = [];
         $scope.addInput();
     };
+    
+
+    $(function () {
+
+        $('input.textbox').live('keydown', function (e) {
+            var keyCode = e.keyCode || e.which;
+
+            if (keyCode == 9) {
+                e.preventDefault();
+                $scope.addInput();
+                $scope.$apply();
+                var inputs = $('input:text');
+                inputs[inputs.length - 1].focus();
+            }
+        });
+
+    });
 };
 
 var ReturnItem = function (item) {
