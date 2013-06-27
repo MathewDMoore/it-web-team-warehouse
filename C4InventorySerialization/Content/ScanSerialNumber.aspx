@@ -14,6 +14,7 @@
         String warning = CheckConfiguration.Text;
         String verifyError = ErrorRecords.Text;
         int verifyBoolean = VerifiedDelivery;
+        
     %>
 
     <asp:Label ID="CheckConfiguration" Visible="false" Text="" runat="server" />
@@ -118,9 +119,7 @@
             </obout:GridTemplate>
             <obout:GridTemplate runat="server" ID="EditBtnTemplate">
                 <Template>
-                    <%#Convert.ToBoolean(Container.DataItem["NOSERIALIZATION"])
-                                        ? "<span class=\"btspace\">N/A</span>"
-                                        : "<a type=\"text/html\" id=\"btnEdit\" onclick=\"grid1.edit_record(this)\" >Edit</a>"%>
+                    <%# (string.IsNullOrEmpty(Container.DataItem["NOSERIALIZATION"].ToString()) ? "True" : Container.DataItem["NOSERIALIZATION"].ToString()) == "True" ? "<span class=\"btspace\">N/A</span>" : "<a type=\"text/html\" id=\"btnEdit\" onclick=\"grid1.edit_record(this)\" >Edit</a>"%>
                 </Template>
             </obout:GridTemplate>
             <obout:GridTemplate runat="server" ID="TplNumbering">

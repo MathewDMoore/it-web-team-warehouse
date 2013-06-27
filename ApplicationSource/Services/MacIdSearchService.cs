@@ -44,7 +44,7 @@ namespace ApplicationSource.Services
                             sCmd.Parameters["@MACID"].Value = modifiedMac;
                             using (IDataReader reader1 = sCmd.ExecuteReader())
                             {
-                                while (reader1.Read())
+                                do
                                 {
                                     var docnum = reader1["DOCNUM"].ToString();
                                     var isIrDelivery = reader1["ISIRDELIVERY"].ToString() == "1";
@@ -60,7 +60,7 @@ namespace ApplicationSource.Services
                                         macItem.HasErrors = true;
                                     }
 
-                                }
+                                } while (reader1.Read());
                             }
                         }
                         else
