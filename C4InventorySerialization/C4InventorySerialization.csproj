@@ -80,6 +80,7 @@
     <Reference Include="System.Web.Entity" />
     <Reference Include="System.Web.Extensions" />
     <Reference Include="System.Web.Extensions.Design" />
+    <Reference Include="System.Web.Http, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
     <Reference Include="System.Configuration" />
@@ -94,12 +95,16 @@
     <Content Include="Content\Search.aspx" />
     <Content Include="Content\History.aspx" />
     <Content Include="images\searching.gif" />
+    <Content Include="scripts\common.js" />
     <Content Include="scripts\Directives.js" />
     <Content Include="scripts\History.js" />
     <Content Include="scripts\jquery-1.8.2.min.js" />
+    <Content Include="scripts\jquery-2.0.3.min.js" />
+    <Content Include="scripts\jquery.cookie.js" />
     <Content Include="scripts\jquery.json-2.3.min.js" />
     <Content Include="scripts\json-min.js" />
     <Content Include="scripts\knockout-2.1.0.js" />
+    <Content Include="scripts\LogIn.js" />
     <Content Include="scripts\MaintainKits.js" />
     <Content Include="scripts\Returns.js" />
     <Content Include="scripts\ScanInventoryScript.js" />
@@ -205,7 +210,6 @@
     <Compile Include="Content\History.aspx.designer.cs">
       <DependentUpon>History.aspx</DependentUpon>
     </Compile>
-    <Compile Include="LdapAuthentication.cs" />
     <Compile Include="Serialization.designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -334,6 +338,7 @@
       <DependentUpon>Reporting.xsd</DependentUpon>
     </None>
     <None Include="Properties\PublishProfiles\Jordan.pubxml" />
+    <None Include="Properties\PublishProfiles\Warehouse.pubxml" />
     <None Include="Serialization.dbml">
       <Generator>MSLinqToSQLGenerator</Generator>
       <LastGenOutput>Serialization.designer.cs</LastGenOutput>

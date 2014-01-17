@@ -58,7 +58,6 @@ namespace C4InventorySerialization.Content
 
         private void CreateGrid()
         {
-            string username = User.Identity.Name;   
             if (Context.Request.QueryString["DeliveryNum"] != null)
                 _docnum = Convert.ToInt32(Context.Request.QueryString["DeliveryNum"]);
             else
@@ -79,7 +78,7 @@ namespace C4InventorySerialization.Content
 
                     sCmd.Parameters["@DOCNUM"].Value = _docnum;
                     sCmd.Parameters["@SERVERLOCATION"].Value = _serverLocation;
-                    sCmd.Parameters["@USERNAME"].Value = username;
+                    sCmd.Parameters["@USERNAME"].Value = Username;
 
                     using (IDataReader reader1 = sCmd.ExecuteReader())
                     {
@@ -190,7 +189,6 @@ namespace C4InventorySerialization.Content
 
         protected void VerifyRecord(Object sender, EventArgs e)
         {
-            string username = User.Identity.Name;
             if (Context.Request.QueryString["DeliveryNum"] != null)
                 _docnum = Convert.ToInt32(Context.Request.QueryString["DeliveryNum"]);
             else
@@ -207,7 +205,7 @@ namespace C4InventorySerialization.Content
                     sCmd.Parameters.Add("@DOCNUM", SqlDbType.Int);
                     sCmd.Parameters["@DOCNUM"].Value = _docnum;
                     sCmd.Parameters.Add("@USERNAME", SqlDbType.NVarChar);
-                    sCmd.Parameters["@USERNAME"].Value = username;
+                    sCmd.Parameters["@USERNAME"].Value = Username;
 
                     IDataReader reader1 = sCmd.ExecuteReader();
                     while (reader1.Read())
@@ -239,7 +237,6 @@ namespace C4InventorySerialization.Content
 
         protected void UpdateRecord(object sender, GridRecordEventArgs e)
         {
-            var username = User.Identity.Name;
             var connStr = ConfigurationManager.ConnectionStrings["InventoryConnectionString"].ConnectionString;
             
             var serialCode = e.Record["SERIALCODE"].ToString();
@@ -251,7 +248,7 @@ namespace C4InventorySerialization.Content
 
             ValidateRecord(macId, itemCode, id);
 
-            const string text1 = "Update C4_SERIALNUMBERS_OUT set SERIALCODE= UPPER(@SERIALCODE), [USERNAME]= @USERNAME, MACID = @MACID where ID = @ID";
+            const string text1 = "Update C4_SERIALNUMBERS_OUT set SERIALCODE= UPPER(@SERIALCODE), [USERNAME]= @USERNAME, MACID = @MACID, RETURNEDBYUSER = null where ID = @ID";
 
             if (_countSerialcode > 0 && !isSmartCodeOnly)
             {
@@ -271,7 +268,7 @@ namespace C4InventorySerialization.Content
                     sCmd.Parameters.Add("@MACID", SqlDbType.VarChar);
                     sCmd.Parameters["@MACID"].Value = macId;
                     sCmd.Parameters.Add("@USERNAME", SqlDbType.NVarChar);
-                    sCmd.Parameters["@USERNAME"].Value = username;
+                    sCmd.Parameters["@USERNAME"].Value = Username;
                     var res = sCmd.ExecuteNonQuery();
                     sConn.Close();
                 }

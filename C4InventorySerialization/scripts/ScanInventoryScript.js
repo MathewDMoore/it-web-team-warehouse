@@ -51,7 +51,7 @@ function validate(record) {
         
         var smartMacData = {};
         smartMacData.MacId = modifiedMac;
-        smartMacData.ProductCode = record.REALITEMCODE;
+        smartMacData.ProductGroup = record.PRODUCTGROUP;
         smartMacData.ErrorMessage = '';
         smartMacData.IsUnique = false;
         smartMacData.ErrorDeliveryNumber = '';
@@ -82,7 +82,7 @@ function validate(record) {
 var SmartMacItem = function (item) {
     var self = this;
     self.MacId = item.MacId;
-    self.ProductCode = item.ProductCode;
+    self.ProductGroup = item.ProductGroup;
     self.ErrorMessage = item.ErrorMessage;
     self.IsUnique = item.IsUnique;
     self.ErrorDeliveryNumber = item.ErrorDeliveryNumber;

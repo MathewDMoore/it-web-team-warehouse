@@ -13,7 +13,7 @@ namespace ApplicationSource.Models
         public string MacId { get; set; }
 
         [DataMember]
-        public string ProductCode { get; set; }
+        public string ProductGroup { get; set; }
 
         [DataMember]
         public string ErrorMessage { get; set; }

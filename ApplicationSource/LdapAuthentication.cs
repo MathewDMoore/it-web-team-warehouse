@@ -1,10 +1,9 @@
 ﻿using System;
 using System.Configuration;
 using System.Text;
-using System.Collections;
 using System.DirectoryServices;
 
-namespace FormsAuth
+namespace ApplicationSource
 {
     public class LdapAuthentication
     {

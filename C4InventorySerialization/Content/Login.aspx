@@ -1,25 +1,10 @@
-﻿<%@ Page Language="C#" MasterPageFile="~/Master/Site.Master" AutoEventWireup="true" CodeBehind="Login.aspx.cs" Inherits="C4InventorySerialization.Login" %>
+﻿<%@ Page Language="C#" MasterPageFile="~/Master/Site.Master" AutoEventWireup="true" CodeBehind="Login.aspx.cs" Inherits="C4InventorySerialization.Login" EnableSessionState="ReadOnly" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="MainContent" runat="server">
-
-    <script type="text/javascript" language="Javascript">
-        window.onload = function () {
-            document.getElementById('ctl00_MainContent_UserName').focus();
-            document.getElementById('ctl00_MainContent_UserName').select();
-        }
-        function capLock(e) {
-            kc = e.keyCode ? e.keyCode : e.which;
-            sk = e.shiftKey ? e.shiftKey : ((kc == 16) ? true : false);
-            if (((kc >= 65 && kc <= 90) && !sk) || ((kc >= 97 && kc <= 122) && sk))
-                document.getElementById('divMayus').style.visibility = 'visible';
-            else
-                document.getElementById('divMayus').style.visibility = 'hidden';
-        }
-
-
-    </script>
-    <h3>
-        <asp:Label ID="loggedUser" runat="server" ForeColor="Red" /></h3>
+    <asp:ScriptManager ID="ScriptManager1" runat="server" EnablePageMethods="True"></asp:ScriptManager>
+    <script src="../scripts/LogIn.js" type="text/javascript"></script>
+    <link href="//netdna.bootstrapcdn.com/bootstrap/3.0.3/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
+    <asp:Label ID="loggedUser" runat="server" ForeColor="Red" /></h3>
     <h1>Please Log In</h1>
     <hr>
     <table cellpadding="8">
@@ -36,12 +21,38 @@
         </tr>
         <tr>
             <td>
-                <asp:Button ID="LoginBtn" Text="Log In" OnClick="Login_Click" runat="server" /></td>
+                <input type="button" id="LoginBtn" value="Log In" onclick="UserNameCheck()" /></td>
             <td></td>
         </tr>
     </table>
-    <hr>
-    <h3>
-        <asp:Label ID="Output" runat="server" /></h3>
 
+    <!-- /.modal -->
+    <hr>
+    <h4>
+        <label id="errorMessage" />
+    </h4>
+
+    <div class="modal fade" id="myModal">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h4 class="modal-title">Contrator Details</h4>
+                </div>
+                <div class="modal-body">
+                    <p>Please enter your first and last name:</p>
+                    First Name: 
+                    <input type="text" id="modalFirstName" />
+                    Last Name: 
+                    <input type="text" id="modalLastName" />
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary" onclick="SubmitContractorDetails()">Save changes</button>
+                </div>
+            </div>
+            <!-- /.modal-content -->
+        </div>
+        <!-- /.modal-dialog -->
+    </div>
 </asp:Content>

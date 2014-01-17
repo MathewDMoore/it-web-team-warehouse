@@ -223,7 +223,7 @@ namespace C4InventorySerialization.Content
             }
         }
 
-        protected void UpdateRecord(object sender, GridRecordEventArgs e)
+        protected void UpdateRecord(object sender, GridRecordEventArgs e)   
         {
             //TODO: Fix this code;
             string username = User.Identity.Name;
@@ -237,7 +237,7 @@ namespace C4InventorySerialization.Content
             
             ValidateRecord(macId, itemCode, id);            
 
-            string text1 = "Update C4_GOODSISSUE_IR_OUT set SERIALCODE= UPPER(@SERIALCODE), [USERNAME]= @USERNAME, MACID = @MACID where ID = @ID";
+            string text1 = "Update C4_GOODSISSUE_IR_OUT set SERIALCODE= UPPER(@SERIALCODE), [USERNAME]= @USERNAME, MACID = @MACID, RETURNEDBYUSER = null where ID = @ID";
 
             if (_countSerialcode > 0 && !isSmartCodeOnly)
             {

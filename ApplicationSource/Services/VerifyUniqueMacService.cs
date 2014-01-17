@@ -18,8 +18,8 @@ namespace ApplicationSource.Services
         public VerifyUniqueMacModel VerifyUniqueMac(VerifyUniqueMacModel model)
         {
             var macId = model.MacId;
-            var productCode = model.ProductCode;
-            if (!string.IsNullOrEmpty(model.MacId) || !string.IsNullOrEmpty(productCode))
+            var productGroup = model.ProductGroup;
+            if (!string.IsNullOrEmpty(model.MacId) || !string.IsNullOrEmpty(productGroup))
             {
                 var parsedMacId = macId.Length >= 29 ? macId.Remove(macId.Length - 17, 17) : macId;
                 try
@@ -33,8 +33,8 @@ namespace ApplicationSource.Services
                             var sCmd = new SqlCommand("sp_LocateSmartMac", sConn) { CommandType = CommandType.StoredProcedure };
                             sCmd.Parameters.Add("@MACID", SqlDbType.NVarChar);
                             sCmd.Parameters["@MACID"].Value = parsedMacId;                            
-                            sCmd.Parameters.Add("@PRODUCTCODE", SqlDbType.NVarChar);
-                            sCmd.Parameters["@PRODUCTCODE"].Value = productCode;
+                            sCmd.Parameters.Add("@PRODUCTGROUP", SqlDbType.NVarChar);
+                            sCmd.Parameters["@PRODUCTGROUP"].Value = productGroup;
                             using (IDataReader reader1 = sCmd.ExecuteReader())
                             {
                                

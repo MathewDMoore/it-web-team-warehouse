@@ -87,28 +87,33 @@
             </obout:Column>
             <obout:Column DataField="ID" HeaderText="ID" Index="1" Width="60" ReadOnly="true">
             </obout:Column>
-            <obout:Column DataField="ITEMCODE" HeaderText="Item Code" Index="2" Width="150" Visible="true" ReadOnly="true">
+            <obout:Column DataField="ITEMCODE" HeaderText="Item Code" Index="2" Width="130" Visible="true" ReadOnly="true">
             </obout:Column>
-            <obout:Column DataField="REALITEMCODE" HeaderText="Real Item Code" Index="3" Width="150" ReadOnly="true">
+            <obout:Column DataField="REALITEMCODE" HeaderText="Real Item Code" Index="3" Width="130" ReadOnly="true">
             </obout:Column>
-            <obout:Column DataField="ALTTEXT" HeaderText="Description" Index="4" Width="275" Wrap="true" ReadOnly="true">
+            <obout:Column DataField="ALTTEXT" HeaderText="Description" Index="4" Width="230" Wrap="true" ReadOnly="true">
             </obout:Column>
             <obout:Column DataField="SERIALNUM" HeaderText="#" Index="5" Width="50" ReadOnly="true">
             </obout:Column>
-            <obout:Column DataField="SERIALCODE" HeaderText="Serial #" Index="6" Width="250" ItemStyle-Wrap="true" Wrap="true">
+            <obout:Column DataField="RETURNEDBYUSER" Visible="true" HeaderText="Returned" Index="6" Width="90" ReadOnly="true">
+            </obout:Column>
+            <obout:Column DataField="SERIALCODE" HeaderText="Serial #" Index="7" Width="270" ItemStyle-Wrap="true" Wrap="true">
                 <TemplateSettings EditTemplateId="SerialNumEdit" />
             </obout:Column>
-            <obout:Column DataField="PRODUCTID" Visible="false" HeaderText="ID" Index="7" Width="60" ReadOnly="true">
+            <obout:Column DataField="PRODUCTID" Visible="false" HeaderText="ID" Index="8" Width="60" ReadOnly="true">
             </obout:Column>
-            <obout:Column DataField="NOSERIALIZATION" SortOrder="ASC" SortPriority="1" Visible="false" HeaderText="Items to Be Serialized" Index="8" Width="60" ReadOnly="true">
+            <obout:Column DataField="NOSERIALIZATION" SortOrder="ASC" SortPriority="1" Visible="false" HeaderText="Items to Be Serialized" Index="9" Width="60" ReadOnly="true">
             </obout:Column>
-            <obout:Column DataField="COLOR" Visible="false" HeaderText="COLOR" Index="9" Width="60" ReadOnly="true">
+            <obout:Column DataField="COLOR" Visible="false" HeaderText="COLOR" Index="10" Width="60" ReadOnly="true">
             </obout:Column>
-            <obout:Column AllowEdit="true" HeaderText="Edit" Index="10" Width="130">
+            <obout:Column AllowEdit="true" HeaderText="Edit" Index="11" Width="130">
                 <TemplateSettings TemplateId="EditBtnTemplate" EditTemplateId="UpdateBtnTemplate" />
             </obout:Column>
-            <obout:Column DataField="SMARTCODEONLY" Visible="False" Index="11" Width="60" ReadOnly="true">
+            <obout:Column DataField="SMARTCODEONLY" Visible="False" Index="12" Width="60" ReadOnly="true">
             </obout:Column>
+            <obout:Column DataField="PRODUCTGROUP" Visible="False" Index="13" Width="60" ReadOnly="true">
+            </obout:Column>
+
         </Columns>
         <Templates>
             <obout:GridTemplate runat="server" ID="GroupTemplate">
