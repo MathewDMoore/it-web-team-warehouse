@@ -19,8 +19,11 @@ namespace C4InventorySerialization.Content
         {
             Session.Abandon();
             HttpCookie adAuthCookie = Response.Cookies["adAuthCookie"];
+            adAuthCookie.Expires = DateTime.Now.AddDays(-1D);
+            Response.Cookies.Add(adAuthCookie);
             //Response.Cookies.Clear();
             //FormsAuthentication.SignOut();
+            FormsAuthentication.SignOut();
         }
     }
 }

@@ -14,40 +14,36 @@ namespace C4InventorySerialization.Content
         private int _verifiedCount;
         private int _verifiedRecords;
         public int VerifiedDelivery;
-        public string Username;
+        public string _userName;
         private string _serverLocation = ConfigurationManager.AppSettings["ServerLocation"];
 
         protected void Page_Load(object sender, EventArgs e)
         {
-            Username = User.Identity.Name;
-            if (!Page.IsPostBack)
+           
+            if (Page.IsPostBack) return;
+
+            _docnum = Context.Request.QueryString["DeliveryNum"] != null ? Convert.ToInt32(Context.Request.QueryString["DeliveryNum"]) : 0;
+            _userName = User.Identity.Name;
+            
+            ValidateDocnum(_docnum);
+            CheckConfiguration.Text = _countDocnum.ToString();
+
+            if (_verifiedCount > 0)
             {
-                if (Context.Request.QueryString["DeliveryNum"] != null)
-                    _docnum = Convert.ToInt32(Context.Request.QueryString["DeliveryNum"]);
-                else
-                    _docnum = 0;
-
-
-                ValidateDocnum(_docnum);
-                CheckConfiguration.Text = _countDocnum.ToString();
-
-                if (_verifiedCount > 0)
-                {
-                    verifiedimg.Visible = true;
-                }
-                else
-                {
-                    if (_docnum != 0)
-                    {
-                        notverifiedimg.Visible = true;
-                    }
-                }
-
-                CreateGrid();
-                CreateGrid2();
-
-                //VerifyDelivery.Click += new EventHandler(this.VerifyRecord);
+                verifiedimg.Visible = true;
             }
+            else
+            {
+                if (_docnum != 0)
+                {
+                    notverifiedimg.Visible = true;
+                }
+            }
+
+            CreateGrid();
+            CreateGrid2();
+
+            //VerifyDelivery.Click += new EventHandler(this.VerifyRecord);
         }
 
         protected void RebindGrid(object sender, EventArgs e)
@@ -78,7 +74,7 @@ namespace C4InventorySerialization.Content
 
                     sCmd.Parameters["@DOCNUM"].Value = _docnum;
                     sCmd.Parameters["@SERVERLOCATION"].Value = _serverLocation;
-                    sCmd.Parameters["@USERNAME"].Value = Username;
+                    sCmd.Parameters["@USERNAME"].Value = User.Identity.Name;
 
                     using (IDataReader reader1 = sCmd.ExecuteReader())
                     {
@@ -205,7 +201,7 @@ namespace C4InventorySerialization.Content
                     sCmd.Parameters.Add("@DOCNUM", SqlDbType.Int);
                     sCmd.Parameters["@DOCNUM"].Value = _docnum;
                     sCmd.Parameters.Add("@USERNAME", SqlDbType.NVarChar);
-                    sCmd.Parameters["@USERNAME"].Value = Username;
+                    sCmd.Parameters["@USERNAME"].Value = User.Identity.Name;
 
                     IDataReader reader1 = sCmd.ExecuteReader();
                     while (reader1.Read())
@@ -268,7 +264,7 @@ namespace C4InventorySerialization.Content
                     sCmd.Parameters.Add("@MACID", SqlDbType.VarChar);
                     sCmd.Parameters["@MACID"].Value = macId;
                     sCmd.Parameters.Add("@USERNAME", SqlDbType.NVarChar);
-                    sCmd.Parameters["@USERNAME"].Value = Username;
+                    sCmd.Parameters["@USERNAME"].Value = User.Identity.Name;
                     var res = sCmd.ExecuteNonQuery();
                     sConn.Close();
                 }

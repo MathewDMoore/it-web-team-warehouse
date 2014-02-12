@@ -115,17 +115,17 @@ namespace C4InventorySerialization.Content
             using (SqlConnection sConn = new SqlConnection(connStr))
             {
                 sConn.Open();
-
+                
                 SqlCommand sCmd = new SqlCommand(ValidDOCNUM, sConn);
                 SqlCommand sCmd2 = new SqlCommand(VerifiedDOCNUM, sConn);
                 sCmd.Parameters.Add("@DOCNUM", SqlDbType.Int);
                 sCmd.Parameters["@DOCNUM"].Value = docnum;
                 sCmd.Parameters.Add("@USERNAME", SqlDbType.NVarChar);
-                sCmd.Parameters["@USERNAME"].Value = _userName;
+                sCmd.Parameters["@USERNAME"].Value = User.Identity.Name; 
                 sCmd2.Parameters.Add("@DOCNUM", SqlDbType.Int);
                 sCmd2.Parameters["@DOCNUM"].Value = docnum;
                 sCmd2.Parameters.Add("@USERNAME", SqlDbType.NVarChar);
-                sCmd2.Parameters["@USERNAME"].Value = _userName;
+                sCmd2.Parameters["@USERNAME"].Value = User.Identity.Name;
                 using (IDataReader reader1 = sCmd.ExecuteReader())
                 {
                     if (reader1.Read())
@@ -193,7 +193,7 @@ namespace C4InventorySerialization.Content
                     sCmd.Parameters.Add("@DOCNUM", SqlDbType.Int);
                     sCmd.Parameters["@DOCNUM"].Value = _docnum;
                     sCmd.Parameters.Add("@USERNAME", SqlDbType.NVarChar);
-                    sCmd.Parameters["@USERNAME"].Value = _userName;
+                    sCmd.Parameters["@USERNAME"].Value = User.Identity.Name;
 
                     IDataReader reader1 = sCmd.ExecuteReader();
                     while (reader1.Read())

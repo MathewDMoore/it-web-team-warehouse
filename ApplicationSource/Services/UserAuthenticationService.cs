@@ -28,16 +28,27 @@ namespace ApplicationSource.Services
 
                     //    Create the ticket, and add the groups.
                     var isCookiePersistent = false;
-                    var authTicket = new FormsAuthenticationTicket(1, userName,
-                    DateTime.Now, DateTime.Now.AddMinutes(120), isCookiePersistent, groups);
+                    FormsAuthenticationTicket authTicket;
+
+                    if (!string.IsNullOrEmpty(contractorName))
+                    {
+                        authTicket = new FormsAuthenticationTicket(1, contractorName + "-contractor",
+                        DateTime.Now, DateTime.Now.AddMinutes(120), isCookiePersistent, groups);
+                    }
+                    else
+                    {
+                        authTicket = new FormsAuthenticationTicket(1, userName,
+                        DateTime.Now, DateTime.Now.AddMinutes(120), isCookiePersistent, groups);
+                    }
+
 
                     //      Encrypt the ticket.
                     var encryptedTicket = FormsAuthentication.Encrypt(authTicket);
 
-                   return new UserAuthenticationModel { EncryptedTicket = encryptedTicket, IsAuthenticated = isAuthd, CookieName = FormsAuthentication.FormsCookieName};
+                    return new UserAuthenticationModel { EncryptedTicket = encryptedTicket, IsAuthenticated = isAuthd, CookieName = FormsAuthentication.FormsCookieName };
                 }
-                
-                return new UserAuthenticationModel(){IsAuthenticated = false, ErrorMessage = ERROR_MESSAGE};
+
+                return new UserAuthenticationModel() { IsAuthenticated = false, ErrorMessage = ERROR_MESSAGE };
             }
             catch (Exception ex)
             {

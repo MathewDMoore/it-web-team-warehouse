@@ -2,7 +2,7 @@
 <asp:Content ID="Content1" ContentPlaceHolderID="MainContent" runat="server">
     <table width="100%">
     <tr>
-        <td align="middle">
+        <td align="center">
             You have been logged out.
             <asp:hyperlink id="hlLogin" runat="server" 
             navigateurl="login.aspx">Log back in.</asp:hyperlink>
