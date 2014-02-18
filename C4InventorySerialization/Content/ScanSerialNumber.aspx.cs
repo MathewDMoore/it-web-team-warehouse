@@ -16,15 +16,26 @@ namespace C4InventorySerialization.Content
         public int VerifiedDelivery;
         public string _userName;
         private string _serverLocation = ConfigurationManager.AppSettings["ServerLocation"];
+        public string UserName
+        {
+            get
+            {
+                var _userName = "";
+                if (Session["User"] != null)
+                {
+                    _userName = ((ApplicationSource.User)Session["User"]).UserName;
+                }
+                return _userName;
+            }
+        }
 
         protected void Page_Load(object sender, EventArgs e)
         {
-           
             if (Page.IsPostBack) return;
 
             _docnum = Context.Request.QueryString["DeliveryNum"] != null ? Convert.ToInt32(Context.Request.QueryString["DeliveryNum"]) : 0;
             _userName = User.Identity.Name;
-            
+
             ValidateDocnum(_docnum);
             CheckConfiguration.Text = _countDocnum.ToString();
 
@@ -62,7 +73,7 @@ namespace C4InventorySerialization.Content
             if (_docnum != 0)
             {
                 string connStr = ConfigurationManager.ConnectionStrings["InventoryConnectionString"].ConnectionString;
-                
+
                 using (SqlConnection sConn = new SqlConnection(connStr))
                 {
                     sConn.Open();
@@ -88,7 +99,7 @@ namespace C4InventorySerialization.Content
 
         private void CreateGrid2()
         {
-            
+
             if (Context.Request.QueryString["DeliveryNum"] != null)
                 _docnum = Convert.ToInt32(Context.Request.QueryString["DeliveryNum"]);
             else
@@ -119,7 +130,7 @@ namespace C4InventorySerialization.Content
 
         protected void ValidateDocnum(int docnum)
         {
-            
+
             string connStr = ConfigurationManager.ConnectionStrings["InventoryConnectionString"].ConnectionString;
             string ValidDOCNUM =
                 "SELECT COUNT(*) AS PRODUCTCOUNT FROM [C4_SERIALNUMBERS_OUT] WHERE PRODUCTID IS NULL AND DOCNUM = @DOCNUM";
@@ -155,7 +166,7 @@ namespace C4InventorySerialization.Content
 
         protected void ValidateRecord(String macid, String itemCode, int id)
         {
-            
+
             string connStr = ConfigurationManager.ConnectionStrings["InventoryConnectionString"].ConnectionString;
             string ValidMacID =
                 "select count(*) from C4_SERIALNUMBERS_OUT T1, C4_MAINTAINPRODUCTID T2 where T1.PRODUCTID =T2.PRODUCTID AND T1.MACID = @MACID and T1.ITEMCODE = @ITEMCODE and T1.ID not in (@ID) AND T2.SMARTCODEONLY='false' ";
@@ -164,7 +175,7 @@ namespace C4InventorySerialization.Content
                 sConn.Open();
 
                 //sConn.BeginTransaction("TransactionFunction");
-                
+
                 SqlCommand sCmd = new SqlCommand(ValidMacID, sConn);
                 sCmd.Parameters.Add("@MACID", SqlDbType.VarChar);
                 sCmd.Parameters["@MACID"].Value = macid;
@@ -234,12 +245,12 @@ namespace C4InventorySerialization.Content
         protected void UpdateRecord(object sender, GridRecordEventArgs e)
         {
             var connStr = ConfigurationManager.ConnectionStrings["InventoryConnectionString"].ConnectionString;
-            
+
             var serialCode = e.Record["SERIALCODE"].ToString();
             var itemCode = e.Record["REALITEMCODE"].ToString();
             var id = int.Parse(e.Record["ID"].ToString());
             var isSmartCodeOnly = bool.Parse(e.Record["SMARTCODEONLY"].ToString());
-            
+
             var macId = serialCode.Length > 17 ? serialCode.Remove(serialCode.Length - 17, 17) : serialCode;
 
             ValidateRecord(macId, itemCode, id);
@@ -273,7 +284,7 @@ namespace C4InventorySerialization.Content
 
         protected void MacIdErrorMessage(String serialcode, String itemcode)
         {
-            
+
             var docNumError = 0;
             var idError = 0;
             var connStr = ConfigurationManager.ConnectionStrings["InventoryConnectionString"].ConnectionString;

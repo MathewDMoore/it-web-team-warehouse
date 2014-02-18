@@ -87,4 +87,4 @@ namespace C4InventorySerialization
 
         }
     }
-}
+}   

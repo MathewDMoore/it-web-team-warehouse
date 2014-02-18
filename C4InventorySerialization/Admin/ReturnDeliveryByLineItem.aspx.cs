@@ -32,7 +32,7 @@ namespace C4InventorySerialization.Admin
                             sCmd.Parameters.Add("@ID", SqlDbType.Int);
                             sCmd.Parameters["@ID"].Value = s;
                             sCmd.Parameters.Add("@USERNAME", SqlDbType.NVarChar);
-                            sCmd.Parameters["@USERNAME"].Value = HttpContext.Current.User.Identity.Name;
+                            sCmd.Parameters["@USERNAME"].Value = User.Identity.Name;
                             sCmd.ExecuteReader();
                         }
                     }

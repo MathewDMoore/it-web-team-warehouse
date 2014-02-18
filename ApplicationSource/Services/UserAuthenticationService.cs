@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Configuration;
+using System.Linq;
 using System.ServiceModel;
 using System.ServiceModel.Activation;
 using System.Web;
@@ -24,28 +25,37 @@ namespace ApplicationSource.Services
                 var isAuthd = adAuth.IsAuthenticated(userName, password);
                 if (isAuthd)
                 {
-                    var groups = adAuth.GetGroups();
+                    var user = new User()
+                        {
+                            Groups = adAuth.GetGroups().Split('|').ToList(),
+                            UserName = contractorName == null ? userName : contractorName + "-contractor"
+                        };
+
+                    HttpContext.Current.Session.Add("User", user);
+                    HttpContext.Current.Session.Timeout = 30;
+                    
+                    //var groups = adAuth.GetGroups();
 
                     //    Create the ticket, and add the groups.
-                    var isCookiePersistent = false;
-                    FormsAuthenticationTicket authTicket;
+                    //var isCookiePersistent = false;
+                    //FormsAuthenticationTicket authTicket;
 
-                    if (!string.IsNullOrEmpty(contractorName))
-                    {
-                        authTicket = new FormsAuthenticationTicket(1, contractorName + "-contractor",
-                        DateTime.Now, DateTime.Now.AddMinutes(120), isCookiePersistent, groups);
-                    }
-                    else
-                    {
-                        authTicket = new FormsAuthenticationTicket(1, userName,
-                        DateTime.Now, DateTime.Now.AddMinutes(120), isCookiePersistent, groups);
-                    }
+                    //if (!string.IsNullOrEmpty(contractorName))
+                    //{
+                    //    authTicket = new FormsAuthenticationTicket(1, contractorName + "-contractor",
+                    //    DateTime.Now, DateTime.Now.AddMinutes(120), isCookiePersistent, groups);
+                    //}
+                    //else
+                    //{
+                    //    authTicket = new FormsAuthenticationTicket(1, userName,
+                    //    DateTime.Now, DateTime.Now.AddMinutes(120), isCookiePersistent, groups);
+                    //}
 
 
-                    //      Encrypt the ticket.
-                    var encryptedTicket = FormsAuthentication.Encrypt(authTicket);
+                    ////      Encrypt the ticket.
+                    //var encryptedTicket = FormsAuthentication.Encrypt(authTicket);
 
-                    return new UserAuthenticationModel { EncryptedTicket = encryptedTicket, IsAuthenticated = isAuthd, CookieName = FormsAuthentication.FormsCookieName };
+                    return new UserAuthenticationModel { IsAuthenticated = true};
                 }
 
                 return new UserAuthenticationModel() { IsAuthenticated = false, ErrorMessage = ERROR_MESSAGE };

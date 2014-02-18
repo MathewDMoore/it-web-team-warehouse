@@ -91,17 +91,17 @@ namespace ApplicationSource
                 bool manager = IsAccountMemberOfGroup(_path, "CN=c4shipping-managers,CN=Users,DC=control4,DC=com");
                 bool user = IsAccountMemberOfGroup(_path, "CN=c4shipping-users,CN=Users,DC=control4,DC=com");
 
-                if (admin == true)
+                if (admin)
                 {
                     groupNames.Append("Admin");
                     groupNames.Append("|");
                 }
-                if (user == true)
+                if (user)
                 {
                     groupNames.Append("User");
                     groupNames.Append("|");
                 }
-                if (manager == true)
+                if (manager)
                 {
                     groupNames.Append("Manager");
                     groupNames.Append("|");

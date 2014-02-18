@@ -650,9 +650,8 @@
           <AutoAssignPort>True</AutoAssignPort>
           <DevelopmentServerPort>50657</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
-          <IISUrl>
-          </IISUrl>
-          <NTLMAuthentication>False</NTLMAuthentication>
+          <IISUrl>http://localhost/</IISUrl>
+          <NTLMAuthentication>True</NTLMAuthentication>
           <UseCustomServer>False</UseCustomServer>
           <CustomServerUrl>
           </CustomServerUrl>

@@ -7,17 +7,17 @@
 <head runat="server">
     <title>C4 Serialization Application</title>
     <link href="//netdna.bootstrapcdn.com/bootstrap/3.0.3/css/bootstrap.min.css" rel="stylesheet" type="text/css"/>
-    <script type="text/javascript" src="../scripts/knockout-2.1.0.js"></script>
-    <script type="text/javascript" src="../scripts/ShipToolScript.js"></script>
-    <script type="text/javascript" src="../scripts/jquery-2.0.3.min.js"></script>
-    <script type="text/javascript" src="../scripts/jquery.json-2.3.min.js"></script>'
-    <script type="text/javascript" src="../scripts/json-min.js"></script>
+    <script type="text/javascript" src="/scripts/knockout-2.1.0.js"></script>
+    <script type="text/javascript" src="/scripts/ShipToolScript.js"></script>
+    <script type="text/javascript" src="/scripts/jquery-2.0.3.min.js"></script>
+    <script type="text/javascript" src="/scripts/jquery.json-2.3.min.js"></script>'
+    <script type="text/javascript" src="/scripts/json-min.js"></script>
     <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.0.4/angular.min.js" type="text/javascript"></script>
     <script src="//netdna.bootstrapcdn.com/bootstrap/3.0.3/js/bootstrap.min.js" type="text/javascript"></script>
-    <script src="../scripts/Directives.js" type="text/javascript"></script>
-    <script src="../scripts/jquery.cookie.js" type="text/javascript"></script>
-    <script src="../scripts/common.js" type="text/javascript"></script>
-    <link href="../C4Styles.css" rel="stylesheet" type="text/css" />
+    <script src="/scripts/Directives.js" type="text/javascript"></script>
+    <script src="/scripts/jquery.cookie.js" type="text/javascript"></script>
+    <script src="/scripts/common.js" type="text/javascript"></script>
+    <link href="/C4Styles.css" rel="stylesheet" type="text/css" />
     
     <script type="text/javascript">
         var myApp = angular.module('shipApp', ['myDirectives']);
@@ -104,7 +104,7 @@
                 </div>
             </div>
             <div id="bottom">
-                Created by the Control4 IT Team | Copyright © 2013 Control4 Corp.
+                Created by the Control4 IT Team | Copyright © 2014 Control4 Corp.
             </div>
         </div>
 

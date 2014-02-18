@@ -65,6 +65,7 @@
     <Compile Include="Services\VerifyUniqueMacService.cs" />
     <Compile Include="Services\PartReturnService.cs" />
     <Compile Include="Services\MacIdSearchService.cs" />
+    <Compile Include="User.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Domain\Domain.csproj">
