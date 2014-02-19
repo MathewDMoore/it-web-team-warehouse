@@ -27,7 +27,7 @@
     </table>
 
     <!-- /.modal -->
-    <hr>
+    <hr/>
     <h4>
         <label id="errorMessage" />
     </h4>

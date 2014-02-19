@@ -24,7 +24,7 @@
 
     </script>
 </head>
-<body ng-app="shipApp" runat="server">
+<body ng-app="shipApp">
     <form runat="server">
         <div id="wrapper" class="wrapper">
             <div id="middle">

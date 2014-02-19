@@ -1,0 +1,109 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    @Styles.Render("~/Content/css")
+    @Scripts.Render("~/bundles/modernizr")
+    <title>C4 Serialization Application</title>
+    <link href="//netdna.bootstrapcdn.com/bootstrap/3.0.3/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
+    <script type="text/javascript" src="/scripts/ShipToolScript.js"></script>
+@*    <script type="text/javascript" src="/scripts/jquery-2.0.3.min.js"></script>*@
+@*    <script type="text/javascript" src="/scripts/jquery.json-2.3.min.js"></script>'*@
+@*    <script type="text/javascript" src="/scripts/json-min.js"></script>*@
+    <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.0.4/angular.min.js" type="text/javascript"></script>
+    <script src="//netdna.bootstrapcdn.com/bootstrap/3.0.3/js/bootstrap.min.js" type="text/javascript"></script>
+    <script src="/scripts/Directives.js" type="text/javascript"></script>
+    <script src="/scripts/common.js" type="text/javascript"></script>
+    <link href="//netdna.bootstrapcdn.com/bootstrap/3.0.3/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
+
+    <script type="text/javascript">
+        var myApp = angular.module('shipApp', ['myDirectives']);
+
+    </script>
+</head>
+<body ng-app="shipApp" runat="server">
+    <form runat="server">
+        <div id="wrapper" class="wrapper">
+            <div id="middle">
+
+                <div id="header">
+                    <img id="logo" alt="logo" src="/Content/images/c4-logo.png" />
+                    <div id="loggedUser"></div>
+
+                    <!--// The head of the menus //-->
+                    <div id="menu">
+                        <oem:EasyMenu ID="EasymenuMain" runat="server" ShowEvent="Always" StyleFolder="/Content/horizontal1"
+                                      Position="Horizontal" CSSMenu="ParentMenu" CSSMenuItemContainer="ParentItemContainer" Width="700">
+                            <cssclassescollection>
+                                <oem:cssclasses objecttype="OboutInc.EasyMenu_Pro.MenuItem" componentsubmenucellover="ParentItemSubMenuCellOver"
+                                                componentcontentcell="ParentItemContentCell" component="ParentItem" componentsubmenucell="ParentItemSubMenuCell"
+                                                componenticoncellover="ParentItemIconCellOver" componenticoncell="ParentItemIconCell"
+                                                componentover="ParentItemOver" componentcontentcellover="ParentItemContentCellOver"></oem:cssclasses>
+                                <oem:cssclasses objecttype="OboutInc.EasyMenu_Pro.MenuSeparator" componentsubmenucellover="ParentSeparatorSubMenuCellOver"
+                                                componentcontentcell="ParentSeparatorContentCell" component="ParentSeparator"
+                                                componentsubmenucell="ParentSeparatorSubMenuCell" componenticoncellover="ParentSeparatorIconCellOver"
+                                                componenticoncell="ParentSeparatorIconCell" componentover="ParentSeparatorOver"
+                                                componentcontentcellover="ParentSeparatorContentCellOver"></oem:cssclasses>
+                            </cssclassescollection>
+                            <components>
+
+                                <oem:menuitem innerhtml="Deliveries" id="MenuItem1" url="../Content/ScanSerialNumber.aspx"></oem:menuitem>
+                                <oem:menuseparator innerhtml="|" id="MenuSeparator1"></oem:menuseparator>
+
+                                <oem:menuitem innerhtml="Inventory Requests" id="MenuItem2" url="../Content/ScanInventoryRequest.aspx"></oem:menuitem>
+                                <oem:menuseparator innerhtml="|" id="MenuSeparator2"></oem:menuseparator>
+
+                                <oem:menuitem innerhtml="Returns" id="MenuItem3" url="../Content/Returns.aspx"></oem:menuitem>
+                                <oem:menuseparator innerhtml="|" id="MenuSeparator3"></oem:menuseparator>
+
+                                <oem:menuitem innerhtml="Maintain Product IDs" id="MenuItem4" url="../Admin/MaintainProductId.aspx"></oem:menuitem>
+                                <oem:menuseparator innerhtml="|" id="MenuSeparator4"></oem:menuseparator>
+
+                                <oem:menuitem innerhtml="Maintain Kits" id="MenuItem5" url="../Admin/MaintainKits.aspx"></oem:menuitem>
+                                <oem:menuseparator innerhtml="|" id="MenuSeparator5"></oem:menuseparator>
+
+                                <oem:menuitem innerhtml="Delivery History" id="MenuItem6" url="../History/DeliveryHistory.aspx"></oem:menuitem>
+                                <oem:menuseparator innerhtml="|" id="MenuSeparator6"></oem:menuseparator>
+
+                                <oem:menuitem innerhtml="IR History" id="MenuItem7" url="../History/IRHistory.aspx"></oem:menuitem>
+                                <oem:menuseparator innerhtml="|" id="MenuSeparator7"></oem:menuseparator>
+
+                                <oem:menuitem innerhtml="Export Mac ID" id="MenuItem8" url="../Content/ExportMacAddresses.aspx"></oem:menuitem>
+                                <oem:menuseparator innerhtml="|" id="MenuSeparator8"></oem:menuseparator>
+
+
+                                <oem:menuitem innerhtml="Search by Mac" id="MenuItem9" url="../Content/Search.aspx"></oem:menuitem>
+                                <oem:menuseparator innerhtml="|" id="MenuSeparator9"></oem:menuseparator>
+
+
+                                <oem:menuitem innerhtml="Duplicate Mac Report" id="MenuItem10" url="../Content/DuplicateMacReport.aspx"></oem:menuitem>
+                                <oem:menuseparator innerhtml="|" id="MenuSeparator10"></oem:menuseparator>
+
+                                <%--                                <oem:menuitem innerhtml="History Search" id="MenuItem11" url="../Content/History.aspx"></oem:menuitem>
+                                <oem:menuseparator innerhtml="|" id="MenuSeparator10"></oem:menuseparator>--%>
+
+                                <oem:menuitem innerhtml="Logout" id="MenuItem11" url="../Content/Logout.aspx"></oem:menuitem>
+
+                            </components>
+                        </oem:EasyMenu>
+                    </div>
+
+                </div>
+
+                <div id="content">
+      @RenderBody();
+                </div>
+
+                <div id="navigation">
+                </div>
+            </div>
+            <div id="bottom">
+                Created by the Control4 IT Team | Copyright © 2013 Control4 Corp.
+            </div>
+        </div>
+
+    </form>
+    @RenderSection("scripts", required: false)
+</body>
+</html>
