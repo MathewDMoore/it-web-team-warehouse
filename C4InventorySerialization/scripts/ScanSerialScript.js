@@ -228,7 +228,7 @@ function ReturnDelivery(sDoc) {
 
 
 function SubmitDelivery(sDoc) {
-    var o = sDoc;
+    var o = sDoc; 
     if (sDoc == '') {
         alert("You must enter a Delivery Number");
     }
@@ -287,9 +287,11 @@ function verifydeliverycheck() {
     }
     var verifiedDelivery = document.getElementById('VerifiedDelivery').value;
 
-    if (verifiedDelivery == 1) {
-        PrintGrid();
-    }
+    //if (verifiedDelivery == 1) {
+    //    if (confirm("This Delivery Request appears to be ready to ship. \n\n Would you like to print a delivery request verification confirmation?")) {
+    //        PrintGrid();
+    //    }
+    //}
 }
 
 window.onload = function () {

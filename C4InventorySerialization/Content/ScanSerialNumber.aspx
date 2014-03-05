@@ -6,7 +6,7 @@
 
 <asp:Content ID="Content1" ContentPlaceHolderID="MainContent" runat="server">
 
-    <script type="text/javascript" src="/scripts/ScanSerialScript.js">
+    <script type="text/javascript" src="../scripts/ScanSerialScript.js">
     </script>
 
     <%  
@@ -25,7 +25,7 @@
                 <div id="pgTitle">Deliveries</div>
             </td>
             <td>
-                <div id="loggedUser">Logged in as: <%=UserName %></div>
+                <div id="loggedUser">Logged in as: <%=User.Identity.Name %></div>
             </td>
         </tr>
     </table>

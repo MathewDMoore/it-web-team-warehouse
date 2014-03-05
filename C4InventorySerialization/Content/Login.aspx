@@ -21,18 +21,22 @@
         </tr>
         <tr>
             <td>
-                <input type="button" id="LoginBtn" value="Log In" onclick="UserNameCheck()" /></td>
+                <asp:Button ID="LoginBtn" Text="Log In" OnClick="Login_Click" runat="server" /></td>
+            <%--<input type="button" id="LoginBtn" value="Log In" onclick="UserNameCheck()" />--%>
             <td></td>
         </tr>
     </table>
 
     <!-- /.modal -->
-    <hr/>
+    <hr>
     <h4>
+        <h3>
+            <asp:Label ID="Output" runat="server" /></h3>
         <label id="errorMessage" />
     </h4>
 
-    <div class="modal fade" id="myModal">
+    <!-- Modal code for Contractor Login. -->
+    <%--<div class="modal fade" id="myModal">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
@@ -54,5 +58,5 @@
             <!-- /.modal-content -->
         </div>
         <!-- /.modal-dialog -->
-    </div>
+    </div>--%>
 </asp:Content>

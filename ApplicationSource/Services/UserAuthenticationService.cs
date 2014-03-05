@@ -33,29 +33,17 @@ namespace ApplicationSource.Services
 
                     HttpContext.Current.Session.Add("User", user);
                     HttpContext.Current.Session.Timeout = 30;
-                    
-                    //var groups = adAuth.GetGroups();
+
+                    var groups = adAuth.GetGroups();
 
                     //    Create the ticket, and add the groups.
-                    //var isCookiePersistent = false;
-                    //FormsAuthenticationTicket authTicket;
+                    var isCookiePersistent = false;
+                    var authTicket = new FormsAuthenticationTicket(1, userName, DateTime.Now, DateTime.Now.AddMinutes(120), isCookiePersistent, groups);
 
-                    //if (!string.IsNullOrEmpty(contractorName))
-                    //{
-                    //    authTicket = new FormsAuthenticationTicket(1, contractorName + "-contractor",
-                    //    DateTime.Now, DateTime.Now.AddMinutes(120), isCookiePersistent, groups);
-                    //}
-                    //else
-                    //{
-                    //    authTicket = new FormsAuthenticationTicket(1, userName,
-                    //    DateTime.Now, DateTime.Now.AddMinutes(120), isCookiePersistent, groups);
-                    //}
+                    //      Encrypt the ticket.
+                    var encryptedTicket = FormsAuthentication.Encrypt(authTicket);
 
-
-                    ////      Encrypt the ticket.
-                    //var encryptedTicket = FormsAuthentication.Encrypt(authTicket);
-
-                    return new UserAuthenticationModel { IsAuthenticated = true};
+                    return new UserAuthenticationModel { IsAuthenticated = true, EncryptedTicket = encryptedTicket, CookieName = FormsAuthentication.FormsCookieName };
                 }
 
                 return new UserAuthenticationModel() { IsAuthenticated = false, ErrorMessage = ERROR_MESSAGE };
@@ -67,3 +55,4 @@ namespace ApplicationSource.Services
         }
     }
 }
+

@@ -16,14 +16,14 @@ namespace C4InventorySerialization.Content
         private int _verifiedCount;
         private int _verifiedRecords;
         public int VerifiedDelivery;
-        public string _userName;
+        public string UserName;
 
         private string _serverLocation = ConfigurationManager.AppSettings["ServerLocation"];
 
 
         protected void Page_Load(object sender, EventArgs e)
         {
-            _userName = User.Identity.Name;
+            UserName = User.Identity.Name;
             if (!Page.IsPostBack)
             {
                 if (Context.Request.QueryString["DeliveryNum"] != null)

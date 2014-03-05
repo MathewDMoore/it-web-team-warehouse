@@ -14,27 +14,15 @@ namespace C4InventorySerialization.Content
         private int _verifiedCount;
         private int _verifiedRecords;
         public int VerifiedDelivery;
-        public string _userName;
+        public string UserName;
         private string _serverLocation = ConfigurationManager.AppSettings["ServerLocation"];
-        public string UserName
-        {
-            get
-            {
-                var _userName = "";
-                if (Session["User"] != null)
-                {
-                    _userName = ((ApplicationSource.User)Session["User"]).UserName;
-                }
-                return _userName;
-            }
-        }
 
         protected void Page_Load(object sender, EventArgs e)
         {
             if (Page.IsPostBack) return;
 
             _docnum = Context.Request.QueryString["DeliveryNum"] != null ? Convert.ToInt32(Context.Request.QueryString["DeliveryNum"]) : 0;
-            _userName = User.Identity.Name;
+            UserName = User.Identity.Name;
 
             ValidateDocnum(_docnum);
             CheckConfiguration.Text = _countDocnum.ToString();

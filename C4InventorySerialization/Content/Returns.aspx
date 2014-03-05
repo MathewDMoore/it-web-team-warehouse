@@ -6,7 +6,7 @@
 
     <div ng-controller="ReturnsController">
         <div id="returnCodes" ng-init="addInput()">
-            <div id="smartCodeInput" ng-repeat="item in returnItems">
+            <div id="smartCodeInput" ng-repeat="item in returnItems" style="padding-bottom: 10px">
                 Smart Code:
             <input type="text" class="textbox" size="40" ng-model="item.MacId" />
                 <span ng-show="item.HasErrors" style="color: red; font-weight: bolder">{{item.ErrorMessage}}</span>
