@@ -22,40 +22,56 @@ namespace ApplicationSource.Services
         {
             foreach (var item in model)
             {
-                if (!string.IsNullOrEmpty(item.MacId))
+                if (!string.IsNullOrEmpty(item.SmartCode))
                 {
-                    var macId = item.MacId;
-                    var parsedMacId = macId.Length >= 29 ? macId.Remove(macId.Length - 17, 17) : macId;
-
                     try
                     {
-                        using (var sConn = new SqlConnection(_connStr))
+                        if (item.MacId.Length == 12 || item.MacId.Length == 16)
                         {
-                            sConn.Open();
-
-                            var sCmd = new SqlCommand("sp_ReturnItemByMacId", sConn) { CommandType = CommandType.StoredProcedure };
-                            sCmd.Parameters.Add("@MACID", SqlDbType.NVarChar);
-                            sCmd.Parameters["@MACID"].Value = parsedMacId;
-                            sCmd.Parameters.Add("@USERNAME", SqlDbType.NVarChar);
-                            sCmd.Parameters["@USERNAME"].Value = _userName;
-                            using (IDataReader reader1 = sCmd.ExecuteReader())
+                            using (var sConn = new SqlConnection(_connStr))
                             {
-                                if (reader1.RecordsAffected < 1)
+                                sConn.Open();
+
+                                var sCmd = new SqlCommand("sp_ReturnItemByMacId", sConn)
+                                    {
+                                        CommandType = CommandType.StoredProcedure
+                                    };
+                                sCmd.Parameters.Add("@MACID", SqlDbType.NVarChar);
+                                sCmd.Parameters["@MACID"].Value = item.SmartCode;
+                                sCmd.Parameters.Add("@USERNAME", SqlDbType.NVarChar);
+                                sCmd.Parameters["@USERNAME"].Value = _userName;
+                                using (IDataReader reader1 = sCmd.ExecuteReader())
                                 {
-                                    item.ErrorMessage = "This Mac has already been returned, or does not exist on a delivery.";
+                                    if (reader1.RecordsAffected < 1)
+                                    {
+                                        item.Success = false;
+                                        item.ErrorMessage =
+                                            "This Mac has already been returned, or does not exist on a delivery.";
+                                    }
+                                    else
+                                        item.Success = true;
                                 }
-                                else
-                                    item.Success = true;
                             }
+                        }
+                        else
+                        {
+                            item.Success = false;
+                            item.ErrorMessage =
+                                string.Format("The Smart Code you entered is not the correct length ({0} characters). Must be 12, 16, 29 or 33 in Length.",
+                                              item.SmartCode.Length);
                         }
                     }
                     catch (Exception ex)
                     {
+                        item.Success = false;
                         item.ErrorMessage = "Error returning this item. Please Review MacId.";
                     }
                 }
                 else
+                {
+                    item.Success = false;
                     item.ErrorMessage = "Error returning this item. Please Review MacId.";
+                }
             }
             return model;
         }

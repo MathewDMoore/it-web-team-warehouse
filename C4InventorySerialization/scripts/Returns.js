@@ -3,7 +3,7 @@
     $scope.returnItems = [];
     $scope.addInput = function () {
         $scope.returnItems.push(
-            new ReturnItem({ MacId: '', ErrorMessage: '', HasErrors: false, DocNum: '', Success: false })
+            new ReturnItem({ SmartCode: '', ErrorMessage: '', HasErrors: false, DocNum: '', Success: false })
         );
     };
 
@@ -13,7 +13,7 @@
 
         for (i = 0; i < $scope.returnItems.length; i++) {
             var returnItem = {};
-            returnItem.MacId = $scope.returnItems[i].MacId;
+            returnItem.SmartCode = $scope.returnItems[i].SmartCode;
             returnItem.ErrorMessage = $scope.returnItems[i].ErrorMessage;
             returnItem.HasErrors = $scope.returnItems[i].HasErrors;
             returnItem.DocNum = $scope.returnItems[i].DocNum;
@@ -64,7 +64,7 @@
 
 var ReturnItem = function (item) {
     var $scope = this;
-    $scope.MacId = item.MacId;
+    $scope.SmartCode = item.SmartCode;
     $scope.ErrorMessage = item.ErrorMessage;
     $scope.HasErrors = item.HasErrors;
     $scope.DocNum = item.DocNum;

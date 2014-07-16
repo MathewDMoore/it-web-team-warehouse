@@ -7,7 +7,7 @@ namespace ApplicationSource.Models
     public class ReturnLineItem
     {
         [DataMember]
-        public string MacId { get; set; }
+        public string SmartCode { get; set; }
         [DataMember]
         public string DocNum { get; set; }
         [DataMember]
@@ -25,6 +25,15 @@ namespace ApplicationSource.Models
         {
             get;
             set;
+        }
+
+        public string MacId
+        {
+            get
+            {
+                return SmartCode.Length >= 29 ? SmartCode.Remove(SmartCode.Length - 17, 17) : SmartCode;
+            }
+
         }
     }
 }
