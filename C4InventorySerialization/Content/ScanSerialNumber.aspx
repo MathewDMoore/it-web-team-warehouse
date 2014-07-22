@@ -118,7 +118,7 @@
             </obout:GridTemplate>
             <obout:GridTemplate ID="SerialNumEdit" runat="server" ControlID="txtEditText" ControlPropertyName="value">
                 <Template>
-                    <input size="35" id="txtEditText" tabindex="1" type="text" style="font-family: Verdana; font-size: 7pt;" />
+                    <input size="35" id="txtEditText" onchange="onDoubleClick();" tabindex="1" type="text" style="font-family: Verdana; font-size: 7pt;" />
                 </Template>
             </obout:GridTemplate>
             <obout:GridTemplate runat="server" ID="EditBtnTemplate">

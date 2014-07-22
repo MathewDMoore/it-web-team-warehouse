@@ -66,7 +66,6 @@ function validate(record, $http) {
 
                 if (!returnedItem.ErrorMessage) {
                     var nextRs = parseInt(record.SERIALNUM) || 0;
-                    //                    document.getElementById('save_rownum').value = nextRs;
                     checkKey(nextRs);
                 } else {
                     alert(returnedItem.ErrorMessage);
@@ -110,7 +109,7 @@ function ClearDelivery(docNumber) {
                 var jsonResponse = $.parseJSON(response);
                 if (jsonResponse == true) {
                     alert("Successfully Cleared!");
-                    location.href = 'ScanSerialNumber.aspx'
+                    location.href = 'ScanSerialNumber.aspx';
                 } else {
                     alert("There was an error clearing this delivery.");
                 }
@@ -145,10 +144,10 @@ function Left(str, n) {
 function checkKey(recordId) {
 
     //The return or enter was pressed so submit the form
-    var NoSerial = grid1.Rows[recordId].Cells[7].Value;
-    if (NoSerial != 'True') {
-        grid1.editRecord(recordId);
-    }
+    grid1.refresh();
+    setTimeout(function() { grid1.editRecord(recordId); }, 1500);
+
+
 }
 
 
@@ -183,7 +182,7 @@ function onDoubleClick() {
     if (editingRs != null) {
         var nextRs = parseInt(editingRs) + 1 || 0;
         document.getElementById('save_rownum').value = nextRs;
-        grid1.updateRecord(editingRs);
+      //  grid1.updateRecord(editingRs);
     } else {
         dblClickRs = null;
     }
