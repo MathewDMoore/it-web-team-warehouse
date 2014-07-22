@@ -291,6 +291,7 @@
     <Content Include="Content\images\bottommiddle.jpg" />
     <Content Include="Content\images\bottomrightcorner.jpg" />
     <Content Include="Content\images\button.gif" />
+    <Content Include="Content\images\c4-logo.png" />
     <Content Include="Content\images\c4ContentTopRightBackground.gif" />
     <Content Include="Content\images\CalendarPopup.gif" />
     <Content Include="Content\images\contact-us.gif" />

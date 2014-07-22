@@ -22,26 +22,26 @@ namespace Warehouse.Controllers
 
         public ActionResult ScanSerialNumber(int deliveryNum=0)
         {
-            _docnum = deliveryNum;
-            _userName = User.Identity.Name;
-
-            ValidateDocnum(_docnum);
-            CheckConfiguration.Text = _countDocnum.ToString();
-
-            if (_verifiedCount > 0)
-            {
-                verifiedimg.Visible = true;
-            }
-            else
-            {
-                if (_docnum != 0)
-                {
-                    notverifiedimg.Visible = true;
-                }
-            }
-
-            CreateGrid();
-            CreateGrid2();
+//            _docnum = deliveryNum;
+//            _userName = User.Identity.Name;
+//
+//            ValidateDocnum(_docnum);
+//            CheckConfiguration.Text = _countDocnum.ToString();
+//
+//            if (_verifiedCount > 0)
+//            {
+//                verifiedimg.Visible = true;
+//            }
+//            else
+//            {
+//                if (_docnum != 0)
+//                {
+//                    notverifiedimg.Visible = true;
+//                }
+//            }
+//
+//            CreateGrid();
+//            CreateGrid2();
             return View("ScanSerialNumber");
         }
 
@@ -95,36 +95,36 @@ namespace Warehouse.Controllers
         }
         private void CreateGrid()
         {
-            if (Context.Request.QueryString["DeliveryNum"] != null)
-                _docnum = Convert.ToInt32(Context.Request.QueryString["DeliveryNum"]);
-            else
-                _docnum = 0;
-
-            if (_docnum != 0)
-            {
-                string connStr = ConfigurationManager.ConnectionStrings["InventoryConnectionString"].ConnectionString;
-
-                using (SqlConnection sConn = new SqlConnection(connStr))
-                {
-                    sConn.Open();
-                    SqlCommand sCmd = new SqlCommand("sp_delivery_synch", sConn);
-                    sCmd.CommandType = CommandType.StoredProcedure;
-                    sCmd.Parameters.Add("@DOCNUM", SqlDbType.Int);
-                    sCmd.Parameters.Add("@SERVERLOCATION", SqlDbType.VarChar);
-                    sCmd.Parameters.Add("@USERNAME", SqlDbType.NVarChar);
-
-                    sCmd.Parameters["@DOCNUM"].Value = _docnum;
-                    sCmd.Parameters["@SERVERLOCATION"].Value = _serverLocation;
-                    sCmd.Parameters["@USERNAME"].Value = User.Identity.Name;
-
-                    using (IDataReader reader1 = sCmd.ExecuteReader())
-                    {
-                        grid1.DataSource = reader1;
-                        grid1.DataBind();
-                    }
-                    sConn.Close();
-                }
-            }
+//            if (Context.Request.QueryString["DeliveryNum"] != null)
+//                _docnum = Convert.ToInt32(Context.Request.QueryString["DeliveryNum"]);
+//            else
+//                _docnum = 0;
+//
+//            if (_docnum != 0)
+//            {
+//                string connStr = ConfigurationManager.ConnectionStrings["InventoryConnectionString"].ConnectionString;
+//
+//                using (SqlConnection sConn = new SqlConnection(connStr))
+//                {
+//                    sConn.Open();
+//                    SqlCommand sCmd = new SqlCommand("sp_delivery_synch", sConn);
+//                    sCmd.CommandType = CommandType.StoredProcedure;
+//                    sCmd.Parameters.Add("@DOCNUM", SqlDbType.Int);
+//                    sCmd.Parameters.Add("@SERVERLOCATION", SqlDbType.VarChar);
+//                    sCmd.Parameters.Add("@USERNAME", SqlDbType.NVarChar);
+//
+//                    sCmd.Parameters["@DOCNUM"].Value = _docnum;
+//                    sCmd.Parameters["@SERVERLOCATION"].Value = _serverLocation;
+//                    sCmd.Parameters["@USERNAME"].Value = User.Identity.Name;
+//
+//                    using (IDataReader reader1 = sCmd.ExecuteReader())
+//                    {
+//                        grid1.DataSource = reader1;
+//                        grid1.DataBind();
+//                    }
+//                    sConn.Close();
+//                }
+//            }
         }
     }
 }

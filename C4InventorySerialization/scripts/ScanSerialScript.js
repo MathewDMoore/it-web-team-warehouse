@@ -25,18 +25,10 @@ function validate(record, $http) {
         return false;
     }
 
-    var notDuplicate = false;
     var isRequiredSmartCode = record.SMARTCODEONLY == "True";
     var originalMac = record.SERIALCODE.trim();
     var modifiedMac = $.trim(originalMac);
     
-    //if (isRequiredSmartCode) {
-    //    if (modifiedMac.length != 17) {
-    //        alert("You must enter a SmartCode that is 17 characters in length!");
-    //        return false;
-    //    }
-    //}
-
     if (!isRequiredSmartCode) {
         modifiedMac = modifiedMac.substring(0, modifiedMac.length - 17);
         
@@ -188,20 +180,17 @@ function onCallbackError(errorMessage, commandType, recordIndex, data) {
     }
 }
 
-function onDoubleClick(iRecordIndex) {
-    var editingRs = grid1.RecordInEditMode;
-    var nextRs = 0;
-    if (editingRs != null) {
-        dblClickRs = iRecordIndex;
-        nextRs = parseInt(editingRs) + 1;
-        document.getElementById('save_rownum').value = nextRs;
-        grid1.updateRecord(editingRs);
-
-
-    } else {
-        dblClickRs = null;
-    }
-}
+//function onDoubleClick() {
+//    var editingRs = grid1.RecordInEditMode;
+//    
+//    if (editingRs != null) {
+//        var nextRs = parseInt(editingRs) + 1||0;
+//        document.getElementById('save_rownum').value = nextRs;
+//        grid1.updateRecord(editingRs);
+//    } else {
+//        dblClickRs = null;
+//    }
+//}
 
 function ReturnDelivery(sDoc) {
     var o = sDoc;

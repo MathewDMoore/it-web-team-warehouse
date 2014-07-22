@@ -1,32 +1,28 @@
-﻿window.onload = function () {
-    document.getElementById('ctl00_MainContent_UserName').focus();
-    document.getElementById('ctl00_MainContent_UserName').select();
-};
-
-var EnteredUserName, Password, ContractorFirstName, ContractorLastName;
-
-function capLock(e) {
-    kc = e.keyCode ? e.keyCode : e.which;
-    sk = e.shiftKey ? e.shiftKey : ((kc == 16) ? true : false);
-    if (((kc >= 65 && kc <= 90) && !sk) || ((kc >= 97 && kc <= 122) && sk))
-        document.getElementById('divMayus').style.visibility = 'visible';
-    else
-        document.getElementById('divMayus').style.visibility = 'hidden';
-};
-
-function LoginController($http,$window) {
+﻿function LoginController($http,$window) {
     var login = this;
     login.Username = null;
     login.Password = null;
     login.UserNameCheck = function() {
         if (login.Username.toLowerCase() === 'contractshipping') {
             $('#myModal').modal({ show: true, keyboard: false, backdrop: 'static' });
-            $("#modalFirstName").focus();
+//            login.
         } else {
             login.SubmitLogin();
         }
 
     };
+    login.CapLock = function(e) {
+        var kc = e.keyCode ? e.keyCode : e.which;
+        var sk = e.shiftKey ? e.shiftKey : ((kc == 16) ? true : false);
+        if (((kc >= 65 && kc <= 90) && !sk) || ((kc >= 97 && kc <= 122) && sk)) {
+            login.ShowMayus = true;
+        }
+        else {
+            login.ShowMayus = false;
+        }
+    };
+
+
     login.SubmitLogin = function() {
         $http({
             method: "POST",
@@ -46,14 +42,8 @@ function LoginController($http,$window) {
 
         });
     };
+    login.SubmitContractorDetails = function() {
+        login.ShowModel = false;
+        login.SubmitLogin();
+    };
 }
-
-
-
-function SubmitContractorDetails() {
-    ContractorFirstName = document.getElementById('modalFirstName').value;
-    ContractorLastName = document.getElementById('modalLastName').value;
-    $('#myModal').modal('hide');
-    SubmitLogin();
-}
-
