@@ -73,7 +73,7 @@
     <obout:Grid ID="grid1" runat="server" OnRebind="RebindGrid" AllowDataAccessOnServer="true" KeepSelectedRecords="true" CallbackMode="true" AllowColumnResizing="false" AllowAddingRecords="false" Serialize="true"
         AutoGenerateColumns="false" AllowRecordSelection="false" AllowKeyNavigation="false" GenerateRecordIds="true" AllowGrouping="true" ShowGroupsInfo="true"
         ShowFooter="true" AllowSorting="true" PageSize="500" ShowLoadingMessage="false" AllowMultiRecordEditing="false" FolderExports="../Exports">
-        <ClientSideEvents OnClientEdit="onEdit" OnClientUpdate="checkKey" OnBeforeClientUpdate="validate" OnClientCallbackError="onCallbackError" />
+        <ClientSideEvents OnClientEdit="onEdit" OnBeforeClientUpdate="validate" OnClientCallbackError="onCallbackError" />
         <CssSettings CSSExportHeaderCellStyle="font-family:arial;font-weight: bold;background-color: #CCCCCC;color: black;" CSSExportCellStyle="font-family: arial;background-color: white;color: black;" />
         <ExportingSettings FileName="IR" ExportedFilesLifeTime="0" ExportedFilesTargetWindow="New" AppendTimeStamp="true" ExportHiddenColumns="false" KeepColumnSettings="true" ExportAllPages="true" />
         <TemplateSettings GroupHeaderTemplateId="GroupTemplate" />
@@ -118,7 +118,7 @@
             </obout:GridTemplate>
             <obout:GridTemplate ID="SerialNumEdit" runat="server" ControlID="txtEditText" ControlPropertyName="value">
                 <Template>
-                    <input size="35" id="txtEditText" onchange="onDoubleClick();" tabindex="1" type="text" style="font-family: Verdana; font-size: 7pt;" />
+                    <input size="35" id="txtEditText" tabindex="1" type="text" style="font-family: Verdana; font-size: 7pt;" />
                 </Template>
             </obout:GridTemplate>
             <obout:GridTemplate runat="server" ID="EditBtnTemplate">

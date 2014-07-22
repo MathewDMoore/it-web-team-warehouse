@@ -28,10 +28,10 @@ function validate(record, $http) {
     var isRequiredSmartCode = record.SMARTCODEONLY == "True";
     var originalMac = record.SERIALCODE.trim();
     var modifiedMac = $.trim(originalMac);
-    
+
     if (!isRequiredSmartCode) {
         modifiedMac = modifiedMac.substring(0, modifiedMac.length - 17);
-        
+
         if (modifiedMac.length != 12) {
             if (modifiedMac.length != 16) {
                 alert("You have scanned in a code that is not the correct length!");
@@ -63,10 +63,11 @@ function validate(record, $http) {
                     alert(returnedItem.ErrorMessage + returnedItem.ErrorDeliveryNumber);
                     return false;
                 }
-                
+
                 if (!returnedItem.ErrorMessage) {
                     var nextRs = parseInt(record.SERIALNUM) || 0;
-                    document.getElementById('save_rownum').value = nextRs;
+                    //                    document.getElementById('save_rownum').value = nextRs;
+                    checkKey(nextRs);
                 } else {
                     alert(returnedItem.ErrorMessage);
                 }
@@ -91,10 +92,10 @@ var SmartMacItem = function (item) {
 
 function ClearDelivery(docNumber) {
 
-    if (docNumber == '' ) {
+    if (docNumber == '') {
         alert("Please enter a delivery number.");
     }
-    
+
     if (confirm("Are you sure you want to clear(delete) this order? ")) {
         var deliveryData = $.toJSON(docNumber);
 
@@ -141,28 +142,13 @@ function Left(str, n) {
 
 
 
-function checkKey(record) {
+function checkKey(recordId) {
 
     //The return or enter was pressed so submit the form
-    var SelRecord = document.getElementById('save_rownum').value;
-    //alert(SelRecord);
-    //alert("test"+grid1.RecordInEditMode);
-    //alert("test" + grid1.Rows[SelRecord].Cells[0].Value);
-
-
-
-    if (grid1.RecordInEditMode != SelRecord - 1) {
-        try {
-            var NoSerial = grid1.Rows[SelRecord].Cells[7].Value
-            if (NoSerial != 'True') {
-                grid1.editRecord(SelRecord);
-            }
-        }
-        catch (err) { }
-
-
+    var NoSerial = grid1.Rows[recordId].Cells[7].Value;
+    if (NoSerial != 'True') {
+        grid1.editRecord(recordId);
     }
-
 }
 
 
@@ -193,9 +179,9 @@ function onCallbackError(errorMessage, commandType, recordIndex, data) {
 
 function onDoubleClick() {
     var editingRs = grid1.RecordInEditMode;
-    
+
     if (editingRs != null) {
-        var nextRs = parseInt(editingRs) + 1||0;
+        var nextRs = parseInt(editingRs) + 1 || 0;
         document.getElementById('save_rownum').value = nextRs;
         grid1.updateRecord(editingRs);
     } else {
@@ -228,7 +214,7 @@ function ReturnDelivery(sDoc) {
 
 
 function SubmitDelivery(sDoc) {
-    var o = sDoc; 
+    var o = sDoc;
     if (sDoc == '') {
         alert("You must enter a Delivery Number");
     }
