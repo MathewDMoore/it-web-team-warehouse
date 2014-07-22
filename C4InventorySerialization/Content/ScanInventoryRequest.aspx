@@ -6,16 +6,13 @@
 <%@ Register TagPrefix="obout" Namespace="Obout.Grid" Assembly="obout_Grid_NET" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="MainContent" runat="server">
-    <script type="text/javascript" src="../scripts/ScanInventoryScript.js"> 
-    </script>
-
+    <script type="text/javascript" src="../scripts/ScanInventoryScript.js"></script>
     <%
         String deliveryNumber = Request.QueryString["DeliveryNum"];
         String warning = CheckConfiguration.Text;
         String verifyError = ErrorRecords.Text;
         int verifyBoolean = VerifiedDelivery;
     %>
-
     <asp:Label ID="CheckConfiguration" Visible="false" Text="" runat="server" />
     <asp:Label ID="ErrorRecords" Visible="false" Text="" runat="server" />
 

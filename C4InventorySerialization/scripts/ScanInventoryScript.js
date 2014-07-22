@@ -7,6 +7,15 @@
     }
 }
 
+var SmartMacItem = function (item) {
+    var self = this;
+    self.MacId = item.MacId;
+    self.ProductGroup = item.ProductGroup;
+    self.ErrorMessage = item.ErrorMessage;
+    self.IsUnique = item.IsUnique;
+    self.ErrorDeliveryNumber = item.ErrorDeliveryNumber;
+};
+
 
 function validate(record) {
     //alert(record.ID);
@@ -27,7 +36,7 @@ function validate(record) {
         return false;
     }
     
-    var notDuplicate = false;
+    //var notDuplicate = false; Not Used
     var isRequiredSmartCode = record.SMARTCODEONLY == "True";
     var originalMac = record.SERIALCODE.trim();
     var modifiedMac = $.trim(originalMac);
@@ -78,15 +87,6 @@ function validate(record) {
     }
 }
 
-
-var SmartMacItem = function (item) {
-    var self = this;
-    self.MacId = item.MacId;
-    self.ProductGroup = item.ProductGroup;
-    self.ErrorMessage = item.ErrorMessage;
-    self.IsUnique = item.IsUnique;
-    self.ErrorDeliveryNumber = item.ErrorDeliveryNumber;
-};
 
 function ClearIRDelivery(docNumber) {
 
@@ -406,6 +406,6 @@ function ReturnDeliveryByLineItem() {
     }
     returnWarning = returnWarning.substring(0, returnWarning.length - 2);
     if (confirm("Return item ID " + returnWarning + "?")) {
-        location = '../Admin/ReturnIRByLineItem.aspx?LineNum=' + queryString;
+        window.location = '../Admin/ReturnIRByLineItem.aspx?LineNum=' + queryString;
     };
 }

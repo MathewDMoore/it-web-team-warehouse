@@ -1,10 +1,7 @@
 ﻿using System;
 using System.Configuration;
 using System.Web;
-using System.Web.Http;
 using System.Web.Security;
-using System.Security.Principal;
-using System.Web.Services;
 using ApplicationSource;
 
 namespace C4InventorySerialization
@@ -30,16 +27,16 @@ namespace C4InventorySerialization
             String adPath = ConfigurationManager.AppSettings["LDAPServer"];
 
 
-            LdapAuthentication adAuth = new LdapAuthentication(adPath);
+            var adAuth = new LdapAuthentication(adPath);
             try
             {
-                if (true == adAuth.IsAuthenticated(UserName.Text, Password.Text))
+                if (adAuth.IsAuthenticated(UserName.Text, Password.Text))
                 {
                     String groups = adAuth.GetGroups();
 
                     //    Create the ticket, and add the groups.
                     bool isCookiePersistent = false;
-                    FormsAuthenticationTicket authTicket = new FormsAuthenticationTicket(1, UserName.Text,
+                    var authTicket = new FormsAuthenticationTicket(1, UserName.Text,
                     DateTime.Now, DateTime.Now.AddMinutes(120), isCookiePersistent, groups);
 
                     //      Encrypt the ticket.
@@ -48,7 +45,7 @@ namespace C4InventorySerialization
                     //      Create a cookie, and then add the encrypted ticket to the cookie as data.
                     HttpCookie authCookie = new HttpCookie(FormsAuthentication.FormsCookieName, encryptedTicket);
 
-                    if (true == isCookiePersistent)
+                    if (isCookiePersistent)
                         authCookie.Expires = authTicket.Expiration;
 
                     //      Add the cookie to the outgoing cookies collection.
