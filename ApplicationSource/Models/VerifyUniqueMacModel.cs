@@ -23,5 +23,11 @@ namespace ApplicationSource.Models
 
         [DataMember]
         public string ErrorDeliveryNumber { get; set; }
+
+        [DataMember]
+        public string SerialCode { get; set; }
+
+        [DataMember]
+        public int Id { get; set; }
     }
 }

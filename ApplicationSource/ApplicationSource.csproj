@@ -52,6 +52,7 @@
     <Compile Include="Interfaces\IPartReturnService.cs" />
     <Compile Include="Interfaces\IMacIdSearchService.cs" />
     <Compile Include="LdapAuthentication.cs" />
+    <Compile Include="Models\OrderLineItem.cs" />
     <Compile Include="Models\UniqueMacSearchItem.cs" />
     <Compile Include="Models\UserAuthenticationModel.cs" />
     <Compile Include="Models\VerifyUniqueMacModel.cs" />

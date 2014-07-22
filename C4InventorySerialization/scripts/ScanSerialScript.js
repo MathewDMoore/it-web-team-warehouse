@@ -45,6 +45,8 @@ function validate(record, $http) {
         smartMacData.ErrorMessage = '';
         smartMacData.IsUnique = false;
         smartMacData.ErrorDeliveryNumber = '';
+        smartMacData.Id = record.ID;
+        smartMacData.SerialCode = originalMac;
         var preparedData = $.toJSON(smartMacData);
         var isUniqueMac = false;
         $.ajax({
@@ -61,6 +63,13 @@ function validate(record, $http) {
                     alert(returnedItem.ErrorMessage + returnedItem.ErrorDeliveryNumber);
                     return false;
                 }
+                
+                if (!returnedItem.ErrorMessage) {
+                    var nextRs = parseInt(record.SERIALNUM) || 0;
+                    document.getElementById('save_rownum').value = nextRs;
+                } else {
+                    alert(returnedItem.ErrorMessage);
+                }
             }
         });
 
@@ -76,6 +85,8 @@ var SmartMacItem = function (item) {
     self.ErrorMessage = item.ErrorMessage;
     self.IsUnique = item.IsUnique;
     self.ErrorDeliveryNumber = item.ErrorDeliveryNumber;
+    self.SerialCode = item.SerialCode;
+    self.Id = item.Id;
 };
 
 function ClearDelivery(docNumber) {
@@ -180,17 +191,17 @@ function onCallbackError(errorMessage, commandType, recordIndex, data) {
     }
 }
 
-//function onDoubleClick() {
-//    var editingRs = grid1.RecordInEditMode;
-//    
-//    if (editingRs != null) {
-//        var nextRs = parseInt(editingRs) + 1||0;
-//        document.getElementById('save_rownum').value = nextRs;
-//        grid1.updateRecord(editingRs);
-//    } else {
-//        dblClickRs = null;
-//    }
-//}
+function onDoubleClick() {
+    var editingRs = grid1.RecordInEditMode;
+    
+    if (editingRs != null) {
+        var nextRs = parseInt(editingRs) + 1||0;
+        document.getElementById('save_rownum').value = nextRs;
+        grid1.updateRecord(editingRs);
+    } else {
+        dblClickRs = null;
+    }
+}
 
 function ReturnDelivery(sDoc) {
     var o = sDoc;

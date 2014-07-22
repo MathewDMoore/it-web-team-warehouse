@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Data;
 using System.Data.SqlClient;
+using System.Runtime.InteropServices;
 using System.ServiceModel;
 using System.ServiceModel.Activation;
+using System.Web;
 using ApplicationSource.Interfaces;
 using System.Configuration;
 using ApplicationSource.Models;
@@ -13,7 +15,7 @@ namespace ApplicationSource.Services
     [ServiceBehavior(IncludeExceptionDetailInFaults = true)]
     public class VerifyUniqueMacService : IVerifyUniqueMacService
     {
-        readonly string _connStr = ConfigurationManager.ConnectionStrings["InventoryConnectionString"].ConnectionString;
+        private readonly SqlConnection _conn = new SqlConnection(ConfigurationManager.ConnectionStrings["InventoryConnectionString"].ConnectionString);
 
         public VerifyUniqueMacModel VerifyUniqueMac(VerifyUniqueMacModel model)
         {
@@ -26,22 +28,22 @@ namespace ApplicationSource.Services
                 {
                     if (parsedMacId.Length == 12 || parsedMacId.Length == 16)
                     {
-                        using (var sConn = new SqlConnection(_connStr))
+                        using (_conn)
                         {
-                            sConn.Open();
+                            _conn.Open();
 
-                            var sCmd = new SqlCommand("sp_LocateSmartMac", sConn) { CommandType = CommandType.StoredProcedure };
+                            var sCmd = new SqlCommand("sp_LocateSmartMac", _conn) { CommandType = CommandType.StoredProcedure };
                             sCmd.Parameters.Add("@MACID", SqlDbType.NVarChar);
-                            sCmd.Parameters["@MACID"].Value = parsedMacId;                            
+                            sCmd.Parameters["@MACID"].Value = parsedMacId;
                             sCmd.Parameters.Add("@PRODUCTGROUP", SqlDbType.NVarChar);
                             sCmd.Parameters["@PRODUCTGROUP"].Value = productGroup;
                             using (IDataReader reader1 = sCmd.ExecuteReader())
                             {
-                               
+
                                 while (reader1.Read())
                                 {
                                     var item = reader1.GetInt32(0);
-                                    if (item  > 0)
+                                    if (item > 0)
                                     {
                                         model.IsUnique = false;
                                         model.ErrorMessage = "This order exists on another order - #";
@@ -58,7 +60,12 @@ namespace ApplicationSource.Services
 
                                 }
                             }
-                            sConn.Close();
+                            _conn.Close();
+                            if (model.IsUnique )
+                            {
+                                if (!UpdateRecord(model.SerialCode, model.MacId, model.Id))
+                                            model.ErrorMessage = "There was an error saving this item into the database. Please review the SerialCode or contact IT support.";
+                            }
                         }
                     }
                 }
@@ -69,6 +76,28 @@ namespace ApplicationSource.Services
                 }
             }
             return model;
+        }
+        private bool UpdateRecord(string serialCode, string macId, int id)
+        {
+            const string text1 = "Update C4_SERIALNUMBERS_OUT set SERIALCODE= UPPER(@SERIALCODE), [USERNAME]= @USERNAME, MACID = @MACID, RETURNEDBYUSER = null where ID = @ID";
+            var sCmd = new SqlCommand(text1, _conn);
+            var success = false;
+            using (_conn)
+            {
+                _conn.Open();
+                sCmd.Parameters.Add("@ID", SqlDbType.Int);
+                sCmd.Parameters["@ID"].Value = id;
+                sCmd.Parameters.Add("@SERIALCODE", SqlDbType.VarChar);
+                sCmd.Parameters["@SERIALCODE"].Value = serialCode;
+                sCmd.Parameters.Add("@MACID", SqlDbType.VarChar);
+                sCmd.Parameters["@MACID"].Value = macId;
+                sCmd.Parameters.Add("@USERNAME", SqlDbType.NVarChar);
+                sCmd.Parameters["@USERNAME"].Value = HttpContext.Current.User.Identity.Name;
+                success = sCmd.ExecuteNonQuery() > 0;
+                _conn.Close();
+            }
+
+            return success;
         }
     }
 }

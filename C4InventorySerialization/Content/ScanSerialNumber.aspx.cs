@@ -230,45 +230,6 @@ namespace C4InventorySerialization.Content
             }
         }
 
-        protected void UpdateRecord(object sender, GridRecordEventArgs e)
-        {
-            var connStr = ConfigurationManager.ConnectionStrings["InventoryConnectionString"].ConnectionString;
-
-            var serialCode = e.Record["SERIALCODE"].ToString();
-            var itemCode = e.Record["REALITEMCODE"].ToString();
-            var id = int.Parse(e.Record["ID"].ToString());
-            var isSmartCodeOnly = bool.Parse(e.Record["SMARTCODEONLY"].ToString());
-
-            var macId = serialCode.Length > 17 ? serialCode.Remove(serialCode.Length - 17, 17) : serialCode;
-
-            ValidateRecord(macId, itemCode, id);
-
-            const string text1 = "Update C4_SERIALNUMBERS_OUT set SERIALCODE= UPPER(@SERIALCODE), [USERNAME]= @USERNAME, MACID = @MACID, RETURNEDBYUSER = null where ID = @ID";
-
-            if (_countSerialcode > 0 && !isSmartCodeOnly)
-            {
-                MacIdErrorMessage(serialCode, itemCode);
-            }
-            else
-            {
-                using (SqlConnection sConn = new SqlConnection(connStr))
-                {
-                    sConn.Open();
-
-                    SqlCommand sCmd = new SqlCommand(text1, sConn);
-                    sCmd.Parameters.Add("@ID", SqlDbType.Int);
-                    sCmd.Parameters["@ID"].Value = id;
-                    sCmd.Parameters.Add("@SERIALCODE", SqlDbType.VarChar);
-                    sCmd.Parameters["@SERIALCODE"].Value = serialCode;
-                    sCmd.Parameters.Add("@MACID", SqlDbType.VarChar);
-                    sCmd.Parameters["@MACID"].Value = macId;
-                    sCmd.Parameters.Add("@USERNAME", SqlDbType.NVarChar);
-                    sCmd.Parameters["@USERNAME"].Value = User.Identity.Name;
-                    var res = sCmd.ExecuteNonQuery();
-                    sConn.Close();
-                }
-            }
-        }
 
         protected void MacIdErrorMessage(String serialcode, String itemcode)
         {
