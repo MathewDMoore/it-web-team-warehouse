@@ -1,7 +1,6 @@
-﻿using System;
-using IBatisNet.DataMapper;
+﻿using Common;
 using Persistence.Repositories.Interfaces;
-using log4net.Core;
+
 
 namespace Persistence
 {

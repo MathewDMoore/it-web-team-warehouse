@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using Common;
+﻿using Common;
 using Domain;
 using Persistence.Repositories.Interfaces;
 
@@ -20,7 +16,17 @@ namespace Persistence
             return _sqlMapper.QueryForObject<Delivery>(SELECT_DELIVERY_BY_DELIVERY_NUMBER, deliveryNumber);
         }
 
-          public InventoryMasterMapper(ISqlMapper sqlMapper)
+        public SerialNumberItem SelectSmartMac(SerialNumberItemQuery serialNumberItemQuery)
+        {
+            return _sqlMapper.QueryForObject<SerialNumberItem>("SelectSmartMac", serialNumberItemQuery);
+        }
+
+        public bool UpdateSerialNumberItem(SerialNumberItem serialNumberItem)
+        {
+            return _sqlMapper.Update("UpdateSerialNumber",serialNumberItem)>0;
+        }
+
+        public InventoryMasterMapper(ISqlMapper sqlMapper)
         {
             _sqlMapper = sqlMapper;
         }

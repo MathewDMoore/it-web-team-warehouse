@@ -32,6 +32,12 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="log4net">
+      <HintPath>..\Libs\log4net\log4net.dll</HintPath>
+    </Reference>
+    <Reference Include="StructureMap">
+      <HintPath>..\Libs\StructureMap\StructureMap.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Configuration" />
     <Reference Include="System.Core" />
@@ -51,6 +57,7 @@
     <Compile Include="Interfaces\IVerifyUniqueMacService.cs" />
     <Compile Include="Interfaces\IPartReturnService.cs" />
     <Compile Include="Interfaces\IMacIdSearchService.cs" />
+    <Compile Include="IoCRegistry.cs" />
     <Compile Include="LdapAuthentication.cs" />
     <Compile Include="Models\UniqueMacSearchItem.cs" />
     <Compile Include="Models\UserAuthenticationModel.cs" />
@@ -60,6 +67,7 @@
     <Compile Include="Models\MacIdItem.cs" />
     <Compile Include="Models\MacIdSearchModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Services\CustomWebServiceHooks.cs" />
     <Compile Include="Services\UserAuthenticationService.cs" />
     <Compile Include="Services\VerifyUniqueMacService.cs" />
     <Compile Include="Services\PartReturnService.cs" />
@@ -67,9 +75,17 @@
     <Compile Include="User.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Common\Common.csproj">
+      <Project>{899b57c1-ea00-482c-b7d8-cefcf03c46c6}</Project>
+      <Name>Common</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Domain\Domain.csproj">
       <Project>{1d3bcfe2-bc96-4d9c-bd03-f6d352635e0c}</Project>
       <Name>Domain</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Persistence\Persistence.csproj">
+      <Project>{B1AA3487-CB02-48DC-8525-151B32859C0C}</Project>
+      <Name>Persistence</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

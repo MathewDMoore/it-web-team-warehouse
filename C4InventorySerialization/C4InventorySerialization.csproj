@@ -46,6 +46,9 @@
     <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="log4net">
+      <HintPath>..\Libs\log4net\log4net.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.ReportViewer.WebForms, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL" />
     <Reference Include="obout_AJAXPage">
       <HintPath>..\Libs\Obout\obout_AJAXPage.dll</HintPath>
@@ -67,6 +70,9 @@
     </Reference>
     <Reference Include="obout_Interface, Version=4.0.9.0, Culture=neutral, PublicKeyToken=d5dff6913a9d6649, processorArchitecture=MSIL">
       <HintPath>..\Libs\Obout\obout_Interface.dll</HintPath>
+    </Reference>
+    <Reference Include="StructureMap">
+      <HintPath>..\..\..\Projects\ProexBusinessManager\Libs\StructureMap\StructureMap.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
@@ -629,6 +635,14 @@
     <ProjectReference Include="..\ApplicationSource\ApplicationSource.csproj">
       <Project>{a701dfb2-38ec-4787-9c0f-a613a9bc579f}</Project>
       <Name>ApplicationSource</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Common\Common.csproj">
+      <Project>{899b57c1-ea00-482c-b7d8-cefcf03c46c6}</Project>
+      <Name>Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Persistence\Persistence.csproj">
+      <Project>{b1aa3487-cb02-48dc-8525-151b32859c0c}</Project>
+      <Name>Persistence</Name>
     </ProjectReference>
   </ItemGroup>
   <PropertyGroup>

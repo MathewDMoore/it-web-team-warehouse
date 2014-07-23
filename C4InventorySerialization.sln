@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2013
-VisualStudioVersion = 12.0.21005.1
+VisualStudioVersion = 12.0.30501.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "C4InventorySerialization", "C4InventorySerialization\C4InventorySerialization.csproj", "{622BA529-E8CC-4410-924B-95772E4C15D7}"
 EndProject
@@ -12,6 +12,13 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Common", "Common\Common.csproj", "{899B57C1-EA00-482C-B7D8-CEFCF03C46C6}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ApplicationSource", "ApplicationSource\ApplicationSource.csproj", "{A701DFB2-38EC-4787-9C0F-A613A9BC579F}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Resources", "Resources", "{FB8A33A5-2CBB-44B3-9661-17ACD397E298}"
+	ProjectSection(SolutionItems) = preProject
+		..\3rd Party Libraries\iBatis\provider.xsd = ..\3rd Party Libraries\iBatis\provider.xsd
+		..\3rd Party Libraries\iBatis\SqlMap.xsd = ..\3rd Party Libraries\iBatis\SqlMap.xsd
+		..\3rd Party Libraries\iBatis\SqlMapConfig.xsd = ..\3rd Party Libraries\iBatis\SqlMapConfig.xsd
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

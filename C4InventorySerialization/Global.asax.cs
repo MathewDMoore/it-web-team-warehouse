@@ -2,6 +2,9 @@
 using System.Security.Principal;
 using System.Web;
 using System.Web.Security;
+using ApplicationSource;
+using ApplicationSource.Services;
+using StructureMap;
 
 namespace C4InventorySerialization
 {
@@ -10,7 +13,7 @@ namespace C4InventorySerialization
 
         protected void Application_Start(object sender, EventArgs e)
         {
-
+            ObjectFactory.Initialize(x => x.AddRegistry<IoCRegistry>());            
         }
          
         protected void Session_Start(object sender, EventArgs e)

@@ -87,7 +87,10 @@
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
       <DependentUpon>settings.settings</DependentUpon>
     </Compile>
+    <Compile Include="SqlConnectionFactory.cs" />
     <Compile Include="SqlMapperFactory.cs" />
+    <Compile Include="SqlMapperWrapper.cs" />
+    <Compile Include="Transaction.cs" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Configs\providers.config">
@@ -99,7 +102,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Mappers\Interfaces\" />
-    <Folder Include="Maps\" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Common\Common.csproj">
@@ -117,6 +119,11 @@
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>settings.Designer.cs</LastGenOutput>
     </None>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Maps\C4SerialNumbersOutMap.xml">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
