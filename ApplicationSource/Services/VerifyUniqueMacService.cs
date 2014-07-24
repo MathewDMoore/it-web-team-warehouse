@@ -1,6 +1,11 @@
 ﻿using System;
+using System.Collections;
+using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
+using System.Linq;
+using System.Runtime.Remoting.Contexts;
+using System.Security.Principal;
 using System.ServiceModel;
 using System.ServiceModel.Activation;
 using System.Web;
@@ -18,12 +23,41 @@ namespace ApplicationSource.Services
     [EnableCustomWebServiceHooks]
     public class VerifyUniqueMacService : IVerifyUniqueMacService
     {
-        private readonly SqlConnection _conn = new SqlConnection(ConfigurationManager.ConnectionStrings["InventoryConnectionString"].ConnectionString);
         private IInventoryRepository _repo;
+        private readonly ISettings _settings;
+        private readonly IIdentity _identity;
 
-        public VerifyUniqueMacService(IInventoryRepository repo)
+        public VerifyUniqueMacService(IInventoryRepository repo, ISettings settings, IIdentity identity)
         {
             _repo = repo;
+            _settings = settings;
+            _identity = identity;
+        }
+
+        public void LoadOrder(int docNum)
+        {
+
+            var delivery = _repo.GetDelivery(new DeliveryOrderQuery { DocNum = docNum, ServerLocation = _settings.GetServerLocation });
+            var items =
+                _repo.GetDeliveryItems(new DeliveryOrderItemsQuery
+                {
+                    DocNum = docNum,
+                    ServerLocation = _settings.GetServerLocation,
+                    Username = _identity.Name
+                });
+            var deliveryModel = delivery.Map<Delivery, DeliveryOrderModel>();
+            items.ToList().ForEach(i =>
+            {
+                var model = i.Map<SerialNumberItem, DeliveryOrderItemModel>();
+                if (string.IsNullOrEmpty(i.MacId))
+                {
+                    deliveryModel.NotScannedItems.Add(model);
+                }
+                else
+                {
+                    deliveryModel.ScannedItems.Add(model);
+                }
+            });
         }
 
         public VerifyUniqueMacModel VerifyUniqueMac(VerifyUniqueMacModel model)
@@ -51,7 +85,7 @@ namespace ApplicationSource.Services
                             if (!UpdateRecord(model.SerialCode, model.MacId, model.Id))
                             {
                                 model.ErrorMessage = "There was an error saving this item into the database. Please review the SerialCode or contact IT support.";
-                                
+
                             }
                         }
                     }

@@ -1,4 +1,5 @@
-﻿using Common;
+﻿using System.Collections.Generic;
+using Common;
 using Domain;
 using Persistence.Repositories.Interfaces;
 
@@ -11,7 +12,7 @@ namespace Persistence
 
         private const string SELECT_DELIVERY_BY_DELIVERY_NUMBER = "SelectDeliveryByDeliveryNumber";
 
-        public Delivery GetDelivery(string deliveryNumber)
+        public Delivery GetDelivery(DeliveryOrderQuery deliveryNumber)
         {
             return _sqlMapper.QueryForObject<Delivery>(SELECT_DELIVERY_BY_DELIVERY_NUMBER, deliveryNumber);
         }
@@ -24,6 +25,11 @@ namespace Persistence
         public bool UpdateSerialNumberItem(SerialNumberItem serialNumberItem)
         {
             return _sqlMapper.Update("UpdateSerialNumber",serialNumberItem)>0;
+        }
+
+        public IEnumerable<SerialNumberItem> SelectDeliveryOrderItems(DeliveryOrderItemsQuery query)
+        {
+            return _sqlMapper.QueryForList<SerialNumberItem>("SelectDeleiveryOrderItems", query);
         }
 
         public InventoryMasterMapper(ISqlMapper sqlMapper)

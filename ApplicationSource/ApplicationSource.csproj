@@ -32,6 +32,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="AutoMapper">
+      <HintPath>..\Libs\AutoMapper\AutoMapper.dll</HintPath>
+    </Reference>
     <Reference Include="log4net">
       <HintPath>..\Libs\log4net\log4net.dll</HintPath>
     </Reference>
@@ -53,12 +56,16 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DomainModelMapper.cs" />
+    <Compile Include="Interfaces\ISettings.cs" />
     <Compile Include="Interfaces\IUserAuthenticationService.cs" />
     <Compile Include="Interfaces\IVerifyUniqueMacService.cs" />
     <Compile Include="Interfaces\IPartReturnService.cs" />
     <Compile Include="Interfaces\IMacIdSearchService.cs" />
-    <Compile Include="IoCRegistry.cs" />
     <Compile Include="LdapAuthentication.cs" />
+    <Compile Include="Models\AddressModel.cs" />
+    <Compile Include="Models\DeliveryOrderItemModel.cs" />
+    <Compile Include="Models\DeliveryOrderModel.cs" />
     <Compile Include="Models\UniqueMacSearchItem.cs" />
     <Compile Include="Models\UserAuthenticationModel.cs" />
     <Compile Include="Models\VerifyUniqueMacModel.cs" />
@@ -72,6 +79,7 @@
     <Compile Include="Services\VerifyUniqueMacService.cs" />
     <Compile Include="Services\PartReturnService.cs" />
     <Compile Include="Services\MacIdSearchService.cs" />
+    <Compile Include="SettingsWrapper.cs" />
     <Compile Include="User.cs" />
   </ItemGroup>
   <ItemGroup>

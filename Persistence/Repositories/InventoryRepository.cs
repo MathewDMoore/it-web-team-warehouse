@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using Domain;
 using IBatisNet.DataMapper.Exceptions;
 using Persistence.Repositories.Interfaces;
@@ -58,7 +59,7 @@ namespace Persistence.Repositories
         }
 
 
-        public Delivery GetDelivery(string deliveryNumber)
+        public Delivery GetDelivery(DeliveryOrderQuery deliveryNumber)
         {
             return _sqlMapperFactory.InventoryMasterMapper.GetDelivery(deliveryNumber);
         }
@@ -71,6 +72,11 @@ namespace Persistence.Repositories
         public bool UpdateSerialNumberItem(SerialNumberItem serialNumberItem)
         {
             return _sqlMapperFactory.InventoryMasterMapper.UpdateSerialNumberItem(serialNumberItem);
+        }
+
+        public IEnumerable<SerialNumberItem> GetDeliveryItems(DeliveryOrderItemsQuery query)
+        {
+            return _sqlMapperFactory.InventoryMasterMapper.SelectDeliveryOrderItems(query);
         }
     }
 }

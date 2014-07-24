@@ -152,6 +152,7 @@
     <Content Include="App_Code\DAL\C4SerialNumbers.cs">
       <DependentUpon>C4SerialNumbers.xsd</DependentUpon>
     </Content>
+    <Compile Include="Helpers\IoCRegistry.cs" />
     <Compile Include="Content\DuplicateMacReport.aspx.cs">
       <DependentUpon>DuplicateMacReport.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>

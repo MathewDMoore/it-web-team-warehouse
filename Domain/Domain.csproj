@@ -43,6 +43,8 @@
   <ItemGroup>
     <Compile Include="Address.cs" />
     <Compile Include="Delivery.cs" />
+    <Compile Include="DeliveryOrderItemsQuery.cs" />
+    <Compile Include="DeliveryOrderQuery.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="QueryFilter.cs" />
     <Compile Include="SerialNumberItem.cs" />
