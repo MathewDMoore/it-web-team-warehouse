@@ -38,6 +38,26 @@
 			<result property="ProductPillar" column="PRODUCTPILLAR"/>
 			<result property="ReturnedByUser" column="RETURNEDBYUSER" />			
 		</resultMap>
+			<resultMap id="DeliveryItemRM" class="SerialNumberItem">
+			<result property="Id" column="ID"/>
+			<result property="DocNum" column="DOCNUM"/>
+			<result property="SerialNum" column="SERIALNUM"/>
+			<result property="ItemCode" column="ITEMCODE"/>
+			<result property="Description" column="DSCRIPTION"/>
+			<result property="AltText" column="ALTTEXT"/>
+			<result property="Quantity" column="QUANTITY"/>
+			<result property="ProductId" column="PRODUCTID"/>
+			<result property="Color" column="COLOR"/>
+			<result property="NoSerialization" column="NOSERIALIZATION"/>
+			<result property="SmartCodeOnly" column="SMARTCODEONLY"/>
+			<result property="SerialCode" column="SERIALCODE"/>
+			<result property="MacId" column="MACID"/>
+			<result property="RealItemCode" column="REALITEMCODE"/>
+			<result property="ProductGroup" column="PRODUCTGROUP"/>
+			<result property="ProductFamily" column="PRODUCTFAMILY"/>
+			<result property="ProductPillar" column="PRODUCTPILLAR"/>
+			<result property="ReturnedByUser" column="RETURNEDBYUSER" />			
+		</resultMap>
 		<resultMap id="DeliveryOrderRM" class="Delivery">
 			<result column="DealerName" property="DealerName"/>	
 			<result column="DealerId" property="DealerId"/>	
@@ -64,7 +84,7 @@
 		<procedure  id="SelectSmartMac" parameterMap="SerialNumberItemPM" resultMap="SerialNumberItemRM">
 			sp_LocateSmartMac
 		</procedure>
-		<procedure  id="SelectDeleiveryOrderItems" parameterMap="DeliveryOrderItemsPM" resultClass="SerialNumberItem">
+		<procedure  id="SelectDeleiveryOrderItems" parameterMap="DeliveryOrderItemsPM" resultMap="DeliveryItemRM">
 			sp_delivery_synch
 		</procedure>
 		<procedure  id="SelectDeliveryByDeliveryNumber" parameterMap="DeliveryOrderPM" resultMap="DeliveryOrderRM">
