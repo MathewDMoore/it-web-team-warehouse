@@ -1,1 +1,1 @@
-﻿<%@ Application Codebehind="Global.asax.cs" Inherits="C4InventorySerialization.Global" Language="C#" %>
+﻿<%@ Application CodeBehind="Global.asax.cs" Inherits="C4InventorySerialization.Global" Language="C#" %>

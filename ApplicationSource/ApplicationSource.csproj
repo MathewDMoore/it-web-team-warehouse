@@ -57,15 +57,19 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="DomainModelMapper.cs" />
+    <Compile Include="Interfaces\IOrderDeliveryService.cs" />
     <Compile Include="Interfaces\ISettings.cs" />
     <Compile Include="Interfaces\IUserAuthenticationService.cs" />
     <Compile Include="Interfaces\IVerifyUniqueMacService.cs" />
     <Compile Include="Interfaces\IPartReturnService.cs" />
     <Compile Include="Interfaces\IMacIdSearchService.cs" />
+    <Compile Include="IoCRegistry.cs" />
     <Compile Include="LdapAuthentication.cs" />
     <Compile Include="Models\AddressModel.cs" />
     <Compile Include="Models\DeliveryOrderItemModel.cs" />
     <Compile Include="Models\DeliveryOrderModel.cs" />
+    <Compile Include="Models\OrderDeliveryModel.cs" />
+    <Compile Include="Models\OrderLineItem.cs" />
     <Compile Include="Models\UniqueMacSearchItem.cs" />
     <Compile Include="Models\UserAuthenticationModel.cs" />
     <Compile Include="Models\VerifyUniqueMacModel.cs" />
@@ -75,11 +79,11 @@
     <Compile Include="Models\MacIdSearchModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Services\CustomWebServiceHooks.cs" />
+    <Compile Include="Services\OrderDeliveryService.cs" />
     <Compile Include="Services\UserAuthenticationService.cs" />
     <Compile Include="Services\VerifyUniqueMacService.cs" />
     <Compile Include="Services\PartReturnService.cs" />
     <Compile Include="Services\MacIdSearchService.cs" />
-    <Compile Include="SettingsWrapper.cs" />
     <Compile Include="User.cs" />
   </ItemGroup>
   <ItemGroup>

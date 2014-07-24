@@ -182,7 +182,8 @@ function onDoubleClick() {
     if (editingRs != null) {
         var nextRs = parseInt(editingRs) + 1 || 0;
         document.getElementById('save_rownum').value = nextRs;
-      //  grid1.updateRecord(editingRs);
+        //  grid1.updateRecord(editingRs);
+        //call validate
     } else {
         dblClickRs = null;
     }
@@ -207,10 +208,7 @@ function ReturnDelivery(sDoc) {
                 break;
         }
     }
-
 }
-
-
 
 function SubmitDelivery(sDoc) {
     var o = sDoc;

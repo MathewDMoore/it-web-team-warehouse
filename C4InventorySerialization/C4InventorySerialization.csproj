@@ -103,10 +103,13 @@
   <ItemGroup>
     <Content Include="Content\DuplicateMacReport.aspx" />
     <Content Include="Content\Returns.aspx" />
+    <Content Include="Content\ScanOrder.aspx" />
     <Content Include="Content\Search.aspx" />
     <Content Include="Content\History.aspx" />
     <Content Include="images\c4-logo.png" />
     <Content Include="images\searching.gif" />
+    <Content Include="scripts\angular.min.js" />
+    <Content Include="scripts\bootstrap.js" />
     <Content Include="scripts\common.js" />
     <Content Include="scripts\Directives.js" />
     <Content Include="scripts\History.js" />
@@ -118,11 +121,16 @@
     <Content Include="scripts\knockout-2.1.0.js" />
     <Content Include="scripts\LogIn.js" />
     <Content Include="scripts\MaintainKits.js" />
+    <Content Include="scripts\ng-table.js" />
     <Content Include="scripts\Returns.js" />
     <Content Include="scripts\ScanInventoryScript.js" />
+    <Content Include="scripts\controllers\ScanOrderController.js" />
     <Content Include="scripts\ScanSerialScript.js" />
     <Content Include="scripts\SearchSmartMac.js" />
+    <Content Include="scripts\services\ScanOrderService.js" />
     <Content Include="scripts\ShipToolScript.js" />
+    <Content Include="styles\bootstrap.css" />
+    <Content Include="styles\ng-table.css" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>
     </Content>
@@ -152,7 +160,6 @@
     <Content Include="App_Code\DAL\C4SerialNumbers.cs">
       <DependentUpon>C4SerialNumbers.xsd</DependentUpon>
     </Content>
-    <Compile Include="Helpers\IoCRegistry.cs" />
     <Compile Include="Content\DuplicateMacReport.aspx.cs">
       <DependentUpon>DuplicateMacReport.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -209,6 +216,13 @@
     <Compile Include="Content\Returns.aspx.designer.cs">
       <DependentUpon>Returns.aspx</DependentUpon>
     </Compile>
+    <Compile Include="Content\ScanOrder.aspx.cs">
+      <DependentUpon>ScanOrder.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Content\ScanOrder.aspx.designer.cs">
+      <DependentUpon>ScanOrder.aspx</DependentUpon>
+    </Compile>
     <Compile Include="Content\Search.aspx.cs">
       <DependentUpon>Search.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -223,6 +237,7 @@
     <Compile Include="Content\History.aspx.designer.cs">
       <DependentUpon>History.aspx</DependentUpon>
     </Compile>
+    <Compile Include="Helpers\IoCRegistry.cs" />
     <Compile Include="Serialization.designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>

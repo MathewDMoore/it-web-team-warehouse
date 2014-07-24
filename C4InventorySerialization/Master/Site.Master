@@ -6,21 +6,23 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head runat="server">
     <title>C4 Serialization Application</title>
-    <link href="//netdna.bootstrapcdn.com/bootstrap/3.0.3/css/bootstrap.min.css" rel="stylesheet" type="text/css"/>
-    <script type="text/javascript" src="../scripts/knockout-2.1.0.js"></script>
+    <link href="..//styles/bootstrap.css" rel="stylesheet" type="text/css" />
+    <link href="..//styles/ng-table.css" rel="stylesheet" type="text/css" />
     <script type="text/javascript" src="../scripts/ShipToolScript.js"></script>
     <script type="text/javascript" src="../scripts/jquery-2.0.3.min.js"></script>
-    <script type="text/javascript" src="../scripts/jquery.json-2.3.min.js"></script>'
+    <script type="text/javascript" src="../scripts/jquery.json-2.3.min.js"></script>
     <script type="text/javascript" src="../scripts/json-min.js"></script>
-    <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.0.4/angular.min.js" type="text/javascript"></script>
-    <script src="//netdna.bootstrapcdn.com/bootstrap/3.0.3/js/bootstrap.min.js" type="text/javascript"></script>
-    <script src="../scripts/Directives.js" type="text/javascript"></script>
-    <script src="../scripts/jquery.cookie.js" type="text/javascript"></script>
-    <script src="../scripts/common.js" type="text/javascript"></script>
+    <script type="text/javascript" src="../scripts/angular.min.js"></script>
+    <script type="text/javascript" src="../scripts/knockout-2.1.0.js"></script>
+    <script type="text/javascript" src="../scripts/bootstrap.js"></script>
+    <script type="text/javascript" src="../scripts/Directives.js"></script>
+    <script type="text/javascript" src="../scripts/ng-table.js"></script>
+    <script type="text/javascript" src="../scripts/jquery.cookie.js"></script>
+    <script type="text/javascript" src="../scripts/common.js"></script>
     <link href="../C4Styles.css" rel="stylesheet" type="text/css" />
-    
+
     <script type="text/javascript">
-        var myApp = angular.module('shipApp', ['myDirectives']);
+        var myApp = angular.module('shipApp', ['myDirectives', 'ngTable']);
 
     </script>
 </head>
@@ -56,6 +58,9 @@
                                 <oem:MenuItem InnerHtml="Inventory Requests" ID="MenuItem2" Url="../Content/ScanInventoryRequest.aspx"></oem:MenuItem>
                                 <oem:MenuSeparator InnerHtml="|" ID="MenuSeparator2"></oem:MenuSeparator>
 
+                                <oem:MenuItem InnerHtml="Scan Order" ID="MenuItem11" Url="../Content/ScanOrder.aspx"></oem:MenuItem>
+                                <oem:MenuSeparator InnerHtml="|" ID="MenuSeparator11"></oem:MenuSeparator>
+
                                 <oem:MenuItem InnerHtml="Returns" ID="MenuItem3" Url="../Content/Returns.aspx"></oem:MenuItem>
                                 <oem:MenuSeparator InnerHtml="|" ID="MenuSeparator3"></oem:MenuSeparator>
 
@@ -77,15 +82,16 @@
 
                                 <oem:MenuItem InnerHtml="Search by Mac" ID="MenuItem9" Url="../Content/Search.aspx"></oem:MenuItem>
                                 <oem:MenuSeparator InnerHtml="|" ID="MenuSeparator9"></oem:MenuSeparator>
-                                
-                                
+
+
                                 <oem:MenuItem InnerHtml="Duplicate Mac Report" ID="MenuItem10" Url="../Content/DuplicateMacReport.aspx"></oem:MenuItem>
                                 <oem:MenuSeparator InnerHtml="|" ID="MenuSeparator10"></oem:MenuSeparator>
 
-<%--                                <oem:MenuItem InnerHtml="History Search" ID="MenuItem11" Url="../Content/History.aspx"></oem:MenuItem>
+                                <%--<oem:MenuItem InnerHtml="History Search" ID="MenuItem11" Url="../Content/History.aspx"></oem:MenuItem>
                                 <oem:MenuSeparator InnerHtml="|" ID="MenuSeparator10"></oem:MenuSeparator>--%>
 
-                                <oem:MenuItem InnerHtml="Logout" ID="MenuItem11" Url="../Content/Logout.aspx"></oem:MenuItem>
+
+                                <oem:MenuItem InnerHtml="Logout" ID="MenuItem12" Url="../Content/Logout.aspx"></oem:MenuItem>
 
                             </Components>
                         </oem:EasyMenu>

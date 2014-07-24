@@ -58,6 +58,24 @@ namespace C4InventorySerialization.Master {
         protected global::OboutInc.EasyMenu_Pro.MenuSeparator MenuSeparator2;
         
         /// <summary>
+        /// MenuItem11 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::OboutInc.EasyMenu_Pro.MenuItem MenuItem11;
+        
+        /// <summary>
+        /// MenuSeparator11 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::OboutInc.EasyMenu_Pro.MenuSeparator MenuSeparator11;
+        
+        /// <summary>
         /// MenuItem3 control.
         /// </summary>
         /// <remarks>
@@ -202,13 +220,13 @@ namespace C4InventorySerialization.Master {
         protected global::OboutInc.EasyMenu_Pro.MenuSeparator MenuSeparator10;
         
         /// <summary>
-        /// MenuItem11 control.
+        /// MenuItem12 control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::OboutInc.EasyMenu_Pro.MenuItem MenuItem11;
+        protected global::OboutInc.EasyMenu_Pro.MenuItem MenuItem12;
         
         /// <summary>
         /// MainContent control.
