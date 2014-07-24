@@ -14,6 +14,7 @@
     <script type="text/javascript" src="../scripts/json-min.js"></script>
     <script type="text/javascript" src="../scripts/angular.min.js"></script>
     <script type="text/javascript" src="../scripts/knockout-2.1.0.js"></script>
+    <script type="text/javascript" src="../scripts/underscore-min.js"></script>
     <script type="text/javascript" src="../scripts/bootstrap.js"></script>
     <script type="text/javascript" src="../scripts/Directives.js"></script>
     <script type="text/javascript" src="../scripts/ng-table.js"></script>

@@ -129,6 +129,7 @@
     <Content Include="scripts\SearchSmartMac.js" />
     <Content Include="scripts\services\ScanOrderService.js" />
     <Content Include="scripts\ShipToolScript.js" />
+    <Content Include="scripts\underscore-min.js" />
     <Content Include="styles\bootstrap.css" />
     <Content Include="styles\ng-table.css" />
     <Content Include="Web.config">

@@ -20,8 +20,10 @@ app.controller("ScanController", [
                     scan.Delivery = response.data;
 
                 });
-
             }
+            scan.VerifyLineitem = function(serialCode) {
+
+            };
         }
     ]
 );
