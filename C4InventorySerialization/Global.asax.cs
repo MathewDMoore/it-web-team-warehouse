@@ -2,8 +2,9 @@
 using System.Security.Principal;
 using System.Web;
 using System.Web.Security;
+using ApplicationSource;
 using StructureMap;
-using C4InventorySerialization.Helpers;
+using IoCRegistry = C4InventorySerialization.Helpers.IoCRegistry;
 
 namespace C4InventorySerialization
 {
@@ -13,6 +14,7 @@ namespace C4InventorySerialization
         protected void Application_Start(object sender, EventArgs e)
         {
             ObjectFactory.Initialize(x => x.AddRegistry<IoCRegistry>());     
+            DomainModelMapper.Initialize();
         }
          
         protected void Session_Start(object sender, EventArgs e)

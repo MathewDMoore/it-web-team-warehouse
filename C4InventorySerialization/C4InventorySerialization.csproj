@@ -365,6 +365,7 @@
     <None Include="App_Code\DAL\Reporting.xss">
       <DependentUpon>Reporting.xsd</DependentUpon>
     </None>
+    <Content Include="Master\Redesign.master" />
     <None Include="Properties\PublishProfiles\Jordan.pubxml" />
     <None Include="Properties\PublishProfiles\Warehouse.pubxml" />
     <None Include="Serialization.dbml">

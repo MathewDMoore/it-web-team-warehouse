@@ -6,7 +6,9 @@
  >
 	<alias>
 		<typeAlias alias="SerialNumberItem" type="Domain.SerialNumberItem" />
+		<typeAlias alias="DeliveryOrderItemsQuery" type="Domain.DeliveryOrderItemsQuery" />
 		<typeAlias alias="DeliveryOrderQuery" type="Domain.DeliveryOrderQuery" />
+		<typeAlias alias="Delivery" type="Domain.Delivery" />
 	</alias>
 	<resultMaps>
 		<resultMap id="SerialNumberItemRM" class="SerialNumberItem">
@@ -36,17 +38,23 @@
 			<result property="ProductPillar" column="PRODUCTPILLAR"/>
 			<result property="ReturnedByUser" column="RETURNEDBYUSER" />			
 		</resultMap>
+		<resultMap id="DeliveryOrderRM" class="Delivery">
+			<result column="DealerName" property="DealerName"/>	
+			<result column="DealerId" property="DealerId"/>	
+			<result column="Address2" property="Address"/>	
+			<result column="Comments" property="Comments"/>	
+		</resultMap>
 	</resultMaps>
 	<parameterMaps>
 		<parameterMap id="SerialNumberItemPM" class="SerialNumberItem">
 			<parameter property="ProductGroup" column="ProductGroup"/>
 			<parameter property="MacId" column="MACID"/>
 		</parameterMap>
-		<parameterMap id="DeliverOrderPM" class="DeliveryOrderQuery">
+		<parameterMap id="DeliveryOrderPM" class="DeliveryOrderQuery">
 			<parameter property="ServerLocation" column="SERVERLOCATION"/>
 			<parameter property="DocNum" column="DOCNUM"/>
 		</parameterMap>
-		<parameterMap id="DeliveryOrderItemsPM" class="DeliveryOrderQuery">
+		<parameterMap id="DeliveryOrderItemsPM" class="DeliveryOrderItemsQuery">
 			<parameter property="ServerLocation" column="SERVERLOCATION"/>
 			<parameter property="DocNum" column="DOCNUM"/>
 			<parameter property="Username" column="USERNAME"/>
@@ -56,11 +64,11 @@
 		<procedure  id="SelectSmartMac" parameterMap="SerialNumberItemPM" resultMap="SerialNumberItemRM">
 			sp_LocateSmartMac
 		</procedure>
-		<procedure  id="SelectDeleiveryOrderItems" parameterMap="DeliveryOrderItemsPM" resultMap="SerialNumberItemRM">
+		<procedure  id="SelectDeleiveryOrderItems" parameterMap="DeliveryOrderItemsPM" resultClass="SerialNumberItem">
 			sp_delivery_synch
 		</procedure>
-		<procedure  id="SelectDeleiveryOrder" parameterMap="DeliveryOrderPM" resultMap="DeliveryOrderRM">
-			sp_delivery_header
+		<procedure  id="SelectDeliveryByDeliveryNumber" parameterMap="DeliveryOrderPM" resultMap="DeliveryOrderRM">
+			sp_Delivery_Header
 		</procedure>
 		<update id="UpdateSerialNumber" parameterClass="SerialNumberItem" >
 			Update C4_SERIALNUMBERS_OUT set SERIALCODE= UPPER(#SerialCode#), USERNAME= #Username#, MACID =#MacId#, RETURNEDBYUSER = null where ID = #Id#
