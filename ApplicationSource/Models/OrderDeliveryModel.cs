@@ -2,7 +2,7 @@
 
 namespace ApplicationSource.Models
 {
-    public class DeliveryOrderModel
+    public class OrderDeliveryModel
     {
         public string DeliveryNumber { get; set; }
         public string DealerId { get; set; }

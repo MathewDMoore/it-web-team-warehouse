@@ -15,5 +15,6 @@ namespace ApplicationSource.Models
         public bool SmartCodeOnly { get; set; }
         public string ProductId { get; set; }
         public string Color { get; set; }   
+        public string ProductGroup { get; set; }   
     }
 }

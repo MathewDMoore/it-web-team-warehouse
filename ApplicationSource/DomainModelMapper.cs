@@ -9,7 +9,7 @@ namespace ApplicationSource
         public static void Initialize()
         {
             Mapper.CreateMap<Address, AddressModel>();
-            Mapper.CreateMap<Delivery, DeliveryOrderModel>();
+            Mapper.CreateMap<Delivery, OrderDeliveryModel>();
             Mapper.CreateMap<SerialNumberItem, DeliveryOrderItemModel>();
 
         }

@@ -34,31 +34,7 @@ namespace ApplicationSource.Services
             _identity = identity;
         }
 
-        public void LoadOrder(int docNum)
-        {
 
-            var delivery = _repo.GetDelivery(new DeliveryOrderQuery { DocNum = docNum, ServerLocation = _settings.GetServerLocation });
-            var items =
-                _repo.GetDeliveryItems(new DeliveryOrderItemsQuery
-                {
-                    DocNum = docNum,
-                    ServerLocation = _settings.GetServerLocation,
-                    Username = _identity.Name
-                });
-            var deliveryModel = delivery.Map<Delivery, DeliveryOrderModel>();
-            items.ToList().ForEach(i =>
-            {
-                var model = i.Map<SerialNumberItem, DeliveryOrderItemModel>();
-                if (string.IsNullOrEmpty(i.MacId))
-                {
-                    deliveryModel.NotScannedItems.Add(model);
-                }
-                else
-                {
-                    deliveryModel.ScannedItems.Add(model);
-                }
-            });
-        }
 
         public VerifyUniqueMacModel VerifyUniqueMac(VerifyUniqueMacModel model)
         {
