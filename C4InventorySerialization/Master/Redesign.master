@@ -1,13 +1,10 @@
 ﻿<%@ Master Language="C#" AutoEventWireup="true" CodeBehind="Site.Master.cs" Inherits="C4InventorySerialization.Master.Site1" %>
 
 <%@ Register Assembly="obout_EasyMenu_Pro" Namespace="OboutInc.EasyMenu_Pro" TagPrefix="oem" %>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-
+<!doctype html>
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head runat="server">
     <title>C4 Serialization Application</title>
-    <link href="..//styles/bootstrap.css" rel="stylesheet" type="text/css" />
-    <link href="..//styles/ng-table.css" rel="stylesheet" type="text/css" />
     <script type="text/javascript" src="../scripts/ShipToolScript.js"></script>
     <script type="text/javascript" src="../scripts/jquery-2.0.3.min.js"></script>
     <script type="text/javascript" src="../scripts/angular.min.js"></script>
@@ -17,9 +14,12 @@
     <script type="text/javascript" src="../scripts/jquery.cookie.js"></script>
     <script type="text/javascript" src="../scripts/common.js"></script>
     <link href="../C4Styles.css" rel="stylesheet" type="text/css" />
+    <link href="..//styles/bootstrap.css" rel="stylesheet" type="text/css" />
+    <link href="..//styles/ng-table.css" rel="stylesheet" type="text/css" />
+    <script type="text/javascript" src="../scripts/libs/angular-bootstrap/ui-bootstrap-tpls.min.js"></script>
 
     <script type="text/javascript">
-        var myApp = angular.module('shipApp', ['myDirectives', 'ngTable']);
+        var myApp = angular.module('shipApp', ['myDirectives', 'ngTable','ui.bootstrap']);
 
     </script>
 </head>

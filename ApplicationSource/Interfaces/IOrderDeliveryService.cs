@@ -12,5 +12,9 @@ namespace ApplicationSource.Interfaces
         [WebInvoke(Method = "POST", BodyStyle = WebMessageBodyStyle.Bare, ResponseFormat = WebMessageFormat.Json,
             RequestFormat = WebMessageFormat.Json)]
         OrderDeliveryModel OrderLookUp(int orderId);
+
+        [OperationContract]
+        [WebInvoke(Method = "POST", BodyStyle = WebMessageBodyStyle.Wrapped, ResponseFormat = WebMessageFormat.Json,RequestFormat = WebMessageFormat.Json)]
+        VerifyUniqueMacModel SaveDeliveryItem(VerifyUniqueMacModel model);
     }
 }

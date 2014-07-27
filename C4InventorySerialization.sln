@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2013
-VisualStudioVersion = 12.0.21005.1
+VisualStudioVersion = 12.0.30501.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "C4InventorySerialization", "C4InventorySerialization\C4InventorySerialization.csproj", "{622BA529-E8CC-4410-924B-95772E4C15D7}"
 EndProject
@@ -19,6 +19,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Resources", "Resources", "{
 		..\3rd Party Libraries\iBatis\SqlMap.xsd = ..\3rd Party Libraries\iBatis\SqlMap.xsd
 		..\3rd Party Libraries\iBatis\SqlMapConfig.xsd = ..\3rd Party Libraries\iBatis\SqlMapConfig.xsd
 	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UnitTests", "UnitTests\UnitTests.csproj", "{9C76A7E7-082B-452B-9D72-54DC161B6E71}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -68,6 +70,14 @@ Global
 		{A701DFB2-38EC-4787-9C0F-A613A9BC579F}.Release|Any CPU.Build.0 = Release|Any CPU
 		{A701DFB2-38EC-4787-9C0F-A613A9BC579F}.Staging|Any CPU.ActiveCfg = Release|Any CPU
 		{A701DFB2-38EC-4787-9C0F-A613A9BC579F}.Staging|Any CPU.Build.0 = Release|Any CPU
+		{9C76A7E7-082B-452B-9D72-54DC161B6E71}.ChromeTesting|Any CPU.ActiveCfg = Release|Any CPU
+		{9C76A7E7-082B-452B-9D72-54DC161B6E71}.ChromeTesting|Any CPU.Build.0 = Release|Any CPU
+		{9C76A7E7-082B-452B-9D72-54DC161B6E71}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9C76A7E7-082B-452B-9D72-54DC161B6E71}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9C76A7E7-082B-452B-9D72-54DC161B6E71}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9C76A7E7-082B-452B-9D72-54DC161B6E71}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9C76A7E7-082B-452B-9D72-54DC161B6E71}.Staging|Any CPU.ActiveCfg = Release|Any CPU
+		{9C76A7E7-082B-452B-9D72-54DC161B6E71}.Staging|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
