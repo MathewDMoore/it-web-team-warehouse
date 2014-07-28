@@ -11,25 +11,26 @@ app.controller("ScanController", [
                 ScanOrderService.LookUp(orderId).then(function (response) {
                     scan.Delivery = response.data;
 
+
+                    scan.TableParams = new ngTableParams({
+                        page: 1, // show first page
+                        count: 10 // count per page
+                    }, {
+                        total: scan.Delivery.NotScannedItems.length, // length of data
+                        getData: function ($defer, params) {
+                            $defer.resolve(scan.Delivery.NotScannedItems.slice((params.page() - 1) * params.count(), params.page() * params.count()));
+                        }
+                    }); scan.TableParams2 = new ngTableParams({
+                        page: 1, // show first page
+                        count: 10 // count per page
+                    }, {
+                        total: scan.Delivery.ScannedItems.length, // length of data
+                        getData: function ($defer, params) {
+                            $defer.resolve(scan.Delivery.ScannedItems.slice((params.page() - 1) * params.count(), params.page() * params.count()));
+                        }
+                    });
                 });
-                scan.TableParams = new ngTableParams({
-                    page: 1, // show first page
-                    count: 10 // count per page
-                }, {
-                    total: scan.Delivery.NotScannedItems.length, // length of data
-                    getData: function ($defer, params) {
-                        $defer.resolve(scan.Delivery.NotScannedItems.slice((params.page() - 1) * params.count(), params.page() * params.count()));
-                    }
-                }); scan.TableParams2 = new ngTableParams({
-                    page: 1, // show first page
-                    count: 10 // count per page
-                }, {
-                    total: scan.Delivery.ScannedItems.length, // length of data
-                    getData: function ($defer, params) {
-                        $defer.resolve(scan.Delivery.ScannedItems.slice((params.page() - 1) * params.count(), params.page() * params.count()));
-                    }
-                });
-                
+
             }
             scan.VerifyLineitem = function (serialCode) {
                 if (serialCode) {
@@ -48,10 +49,10 @@ app.controller("ScanController", [
                             }
 
                             var deliveryItem = { SerialCode: serialCode, MacId: serialCode, Id: matched.Id, ProductGroup: matched.ProductGroup };
-                            ScanOrderService.SaveDeliveryItem(deliveryItem).then(function(result) {
+                            ScanOrderService.SaveDeliveryItem(deliveryItem).then(function (result) {
                                 if (!result.data.ErrorMessage) {
-//                                    var copy = _.clone(matched);
-                                    scan.Delivery.NotScannedItems = _.without(scan.Delivery.NotScannedItems,matched[0]);
+                                    //                                    var copy = _.clone(matched);
+                                    scan.Delivery.NotScannedItems = _.without(scan.Delivery.NotScannedItems, matched[0]);
                                     matched[0].SerialNum = serialCode;
                                     scan.Delivery.ScannedItems.push(matched[0]);
                                 }
