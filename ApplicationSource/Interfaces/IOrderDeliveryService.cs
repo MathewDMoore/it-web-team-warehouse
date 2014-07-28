@@ -16,5 +16,9 @@ namespace ApplicationSource.Interfaces
         [OperationContract]
         [WebInvoke(Method = "POST", BodyStyle = WebMessageBodyStyle.Wrapped, ResponseFormat = WebMessageFormat.Json,RequestFormat = WebMessageFormat.Json)]
         VerifyUniqueMacModel SaveDeliveryItem(VerifyUniqueMacModel model);
+
+        [OperationContract]
+        [WebInvoke(Method = "POST", BodyStyle = WebMessageBodyStyle.Bare, ResponseFormat = WebMessageFormat.Json,RequestFormat = WebMessageFormat.Json)]
+        bool ClearDelivery(int docNumber);
     }
 }

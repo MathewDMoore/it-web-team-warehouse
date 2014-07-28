@@ -32,6 +32,11 @@ namespace Persistence
             return _sqlMapper.QueryForList<SerialNumberItem>("SelectDeleiveryOrderItems", query);
         }
 
+        public bool ClearDelivery(DeliveryOrderQuery query)
+        {
+            return _sqlMapper.Update("sp_ClearDelivery", query) > 0;
+        }
+
         public InventoryMasterMapper(ISqlMapper sqlMapper)
         {
             _sqlMapper = sqlMapper;

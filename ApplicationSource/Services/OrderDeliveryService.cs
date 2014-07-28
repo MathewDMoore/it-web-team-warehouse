@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Data;
+using System.Data.SqlClient;
 using System.Linq;
 using System.Security.Principal;
 using System.ServiceModel;
@@ -93,6 +95,29 @@ namespace ApplicationSource.Services
             }
             return model;
         }
+
+        public bool ClearDelivery(int docNumber)
+        {
+            if (docNumber>0)
+            {
+                bool success = false;
+
+                try
+                {
+                   success =  _repo.ClearDelivery(new DeliveryOrderQuery {DocNum = docNumber, Username = _identity.Name});                    
+                }
+                catch (Exception)
+                {
+
+                    success = false;
+                }
+
+                return success;
+            }
+
+            return false;
+        }
+
         private bool UpdateRecord(string serialCode, string macId, int id)
         {
             var success = _repo.UpdateSerialNumberItem(new SerialNumberItem { Id = id, MacId = macId, SerialCode = serialCode, Username = HttpContext.Current.User.Identity.Name });

@@ -73,6 +73,10 @@
 		<parameterMap id="DeliveryOrderPM" class="DeliveryOrderQuery">
 			<parameter property="ServerLocation" column="SERVERLOCATION"/>
 			<parameter property="DocNum" column="DOCNUM"/>
+		</parameterMap>		
+		<parameterMap id="ClearDeliveryOrderPM" class="DeliveryOrderQuery">
+			<parameter property="Username" column="USERNAME"/>
+			<parameter property="DocNum" column="DELIVERYNUMBER"/>
 		</parameterMap>
 		<parameterMap id="DeliveryOrderItemsPM" class="DeliveryOrderItemsQuery">
 			<parameter property="ServerLocation" column="SERVERLOCATION"/>
@@ -81,6 +85,9 @@
 		</parameterMap>
 	</parameterMaps>
 	<statements>
+		<procedure  id="sp_ClearDelivery" parameterMap="ClearDeliveryOrderPM">
+			sp_ClearDelivery
+		</procedure>
 		<procedure  id="SelectSmartMac" parameterMap="SerialNumberItemPM" resultMap="SerialNumberItemRM">
 			sp_LocateSmartMac
 		</procedure>

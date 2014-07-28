@@ -14,4 +14,21 @@ Directives.directive('onEnter', function () {
             });
         }
     };
+})
+.directive("error", function () {
+    return {
+        scope: { Error: "=message" },
+        link: function (scope, element, attrs) {
+            $(element).popover({ placement: 'right' });
+            scope.$watch("Error", function (newValue) {
+                if (newValue && newValue.length>0) {
+                    $(element).popover({ content:  scope.Error});
+
+                    $(element).popover('show');
+                } else {
+                    $(element).popover('hide');
+                }
+            });
+        }
+    };
 });

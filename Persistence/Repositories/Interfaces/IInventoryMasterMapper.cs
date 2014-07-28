@@ -9,5 +9,6 @@ namespace Persistence.Repositories.Interfaces
         SerialNumberItem SelectSmartMac(SerialNumberItemQuery serialNumberItemQuery);
         bool UpdateSerialNumberItem(SerialNumberItem serialNumberItem);
         IEnumerable<SerialNumberItem> SelectDeliveryOrderItems(DeliveryOrderItemsQuery query);
+        bool ClearDelivery(DeliveryOrderQuery query);
     }
 }
