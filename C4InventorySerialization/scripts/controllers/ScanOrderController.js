@@ -20,7 +20,8 @@ app.controller("ScanController", [
                         getData: function ($defer, params) {
                             $defer.resolve(scan.Delivery.NotScannedItems.slice((params.page() - 1) * params.count(), params.page() * params.count()));
                         }
-                    }); scan.TableParams2 = new ngTableParams({
+                    });
+                    scan.TableParams2 = new ngTableParams({
                         page: 1, // show first page
                         count: 10 // count per page
                     }, {

@@ -37,9 +37,8 @@
                 <div ng-if="scan.Delivery.NotScannedItems.length>0">
                     <h3>Not Scanned Items</h3>
                     <table ng-table="scan.TableParams" class="table">
-                        <%--                <table ng-table="scan.TableParams" class="table">--%>
-                        <tr ng-repeat="item in scan.Delivery.NotScannedItems">
-                            <td data-title="'ID'">{{item.Id}}</td>
+                        <tr ng-repeat="item in $data">
+                            <td data-title="'ID'" >{{item.Id}}</td>
                             <td data-title="'Kit Code'">{{item.ItemCode}}</td>
                             <td data-title="'Item Code'">{{item.RealItemCode}}</td>
                             <td data-title="'Description'">{{item.AltText}}</td>
@@ -51,7 +50,7 @@
                     <h3>Scanned Items</h3>
                     <%--                <table ng-table="scan.Delivery.ScannedItems" class="table">--%>
                     <table ng-table="scan.TableParams2" class="table">
-                        <tr ng-repeat="scannedItem in scan.Delivery.ScannedItems">
+                        <tr ng-repeat="scannedItem in $data">
                             <td data-title="'ID'">{{scannedItem.Id}}</td>
                             <td data-title="'Kit Code'">{{scannedItem.ItemCode}}</td>
                             <td data-title="'Item Code'">{{scannedItem.RealItemCode}}</td>
