@@ -19,12 +19,14 @@ Directives.directive('onEnter', function () {
     return {
         scope: { Error: "=message" },
         link: function (scope, element, attrs) {
-            $(element).popover({ placement: 'right' });
+            element.popover({trigger:'manual'});
             scope.$watch("Error", function (newValue) {
                 if (newValue && newValue.length>0) {
-                    $(element).popover({ content:  scope.Error});
-
-                    $(element).popover('show');
+                    element.select();
+                    element.focus();
+//                    $(element).popover({ content: scope.Error });
+                    element.popover({ content: scope.Error, trigger: 'manual' });
+                    element.popover('show');
                 } else {
                     $(element).popover('hide');
                 }

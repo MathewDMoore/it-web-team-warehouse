@@ -10,7 +10,7 @@
         <div ng-controller="ScanController as scan" class="well">
             <form ng-submit="scan.LookUp(scan.OrderIdLookUp)">
                 <div class="input-group" style="width: 300px;">
-                    <input class="form-control" placeholder="Delivery Number" id="orderIdInput" type="number" min="0" ng-model="scan.OrderIdLookUp" />
+                    <input class="form-control" placeholder="Delivery Number" autofocus id="orderIdInput" type="number" min="0" ng-model="scan.OrderIdLookUp" ng-blur="scan.LookUp(scan.OrderIdLookUp)" />
                     <span class="input-group-addon " style="cursor: pointer" id="loadDelivery" ng-click="scan.LookUp(scan.OrderIdLookUp)">Load Delivery</span>
                 </div>
             </form>
@@ -38,7 +38,7 @@
                 <div>
                     <label>Enter Serial Code: </label>
                     <div class="input-group" style="width: 328px">
-                        <input class="form-control" ng-model="scan.SerialCodeLookUp" ng-change="scan.VerifyLineitem(scan.SerialCodeLookUp)" error message="scan.SerialError" />
+                        <input class="form-control" autofocus ng-model="scan.SerialCodeLookUp" ng-change="scan.VerifyLineitem(scan.SerialCodeLookUp)" error message="scan.SerialError" />
                         <span class="input-group-addon"><i class="glyphicon glyphicon-search"></i></span>
                     </div>
                 </div>

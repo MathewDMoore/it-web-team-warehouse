@@ -1,6 +1,6 @@
 ﻿var app = angular.module("shipApp");
 
-app.controller("ScanController", function ($scope, $modal,$filter, ngTableParams, ScanOrderService) {
+app.controller("ScanController", function ($scope, $modal, $filter, ngTableParams, ScanOrderService) {
     var scan = this;
     scan.OrderIdLookUp = null;
     scan.Delivery = null;
@@ -15,7 +15,7 @@ app.controller("ScanController", function ($scope, $modal,$filter, ngTableParams
 
         ScanOrderService.LookUp(orderId).then(function (response) {
             scan.Delivery = response.data;
-            
+
             scan.TableParams = new ngTableParams({
                 page: 1, // show first page
                 count: 10 // count per page
@@ -105,6 +105,8 @@ app.controller("ScanController", function ($scope, $modal,$filter, ngTableParams
                         }
                     });
                 }
+            } else {
+                scan.SerialError = "No items found that match that Serial Code. Verify Serial Code and try again";
             }
         }
     };
