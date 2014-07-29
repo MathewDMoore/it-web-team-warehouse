@@ -10,7 +10,7 @@ namespace ApplicationSource.Models
             ScannedItems = new List<DeliveryOrderItemModel>();
         }
 
-        public string DeliveryNumber { get; set; }
+        public int DeliveryNumber { get; set; }
         public string DealerId { get; set; }
         public string DealerName { get; set; }
         public string Address { get; set; }

@@ -41,6 +41,7 @@ namespace ApplicationSource.Services
                     Username = _identity.Name
                 });
             var deliveryModel = delivery.Map<Delivery, OrderDeliveryModel>();
+            deliveryModel.DeliveryNumber = orderId;
             items.ToList().ForEach(i =>
             {
                 var model = i.Map<SerialNumberItem, DeliveryOrderItemModel>();

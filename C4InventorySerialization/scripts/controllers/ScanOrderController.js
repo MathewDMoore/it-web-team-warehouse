@@ -1,6 +1,6 @@
 ﻿var app = angular.module("shipApp");
 
-app.controller("ScanController", function ($scope, $modal, ngTableParams, ScanOrderService) {
+app.controller("ScanController", function ($scope, $modal,$filter, ngTableParams, ScanOrderService) {
     var scan = this;
     scan.OrderIdLookUp = null;
     scan.Delivery = null;
@@ -10,28 +10,37 @@ app.controller("ScanController", function ($scope, $modal, ngTableParams, ScanOr
     scan.DeliveryActionMessage = null;
     scan.LookUp = function (orderId) {
         scan.DeliveryActionMessage = null;
-        scan.SerialError = null;
+        scan.Delivery = null;
         scan.SerialError = null;
 
         ScanOrderService.LookUp(orderId).then(function (response) {
             scan.Delivery = response.data;
-
+            
             scan.TableParams = new ngTableParams({
                 page: 1, // show first page
                 count: 10 // count per page
-            }, {
-                total: scan.Delivery.NotScannedItems.length, // length of data
-                getData: function ($defer, params) {
-                    $defer.resolve(scan.Delivery.NotScannedItems.slice((params.page() - 1) * params.count(), params.page() * params.count()));
-                }
-            });
+            },
+                {
+                    total: 0, // length of data
+                    getData: function ($defer, params) {
+                        var orderedData = params.sorting() ? $filter('orderBy')(scan.Delivery.NotScannedItems, params.orderBy()) : scan.Delivery.NotScannedItems;
+                        orderedData = params.filter() ? $filter('filter')(orderedData, params.filter()) : orderedData;
+                        $defer.resolve(orderedData.slice((params.page() - 1) * params.count(), params.page() * params.count()));
+                        params.total(orderedData.length);
+                        $defer.resolve(orderedData.slice((params.page() - 1) * params.count(), params.page() * params.count()));
+                    }
+                });
             scan.TableParams2 = new ngTableParams({
                 page: 1, // show first page
                 count: 10 // count per page
             }, {
-                total: scan.Delivery.ScannedItems.length, // length of data
+                total: 0, // length of data
                 getData: function ($defer, params) {
-                    $defer.resolve(scan.Delivery.ScannedItems.slice((params.page() - 1) * params.count(), params.page() * params.count()));
+                    var orderedData = params.sorting() ? $filter('orderBy')(scan.Delivery.ScannedItems, params.orderBy()) : scan.Delivery.ScannedItems;
+                    orderedData = params.filter() ? $filter('filter')(orderedData, params.filter()) : orderedData;
+                    $defer.resolve(orderedData.slice((params.page() - 1) * params.count(), params.page() * params.count()));
+                    params.total(orderedData.length);
+                    $defer.resolve(orderedData.slice((params.page() - 1) * params.count(), params.page() * params.count()));
                 }
             });
         });
@@ -65,27 +74,32 @@ app.controller("ScanController", function ($scope, $modal, ngTableParams, ScanOr
     };
     scan.VerifyLineitem = function (serialCode) {
         if (serialCode) {
-            var productId = serialCode.substring(serialCode.length, serialCode.length - 7).substring(0, 5);
-            var matched = _.where(scan.Delivery.NotScannedItems, { ProductId: productId, SerialNum: "" });
             var modifiedMac = serialCode.substring(0, serialCode.length - 17);
 
             if (modifiedMac.length != 12) {
                 if (modifiedMac.length != 16) {
                     scan.SerialError = "You have scanned in a code that is not the correct length!";
+                    return false;
                 }
             }
+            var productId = serialCode.substring(serialCode.length, serialCode.length - 7).substring(0, 5);
+            var color = serialCode.substring(serialCode.length, serialCode.length - 7).substring(5, 7);
+            var matched = _.where(scan.Delivery.NotScannedItems, { ProductId: productId, Color: color });
 
             if (matched.length > 0) {
 
-                if (!matched.SmartCodeOnly) {
+                if (!matched[0].SmartCodeOnly) {
 
-                    var deliveryItem = { SerialCode: serialCode, MacId: serialCode, Id: matched.Id, ProductGroup: matched.ProductGroup };
+                    var deliveryItem = { SerialCode: serialCode, MacId: serialCode, Id: matched[0].Id, ProductGroup: matched[0].ProductGroup };
                     ScanOrderService.SaveDeliveryItem(deliveryItem).then(function (result) {
                         if (!result.data.ErrorMessage) {
                             //                                    var copy = _.clone(matched);
-                            scan.Delivery.NotScannedItems = _.without(scan.Delivery.NotScannedItems, matched[0]);
-                            matched[0].SerialNum = serialCode;
+                            scan.Delivery.NotScannedItems.pop(matched[0]);
+                            matched[0].SerialCode = serialCode;
                             scan.Delivery.ScannedItems.push(matched[0]);
+                            scan.SerialCodeLookUp = null;
+                            scan.TableParams.reload();
+                            scan.TableParams2.reload();
                         } else {
                             scan.SerialError = result.data.ErrorMessage;
                         }
