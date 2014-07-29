@@ -28,7 +28,10 @@
                         <div style="float:right;">
                             <button class="btn btn-warning" id="returnDelivery">Return Entire Delivery</button>
                             <button class="btn btn-danger" id="clearDelivery" ng-click="scan.ClearDelivery(scan.OrderIdLookUp)">Clear Delivery</button>
-                            <button class="btn btn-success" id="VerifiedDelivery">Verify Delivery</button>
+                            <button class="btn btn-success" id="VerifiedDelivery" ng-click="scan.VerifyDelivery()">Verify Delivery</button>
+                            <a class="btn btn-success" ng-mousedown="csv.generate()" ng-href="{{ csv.link() }}" download="test.csv">Export to CSV</a>
+                            <button class="btn btn-success" id="ExportMacId" ng-click="scan.ExportMacId(scan.Delivery.ScannedItems)">Export MacIDs</button>
+                            <button class="btn btn-success" id="PrintDelivery" ng-click="scan.Print()">Print Delivery Notification</button>
                         </div>
                     </div>
                 </div>

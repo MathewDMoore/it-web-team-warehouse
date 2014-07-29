@@ -18,12 +18,13 @@
     <script type="text/javascript" src="../scripts/bootstrap.js"></script>
     <script type="text/javascript" src="../scripts/Directives.js"></script>
     <script type="text/javascript" src="../scripts/ng-table.js"></script>
+    <script type="text/javascript" src="../scripts/ng-table-export.js"></script>
     <script type="text/javascript" src="../scripts/jquery.cookie.js"></script>
     <script type="text/javascript" src="../scripts/common.js"></script>
     <link href="../C4Styles.css" rel="stylesheet" type="text/css" />
 
     <script type="text/javascript">
-        var myApp = angular.module('shipApp', ['myDirectives', 'ngTable']);
+        var myApp = angular.module('shipApp', ['myDirectives', 'ngTable', 'ngTableExport']);
 
     </script>
 </head>

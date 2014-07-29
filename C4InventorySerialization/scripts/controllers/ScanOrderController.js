@@ -108,7 +108,11 @@ app.controller("ScanController", function ($scope, $modal,$filter, ngTableParams
             }
         }
     };
-}
+    scan.VerifyDelivery = function () { };
+    scan.ExportToExcel = function () { };
+    scan.ExportMadId = function () { };
+        scan.print = function() {};
+    }
 );
 var ClearModalCtrl = function ($scope, $modalInstance, docNum) {
 

@@ -106,6 +106,7 @@
     <Content Include="Content\ScanOrder.aspx" />
     <Content Include="Content\Search.aspx" />
     <Content Include="Content\History.aspx" />
+    <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="images\c4-logo.png" />
     <Content Include="images\searching.gif" />
     <Content Include="scripts\angular.min.js" />
@@ -125,6 +126,7 @@
     <Content Include="scripts\libs\angular-bootstrap\ui-bootstrap.min.js" />
     <Content Include="scripts\LogIn.js" />
     <Content Include="scripts\MaintainKits.js" />
+    <Content Include="scripts\ng-table-export.js" />
     <Content Include="scripts\ng-table.js" />
     <Content Include="scripts\Returns.js" />
     <Content Include="scripts\ScanInventoryScript.js" />
@@ -372,6 +374,9 @@
       <DependentUpon>Reporting.xsd</DependentUpon>
     </None>
     <Content Include="Master\Redesign.master" />
+    <Content Include="fonts\glyphicons-halflings-regular.eot" />
+    <Content Include="fonts\glyphicons-halflings-regular.ttf" />
+    <Content Include="fonts\glyphicons-halflings-regular.woff" />
     <None Include="Properties\PublishProfiles\Jordan.pubxml" />
     <None Include="Properties\PublishProfiles\Warehouse.pubxml" />
     <None Include="Serialization.dbml">
