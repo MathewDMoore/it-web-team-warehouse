@@ -9,20 +9,23 @@ app.controller("ScanController", function ($scope, $modal, $filter, ngTableParam
     scan.SerialError = null;
     scan.DeliveryActionMessage = null;
     scan.LookUp = function (orderId) {
-        scan.DeliveryActionMessage = null;
-        scan.Delivery = null;
-        scan.SerialError = null;
+        if (orderId > 0) {
+            scan.DeliveryActionMessage = null;
+            scan.Delivery = null;
+            scan.SerialError = null;
 
-        ScanOrderService.LookUp(orderId).then(function (response) {
-            scan.Delivery = response.data;
-
-            scan.TableParams = new ngTableParams({
-                page: 1, // show first page
-                count: 10 // count per page
-            },
+            ScanOrderService.LookUp(orderId).then(function(response) {
+                scan.Delivery = response.data;
+                _.each(scan.Delivery.ScannedItems, function(item) {
+                    angular.extend(item, { IsSelected: false });
+                });
+                scan.TableParams = new ngTableParams({
+                    page: 1, // show first page
+                    count: 10 // count per page
+                },
                 {
                     total: 0, // length of data
-                    getData: function ($defer, params) {
+                    getData: function($defer, params) {
                         var orderedData = params.sorting() ? $filter('orderBy')(scan.Delivery.NotScannedItems, params.orderBy()) : scan.Delivery.NotScannedItems;
                         orderedData = params.filter() ? $filter('filter')(orderedData, params.filter()) : orderedData;
                         $defer.resolve(orderedData.slice((params.page() - 1) * params.count(), params.page() * params.count()));
@@ -30,21 +33,21 @@ app.controller("ScanController", function ($scope, $modal, $filter, ngTableParam
                         $defer.resolve(orderedData.slice((params.page() - 1) * params.count(), params.page() * params.count()));
                     }
                 });
-            scan.TableParams2 = new ngTableParams({
-                page: 1, // show first page
-                count: 10 // count per page
-            }, {
-                total: 0, // length of data
-                getData: function ($defer, params) {
-                    var orderedData = params.sorting() ? $filter('orderBy')(scan.Delivery.ScannedItems, params.orderBy()) : scan.Delivery.ScannedItems;
-                    orderedData = params.filter() ? $filter('filter')(orderedData, params.filter()) : orderedData;
-                    $defer.resolve(orderedData.slice((params.page() - 1) * params.count(), params.page() * params.count()));
-                    params.total(orderedData.length);
-                    $defer.resolve(orderedData.slice((params.page() - 1) * params.count(), params.page() * params.count()));
-                }
+                scan.TableParams2 = new ngTableParams({
+                    page: 1, // show first page
+                    count: 10 // count per page
+                }, {
+                    total: 0, // length of data
+                    getData: function($defer, params) {
+                        var orderedData = params.sorting() ? $filter('orderBy')(scan.Delivery.ScannedItems, params.orderBy()) : scan.Delivery.ScannedItems;
+                        orderedData = params.filter() ? $filter('filter')(orderedData, params.filter()) : orderedData;
+                        $defer.resolve(orderedData.slice((params.page() - 1) * params.count(), params.page() * params.count()));
+                        params.total(orderedData.length);
+                        $defer.resolve(orderedData.slice((params.page() - 1) * params.count(), params.page() * params.count()));
+                    }
+                });
             });
-        });
-
+        }
     };
     scan.ClearDelivery = function (docNumber) {
 
@@ -96,6 +99,7 @@ app.controller("ScanController", function ($scope, $modal, $filter, ngTableParam
                             //                                    var copy = _.clone(matched);
                             scan.Delivery.NotScannedItems.pop(matched[0]);
                             matched[0].SerialCode = serialCode;
+                            angular.extend(matched[0], { IsSelected: false });
                             scan.Delivery.ScannedItems.push(matched[0]);
                             scan.SerialCodeLookUp = null;
                             scan.TableParams.reload();
@@ -110,12 +114,33 @@ app.controller("ScanController", function ($scope, $modal, $filter, ngTableParam
             }
         }
     };
+    scan.HasSelectedReturns = function () {
+        var selected = _.where(scan.Delivery.ScannedItems, { IsSelected: true });
+        return selected.length > 0;
+    };
+    scan.ReturnSelectedItems = function () {
+        var selected = _.where(scan.Delivery.ScannedItems, { IsSelected: true });
+        if (selected.length > 0) {
+            var ids = _.pluck(selected, 'Id');
+            ScanOrderService.ReturnSelectedItems(ids).then(function(result) {
+                if (result.data) {
+                    _.each(selected, function(item) {
+                        delete  item.IsSelected;
+                        scan.Delivery.ScannedItems.pop(item);
+                        item.SerialCode = null;                       
+                        scan.Delivery.NotScannedItems.push(item);
+                    });
+                    scan.TableParams.reload();
+                    scan.TableParams2.reload();
+                }
+            });
+        }
+    };
     scan.VerifyDelivery = function () { };
     scan.ExportToExcel = function () { };
     scan.ExportMadId = function () { };
-        scan.print = function() {};
-    }
-);
+    scan.print = function () { };
+});
 var ClearModalCtrl = function ($scope, $modalInstance, docNum) {
 
     $scope.DocNum = docNum;

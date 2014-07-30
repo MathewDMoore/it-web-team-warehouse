@@ -63,7 +63,7 @@
                 <div ng-if="scan.Delivery.NotScannedItems.length>0">
                     <h3>Not Scanned Items</h3>
                     <table ng-table="scan.TableParams" class="table">
-                        <tr ng-repeat="item in $data">
+                        <tr ng-repeat="item in $data track by $index">
                             <td data-title="'ID'" sortable="'Id'">{{item.Id}}</td>
                             <td data-title="'Kit Code'" sortable="'ItemCode'">{{item.ItemCode}}</td>
                             <td data-title="'Item Code'" sortable="'RealItemCode'">{{item.RealItemCode}}</td>
@@ -74,10 +74,10 @@
                     </table>
                 </div>
                 <div ng-if="scan.Delivery.ScannedItems.length>0">
-                    <h3>Scanned Items</h3>
-                    <%--                <table ng-table="scan.Delivery.ScannedItems" class="table">--%>
+                    <h3>Scanned Items<span class="btn btn-warning" ng-click="scan.ReturnSelectedItems()" ng-show="scan.HasSelectedReturns()" style="margin-left:10px;">Return Selected Items</span></h3>
                     <table ng-table="scan.TableParams2" class="table">
-                        <tr ng-repeat="scannedItem in $data">
+                        <tr ng-repeat="scannedItem in $data track by $index">
+                            <td><input type="checkbox" ng-model="scannedItem.IsSelected" /></td>
                             <td data-title="'ID'" sortable="'Id'">{{scannedItem.Id}}</td>
                             <td data-title="'Kit Code'" sortable="'ItemCode'">{{scannedItem.ItemCode}}</td>
                             <td data-title="'Item Code'" sortable="'RealItemCode'">{{scannedItem.RealItemCode}}</td>

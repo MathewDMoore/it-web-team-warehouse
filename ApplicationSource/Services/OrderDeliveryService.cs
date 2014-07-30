@@ -1,6 +1,5 @@
 ﻿using System;
-using System.Data;
-using System.Data.SqlClient;
+using System.Collections.Generic;
 using System.Linq;
 using System.Security.Principal;
 using System.ServiceModel;
@@ -33,27 +32,31 @@ namespace ApplicationSource.Services
         public OrderDeliveryModel OrderLookUp(int orderId)
         {
             var delivery = _repo.GetDelivery(new DeliveryOrderQuery { DocNum = orderId, ServerLocation = _settings.GetServerLocation });
-            var items =
-                _repo.GetDeliveryItems(new DeliveryOrderItemsQuery
-                {
-                    DocNum = orderId,
-                    ServerLocation = _settings.GetServerLocation,
-                    Username = _identity.Name
-                });
-            var deliveryModel = delivery.Map<Delivery, OrderDeliveryModel>();
-            deliveryModel.DeliveryNumber = orderId;
-            items.ToList().ForEach(i =>
+            OrderDeliveryModel deliveryModel = null;
+            if(delivery!=null)
             {
-                var model = i.Map<SerialNumberItem, DeliveryOrderItemModel>();
-                if (string.IsNullOrEmpty(i.MacId))
+                var items =
+                    _repo.GetDeliveryItems(new DeliveryOrderItemsQuery
+                    {
+                        DocNum = orderId,
+                        ServerLocation = _settings.GetServerLocation,
+                        Username = _identity.Name
+                    });
+                deliveryModel = delivery.Map<Delivery, OrderDeliveryModel>();
+                deliveryModel.DeliveryNumber = orderId;
+                items.ToList().ForEach(i =>
                 {
-                    deliveryModel.NotScannedItems.Add(model);
-                }
-                else
-                {
-                    deliveryModel.ScannedItems.Add(model);
-                }
-            });
+                    var model = i.Map<SerialNumberItem, DeliveryOrderItemModel>();
+                    if (string.IsNullOrEmpty(i.MacId))
+                    {
+                        deliveryModel.NotScannedItems.Add(model);
+                    }
+                    else
+                    {
+                        deliveryModel.ScannedItems.Add(model);
+                    }
+                });
+            }
             return deliveryModel;
             
         }
@@ -95,6 +98,21 @@ namespace ApplicationSource.Services
                 }
             }
             return model;
+        }
+
+        public bool ReturnDeliveryLineItem(List<int> ids)
+        {
+            var success = false;
+            try
+            {
+                ids.ForEach(i=>_repo.ReturnDeliveryLineItem(new SerialNumberItem{Id = i, Username = _identity.Name}));
+                success = true;
+            }
+            catch (Exception e)
+            {
+                
+            }
+            return success;
         }
 
         public bool ClearDelivery(int docNumber)

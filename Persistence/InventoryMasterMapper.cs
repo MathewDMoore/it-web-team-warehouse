@@ -37,6 +37,11 @@ namespace Persistence
             return _sqlMapper.Update("sp_ClearDelivery", query) > 0;
         }
 
+        public bool ReturnDeliveryLineItem(SerialNumberItem lineItem)
+        {
+            return _sqlMapper.Update("ReturnDeliveryByLineItem", lineItem) >0;
+        }
+
         public InventoryMasterMapper(ISqlMapper sqlMapper)
         {
             _sqlMapper = sqlMapper;

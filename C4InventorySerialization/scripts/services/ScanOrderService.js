@@ -14,13 +14,19 @@
             .success(function (result) {
                 return result;
             });
-    },
+    };
     scanOrderObject.ClearDelivery = function (docNum) {
         return $http({ data: docNum, method: "POST", url: "/ship/services/OrderDeliveryService.svc/ClearDelivery" })
             .success(function (result) {
                 return result;
             });
-    }
+    };
+    scanOrderObject.ReturnSelectedItems = function (ids) {
+        return $http({ data: { ids: ids }, method: "POST", url: "/ship/services/OrderDeliveryService.svc/ReturnDeliveryLineItem" })
+            .success(function (result) {
+                return result;
+            });
+    };
 
     return scanOrderObject;
 

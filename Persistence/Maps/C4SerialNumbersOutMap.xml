@@ -36,9 +36,9 @@
 			<result property="ProductGroup" column="PRODUCTGROUP"/>
 			<result property="ProductFamily" column="PRODUCTFAMILY"/>
 			<result property="ProductPillar" column="PRODUCTPILLAR"/>
-			<result property="ReturnedByUser" column="RETURNEDBYUSER" />			
+			<result property="ReturnedByUser" column="RETURNEDBYUSER" />
 		</resultMap>
-			<resultMap id="DeliveryItemRM" class="SerialNumberItem">
+		<resultMap id="DeliveryItemRM" class="SerialNumberItem">
 			<result property="Id" column="ID"/>
 			<result property="DocNum" column="DOCNUM"/>
 			<result property="SerialNum" column="SERIALNUM"/>
@@ -56,13 +56,13 @@
 			<result property="ProductGroup" column="PRODUCTGROUP"/>
 			<result property="ProductFamily" column="PRODUCTFAMILY"/>
 			<result property="ProductPillar" column="PRODUCTPILLAR"/>
-			<result property="ReturnedByUser" column="RETURNEDBYUSER" />			
+			<result property="ReturnedByUser" column="RETURNEDBYUSER" />
 		</resultMap>
 		<resultMap id="DeliveryOrderRM" class="Delivery">
-			<result column="DealerName" property="DealerName"/>	
-			<result column="DealerId" property="DealerId"/>	
-			<result column="Address2" property="Address"/>	
-			<result column="Comments" property="Comments"/>	
+			<result column="DealerName" property="DealerName"/>
+			<result column="DealerId" property="DealerId"/>
+			<result column="Address2" property="Address"/>
+			<result column="Comments" property="Comments"/>
 		</resultMap>
 	</resultMaps>
 	<parameterMaps>
@@ -73,10 +73,14 @@
 		<parameterMap id="DeliveryOrderPM" class="DeliveryOrderQuery">
 			<parameter property="ServerLocation" column="SERVERLOCATION"/>
 			<parameter property="DocNum" column="DOCNUM"/>
-		</parameterMap>		
+		</parameterMap>
 		<parameterMap id="ClearDeliveryOrderPM" class="DeliveryOrderQuery">
 			<parameter property="Username" column="USERNAME"/>
 			<parameter property="DocNum" column="DELIVERYNUMBER"/>
+		</parameterMap>
+		<parameterMap id="ReturnSerialNumberItemPM" class="SerialNumberItem">
+			<parameter property="Username" column="USERNAME"/>
+			<parameter property="Id" column="ID"/>
 		</parameterMap>
 		<parameterMap id="DeliveryOrderItemsPM" class="DeliveryOrderItemsQuery">
 			<parameter property="ServerLocation" column="SERVERLOCATION"/>
@@ -96,6 +100,9 @@
 		</procedure>
 		<procedure  id="SelectDeliveryByDeliveryNumber" parameterMap="DeliveryOrderPM" resultMap="DeliveryOrderRM">
 			sp_Delivery_Header
+		</procedure>
+		<procedure  id="ReturnDeliveryByLineItem" parameterMap="ReturnSerialNumberItemPM">
+			sp_ReturnDeliveryByLineItem
 		</procedure>
 		<update id="UpdateSerialNumber" parameterClass="SerialNumberItem" >
 			Update C4_SERIALNUMBERS_OUT set SERIALCODE= UPPER(#SerialCode#), USERNAME= #Username#, MACID =#MacId#, RETURNEDBYUSER = null where ID = #Id#
