@@ -6,7 +6,7 @@ app.controller("ScanController", function ($scope, $modal, $filter, ngTableParam
     scan.Delivery = null;
     scan.TableParams = null;
     scan.Data = [];
-    scan.SerialError = null;
+    scan.SerialScanStatus = null;
     scan.DeliveryActionMessage = null;
     scan.LookUp = function (orderId) {
         if (orderId > 0) {
@@ -77,11 +77,13 @@ app.controller("ScanController", function ($scope, $modal, $filter, ngTableParam
     };
     scan.VerifyLineitem = function (serialCode) {
         if (serialCode) {
+            scan.SerialScanStatus = null;
+
             var modifiedMac = serialCode.substring(0, serialCode.length - 17);
 
             if (modifiedMac.length != 12) {
                 if (modifiedMac.length != 16) {
-                    scan.SerialError = "You have scanned in a code that is not the correct length!";
+                    scan.SerialScanStatus = { Success: false, Message: "You have scanned in a code that is not the correct length!" };
                     return false;
                 }
             }
@@ -104,13 +106,15 @@ app.controller("ScanController", function ($scope, $modal, $filter, ngTableParam
                             scan.SerialCodeLookUp = null;
                             scan.TableParams.reload();
                             scan.TableParams2.reload();
+                            scan.SerialScanStatus = { Success: true, Message: "Serial Successfully Updated" };
                         } else {
-                            scan.SerialError = result.data.ErrorMessage;
+                            scan.SerialScanStatus = { Success: false, Message: result.data.ErrorMessage };
+
                         }
                     });
                 }
             } else {
-                scan.SerialError = "No items found that match that Serial Code. Verify Serial Code and try again";
+                scan.SerialScanStatus = { Success: false, Message: "No items found that match that Serial Code. Verify Serial Code and try again" };
             }
         }
     };
