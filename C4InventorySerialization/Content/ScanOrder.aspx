@@ -15,23 +15,33 @@
                 </div>
             </form>
             <div ng-if="scan.DeliveryActionMessage" class="alert alert-success" style="width: 300px; float: left; margin-left: 20px;">{{scan.DeliveryActionMessage}}</div>
-            <div style="margin-top:10px;" ng-show="scan.Delivery">
+            <div style="margin-top: 10px;" ng-show="scan.Delivery">
                 <div class="panel panel-info">
                     <div class="panel-heading">
-                        <h3 style="margin:0px;">Delivery Number: {{scan.Delivery.DeliveryNumber}} </h3>
+                        <h3 style="margin: 5px 0px; display: inline-block">Delivery Number: {{scan.Delivery.DeliveryNumber}} </h3>
+                        <div style="float: right;position: relative;top: -5px;">
+                            <div class="btn-group">
+                                <button class="btn btn-lg btn-primary"><i class="glyphicon glyphicon-export"></i></button>
+                                <button type="button" class="btn btn-lg btn-primary dropdown-toggle" data-toggle="dropdown">
+                                    <span class="caret" style="font-size:20px"></span>
+                                </button>
+                                <ul class="dropdown-menu" role="menu">
+                                    <li><a style="cursor:pointer" ng-mousedown="csv.generate()" ng-href="{{ csv.link() }}" download="test.csv">Export to CSV</a></li>
+                                    <li><a style="cursor:pointer" ng-click="scan.ExportMacId(scan.Delivery.ScannedItems)">Export MacIDs</a></li>
+                                </ul>
+                            </div>
+                            <span class="btn btn-lg btn-primary"><i class="glyphicon glyphicon-print" id="PrintDelivery" ng-click="scan.Print()"></i></span>
+                        </div>
                     </div>
                     <div class="panel-body">
-                        <div style="width: 200px; float: right; margin-bottom: 0px" class="alert alert-success" ng-show="scan.Delivery.NotScannedItems.length==0">Scan Complete <i class="glyphicon glyphicon-check"></i></div>                        
-                        <h3 style="margin-top:0px;">Dealer: {{scan.Delivery.DealerName}}/<small>{{scan.Delivery.DealerId}}</small></h3>
+                        <div style="width: 200px; float: right; margin-bottom: 0px" class="alert alert-success" ng-show="scan.Delivery.NotScannedItems.length==0">Scan Complete <i class="glyphicon glyphicon-check"></i></div>
+                        <h3 style="margin-top: 0px;">Dealer: {{scan.Delivery.DealerName}}/<small>{{scan.Delivery.DealerId}}</small></h3>
                         <label>Address: {{scan.Delivery.Address}}</label><br />
                         <label>Comments: {{scan.Delivery.Comments}}</label><br />
-                        <div style="float:right;">
+                        <div style="float: right;">
                             <button class="btn btn-warning" id="returnDelivery">Return Entire Delivery</button>
                             <button class="btn btn-danger" id="clearDelivery" ng-click="scan.ClearDelivery(scan.OrderIdLookUp)">Clear Delivery</button>
-                            <button class="btn btn-success" id="VerifiedDelivery" ng-click="scan.VerifyDelivery()">Verify Delivery</button>
-                            <a class="btn btn-success" ng-mousedown="csv.generate()" ng-href="{{ csv.link() }}" download="test.csv">Export to CSV</a>
-                            <button class="btn btn-success" id="ExportMacId" ng-click="scan.ExportMacId(scan.Delivery.ScannedItems)">Export MacIDs</button>
-                            <button class="btn btn-success" id="PrintDelivery" ng-click="scan.Print()">Print Delivery Notification</button>
+                            <button class="btn btn-success" id="VerifiedDelivery" ng-click="scan.VerifyDelivery()">Verify Delivery</button>                            
                         </div>
                     </div>
                 </div>
