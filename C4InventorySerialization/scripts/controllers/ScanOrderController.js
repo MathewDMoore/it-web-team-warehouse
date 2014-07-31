@@ -8,6 +8,14 @@ app.controller("ScanController", function ($scope, $modal, $filter, ngTableParam
     scan.Data = [];
     scan.SerialScanStatus = null;
     scan.DeliveryActionMessage = null;
+    scan.ScannedSearch = function(filter) {
+        scan.TableParams2.filter(filter);
+//        scan.TableParams2.reload();
+    };
+    scan.NotScannedSearch = function(filter) {
+        scan.TableParams.filter(filter);
+//        scan.TableParams.reload();
+    };
     scan.LookUp = function (orderId) {
         if (orderId > 0) {
             scan.DeliveryActionMessage = null;

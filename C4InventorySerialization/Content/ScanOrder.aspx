@@ -8,7 +8,7 @@
     <div style="min-height: 140px;">
         <h2>Deliveries</h2>
         <div ng-controller="ScanController as scan" class="well">
-            <form ng-submit="scan.LookUp(scan.OrderIdLookUp)">
+            <form ng-submit="scan.LookUp(scan.OrderIdLookUp)" ng-init="scan.LookUp(<%=Request.QueryString.Get("delivery")%>)">
                 <div class="input-group" style="width: 300px;">
                     <input class="form-control" placeholder="Delivery Number" autofocus id="orderIdInput" type="number" min="0" ng-model="scan.OrderIdLookUp" ng-blur="scan.LookUp(scan.OrderIdLookUp)" />
                     <span class="input-group-addon " style="cursor: pointer" id="loadDelivery" ng-click="scan.LookUp(scan.OrderIdLookUp)">Load Delivery</span>
@@ -45,7 +45,7 @@
                         </div>
                     </div>
                 </div>
-                <div style="float: left;margin-bottom: 20px;">
+                <div style="float: left; margin-bottom: 20px;">
                     <label>Enter Serial Code: </label>
                     <div class="input-group" style="width: 328px">
                         <input class="form-control" autofocus ng-model="scan.SerialCodeLookUp" ng-change="scan.VerifyLineitem(scan.SerialCodeLookUp)" />
@@ -53,15 +53,22 @@
                     </div>
                     <span class="text-info">{{scan.Delivery.ScannedItems.length}} of {{scan.Delivery.NotScannedItems.length +scan.Delivery.ScannedItems.length}} Products Scanned</span>
                 </div>
-                <div class="alert" style="width: 600px;float: left;margin-left: 10px;position: relative;top: 14px;" ng-class="{'alert-danger':!scan.SerialScanStatus.Success, 'alert-success':scan.SerialScanStatus.Success}" ng-show="scan.SerialScanStatus">{{scan.SerialScanStatus.Message}}</div>
+                <div class="alert" style="width: 600px; float: left; margin-left: 10px; position: relative; top: 14px;" ng-class="{'alert-danger':!scan.SerialScanStatus.Success, 'alert-success':scan.SerialScanStatus.Success}" ng-show="scan.SerialScanStatus">{{scan.SerialScanStatus.Message}}</div>
 
                 <style>
                     .table .header {
                         text-align: left;
                     }
                 </style>
-                <div ng-if="scan.Delivery.NotScannedItems.length>0" style="clear:both;">
+                <div ng-if="scan.Delivery.NotScannedItems.length>0" style="clear: both;">
                     <h3>Not Scanned Items</h3>
+                    <div>
+                        Search
+                        <div class="input-group" style="width: 328px">
+                            <input class="form-control" ng-model="scan.NotScannedFilter" ng-change="scan.NotScannedSearch(scan.NotScannedFilter);" />
+                            <span class="input-group-addon"><i class="glyphicon glyphicon-search"></i></span>
+                        </div>
+                    </div>
                     <table ng-table="scan.TableParams" class="table">
                         <tr ng-repeat="item in $data track by $index">
                             <td data-title="'ID'" sortable="'Id'">{{item.Id}}</td>
@@ -74,7 +81,15 @@
                     </table>
                 </div>
                 <div ng-if="scan.Delivery.ScannedItems.length>0">
-                    <h3>Scanned Items<span class="btn btn-warning" ng-click="scan.ReturnSelectedItems()" ng-show="scan.HasSelectedReturns()" style="margin-left: 10px;">Return Selected Items</span></h3>
+                    <h3>Scanned Items</h3>
+                    <div>
+                        Search
+                        <div class="input-group" style="width: 328px">
+                            <input class="form-control" ng-model="scan.ScannedFilter" ng-change="scan.ScannedSearch(scan.ScannedFilter)" />
+                            <span class="input-group-addon"><i class="glyphicon glyphicon-search"></i></span>
+                        </div>
+                        <span class="btn btn-warning" ng-click="scan.ReturnSelectedItems()" ng-show="scan.HasSelectedReturns()" style="margin-left: 10px;">Return Selected Items</span>
+                    </div>
                     <table ng-table="scan.TableParams2" class="table">
                         <tr ng-repeat="scannedItem in $data track by $index">
                             <td>
