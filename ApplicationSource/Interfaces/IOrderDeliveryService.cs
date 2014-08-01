@@ -15,7 +15,7 @@ namespace ApplicationSource.Interfaces
         OrderDeliveryModel OrderLookUp(int orderId);
 
         [OperationContract]
-        [WebInvoke(Method = "POST", BodyStyle = WebMessageBodyStyle.Wrapped, ResponseFormat = WebMessageFormat.Json,RequestFormat = WebMessageFormat.Json)]
+        [WebInvoke(Method = "POST", BodyStyle = WebMessageBodyStyle.Bare, ResponseFormat = WebMessageFormat.Json,RequestFormat = WebMessageFormat.Json)]
         VerifyUniqueMacModel SaveDeliveryItem(VerifyUniqueMacModel model);
 
         [OperationContract]
@@ -23,7 +23,7 @@ namespace ApplicationSource.Interfaces
         bool ClearDelivery(int docNumber);
 
         [OperationContract]
-        [WebInvoke(Method = "POST", BodyStyle = WebMessageBodyStyle.Wrapped, ResponseFormat = WebMessageFormat.Json, RequestFormat = WebMessageFormat.Json)]
+        [WebInvoke(Method = "POST", BodyStyle = WebMessageBodyStyle.Bare, ResponseFormat = WebMessageFormat.Json, RequestFormat = WebMessageFormat.Json)]
         bool ReturnDeliveryLineItem(List<int> ids);
     }
 }

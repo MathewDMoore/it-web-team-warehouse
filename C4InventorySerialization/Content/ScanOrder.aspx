@@ -48,7 +48,7 @@
                 <div style="float: left; margin-bottom: 20px;">
                     <label>Enter Serial Code: </label>
                     <div class="input-group" style="width: 328px">
-                        <input class="form-control" autofocus ng-model="scan.SerialCodeLookUp" ng-change="scan.VerifyLineitem(scan.SerialCodeLookUp)" />
+                        <input class="form-control" autofocus auto-select select="scan.SerialScanStatus.Success==false" ng-model="scan.SerialCodeLookUp" ng-change="scan.VerifyLineitem(scan.SerialCodeLookUp)" />
                         <span class="input-group-addon"><i class="glyphicon glyphicon-search"></i></span>
                     </div>
                     <span class="text-info">{{scan.Delivery.ScannedItems.length}} of {{scan.Delivery.NotScannedItems.length +scan.Delivery.ScannedItems.length}} Products Scanned</span>
@@ -81,14 +81,13 @@
                     </table>
                 </div>
                 <div ng-if="scan.Delivery.ScannedItems.length>0">
-                    <h3>Scanned Items</h3>
+                    <h3>Scanned Items <span class="btn btn-warning" ng-click="scan.ReturnSelectedItems()" ng-show="scan.HasSelectedReturns()" style="margin-left: 10px;">Return Selected Items</span></h3>
                     <div>
                         Search
                         <div class="input-group" style="width: 328px">
                             <input class="form-control" ng-model="scan.ScannedFilter" ng-change="scan.ScannedSearch(scan.ScannedFilter)" />
                             <span class="input-group-addon"><i class="glyphicon glyphicon-search"></i></span>
                         </div>
-                        <span class="btn btn-warning" ng-click="scan.ReturnSelectedItems()" ng-show="scan.HasSelectedReturns()" style="margin-left: 10px;">Return Selected Items</span>
                     </div>
                     <table ng-table="scan.TableParams2" class="table">
                         <tr ng-repeat="scannedItem in $data track by $index">

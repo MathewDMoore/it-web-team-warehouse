@@ -75,14 +75,14 @@ namespace ApplicationSource.Services
                         if (serialItem != null)
                         {
                             model.IsUnique = false;
-                            model.ErrorMessage = "This order exists on another order - #";
-                            model.ErrorDeliveryNumber = serialItem.DocNum.ToString();
+                            model.ErrorMessage = "This item has been scanned on another delivery order - #";
+                            model.ErrorDeliveryNumber = serialItem.DocNum;
 
                         }
                         else
                         {
                             model.IsUnique = true;
-                            if (!UpdateRecord(model.SerialCode, model.MacId, model.Id))
+                            if (!UpdateRecord(model.SerialCode, parsedMacId, model.Id))
                             {
                                 model.ErrorMessage = "There was an error saving this item into the database. Please review the SerialCode or contact IT support.";
 

@@ -10,11 +10,9 @@ app.controller("ScanController", function ($scope, $modal, $filter, ngTableParam
     scan.DeliveryActionMessage = null;
     scan.ScannedSearch = function(filter) {
         scan.TableParams2.filter(filter);
-//        scan.TableParams2.reload();
     };
     scan.NotScannedSearch = function(filter) {
         scan.TableParams.filter(filter);
-//        scan.TableParams.reload();
     };
     scan.LookUp = function (orderId) {
         if (orderId > 0) {
@@ -103,7 +101,7 @@ app.controller("ScanController", function ($scope, $modal, $filter, ngTableParam
 
                 if (!matched[0].SmartCodeOnly) {
 
-                    var deliveryItem = { SerialCode: serialCode, MacId: serialCode, Id: matched[0].Id, ProductGroup: matched[0].ProductGroup };
+                    var deliveryItem = { SerialCode: serialCode, MacId: modifiedMac, Id: matched[0].Id, ProductGroup: matched[0].ProductGroup };
                     ScanOrderService.SaveDeliveryItem(deliveryItem).then(function (result) {
                         if (!result.data.ErrorMessage) {
                             //                                    var copy = _.clone(matched);
@@ -116,7 +114,7 @@ app.controller("ScanController", function ($scope, $modal, $filter, ngTableParam
                             scan.TableParams2.reload();
                             scan.SerialScanStatus = { Success: true, Message: "Serial Successfully Updated" };
                         } else {
-                            scan.SerialScanStatus = { Success: false, Message: result.data.ErrorMessage };
+                            scan.SerialScanStatus = { Success: false, Message: result.data.ErrorMessage + result.data.ErrorDeliveryNumber };
 
                         }
                     });

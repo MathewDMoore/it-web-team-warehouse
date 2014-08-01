@@ -22,7 +22,7 @@ namespace ApplicationSource.Models
         public bool IsUnique { get; set; }
 
         [DataMember]
-        public string ErrorDeliveryNumber { get; set; }
+        public int ErrorDeliveryNumber { get; set; }
 
         [DataMember]
         public string SerialCode { get; set; }

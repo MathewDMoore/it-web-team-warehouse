@@ -15,21 +15,16 @@ Directives.directive('onEnter', function () {
         }
     };
 })
-.directive("error", function () {
+.directive("autoSelect", function () {
     return {
-        scope: { Error: "=message" },
+        scope: { Select: "=select" },
         link: function (scope, element, attrs) {
-            element.popover({trigger:'manual'});
-            scope.$watch("Error", function (newValue) {
-                if (newValue && newValue.length>0) {
+            scope.$watch("Select", function (newValue) {
+                if (newValue) {
                     element.select();
                     element.focus();
-//                    $(element).popover({ content: scope.Error });
-                    element.popover({ content: scope.Error, trigger: 'manual' });
-                    element.popover('show');
-                } else {
-                    $(element).popover('hide');
                 }
+                scope.Select = false;               
             });
         }
     };
