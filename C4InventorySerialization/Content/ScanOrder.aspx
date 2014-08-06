@@ -10,8 +10,8 @@
         <div ng-controller="ScanController as scan" class="well">
             <form ng-submit="scan.LookUp(scan.OrderIdLookUp)" ng-init="scan.LookUp(<%=Request.QueryString.Get("delivery")%>)">
                 <div class="input-group" style="width: 300px;">
-                    <input class="form-control" placeholder="Delivery Number" autofocus id="orderIdInput" type="number" min="0" ng-model="scan.OrderIdLookUp" ng-blur="scan.LookUp(scan.OrderIdLookUp)" />
-                    <span class="input-group-addon " style="cursor: pointer" id="loadDelivery" ng-click="scan.LookUp(scan.OrderIdLookUp)">Load Delivery</span>
+                    <input class="form-control" placeholder="Delivery Number" ng-disabled="scan.IsSearching" autofocus id="orderIdInput" type="number" min="0" ng-model="scan.OrderIdLookUp" ng-blur="scan.LookUp(scan.OrderIdLookUp)" />
+                    <span class="input-group-addon " style="cursor: pointer" id="loadDelivery" ng-click="scan.LookUp(scan.OrderIdLookUp)">{{scan.IsSearching?'Loading...':'Load Delivery'}}</span>
                 </div>
             </form>
             <div ng-if="scan.DeliveryActionMessage" class="alert alert-success" style="width: 300px; float: left; margin-left: 20px;">{{scan.DeliveryActionMessage}}</div>

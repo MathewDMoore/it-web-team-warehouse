@@ -8,6 +8,8 @@ app.controller("ScanController", function ($scope, $modal, $filter, ngTableParam
     scan.Data = [];
     scan.SerialScanStatus = null;
     scan.DeliveryActionMessage = null;
+    scan.IsSearching = false;
+
     scan.ScannedSearch = function(filter) {
         scan.TableParams2.filter(filter);
     };
@@ -16,11 +18,14 @@ app.controller("ScanController", function ($scope, $modal, $filter, ngTableParam
     };
     scan.LookUp = function (orderId) {
         if (orderId > 0) {
+            scan.IsSearching = true;
             scan.DeliveryActionMessage = null;
             scan.Delivery = null;
             scan.SerialError = null;
 
             ScanOrderService.LookUp(orderId).then(function(response) {
+                scan.OrderIdLookUp = null;
+                scan.IsSearching = false;
                 scan.Delivery = response.data;
                 _.each(scan.Delivery.ScannedItems, function(item) {
                     angular.extend(item, { IsSelected: false });
