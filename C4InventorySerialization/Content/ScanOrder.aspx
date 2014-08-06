@@ -81,7 +81,7 @@
                             </tr>
                         </table>
                 </div>
-                <div ng-if="scan.Delivery.ScannedItems.length>0">
+                <div ng-if="scan.Delivery.ScannedItems.length>0" style="clear:both;">
                     <h3>Scanned Items <span class="btn btn-warning" ng-click="scan.ReturnSelectedItems()" ng-show="scan.HasSelectedReturns()" style="margin-left: 10px;">Return Selected Items</span></h3>
                     <div>
                         Search

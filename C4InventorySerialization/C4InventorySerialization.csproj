@@ -134,6 +134,7 @@
     <Content Include="scripts\ScanSerialScript.js" />
     <Content Include="scripts\SearchSmartMac.js" />
     <Content Include="scripts\services\ScanOrderService.js" />
+    <Content Include="scripts\shippingFilters.js" />
     <Content Include="scripts\ShipToolScript.js" />
     <Content Include="scripts\templates\ClearDeliveryModal.html" />
     <Content Include="scripts\underscore-min.js" />

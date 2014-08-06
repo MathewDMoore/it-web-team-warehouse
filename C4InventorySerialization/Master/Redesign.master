@@ -17,13 +17,14 @@
     <script type="text/javascript" src="../scripts/ng-table-export.js"></script>
     <script type="text/javascript" src="../scripts/jquery.cookie.js"></script>
     <script type="text/javascript" src="../scripts/common.js"></script>
+    <script type="text/javascript" src="../scripts/shippingFilters.js"></script>
     <link href="../C4Styles.css" rel="stylesheet" type="text/css" />
     <link href="..//styles/bootstrap.css" rel="stylesheet" type="text/css" />
     <link href="..//styles/ng-table.css" rel="stylesheet" type="text/css" />
     <script type="text/javascript" src="../scripts/libs/angular-bootstrap/ui-bootstrap-tpls.min.js"></script>
 
     <script type="text/javascript">
-        var myApp = angular.module('shipApp', ['myDirectives', 'ngTable', 'ui.bootstrap', 'ngTableExport']);
+        var myApp = angular.module('shipApp', ['myDirectives', 'ngTable', 'ui.bootstrap', 'ngTableExport', 'Shipping.Filters']);
 
     </script>
 </head>
