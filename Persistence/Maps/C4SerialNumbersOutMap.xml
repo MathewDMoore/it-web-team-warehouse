@@ -86,7 +86,7 @@
 			<parameter property="ServerLocation" column="SERVERLOCATION"/>
 			<parameter property="DocNum" column="DOCNUM"/>
 			<parameter property="Username" column="USERNAME"/>
-		</parameterMap>
+    </parameterMap>
 	</parameterMaps>
 	<statements>
 		<procedure  id="sp_ClearDelivery" parameterMap="ClearDeliveryOrderPM">
@@ -107,5 +107,11 @@
 		<update id="UpdateSerialNumber" parameterClass="SerialNumberItem" >
 			Update C4_SERIALNUMBERS_OUT set SERIALCODE= UPPER(#SerialCode#), USERNAME= #Username#, MACID =#MacId#, RETURNEDBYUSER = null where ID = #Id#
 		</update>
+    <update id="UpdateVerifiedOrder" parameterClass="DeliveryOrderQuery">
+      UPDATE C4_SERIALNUMBERS_OUT
+      SET VERIFIED = 1,
+      [USERNAME] = #Username#
+      WHERE DOCNUM = #DocNum#
+    </update>
 	</statements>
 </sqlMap>

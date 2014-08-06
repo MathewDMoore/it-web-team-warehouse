@@ -11,5 +11,6 @@ namespace Persistence.Repositories.Interfaces
         IEnumerable<SerialNumberItem> SelectDeliveryOrderItems(DeliveryOrderItemsQuery query);
         bool ClearDelivery(DeliveryOrderQuery query);
         bool ReturnDeliveryLineItem(SerialNumberItem lineItem);
+        bool VerifyDelivery(DeliveryOrderQuery query);
     }
 }

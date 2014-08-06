@@ -1,5 +1,4 @@
-﻿
-angular.module('ngTableExport', [])
+﻿angular.module('ngTableExport', [])
 .config(['$compileProvider', function ($compileProvider) {
     // allow data links
     $compileProvider.aHrefSanitizationWhitelist(/^\s*(https?|ftp|mailto|data):/);

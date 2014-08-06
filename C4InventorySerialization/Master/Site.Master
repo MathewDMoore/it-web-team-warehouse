@@ -23,7 +23,7 @@
     <link href="../C4Styles.css" rel="stylesheet" type="text/css" />
 
     <script type="text/javascript">
-        var myApp = angular.module('shipApp', ['myDirectives', 'ngTable', 'ngTableExport']);
+        var myApp = angular.module('shipApp', ['myDirectives']);
 
     </script>
 </head>

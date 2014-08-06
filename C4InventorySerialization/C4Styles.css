@@ -14,6 +14,13 @@ a:hover{ text-decoration: none; }
 a.updatelink{ display: block; float: left;line-height: 22px; padding-top: 0;}
 
 /* GLOBAL TAGGED */
+p {
+display: block;
+-webkit-margin-before: 1em;
+-webkit-margin-after: 1em;
+-webkit-margin-start: 0px;
+-webkit-margin-end: 0px;
+}
 
 #wrapper
 {

@@ -31,9 +31,14 @@ namespace ApplicationSource.Services
 
         public OrderDeliveryModel OrderLookUp(int orderId)
         {
-            var delivery = _repo.GetDelivery(new DeliveryOrderQuery { DocNum = orderId, ServerLocation = _settings.GetServerLocation });
+            var delivery =
+                _repo.GetDelivery(new DeliveryOrderQuery
+                {
+                    DocNum = orderId,
+                    ServerLocation = _settings.GetServerLocation
+                });
             OrderDeliveryModel deliveryModel = null;
-            if(delivery!=null)
+            if (delivery != null)
             {
                 var items =
                     _repo.GetDeliveryItems(new DeliveryOrderItemsQuery
@@ -58,8 +63,9 @@ namespace ApplicationSource.Services
                 });
             }
             return deliveryModel;
-            
+
         }
+
         public VerifyUniqueMacModel SaveDeliveryItem(VerifyUniqueMacModel model)
         {
             var macId = model.MacId;
@@ -71,7 +77,11 @@ namespace ApplicationSource.Services
                 {
                     if (parsedMacId.Length == 12 || parsedMacId.Length == 16)
                     {
-                        var serialItem = _repo.SelectSmartMac(new SerialNumberItemQuery { MacId = parsedMacId, ProductGroup = productGroup });
+                        var serialItem = _repo.SelectSmartMac(new SerialNumberItemQuery
+                            {
+                                MacId = parsedMacId,
+                                ProductGroup = productGroup
+                            });
                         if (serialItem != null)
                         {
                             model.IsUnique = false;
@@ -84,7 +94,8 @@ namespace ApplicationSource.Services
                             model.IsUnique = true;
                             if (!UpdateRecord(model.SerialCode, parsedMacId, model.Id))
                             {
-                                model.ErrorMessage = "There was an error saving this item into the database. Please review the SerialCode or contact IT support.";
+                                model.ErrorMessage =
+                                    "There was an error saving this item into the database. Please review the SerialCode or contact IT support.";
 
                             }
                         }
@@ -105,25 +116,25 @@ namespace ApplicationSource.Services
             var success = false;
             try
             {
-                ids.ForEach(i=>_repo.ReturnDeliveryLineItem(new SerialNumberItem{Id = i, Username = _identity.Name}));
+                ids.ForEach(i => _repo.ReturnDeliveryLineItem(new SerialNumberItem { Id = i, Username = _identity.Name }));
                 success = true;
             }
             catch (Exception e)
             {
-                
+
             }
             return success;
         }
 
         public bool ClearDelivery(int docNumber)
         {
-            if (docNumber>0)
+            if (docNumber > 0)
             {
                 bool success = false;
 
                 try
                 {
-                   success =  _repo.ClearDelivery(new DeliveryOrderQuery {DocNum = docNumber, Username = _identity.Name});                    
+                    success = _repo.ClearDelivery(new DeliveryOrderQuery { DocNum = docNumber, Username = _identity.Name });
                 }
                 catch (Exception)
                 {
@@ -135,6 +146,13 @@ namespace ApplicationSource.Services
             }
 
             return false;
+        }
+
+        public bool VerifyDelivery(int deliveryNumber)
+        {
+            //Old "sp_Delivery_Verify"
+            var query = new DeliveryOrderQuery() { DocNum = deliveryNumber, Username = _identity.Name };
+            return _repo.VerifyDelivery(query);
         }
 
         private bool UpdateRecord(string serialCode, string macId, int id)

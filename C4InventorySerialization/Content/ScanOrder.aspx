@@ -19,29 +19,29 @@
                 <div class="panel panel-info">
                     <div class="panel-heading">
                         <h3 style="margin: 5px 0px; display: inline-block">Delivery Number: {{scan.Delivery.DeliveryNumber}} </h3>
+                        <div style="display: inline-block; margin-left: 40px; padding: 20px;" ng-class="{'bg-success img-rounded':scan.Delivery.IsVerified, 'bg-danger img-rounded':!scan.Delivery.IsVerified}"><i class="glyphicon" ng-class="{'glyphicon-check':scan.Delivery.IsVerified, 'glyphicon-remove-circle' : !scan.Delivery.IsVerified }"></i>{{scan.GetDeliveryStatus()}}</div>
                         <div style="float: right; position: relative; top: -5px;">
                             <div class="btn-group">
-                                <button class="btn btn-lg btn-primary"><i class="glyphicon glyphicon-export"></i></button>
+                                <button class="btn btn-lg btn-primary">Export <i class="glyphicon glyphicon-export"></i></button>
                                 <button type="button" class="btn btn-lg btn-primary dropdown-toggle" data-toggle="dropdown">
                                     <span class="caret" style="font-size: 20px"></span>
                                 </button>
                                 <ul class="dropdown-menu" role="menu">
-                                    <li><a style="cursor: pointer" ng-mousedown="csv.generate()" ng-href="{{ csv.link() }}" download="test.csv">Export to CSV</a></li>
-                                    <li><a style="cursor: pointer" ng-click="scan.ExportMacId(scan.Delivery.ScannedItems)">Export MacIDs</a></li>
+                                    <li><a style="cursor: pointer" ng-click="scan.ExportCSV()">Export to CSV</a></li>
+                                    <li><a style="cursor: pointer" ng-click="scan.ExportMacId()" ng-disable="scan.Delivery.ScannedItems.length >0 ">Export MacIDs</a></li>
                                 </ul>
                             </div>
-                            <span class="btn btn-lg btn-primary"><i class="glyphicon glyphicon-print" id="PrintDelivery" ng-click="scan.Print()"></i></span>
                         </div>
                     </div>
                     <div class="panel-body">
-                        <div style="width: 200px; float: right; margin-bottom: 0px" class="alert alert-success" ng-show="scan.Delivery.NotScannedItems.length==0">Scan Complete <i class="glyphicon glyphicon-check"></i></div>
+                        <div style="width: 200px; float: right; margin-bottom: 0px; text-align:center;" class="alert alert-success" ng-show="scan.Delivery.NotScannedItems.length==0">Scan Complete <i class="glyphicon glyphicon-check"></i></div>
                         <h3 style="margin-top: 0px;">Dealer: {{scan.Delivery.DealerName}}/<small>{{scan.Delivery.DealerId}}</small></h3>
                         <label>Address: {{scan.Delivery.Address}}</label><br />
                         <label>Comments: {{scan.Delivery.Comments}}</label><br />
                         <div style="float: right;">
                             <button class="btn btn-warning" id="returnDelivery">Return Entire Delivery</button>
-                            <button class="btn btn-danger" id="clearDelivery" ng-click="scan.ClearDelivery(scan.OrderIdLookUp)">Clear Delivery</button>
-                            <button class="btn btn-success" id="VerifiedDelivery" ng-click="scan.VerifyDelivery()">Verify Delivery</button>
+                            <button class="btn btn-danger" id="clearDelivery" ng-click="scan.ClearDelivery(scan.Delivery.DeliveryNumber)">Clear Delivery</button>
+                            <button class="btn btn-success" id="VerifiedDelivery" ng-disabled="scan.GetDeliveryStatus()" ng-click="scan.VerifyDelivery(scan.Delivery.DeliveryNumber)">Verify Delivery</button>
                         </div>
                     </div>
                 </div>
@@ -53,7 +53,7 @@
                     </div>
                     <span class="text-info">{{scan.Delivery.ScannedItems.length}} of {{scan.Delivery.NotScannedItems.length +scan.Delivery.ScannedItems.length}} Products Scanned</span>
                 </div>
-                <div class="alert" style="width: 600px; float: left; margin-left: 10px; position: relative; top: 14px;" ng-class="{'alert-danger':!scan.SerialScanStatus.Success, 'alert-success':scan.SerialScanStatus.Success}" ng-show="scan.SerialScanStatus">{{scan.SerialScanStatus.Message}}</div>
+                <div class="alert" style="width: 600px; float: left; margin-left: 10px; position: relative; top: 14px;" ng-class="{'alert-danger':!scan.SerialScanStatus.Success, 'alert-success':scan.SerialScanStatus.Success}" ng-show="scan.SerialScanStatus">&nbsp;&nbsp;{{scan.SerialScanStatus.Message}}</div>
 
                 <style>
                     .table .header {
@@ -70,15 +70,16 @@
                         </div>
                     </div>
                     <table ng-table="scan.TableParams" class="table">
-                        <tr ng-repeat="item in $data track by $index">
-                            <td data-title="'ID'" sortable="'Id'">{{item.Id}}</td>
-                            <td data-title="'Kit Code'" sortable="'ItemCode'">{{item.ItemCode}}</td>
-                            <td data-title="'Item Code'" sortable="'RealItemCode'">{{item.RealItemCode}}</td>
-                            <td data-title="'Description'" sortable="'AltText'">{{item.AltText}}</td>
-                            <td data-title="'#'" sortable="'SerialNum'">{{item.SerialNum}}</td>
-                            <td data-title="'Returned'" sortable="'ReturnedByUser'">{{item.ReturnedByUser}}</td>
-                        </tr>
-                    </table>
+                        <table ng-table="scan.TableParams" class="table">
+                            <tr ng-repeat="item in $data track by $index">
+                                <td data-title="'ID'" sortable="'Id'">{{item.Id}}</td>
+                                <td data-title="'Kit Code'" sortable="'ItemCode'">{{item.ItemCode}}</td>
+                                <td data-title="'Item Code'" sortable="'RealItemCode'">{{item.RealItemCode}}</td>
+                                <td data-title="'Description'" sortable="'AltText'">{{item.AltText}}</td>
+                                <td data-title="'#'" sortable="'SerialNum'">{{item.SerialNum}}</td>
+                                <td data-title="'Returned'" sortable="'ReturnedByUser'">{{item.ReturnedByUser}}</td>
+                            </tr>
+                        </table>
                 </div>
                 <div ng-if="scan.Delivery.ScannedItems.length>0">
                     <h3>Scanned Items <span class="btn btn-warning" ng-click="scan.ReturnSelectedItems()" ng-show="scan.HasSelectedReturns()" style="margin-left: 10px;">Return Selected Items</span></h3>
@@ -89,7 +90,7 @@
                             <span class="input-group-addon"><i class="glyphicon glyphicon-search"></i></span>
                         </div>
                     </div>
-                    <table ng-table="scan.TableParams2" class="table">
+                    <table ng-table="scan.TableParams2" class="table" export-csv="csv">
                         <tr ng-repeat="scannedItem in $data track by $index">
                             <td>
                                 <input type="checkbox" ng-model="scannedItem.IsSelected" /></td>

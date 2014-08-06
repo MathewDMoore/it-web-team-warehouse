@@ -1,4 +1,6 @@
-﻿function ReturnsController($scope, $http) {
+﻿var app = angular.module("shipApp");
+
+app.controller("ReturnsController", function ($scope, $http) {
     $scope.IsSearching = false;
     $scope.returnItems = [];
     $scope.addInput = function () {
@@ -19,8 +21,7 @@
             returnItem.DocNum = $scope.returnItems[i].DocNum;
             returnItem.Success = $scope.returnItems[i].Success;
             data[i] = returnItem;
-        }
-        ;
+        };
 
         $http({
             url: "/ship/services/PartReturnService.svc/ReturnParts",
@@ -57,10 +58,10 @@
         });
     }
 
-    $(function() {
+    $(function () {
         AddInput();
     });
-}
+});
 
 var ReturnItem = function (item) {
     var $scope = this;

@@ -11,10 +11,11 @@ namespace ApplicationSource.Models
         public int SerialNum { get; set; }
         public string ReturnedByUser { get; set; }
         public string SerialCode { get; set; }
-        public bool NoSerialization { get; set; }
+        public bool NoSerialRequired { get; set; }
         public bool SmartCodeOnly { get; set; }
         public string ProductId { get; set; }
         public string Color { get; set; }   
-        public string ProductGroup { get; set; }   
+        public string ProductGroup { get; set; }
+        public bool Verified { get; set; }
     }
 }

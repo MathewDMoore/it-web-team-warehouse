@@ -26,7 +26,12 @@
                 return result;
             });
     };
-
+    scanOrderObject.VerifyDelivery = function(deliveryId) {
+        return $http({ data: deliveryId, method: "POST", url: "ship/services/OrderDeliveryService.svc/VerifyDelivery" })
+            .success(function(result) {
+            return result;
+        });
+    }
     return scanOrderObject;
 
 });

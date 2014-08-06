@@ -13,7 +13,7 @@ app.controller("ScanController", function ($scope, $modal, $filter, ngTableParam
     scan.ScannedSearch = function(filter) {
         scan.TableParams2.filter(filter);
     };
-    scan.NotScannedSearch = function(filter) {
+    scan.NotScannedSearch = function (filter) {
         scan.TableParams.filter(filter);
     };
     scan.LookUp = function (orderId) {
@@ -23,11 +23,11 @@ app.controller("ScanController", function ($scope, $modal, $filter, ngTableParam
             scan.Delivery = null;
             scan.SerialError = null;
 
-            ScanOrderService.LookUp(orderId).then(function(response) {
+            ScanOrderService.LookUp(orderId).then(function (response) {
                 scan.OrderIdLookUp = null;
                 scan.IsSearching = false;
                 scan.Delivery = response.data;
-                _.each(scan.Delivery.ScannedItems, function(item) {
+                _.each(scan.Delivery.ScannedItems, function (item) {
                     angular.extend(item, { IsSelected: false });
                 });
                 scan.TableParams = new ngTableParams({
@@ -36,7 +36,7 @@ app.controller("ScanController", function ($scope, $modal, $filter, ngTableParam
                 },
                 {
                     total: 0, // length of data
-                    getData: function($defer, params) {
+                    getData: function ($defer, params) {
                         var orderedData = params.sorting() ? $filter('orderBy')(scan.Delivery.NotScannedItems, params.orderBy()) : scan.Delivery.NotScannedItems;
                         orderedData = params.filter() ? $filter('filter')(orderedData, params.filter()) : orderedData;
                         $defer.resolve(orderedData.slice((params.page() - 1) * params.count(), params.page() * params.count()));
@@ -49,7 +49,7 @@ app.controller("ScanController", function ($scope, $modal, $filter, ngTableParam
                     count: 10 // count per page
                 }, {
                     total: 0, // length of data
-                    getData: function($defer, params) {
+                    getData: function ($defer, params) {
                         var orderedData = params.sorting() ? $filter('orderBy')(scan.Delivery.ScannedItems, params.orderBy()) : scan.Delivery.ScannedItems;
                         orderedData = params.filter() ? $filter('filter')(orderedData, params.filter()) : orderedData;
                         $defer.resolve(orderedData.slice((params.page() - 1) * params.count(), params.page() * params.count()));
@@ -137,12 +137,12 @@ app.controller("ScanController", function ($scope, $modal, $filter, ngTableParam
         var selected = _.where(scan.Delivery.ScannedItems, { IsSelected: true });
         if (selected.length > 0) {
             var ids = _.pluck(selected, 'Id');
-            ScanOrderService.ReturnSelectedItems(ids).then(function(result) {
+            ScanOrderService.ReturnSelectedItems(ids).then(function (result) {
                 if (result.data) {
-                    _.each(selected, function(item) {
-                        delete  item.IsSelected;
+                    _.each(selected, function (item) {
+                        delete item.IsSelected;
                         scan.Delivery.ScannedItems.pop(item);
-                        item.SerialCode = null;                       
+                        item.SerialCode = null;
                         scan.Delivery.NotScannedItems.push(item);
                     });
                     scan.TableParams.reload();
@@ -151,11 +151,75 @@ app.controller("ScanController", function ($scope, $modal, $filter, ngTableParam
             });
         }
     };
-    scan.VerifyDelivery = function () { };
-    scan.ExportToExcel = function () { };
-    scan.ExportMadId = function () { };
-    scan.print = function () { };
+    scan.VerifyDelivery = function (orderID) {
+        //Verify all items are scanned
+
+        ScanOrderService.VerifyDelivery(orderID);
+
+    };
+    scan.ExportCSV = function () {
+        var scannedItems = [];
+        _.each(scan.Delivery.ScannedItems, function (item) {
+            delete item.IsSelected;
+            scannedItems.push(item);
+        });
+
+        var data = scannedItems.concat(scan.Delivery.NotScannedItems);
+
+        var firstItem = data[0];
+        var csvContent = "data:text/csv;charset=utf-8,";
+
+        csvContent += _.keys(firstItem).join(",");
+        csvContent += "\n";
+
+        _.each(data, function (item, index) {
+            var values = _.values(item);
+            _.each(values, function (text, index) {
+                if (_.isString(text)) {
+                    values[index] = text.replace(",", " ");
+                }
+            });
+
+            var dataString = values.join(",");
+            csvContent += index < values.length ? dataString + "\n" : dataString;
+        });
+
+        var encodedUri = encodeURI(csvContent);
+        var link = document.createElement("a");
+        link.setAttribute("href", encodedUri);
+        link.setAttribute("download", scan.Delivery.DeliveryNumber + "_export.csv");
+        link.click();
+
+    };
+    scan.ExportMacId = function () {
+        var data = _.pluck(scan.Delivery.ScannedItems, "SerialCode");
+
+        var csvContent = "data:text/csv;charset=utf-8,";
+
+        csvContent += "SerialCode \n";
+        csvContent += data.join("\n");
+
+        var encodedUri = encodeURI(csvContent);
+        var link = document.createElement("a");
+        link.setAttribute("href", encodedUri);
+        link.setAttribute("download", scan.Delivery.DeliveryNumber + "_export.csv");
+        link.click();
+
+    };
+    scan.GetDeliveryStatus = function () {
+        return scan.Delivery.IsVerified ? "Delivery Verified" : "Delivery Not Verified";
+    }
+    scan.EnablVerification = function () {
+        var items1 = _.filter(scan.Delivery.NotScannedItems, function (item) {
+            return item.NoSerialRequired == false;
+        });
+        if (scan.Delivery.NotScannedItems.length == 0 || items1.length == 0) {
+            return true;
+        }
+        return false;
+    }
 });
+
 var ClearModalCtrl = function ($scope, $modalInstance, docNum) {
 
     $scope.DocNum = docNum;

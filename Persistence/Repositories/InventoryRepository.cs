@@ -88,5 +88,10 @@ namespace Persistence.Repositories
         {
             return _sqlMapperFactory.InventoryMasterMapper.ReturnDeliveryLineItem(lineItem);
         }
+
+        public bool VerifyDelivery(DeliveryOrderQuery query)
+        {
+            return _sqlMapperFactory.InventoryMasterMapper.VerifyDelivery(query);
+        }
     }
 }
