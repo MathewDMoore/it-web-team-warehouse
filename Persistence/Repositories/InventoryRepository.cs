@@ -93,5 +93,10 @@ namespace Persistence.Repositories
         {
             return _sqlMapperFactory.InventoryMasterMapper.VerifyDelivery(query);
         }
+
+        public Delivery GetDeliveryByMacId(string macId)
+        {
+            return _sqlMapperFactory.InventoryMasterMapper.GetDeliveryByMacId(macId);
+        }
     }
 }

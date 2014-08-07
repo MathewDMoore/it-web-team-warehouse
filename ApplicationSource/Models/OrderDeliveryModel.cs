@@ -16,6 +16,8 @@ namespace ApplicationSource.Models
         public string DealerName { get; set; }
         public string Address { get; set; }
         public string Comments { get; set; }
+        public string Error { get; set; }
+        public bool IsIrDelivery { get; set; }
         public List<DeliveryOrderItemModel> NotScannedItems { get; set; }
         public List<DeliveryOrderItemModel> ScannedItems { get; set; }
 

@@ -1,5 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Configuration;
+using System.Data;
+using System.Data.SqlClient;
 using System.Linq;
 using System.Security.Principal;
 using System.ServiceModel;
@@ -65,6 +68,37 @@ namespace ApplicationSource.Services
             return deliveryModel;
 
         }
+
+        public int LocateMacIds(string macId)
+        {
+            var result = new MacDeliveryModel();
+            if (!string.IsNullOrEmpty(macId))
+            {
+                var modifiedMac = macId.Length >= 29 ? macId.Remove(macId.Length - 17, 17) : macId;
+                if (modifiedMac.Length == 12 || modifiedMac.Length == 16)
+                {
+                    var delivery = _repo.GetDeliveryByMacId(modifiedMac);
+                    if (delivery != null)
+                    {
+                        result = new MacDeliveryModel
+                        {
+                            DeliveryNumber = delivery.DeliveryNumber,                            
+                        };
+                    }
+                    else
+                    {
+                        result.Error = "Delivery not found for this Smart Mac.";
+                    }
+                }
+                else
+                {
+                    result.Error = " Incorrect Mac Id Length, or Mac Id is not a serialized number.";
+                }
+            }
+            return result.DeliveryNumber;
+        }
+
+
 
         public VerifyUniqueMacModel SaveDeliveryItem(VerifyUniqueMacModel model)
         {

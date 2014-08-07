@@ -13,5 +13,6 @@ namespace Persistence.Repositories.Interfaces
         bool ClearDelivery(DeliveryOrderQuery deliveryOrderQuery);
         bool ReturnDeliveryLineItem(SerialNumberItem lineItem );
         bool VerifyDelivery(DeliveryOrderQuery query);
+        Delivery GetDeliveryByMacId(string macId);
     }
 }

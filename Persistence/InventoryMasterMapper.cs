@@ -47,6 +47,11 @@ namespace Persistence
           return _sqlMapper.Update("UpdateVerifiedOrder", query) > 0;
         }
 
+        public Delivery GetDeliveryByMacId(string macId)
+        {
+            return _sqlMapper.QueryForObject<Delivery>("GetDeliveryByMacId", macId);
+        }
+
         public InventoryMasterMapper(ISqlMapper sqlMapper)
         {
             _sqlMapper = sqlMapper;

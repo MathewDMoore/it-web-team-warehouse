@@ -1,7 +1,16 @@
 ﻿var app = angular.module("shipApp");
 
-app.controller("ScanController", function ($scope, $modal, $filter, ngTableParams, ScanOrderService) {
+app.controller("ScanController", function ($scope, $modal, $filter, ngTableParams, ScanOrderService, $firebase) {
+    var ref = new Firebase("https://flickering-fire-2083.firebaseio.com/scanserials");
+    var _sync = $firebase(ref);
+    $scope.$watch('filter.$', function () {
+        if (scan.Delivery && (scan.Delivery.ScannedItems || scan.Delivery.NotScannedItems)) {
+            scan.TableParams.reload(); // TODO: Fix {scope: null} racecondition
+            scan.TableParams2.reload(); // TODO: Fix {scope: null} racecondition
+        }
+    });
     var scan = this;
+    scan.Username = null;
     scan.OrderIdLookUp = null;
     scan.Delivery = null;
     scan.TableParams = null;
@@ -9,56 +18,91 @@ app.controller("ScanController", function ($scope, $modal, $filter, ngTableParam
     scan.SerialScanStatus = null;
     scan.DeliveryActionMessage = null;
     scan.IsSearching = false;
-
-    scan.ScannedSearch = function(filter) {
+    scan.TableParams = new ngTableParams({
+        page: 1, // show first page
+        count: 10 // count per page
+    },
+                {
+                    total: 0, // length of data
+                    getData: function ($defer, params) {
+                        var orderedData = params.sorting() ? $filter('orderBy')(scan.Delivery.NotScannedItems, params.orderBy()) : scan.Delivery.NotScannedItems;
+                        orderedData = params.filter() ? $filter('filter')(orderedData, params.filter()) : orderedData;
+                        params.total(orderedData.length);
+                        $defer.resolve(orderedData.slice((params.page() - 1) * params.count(), params.page() * params.count()));
+                    },
+                });
+    scan.TableParams2 = new ngTableParams({
+        page: 1, // show first page
+        count: 10 // count per page
+    }, {
+        total: 0, // length of data
+        getData: function ($defer, params) {
+            var orderedData = params.sorting() ? $filter('orderBy')(scan.Delivery.ScannedItems, params.orderBy()) : scan.Delivery.ScannedItems;
+            orderedData = params.filter() ? $filter('filter')(orderedData, params.filter()) : orderedData;
+            params.total(orderedData.length);
+            $defer.resolve(orderedData.slice((params.page() - 1) * params.count(), params.page() * params.count()));
+        },
+    });
+    scan.ScannedSearch = function (filter) {
         scan.TableParams2.filter(filter);
     };
     scan.NotScannedSearch = function (filter) {
         scan.TableParams.filter(filter);
     };
     scan.LookUp = function (orderId) {
-        if (orderId > 0) {
+        if (parseInt(orderId) != NaN && parseInt(orderId) > 0) {
+
             scan.IsSearching = true;
             scan.DeliveryActionMessage = null;
-            scan.Delivery = null;
+            if(scan.Delivery) {
+                scan.Delivery.ScannedItems = [];
+                scan.Delivery.NotScannedItems = [];
+                scan.TableParams.reload();
+                scan.TableParams2.reload();
+            }
+
             scan.SerialError = null;
 
             ScanOrderService.LookUp(orderId).then(function (response) {
+                scan.SerialScanStatus = null;
                 scan.OrderIdLookUp = null;
+                scan.SerialCodeLookUp = null;
+                scan.NotScannedFilter = null;
+                scan.ScannedFilter = null;
                 scan.IsSearching = false;
-                scan.Delivery = response.data;
-                _.each(scan.Delivery.ScannedItems, function (item) {
+                // scan.Delivery = response.data;
+                scan.Delivery = {
+                    DeliveryNumber: response.data.DeliveryNumber,
+                    DealerId: response.data.DealerId,
+                    DealerName: response.data.DealerName,
+                    Address: response.data.Address,
+                    Comments: response.data.Comments,
+                    NotScannedItems: response.data.NotScannedItems,
+                    ScannedItems: _sync.$asArray(),
+                    IsVerified: response.data.IsVerified
+                };
+
+                _.each(response.data.ScannedItems, function (item) {
                     angular.extend(item, { IsSelected: false });
+                    scan.Delivery.ScannedItems.push(item);
                 });
-                scan.TableParams = new ngTableParams({
-                    page: 1, // show first page
-                    count: 10 // count per page
-                },
-                {
-                    total: 0, // length of data
-                    getData: function ($defer, params) {
-                        var orderedData = params.sorting() ? $filter('orderBy')(scan.Delivery.NotScannedItems, params.orderBy()) : scan.Delivery.NotScannedItems;
-                        orderedData = params.filter() ? $filter('filter')(orderedData, params.filter()) : orderedData;
-                        $defer.resolve(orderedData.slice((params.page() - 1) * params.count(), params.page() * params.count()));
-                        params.total(orderedData.length);
-                        $defer.resolve(orderedData.slice((params.page() - 1) * params.count(), params.page() * params.count()));
-                    }
-                });
-                scan.TableParams2 = new ngTableParams({
-                    page: 1, // show first page
-                    count: 10 // count per page
-                }, {
-                    total: 0, // length of data
-                    getData: function ($defer, params) {
-                        var orderedData = params.sorting() ? $filter('orderBy')(scan.Delivery.ScannedItems, params.orderBy()) : scan.Delivery.ScannedItems;
-                        orderedData = params.filter() ? $filter('filter')(orderedData, params.filter()) : orderedData;
-                        $defer.resolve(orderedData.slice((params.page() - 1) * params.count(), params.page() * params.count()));
-                        params.total(orderedData.length);
-                        $defer.resolve(orderedData.slice((params.page() - 1) * params.count(), params.page() * params.count()));
-                    }
-                });
+                scan.TableParams.reload();
+                scan.TableParams2.reload();
+            });
+        } else if (orderId) {
+            scan.IsSearching = true;
+
+            ScanOrderService.LookUpByMacId(orderId).then(function (result) {
+                scan.IsSearching = false;
+
+                if (result.data > 0) {
+                    scan.LookUp(result.data);
+                } else {
+                    scan.DeliveryActionMessage = "Delivery Not Found";
+                }
             });
         }
+
     };
     scan.ClearDelivery = function (docNumber) {
 
@@ -118,6 +162,8 @@ app.controller("ScanController", function ($scope, $modal, $filter, ngTableParam
                             scan.TableParams.reload();
                             scan.TableParams2.reload();
                             scan.SerialScanStatus = { Success: true, Message: "Serial Successfully Updated" };
+                            scan.Delivery.ScannedItems.$save();
+
                         } else {
                             scan.SerialScanStatus = { Success: false, Message: result.data.ErrorMessage + result.data.ErrorDeliveryNumber };
 

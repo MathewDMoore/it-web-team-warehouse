@@ -7,20 +7,21 @@
 
     <div style="min-height: 140px;">
         <h2>Deliveries</h2>
-        <div ng-controller="ScanController as scan" class="well">
-            <form ng-submit="scan.LookUp(scan.OrderIdLookUp)" ng-init="scan.LookUp(<%=Request.QueryString.Get("delivery")%>)">
+        <div ng-controller="ScanController as scan" class="well" ng-init="scan.Username='<%=User.Identity.Name %>'">
+            <form style="display:inline-block;" ng-submit="scan.LookUp(scan.OrderIdLookUp)" ng-init="scan.LookUp(<%=Request.QueryString.Get("delivery")%>)">
                 <div class="input-group" style="width: 300px;">
-                    <input class="form-control" placeholder="Delivery Number" ng-disabled="scan.IsSearching" autofocus id="orderIdInput" type="number" min="0" ng-model="scan.OrderIdLookUp" ng-blur="scan.LookUp(scan.OrderIdLookUp)" />
+                    <input class="form-control" placeholder="Delivery Number or MacId" ng-disabled="scan.IsSearching" autofocus id="orderIdInput" type="text" ng-model="scan.OrderIdLookUp" ng-blur="scan.LookUp(scan.OrderIdLookUp)" />
                     <span class="input-group-addon " style="cursor: pointer" id="loadDelivery" ng-click="scan.LookUp(scan.OrderIdLookUp)">{{scan.IsSearching?'Loading...':'Load Delivery'}}</span>
                 </div>
             </form>
-            <div ng-if="scan.DeliveryActionMessage" class="alert alert-success" style="width: 300px; float: left; margin-left: 20px;">{{scan.DeliveryActionMessage}}</div>
-            <div style="margin-top: 10px;" ng-show="scan.Delivery">
+            <div ng-if="scan.DeliveryActionMessage" class="alert alert-success" style="width: 300px; display:inline-block; margin-left: 20px;">{{scan.DeliveryActionMessage}}</div>
+            <div style="margin-top: 10px;" ng-if="scan.Delivery">
                 <div class="panel panel-info">
                     <div class="panel-heading">
                         <h3 style="margin: 5px 0px; display: inline-block">Delivery Number: {{scan.Delivery.DeliveryNumber}} </h3>
-                        <div style="display: inline-block; margin-left: 40px; padding: 20px;" ng-class="{'bg-success img-rounded':scan.Delivery.IsVerified, 'bg-danger img-rounded':!scan.Delivery.IsVerified}"><i class="glyphicon" ng-class="{'glyphicon-check':scan.Delivery.IsVerified, 'glyphicon-remove-circle' : !scan.Delivery.IsVerified }"></i>{{scan.GetDeliveryStatus()}}</div>
+                         <div style="display: inline-block; margin-left: 30px;display: inline-block;-webkit-transform: rotate(-5deg);" class="verified" ng-class="{'text-success':scan.Delivery.IsVerified, 'text-danger':!scan.Delivery.IsVerified}"><i class="glyphicon" ng-class="{'glyphicon-check':scan.Delivery.IsVerified, 'glyphicon-remove-circle' : !scan.Delivery.IsVerified }"></i>{{scan.GetDeliveryStatus()}}</div>
                         <div style="float: right; position: relative; top: -5px;">
+                           
                             <div class="btn-group">
                                 <button class="btn btn-lg btn-primary">Export <i class="glyphicon glyphicon-export"></i></button>
                                 <button type="button" class="btn btn-lg btn-primary dropdown-toggle" data-toggle="dropdown">
@@ -34,7 +35,7 @@
                         </div>
                     </div>
                     <div class="panel-body">
-                        <div style="width: 200px; float: right; margin-bottom: 0px; text-align:center;" class="alert alert-success" ng-show="scan.Delivery.NotScannedItems.length==0">Scan Complete <i class="glyphicon glyphicon-check"></i></div>
+                        <div style="width: 200px; float: right; margin-bottom: 0px; text-align: center;" class="alert alert-success" ng-show="scan.Delivery.NotScannedItems.length==0">Scan Complete <i class="glyphicon glyphicon-check"></i></div>
                         <h3 style="margin-top: 0px;">Dealer: {{scan.Delivery.DealerName}}/<small>{{scan.Delivery.DealerId}}</small></h3>
                         <label>Address: {{scan.Delivery.Address}}</label><br />
                         <label>Comments: {{scan.Delivery.Comments}}</label><br />
@@ -81,7 +82,7 @@
                             </tr>
                         </table>
                 </div>
-                <div ng-if="scan.Delivery.ScannedItems.length>0" style="clear:both;">
+                <div ng-if="scan.Delivery.ScannedItems.length>0" style="clear: both;">
                     <h3>Scanned Items <span class="btn btn-warning" ng-click="scan.ReturnSelectedItems()" ng-show="scan.HasSelectedReturns()" style="margin-left: 10px;">Return Selected Items</span></h3>
                     <div>
                         Search

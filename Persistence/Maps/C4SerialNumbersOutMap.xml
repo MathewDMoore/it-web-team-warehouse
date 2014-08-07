@@ -64,6 +64,10 @@
 			<result column="Address2" property="Address"/>
 			<result column="Comments" property="Comments"/>
 		</resultMap>
+		<resultMap id="DeliveryLiteRM" class="Delivery">
+			<result column="DOCNUM" property="DeliveryNumber"/>
+			<result column="IsIrDelivery" property="IsIrDelivery"/>			
+		</resultMap>
 	</resultMaps>
 	<parameterMaps>
 		<parameterMap id="SerialNumberItemPM" class="SerialNumberItem">
@@ -86,9 +90,16 @@
 			<parameter property="ServerLocation" column="SERVERLOCATION"/>
 			<parameter property="DocNum" column="DOCNUM"/>
 			<parameter property="Username" column="USERNAME"/>
-    </parameterMap>
+		</parameterMap>
 	</parameterMaps>
 	<statements>
+		<select id="GetDeliveryByMacId" parameterClass="string" resultMap="DeliveryLiteRM">
+			SELECT DOCNUM, 0 AS ISIRDELIVERY FROM C4_SERIALNUMBERS_OUT
+			WHERE MACID = #value#
+			UNION ALL
+			SELECT DOCNUM, 1 AS ISIRDELIVERY FROM C4_GOODSISSUE_IR_OUT
+			WHERE MACID = #value#
+		</select>
 		<procedure  id="sp_ClearDelivery" parameterMap="ClearDeliveryOrderPM">
 			sp_ClearDelivery
 		</procedure>
@@ -107,11 +118,11 @@
 		<update id="UpdateSerialNumber" parameterClass="SerialNumberItem" >
 			Update C4_SERIALNUMBERS_OUT set SERIALCODE= UPPER(#SerialCode#), USERNAME= #Username#, MACID =#MacId#, RETURNEDBYUSER = null where ID = #Id#
 		</update>
-    <update id="UpdateVerifiedOrder" parameterClass="DeliveryOrderQuery">
-      UPDATE C4_SERIALNUMBERS_OUT
-      SET VERIFIED = 1,
-      [USERNAME] = #Username#
-      WHERE DOCNUM = #DocNum#
-    </update>
+		<update id="UpdateVerifiedOrder" parameterClass="DeliveryOrderQuery">
+			UPDATE C4_SERIALNUMBERS_OUT
+			SET VERIFIED = 1,
+			[USERNAME] = #Username#
+			WHERE DOCNUM = #DocNum#
+		</update>
 	</statements>
 </sqlMap>
