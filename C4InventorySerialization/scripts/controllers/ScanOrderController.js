@@ -1,8 +1,8 @@
 ﻿var app = angular.module("shipApp");
+app.constant("FIREBASE_URL", "https://flickering-fire-2083.firebaseio.com/");
+app.controller("ScanController", function ($scope, $modal, $filter, $timeout, ngTableParams, ScanOrderService, FirebaseDeliveryService) {
 
-app.controller("ScanController", function ($scope, $modal, $filter, ngTableParams, ScanOrderService, $firebase) {
-    var ref = new Firebase("https://flickering-fire-2083.firebaseio.com/scanserials");
-    var _sync = $firebase(ref);
+    var _syncScanned, _syncNotScanned;
     $scope.$watch('filter.$', function () {
         if (scan.Delivery && (scan.Delivery.ScannedItems || scan.Delivery.NotScannedItems)) {
             scan.TableParams.reload(); // TODO: Fix {scope: null} racecondition
@@ -54,16 +54,17 @@ app.controller("ScanController", function ($scope, $modal, $filter, ngTableParam
 
             scan.IsSearching = true;
             scan.DeliveryActionMessage = null;
-            if(scan.Delivery) {
-                scan.Delivery.ScannedItems = [];
-                scan.Delivery.NotScannedItems = [];
-                scan.TableParams.reload();
-                scan.TableParams2.reload();
-            }
+            //            if(scan.Delivery) {
+            //                scan.Delivery.ScannedItems = [];
+            //                scan.Delivery.NotScannedItems = [];
+            //                scan.TableParams.reload();
+            //                scan.TableParams2.reload();
+            //            }
 
             scan.SerialError = null;
 
             ScanOrderService.LookUp(orderId).then(function (response) {
+
                 scan.SerialScanStatus = null;
                 scan.OrderIdLookUp = null;
                 scan.SerialCodeLookUp = null;
@@ -71,23 +72,33 @@ app.controller("ScanController", function ($scope, $modal, $filter, ngTableParam
                 scan.ScannedFilter = null;
                 scan.IsSearching = false;
                 // scan.Delivery = response.data;
-                scan.Delivery = {
+
+                scan.Delivery = FirebaseDeliveryService.GetDelivery(response.data.DeliveryNumber);
+                _.each(response.data.ScannedItems, function (item) {
+                    angular.extend(item, { IsSelected: false });
+                });
+                _.each(response.data.NotScannedItems, function (item) {
+                    angular.extend(item, { IsSelected: false, SerialCode:"" });
+                });
+                angular.extend(scan.Delivery, {
                     DeliveryNumber: response.data.DeliveryNumber,
                     DealerId: response.data.DealerId,
                     DealerName: response.data.DealerName,
                     Address: response.data.Address,
                     Comments: response.data.Comments,
                     NotScannedItems: response.data.NotScannedItems,
-                    ScannedItems: _sync.$asArray(),
+                    ScannedItems: response.data.ScannedItems,
                     IsVerified: response.data.IsVerified
-                };
-
-                _.each(response.data.ScannedItems, function (item) {
-                    angular.extend(item, { IsSelected: false });
-                    scan.Delivery.ScannedItems.push(item);
                 });
-                scan.TableParams.reload();
-                scan.TableParams2.reload();
+
+                scan.Delivery.$save();
+
+                scan.Delivery.$watch(function () {
+                    scan.TableParams.reload();
+                    scan.TableParams2.reload();
+                });
+                //                scan.TableParams.reload();
+                //                scan.TableParams2.reload();
             });
         } else if (orderId) {
             scan.IsSearching = true;
@@ -154,15 +165,17 @@ app.controller("ScanController", function ($scope, $modal, $filter, ngTableParam
                     ScanOrderService.SaveDeliveryItem(deliveryItem).then(function (result) {
                         if (!result.data.ErrorMessage) {
                             //                                    var copy = _.clone(matched);
+                            scan.Delivery.ScannedItems = scan.Delivery.ScannedItems || [];
                             scan.Delivery.NotScannedItems.pop(matched[0]);
                             matched[0].SerialCode = serialCode;
                             angular.extend(matched[0], { IsSelected: false });
                             scan.Delivery.ScannedItems.push(matched[0]);
                             scan.SerialCodeLookUp = null;
-                            scan.TableParams.reload();
-                            scan.TableParams2.reload();
+                            scan.Delivery.$save();
+                            //                            scan.TableParams.reload();
+                            //                            scan.TableParams2.reload();
                             scan.SerialScanStatus = { Success: true, Message: "Serial Successfully Updated" };
-                            scan.Delivery.ScannedItems.$save();
+
 
                         } else {
                             scan.SerialScanStatus = { Success: false, Message: result.data.ErrorMessage + result.data.ErrorDeliveryNumber };
@@ -181,18 +194,20 @@ app.controller("ScanController", function ($scope, $modal, $filter, ngTableParam
     };
     scan.ReturnSelectedItems = function () {
         var selected = _.where(scan.Delivery.ScannedItems, { IsSelected: true });
+        scan.Delivery.NotScannedItems = scan.Delivery.NotScannedItems || [];
         if (selected.length > 0) {
             var ids = _.pluck(selected, 'Id');
             ScanOrderService.ReturnSelectedItems(ids).then(function (result) {
                 if (result.data) {
                     _.each(selected, function (item) {
-                        delete item.IsSelected;
-                        scan.Delivery.ScannedItems.pop(item);
+                        // delete item.IsSelected;
                         item.SerialCode = null;
+                        item.IsSelected = false;
+                        scan.Delivery.ScannedItems.pop(item);
                         scan.Delivery.NotScannedItems.push(item);
                     });
-                    scan.TableParams.reload();
-                    scan.TableParams2.reload();
+                    scan.Delivery.$save();
+
                 }
             });
         }

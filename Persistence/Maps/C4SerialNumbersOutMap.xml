@@ -57,6 +57,7 @@
 			<result property="ProductFamily" column="PRODUCTFAMILY"/>
 			<result property="ProductPillar" column="PRODUCTPILLAR"/>
 			<result property="ReturnedByUser" column="RETURNEDBYUSER" />
+			<result property="Username" column="USERNAME" />
 		</resultMap>
 		<resultMap id="DeliveryOrderRM" class="Delivery">
 			<result column="DealerName" property="DealerName"/>

@@ -10,6 +10,7 @@ namespace ApplicationSource.Models
         public string AltText { get; set; }
         public int SerialNum { get; set; }
         public string ReturnedByUser { get; set; }
+        public string Username { get; set; }
         public string SerialCode { get; set; }
         public bool NoSerialRequired { get; set; }
         public bool SmartCodeOnly { get; set; }

@@ -3,6 +3,7 @@
 <asp:Content ID="Content1" ContentPlaceHolderID="MainContent" runat="server">
     <script type="text/javascript" src="../scripts/underscore-min.js"></script>
     <script type="text/javascript" src="../scripts/services/ScanOrderService.js"></script>
+    <script type="text/javascript" src="../scripts/services/firebaseDeliveryService.js"></script>
     <script type="text/javascript" src="../scripts/controllers/ScanOrderController.js"></script>
 
     <div style="min-height: 140px;">
@@ -101,6 +102,7 @@
                             <td data-title="'Description'" sortable="'AltText'">{{scannedItem.AltText}}</td>
                             <td data-title="'#'" sortable="'SerialNum'">{{scannedItem.SerialNum}}</td>
                             <td data-title="'Serial #'" sortable="'SerialCode'">{{scannedItem.SerialCode}}</td>
+                            <td data-title="'Scanned By'" sortable="'Username'">{{scannedItem.Username}}</td>
                         </tr>
                     </table>
                 </div>
