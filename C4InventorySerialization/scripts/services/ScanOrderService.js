@@ -1,8 +1,8 @@
 ﻿angular.module('shipApp').service('ScanOrderService', function ($http, $templateCache, $log) {
     var scanOrderObject = {
-        LookUp: function(orderId) {
+        LookUp: function (orderId, isInternal) {
 
-            return $http({ data: orderId, method: "POST", url: "/ship/services/OrderDeliveryService.svc/OrderLookUp" }).success(function(response) {
+            return $http({ data: { DeliveryNumber: orderId, IsInternal: isInternal }, method: "POST", url: "/ship/services/OrderDeliveryService.svc/OrderLookUp" }).success(function (response) {
                 return response;
             }).error(function(result) {
                 $log.error("ScanOrderService -> OrderLookUp " + result);
@@ -22,14 +22,22 @@
                     return result;
                 });
         },
-        ClearDelivery: function(docNum) {
-            return $http({ data: docNum, method: "POST", url: "/ship/services/OrderDeliveryService.svc/ClearDelivery" })
+        ClearDelivery: function(delivery) {
+            return $http({
+                data: delivery, method: "POST", url: "/ship/services/OrderDeliveryService.svc/ClearDelivery" })
                 .success(function(result) {
                     return result;
                 });
         },
-        ReturnSelectedItems: function(ids) {
-            return $http({ data: ids, method: "POST", url: "/ship/services/OrderDeliveryService.svc/ReturnDeliveryLineItem" })
+        ReturnDelivery: function(delivery) {
+            return $http({
+                data: delivery, method: "POST", url: "/ship/services/OrderDeliveryService.svc/ReturnDelivery" })
+                .success(function(result) {
+                    return result;
+                });
+        },
+        ReturnSelectedItems: function(ids,isInternal) {
+            return $http({ data: { Ids: ids, IsInternal: isInternal }, method: "POST", url: "/ship/services/OrderDeliveryService.svc/ReturnDeliveryLineItem" })
                 .success(function(result) {
                     return result;
                 });

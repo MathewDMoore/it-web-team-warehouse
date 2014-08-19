@@ -17,7 +17,7 @@ namespace ApplicationSource.Models
         public string Address { get; set; }
         public string Comments { get; set; }
         public string Error { get; set; }
-        public bool IsIrDelivery { get; set; }
+        public bool IsInternal { get; set; }
         public List<DeliveryOrderItemModel> NotScannedItems { get; set; }
         public List<DeliveryOrderItemModel> ScannedItems { get; set; }
 

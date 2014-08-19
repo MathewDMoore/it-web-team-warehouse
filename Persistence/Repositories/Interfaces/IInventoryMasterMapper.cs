@@ -7,11 +7,12 @@ namespace Persistence.Repositories.Interfaces
     {
         Delivery GetDelivery(DeliveryOrderQuery deliveryNumber);
         SerialNumberItem SelectSmartMac(SerialNumberItemQuery serialNumberItemQuery);
-        bool UpdateSerialNumberItem(SerialNumberItem serialNumberItem);
+        bool UpdateSerialNumberItem(SerialNumberItem serialNumberItem, bool isInternal);
         IEnumerable<SerialNumberItem> SelectDeliveryOrderItems(DeliveryOrderItemsQuery query);
         bool ClearDelivery(DeliveryOrderQuery query);
-        bool ReturnDeliveryLineItem(SerialNumberItem lineItem);
+        bool ReturnDeliveryLineItem(SerialNumberItem lineItem, bool isInternal);
         bool VerifyDelivery(DeliveryOrderQuery query);
         Delivery GetDeliveryByMacId(string macId);
+        bool ReturnDelivery(DeliveryOrderQuery query);
     }
 }

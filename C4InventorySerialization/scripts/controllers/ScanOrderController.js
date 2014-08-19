@@ -2,7 +2,6 @@
 app.constant("FIREBASE_URL", "https://flickering-fire-2083.firebaseio.com/");
 app.controller("ScanController", function ($scope, $modal, $filter, $timeout, ngTableParams, ScanOrderService, FirebaseDeliveryService) {
 
-    var _syncScanned, _syncNotScanned;
     $scope.$watch('filter.$', function () {
         if (scan.Delivery && (scan.Delivery.ScannedItems || scan.Delivery.NotScannedItems)) {
             scan.TableParams.reload(); // TODO: Fix {scope: null} racecondition
@@ -10,6 +9,7 @@ app.controller("ScanController", function ($scope, $modal, $filter, $timeout, ng
         }
     });
     var scan = this;
+    scan.LookUpIsInternal = false;
     scan.Username = null;
     scan.OrderIdLookUp = null;
     scan.Delivery = null;
@@ -27,6 +27,7 @@ app.controller("ScanController", function ($scope, $modal, $filter, $timeout, ng
                     getData: function ($defer, params) {
                         var orderedData = params.sorting() ? $filter('orderBy')(scan.Delivery.NotScannedItems, params.orderBy()) : scan.Delivery.NotScannedItems;
                         orderedData = params.filter() ? $filter('filter')(orderedData, params.filter()) : orderedData;
+                        orderedData = orderedData || [];
                         params.total(orderedData.length);
                         $defer.resolve(orderedData.slice((params.page() - 1) * params.count(), params.page() * params.count()));
                     },
@@ -39,6 +40,7 @@ app.controller("ScanController", function ($scope, $modal, $filter, $timeout, ng
         getData: function ($defer, params) {
             var orderedData = params.sorting() ? $filter('orderBy')(scan.Delivery.ScannedItems, params.orderBy()) : scan.Delivery.ScannedItems;
             orderedData = params.filter() ? $filter('filter')(orderedData, params.filter()) : orderedData;
+            orderedData = orderedData || [];
             params.total(orderedData.length);
             $defer.resolve(orderedData.slice((params.page() - 1) * params.count(), params.page() * params.count()));
         },
@@ -49,21 +51,14 @@ app.controller("ScanController", function ($scope, $modal, $filter, $timeout, ng
     scan.NotScannedSearch = function (filter) {
         scan.TableParams.filter(filter);
     };
-    scan.LookUp = function (orderId) {
+    scan.LookUp = function (orderId, isInternal) {
         if (parseInt(orderId) != NaN && parseInt(orderId) > 0) {
 
             scan.IsSearching = true;
             scan.DeliveryActionMessage = null;
-            //            if(scan.Delivery) {
-            //                scan.Delivery.ScannedItems = [];
-            //                scan.Delivery.NotScannedItems = [];
-            //                scan.TableParams.reload();
-            //                scan.TableParams2.reload();
-            //            }
-
             scan.SerialError = null;
 
-            ScanOrderService.LookUp(orderId).then(function (response) {
+            ScanOrderService.LookUp(orderId, isInternal).then(function (response) {
 
                 scan.SerialScanStatus = null;
                 scan.OrderIdLookUp = null;
@@ -71,14 +66,13 @@ app.controller("ScanController", function ($scope, $modal, $filter, $timeout, ng
                 scan.NotScannedFilter = null;
                 scan.ScannedFilter = null;
                 scan.IsSearching = false;
-                // scan.Delivery = response.data;
 
                 scan.Delivery = FirebaseDeliveryService.GetDelivery(response.data.DeliveryNumber);
                 _.each(response.data.ScannedItems, function (item) {
                     angular.extend(item, { IsSelected: false });
                 });
                 _.each(response.data.NotScannedItems, function (item) {
-                    angular.extend(item, { IsSelected: false, SerialCode:"" });
+                    angular.extend(item, { IsSelected: false, SerialCode: "" });
                 });
                 angular.extend(scan.Delivery, {
                     DeliveryNumber: response.data.DeliveryNumber,
@@ -86,19 +80,18 @@ app.controller("ScanController", function ($scope, $modal, $filter, $timeout, ng
                     DealerName: response.data.DealerName,
                     Address: response.data.Address,
                     Comments: response.data.Comments,
-                    NotScannedItems: response.data.NotScannedItems,
-                    ScannedItems: response.data.ScannedItems,
-                    IsVerified: response.data.IsVerified
+                    NotScannedItems: response.data.NotScannedItems||[{}],
+                    ScannedItems: response.data.ScannedItems ||[{}],
+                    IsVerified: response.data.IsVerified,
+                    IsInternal: response.data.IsInternal
                 });
 
                 scan.Delivery.$save();
 
-                scan.Delivery.$watch(function () {
+                //scan.Delivery.$watch(function () {
                     scan.TableParams.reload();
                     scan.TableParams2.reload();
-                });
-                //                scan.TableParams.reload();
-                //                scan.TableParams2.reload();
+                //});
             });
         } else if (orderId) {
             scan.IsSearching = true;
@@ -128,12 +121,38 @@ app.controller("ScanController", function ($scope, $modal, $filter, $timeout, ng
         });
 
         modalInstance.result.then(function () {
-            ScanOrderService.ClearDelivery(docNumber).then(function (result) {
+            ScanOrderService.ClearDelivery({ DeliveryNumber: docNumber, IsInternal: scan.Delivery.IsInternal }).then(function (result) {
                 if (result.data) {
                     scan.Delivery = null;
                     scan.DeliveryActionMessage = "Successfully cleared delivery" + docNumber;
                 } else {
-                    alert("There was an error clearing this delivery.");
+                    scan.DeliveryActionMessage = "There was an error clearing this delivery.";
+                }
+            });
+        }, function () {
+            //$log.info('Modal dismissed at: ' + new Date());
+        });
+
+    };
+    scan.ReturnDelivery = function (delivery) {
+
+        var modalInstance = $modal.open({
+            templateUrl: '/scripts/templates/ReturnDeliveryModal.html',
+            controller: ReturnDeliveryModalCtrl,
+            resolve: {
+                docNum: function () {
+                    return delivery.DeliveryNumber;
+                }
+            }
+        });
+
+        modalInstance.result.then(function () {
+            ScanOrderService.ReturnDelivery({ DeliveryNumber: delivery.DeliveryNumber, IsInternal: delivery.IsInternal }).then(function (result) {
+                if (result.data) {
+                    scan.DeliveryActionMessage = "Successfully returned delivery items " + delivery.DeliveryNumber;
+                    scan.LookUp(delivery.DeliveryNumber, delivery.IsInternal);
+                } else {
+                    scan.DeliveryActionMessage = "There was an error returning this delivery.";
                 }
             });
         }, function () {
@@ -161,7 +180,7 @@ app.controller("ScanController", function ($scope, $modal, $filter, $timeout, ng
 
                 if (!matched[0].SmartCodeOnly) {
 
-                    var deliveryItem = { SerialCode: serialCode, MacId: modifiedMac, Id: matched[0].Id, ProductGroup: matched[0].ProductGroup };
+                    var deliveryItem = { IsInternal: scan.Delivery.IsInternal, SerialCode: serialCode, MacId: modifiedMac, Id: matched[0].Id, ProductGroup: matched[0].ProductGroup };
                     ScanOrderService.SaveDeliveryItem(deliveryItem).then(function (result) {
                         if (!result.data.ErrorMessage) {
                             //                                    var copy = _.clone(matched);
@@ -197,7 +216,7 @@ app.controller("ScanController", function ($scope, $modal, $filter, $timeout, ng
         scan.Delivery.NotScannedItems = scan.Delivery.NotScannedItems || [];
         if (selected.length > 0) {
             var ids = _.pluck(selected, 'Id');
-            ScanOrderService.ReturnSelectedItems(ids).then(function (result) {
+            ScanOrderService.ReturnSelectedItems(ids, scan.Delivery.IsInternal).then(function (result) {
                 if (result.data) {
                     _.each(selected, function (item) {
                         // delete item.IsSelected;
@@ -282,6 +301,17 @@ app.controller("ScanController", function ($scope, $modal, $filter, $timeout, ng
 });
 
 var ClearModalCtrl = function ($scope, $modalInstance, docNum) {
+
+    $scope.DocNum = docNum;
+    $scope.ok = function () {
+        $modalInstance.close();
+    };
+
+    $scope.cancel = function () {
+        $modalInstance.dismiss('cancel');
+    };
+};
+var ReturnDeliveryModalCtrl = function ($scope, $modalInstance, docNum) {
 
     $scope.DocNum = docNum;
     $scope.ok = function () {

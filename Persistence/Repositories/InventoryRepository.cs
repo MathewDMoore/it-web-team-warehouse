@@ -69,9 +69,9 @@ namespace Persistence.Repositories
             return _sqlMapperFactory.InventoryMasterMapper.SelectSmartMac(serialNumberItemQuery);
         }
 
-        public bool UpdateSerialNumberItem(SerialNumberItem serialNumberItem)
+        public bool UpdateSerialNumberItem(SerialNumberItem serialNumberItem,bool isInternal)
         {
-            return _sqlMapperFactory.InventoryMasterMapper.UpdateSerialNumberItem(serialNumberItem);
+            return _sqlMapperFactory.InventoryMasterMapper.UpdateSerialNumberItem(serialNumberItem, isInternal);
         }
 
         public IEnumerable<SerialNumberItem> GetDeliveryItems(DeliveryOrderItemsQuery query)
@@ -84,9 +84,9 @@ namespace Persistence.Repositories
             return _sqlMapperFactory.InventoryMasterMapper.ClearDelivery(query);
         }
 
-        public bool ReturnDeliveryLineItem(SerialNumberItem lineItem)
+        public bool ReturnDeliveryLineItem(SerialNumberItem lineItem, bool isInternal)
         {
-            return _sqlMapperFactory.InventoryMasterMapper.ReturnDeliveryLineItem(lineItem);
+            return _sqlMapperFactory.InventoryMasterMapper.ReturnDeliveryLineItem(lineItem, isInternal);
         }
 
         public bool VerifyDelivery(DeliveryOrderQuery query)
@@ -97,6 +97,11 @@ namespace Persistence.Repositories
         public Delivery GetDeliveryByMacId(string macId)
         {
             return _sqlMapperFactory.InventoryMasterMapper.GetDeliveryByMacId(macId);
+        }
+
+        public bool ReturnDelivery(DeliveryOrderQuery query)
+        {
+            return _sqlMapperFactory.InventoryMasterMapper.ReturnDelivery(query);
         }
     }
 }

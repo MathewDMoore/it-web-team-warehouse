@@ -32,26 +32,24 @@ namespace ApplicationSource.Services
             _identity = identity;
         }
 
-        public OrderDeliveryModel OrderLookUp(int orderId)
+        public OrderDeliveryModel OrderLookUp(MacDeliveryModel lookup)
         {
-            var delivery =
-                _repo.GetDelivery(new DeliveryOrderQuery
-                {
-                    DocNum = orderId,
-                    ServerLocation = _settings.GetServerLocation
-                });
+            var delivery = _repo.GetDelivery(new DeliveryOrderQuery { DocNum = lookup.DeliveryNumber, ServerLocation = _settings.GetServerLocation, IsInternal = lookup.IsInternal });
+            delivery.IsIrDelivery = lookup.IsInternal;
             OrderDeliveryModel deliveryModel = null;
             if (delivery != null)
             {
                 var items =
                     _repo.GetDeliveryItems(new DeliveryOrderItemsQuery
                     {
-                        DocNum = orderId,
+                        DocNum = lookup.DeliveryNumber,
                         ServerLocation = _settings.GetServerLocation,
-                        Username = _identity.Name
+                        Username = _identity.Name,
+                        IsInternal = delivery.IsIrDelivery
                     });
                 deliveryModel = delivery.Map<Delivery, OrderDeliveryModel>();
-                deliveryModel.DeliveryNumber = orderId;
+                deliveryModel.DeliveryNumber = lookup.DeliveryNumber;
+                deliveryModel.IsInternal = lookup.IsInternal;
                 items.ToList().ForEach(i =>
                 {
                     var model = i.Map<SerialNumberItem, DeliveryOrderItemModel>();
@@ -69,7 +67,7 @@ namespace ApplicationSource.Services
 
         }
 
-        public int LocateMacIds(string macId)
+        public MacDeliveryModel LocateMacIds(string macId)
         {
             var result = new MacDeliveryModel();
             if (!string.IsNullOrEmpty(macId))
@@ -82,7 +80,8 @@ namespace ApplicationSource.Services
                     {
                         result = new MacDeliveryModel
                         {
-                            DeliveryNumber = delivery.DeliveryNumber,                            
+                            DeliveryNumber = delivery.DeliveryNumber, 
+                            IsInternal = delivery.IsIrDelivery
                         };
                     }
                     else
@@ -95,7 +94,7 @@ namespace ApplicationSource.Services
                     result.Error = " Incorrect Mac Id Length, or Mac Id is not a serialized number.";
                 }
             }
-            return result.DeliveryNumber;
+            return result;
         }
 
 
@@ -126,7 +125,7 @@ namespace ApplicationSource.Services
                         else
                         {
                             model.IsUnique = true;
-                            if (!UpdateRecord(model.SerialCode, parsedMacId, model.Id))
+                            if (!UpdateRecord(model.SerialCode, parsedMacId, model.Id, model.IsInternal))
                             {
                                 model.ErrorMessage =
                                     "There was an error saving this item into the database. Please review the SerialCode or contact IT support.";
@@ -145,12 +144,34 @@ namespace ApplicationSource.Services
             return model;
         }
 
-        public bool ReturnDeliveryLineItem(List<int> ids)
+        public bool ReturnDelivery(ClearDeliveryModel delivery)
+        {
+            if (delivery.DeliveryNumber > 0)
+            {
+                bool success = false;
+
+                try
+                {
+                    success = _repo.ReturnDelivery(new DeliveryOrderQuery { DocNum = delivery.DeliveryNumber, IsInternal = delivery.IsInternal, Username = _identity.Name });
+                }
+                catch (Exception)
+                {
+
+                    success = false;
+                }
+
+                return success;
+            }
+
+            return false;
+        }
+
+        public bool ReturnDeliveryLineItem(ReturnModel returns)
         {
             var success = false;
             try
             {
-                ids.ForEach(i => _repo.ReturnDeliveryLineItem(new SerialNumberItem { Id = i, Username = _identity.Name }));
+                returns.Ids.ForEach(i => _repo.ReturnDeliveryLineItem(new SerialNumberItem { Id = i, Username = _identity.Name }, returns.IsInternal));
                 success = true;
             }
             catch (Exception e)
@@ -160,15 +181,15 @@ namespace ApplicationSource.Services
             return success;
         }
 
-        public bool ClearDelivery(int docNumber)
+        public bool ClearDelivery(ClearDeliveryModel delivery)
         {
-            if (docNumber > 0)
+            if (delivery.DeliveryNumber > 0)
             {
                 bool success = false;
 
                 try
                 {
-                    success = _repo.ClearDelivery(new DeliveryOrderQuery { DocNum = docNumber, Username = _identity.Name });
+                    success = _repo.ClearDelivery(new DeliveryOrderQuery { DocNum = delivery.DeliveryNumber, IsInternal = delivery.IsInternal, Username = _identity.Name });
                 }
                 catch (Exception)
                 {
@@ -189,9 +210,9 @@ namespace ApplicationSource.Services
             return _repo.VerifyDelivery(query);
         }
 
-        private bool UpdateRecord(string serialCode, string macId, int id)
+        private bool UpdateRecord(string serialCode, string macId, int id, bool isInternal)
         {
-            var success = _repo.UpdateSerialNumberItem(new SerialNumberItem { Id = id, MacId = macId, SerialCode = serialCode, Username = HttpContext.Current.User.Identity.Name });
+            var success = _repo.UpdateSerialNumberItem(new SerialNumberItem { Id = id, MacId = macId, SerialCode = serialCode, Username = HttpContext.Current.User.Identity.Name }, isInternal);
             return success;
         }
     }

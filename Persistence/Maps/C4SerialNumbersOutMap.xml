@@ -67,7 +67,7 @@
 		</resultMap>
 		<resultMap id="DeliveryLiteRM" class="Delivery">
 			<result column="DOCNUM" property="DeliveryNumber"/>
-			<result column="IsIrDelivery" property="IsIrDelivery"/>			
+			<result column="IsIrDelivery" property="IsIrDelivery"/>
 		</resultMap>
 	</resultMaps>
 	<parameterMaps>
@@ -82,6 +82,10 @@
 		<parameterMap id="ClearDeliveryOrderPM" class="DeliveryOrderQuery">
 			<parameter property="Username" column="USERNAME"/>
 			<parameter property="DocNum" column="DELIVERYNUMBER"/>
+		</parameterMap>
+		<parameterMap id="ReturnDeliveryOrderPM" class="DeliveryOrderQuery">
+			<parameter property="Username" column="USERNAME"/>
+			<parameter property="DocNum" column="DOCNUM"/>
 		</parameterMap>
 		<parameterMap id="ReturnSerialNumberItemPM" class="SerialNumberItem">
 			<parameter property="Username" column="USERNAME"/>
@@ -104,23 +108,53 @@
 		<procedure  id="sp_ClearDelivery" parameterMap="ClearDeliveryOrderPM">
 			sp_ClearDelivery
 		</procedure>
+		<procedure  id="sp_ClearDeliveryIR" parameterMap="ClearDeliveryOrderPM">
+			sp_ClearIRDelivery
+		</procedure>
 		<procedure  id="SelectSmartMac" parameterMap="SerialNumberItemPM" resultMap="SerialNumberItemRM">
 			sp_LocateSmartMac
 		</procedure>
 		<procedure  id="SelectDeleiveryOrderItems" parameterMap="DeliveryOrderItemsPM" resultMap="DeliveryItemRM">
 			sp_delivery_synch
 		</procedure>
+		<procedure  id="SelectDeleiveryOrderItemsIR" parameterMap="DeliveryOrderItemsPM" resultMap="DeliveryItemRM">
+			sp_GoodsIssue_IR_Synch
+		</procedure>
+		<procedure  id="SelectInternalDeleiveryOrderItems" parameterMap="DeliveryOrderItemsPM" resultMap="DeliveryItemRM">
+			sp_GoodsIssue_IR_Synch
+		</procedure>
 		<procedure  id="SelectDeliveryByDeliveryNumber" parameterMap="DeliveryOrderPM" resultMap="DeliveryOrderRM">
 			sp_Delivery_Header
 		</procedure>
+		<statement  id="SelectDeliveryByDeliveryNumberIR" parameterClass="DeliveryOrderQuery" resultMap="DeliveryOrderRM">
+			Select CardCode as DealerId,CardName as DealerName,Address2, Comments from $ServerLocation$.oige t1 where docnum = #DocNum#
+		</statement>
 		<procedure  id="ReturnDeliveryByLineItem" parameterMap="ReturnSerialNumberItemPM">
 			sp_ReturnDeliveryByLineItem
 		</procedure>
+		<procedure  id="ReturnDeliveryByLineItemIR" parameterMap="ReturnSerialNumberItemPM">
+			sp_ReturnIRByLineItem
+		</procedure>
+		<procedure  id="ReturnDeliveryIR" parameterMap="ReturnDeliveryOrderPM">
+			sp_ReturnGoodsIssue_IR
+		</procedure>
+		<procedure  id="ReturnDelivery" parameterMap="ReturnDeliveryOrderPM">
+			sp_ReturnDelivery
+		</procedure>
+		<update id="UpdateSerialNumberIR" parameterClass="SerialNumberItem" >
+			Update C4_GOODSISSUE_IR_OUT set SERIALCODE= UPPER(#SerialCode#), USERNAME= #Username#, MACID =#MacId#, RETURNEDBYUSER = null where ID = #Id#
+		</update>
 		<update id="UpdateSerialNumber" parameterClass="SerialNumberItem" >
 			Update C4_SERIALNUMBERS_OUT set SERIALCODE= UPPER(#SerialCode#), USERNAME= #Username#, MACID =#MacId#, RETURNEDBYUSER = null where ID = #Id#
 		</update>
 		<update id="UpdateVerifiedOrder" parameterClass="DeliveryOrderQuery">
 			UPDATE C4_SERIALNUMBERS_OUT
+			SET VERIFIED = 1,
+			[USERNAME] = #Username#
+			WHERE DOCNUM = #DocNum#
+		</update>
+		<update id="UpdateVerifiedOrderIR" parameterClass="DeliveryOrderQuery">
+			UPDATE C4_GOODSISSUE_IR_OUT
 			SET VERIFIED = 1,
 			[USERNAME] = #Username#
 			WHERE DOCNUM = #DocNum#

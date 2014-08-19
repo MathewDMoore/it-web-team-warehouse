@@ -29,5 +29,8 @@ namespace ApplicationSource.Models
 
         [DataMember]
         public int Id { get; set; }
+        
+        [DataMember]
+        public bool IsInternal { get; set; }
     }
 }

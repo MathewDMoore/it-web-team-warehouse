@@ -5,24 +5,35 @@
     <script type="text/javascript" src="../scripts/services/ScanOrderService.js"></script>
     <script type="text/javascript" src="../scripts/services/firebaseDeliveryService.js"></script>
     <script type="text/javascript" src="../scripts/controllers/ScanOrderController.js"></script>
-
+    <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
     <div style="min-height: 140px;">
         <h2>Deliveries</h2>
         <div ng-controller="ScanController as scan" class="well" ng-init="scan.Username='<%=User.Identity.Name %>'">
-            <form style="display:inline-block;" ng-submit="scan.LookUp(scan.OrderIdLookUp)" ng-init="scan.LookUp(<%=Request.QueryString.Get("delivery")%>)">
+            <% var init = "";
+               if (!string.IsNullOrEmpty(Request.QueryString.Get("delivery")))
+               {
+                   var delivery = Request.QueryString.Get("delivery");
+                   var isInternal = !string.IsNullOrEmpty(Request.QueryString.Get("internal")) && Request.QueryString.Get("internal").Equals("true");
+                   init = string.Format("ng-init='scan.LookUp({0},{1})'", delivery, isInternal.ToString().ToLower());
+               }%>
+            <form style="display: inline-block;" ng-submit="scan.LookUp(scan.OrderIdLookUp,scan.LookUpIsInternal)" <%=init %>>
                 <div class="input-group" style="width: 300px;">
-                    <input class="form-control" placeholder="Delivery Number or MacId" ng-disabled="scan.IsSearching" autofocus id="orderIdInput" type="text" ng-model="scan.OrderIdLookUp" ng-blur="scan.LookUp(scan.OrderIdLookUp)" />
-                    <span class="input-group-addon " style="cursor: pointer" id="loadDelivery" ng-click="scan.LookUp(scan.OrderIdLookUp)">{{scan.IsSearching?'Loading...':'Load Delivery'}}</span>
+                    <input class="form-control" placeholder="Delivery Number or MacId" ng-disabled="scan.IsSearching" autofocus id="orderIdInput" type="text" ng-model="scan.OrderIdLookUp" ng-blur="scan.LookUp(scan.OrderIdLookUp,scan.LookUpIsInternal)" />
+                    <span type="submit" class="input-group-addon " style="cursor: pointer" id="loadDelivery">{{scan.IsSearching?'Loading...':'Load Delivery'}}</span>
+                </div>
+                <div style="display: inline-block;">
+                    <input name="IsInternal" type="radio" ng-model="scan.LookUpIsInternal" ng-value="false" />Dealer Order
+                <input name="IsInternal" type="radio" ng-model="scan.LookUpIsInternal" ng-value="true" />Internal Order
                 </div>
             </form>
-            <div ng-if="scan.DeliveryActionMessage" class="alert alert-success" style="width: 300px; display:inline-block; margin-left: 20px;">{{scan.DeliveryActionMessage}}</div>
+            <div ng-if="scan.DeliveryActionMessage" class="alert alert-success" style="width: 300px; display: inline-block; margin-left: 20px;">{{scan.DeliveryActionMessage}}</div>
             <div style="margin-top: 10px;" ng-if="scan.Delivery">
                 <div class="panel panel-info">
                     <div class="panel-heading">
                         <h3 style="margin: 5px 0px; display: inline-block">Delivery Number: {{scan.Delivery.DeliveryNumber}} </h3>
-                         <div style="display: inline-block; margin-left: 30px;display: inline-block;-webkit-transform: rotate(-5deg);" class="verified" ng-class="{'text-success':scan.Delivery.IsVerified, 'text-danger':!scan.Delivery.IsVerified}"><i class="glyphicon" ng-class="{'glyphicon-check':scan.Delivery.IsVerified, 'glyphicon-remove-circle' : !scan.Delivery.IsVerified }"></i>{{scan.GetDeliveryStatus()}}</div>
+                        <div style="display: inline-block; margin-left: 30px; display: inline-block; -webkit-transform: rotate(-5deg);" class="verified" ng-class="{'text-success':scan.Delivery.IsVerified, 'text-danger':!scan.Delivery.IsVerified}"><i class="glyphicon" ng-class="{'glyphicon-check':scan.Delivery.IsVerified, 'glyphicon-remove-circle' : !scan.Delivery.IsVerified }"></i>{{scan.GetDeliveryStatus()}}</div>
                         <div style="float: right; position: relative; top: -5px;">
-                           
+
                             <div class="btn-group">
                                 <button class="btn btn-lg btn-primary">Export <i class="glyphicon glyphicon-export"></i></button>
                                 <button type="button" class="btn btn-lg btn-primary dropdown-toggle" data-toggle="dropdown">
@@ -38,10 +49,11 @@
                     <div class="panel-body">
                         <div style="width: 200px; float: right; margin-bottom: 0px; text-align: center;" class="alert alert-success" ng-show="scan.Delivery.NotScannedItems.length==0">Scan Complete <i class="glyphicon glyphicon-check"></i></div>
                         <h3 style="margin-top: 0px;">Dealer: {{scan.Delivery.DealerName}}/<small>{{scan.Delivery.DealerId}}</small></h3>
+                        <div ng-if="scan.Delivery.IsInternal" class="verified text-danger" style="float: right;">[ Internal Order ]</div>
                         <label>Address: {{scan.Delivery.Address}}</label><br />
                         <label>Comments: {{scan.Delivery.Comments}}</label><br />
                         <div style="float: right;">
-                            <button class="btn btn-warning" id="returnDelivery">Return Entire Delivery</button>
+                            <button class="btn btn-warning" id="returnDelivery" ng-click="scan.ReturnDelivery(scan.Delivery)">Return Entire Delivery</button>
                             <button class="btn btn-danger" id="clearDelivery" ng-click="scan.ClearDelivery(scan.Delivery.DeliveryNumber)">Clear Delivery</button>
                             <button class="btn btn-success" id="VerifiedDelivery" ng-disabled="scan.GetDeliveryStatus()" ng-click="scan.VerifyDelivery(scan.Delivery.DeliveryNumber)">Verify Delivery</button>
                         </div>
@@ -50,10 +62,10 @@
                 <div style="float: left; margin-bottom: 20px;">
                     <label>Enter Serial Code: </label>
                     <div class="input-group" style="width: 328px">
-                        <input class="form-control" autofocus auto-select select="scan.SerialScanStatus.Success==false" ng-model="scan.SerialCodeLookUp" ng-change="scan.VerifyLineitem(scan.SerialCodeLookUp)" />
+                        <input class="form-control" autofocus auto-select select="!scan.SerialScanStatus.Success" ng-model="scan.SerialCodeLookUp" ng-change="scan.VerifyLineitem(scan.SerialCodeLookUp)" />
                         <span class="input-group-addon"><i class="glyphicon glyphicon-search"></i></span>
                     </div>
-                    <span class="text-info">{{scan.Delivery.ScannedItems.length}} of {{scan.Delivery.NotScannedItems.length +scan.Delivery.ScannedItems.length}} Products Scanned</span>
+                    <span class="text-info">{{scan.Delivery.ScannedItems? scan.Delivery.ScannedItems.length:0}} of {{scan.Delivery.NotScannedItems.length +scan.Delivery.ScannedItems.length}} Products Scanned</span>
                 </div>
                 <div class="alert" style="width: 600px; float: left; margin-left: 10px; position: relative; top: 14px;" ng-class="{'alert-danger':!scan.SerialScanStatus.Success, 'alert-success':scan.SerialScanStatus.Success}" ng-show="scan.SerialScanStatus">&nbsp;&nbsp;{{scan.SerialScanStatus.Message}}</div>
 
@@ -72,16 +84,15 @@
                         </div>
                     </div>
                     <table ng-table="scan.TableParams" class="table">
-                        <table ng-table="scan.TableParams" class="table">
-                            <tr ng-repeat="item in $data track by $index">
-                                <td data-title="'ID'" sortable="'Id'">{{item.Id}}</td>
-                                <td data-title="'Kit Code'" sortable="'ItemCode'">{{item.ItemCode}}</td>
-                                <td data-title="'Item Code'" sortable="'RealItemCode'">{{item.RealItemCode}}</td>
-                                <td data-title="'Description'" sortable="'AltText'">{{item.AltText}}</td>
-                                <td data-title="'#'" sortable="'SerialNum'">{{item.SerialNum}}</td>
-                                <td data-title="'Returned'" sortable="'ReturnedByUser'">{{item.ReturnedByUser}}</td>
-                            </tr>
-                        </table>
+                        <tr ng-repeat="item in $data track by $index">
+                            <td data-title="'ID'" sortable="'Id'">{{item.Id}}</td>
+                            <td data-title="'Kit Code'" sortable="'ItemCode'">{{item.ItemCode}}</td>
+                            <td data-title="'Item Code'" sortable="'RealItemCode'">{{item.RealItemCode}}</td>
+                            <td data-title="'Description'" sortable="'AltText'">{{item.AltText}}</td>
+                            <td data-title="'#'" sortable="'SerialNum'">{{item.SerialNum}}</td>
+                            <td data-title="'Returned'" sortable="'ReturnedByUser'">{{item.ReturnedByUser}}</td>
+                        </tr>
+                    </table>
                 </div>
                 <div ng-if="scan.Delivery.ScannedItems.length>0" style="clear: both;">
                     <h3>Scanned Items <span class="btn btn-warning" ng-click="scan.ReturnSelectedItems()" ng-show="scan.HasSelectedReturns()" style="margin-left: 10px;">Return Selected Items</span></h3>

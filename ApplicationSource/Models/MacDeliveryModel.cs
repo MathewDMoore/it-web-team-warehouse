@@ -8,6 +8,9 @@ namespace ApplicationSource.Models
         [DataMember]
         public int DeliveryNumber { get; set; }
         [DataMember(IsRequired = false)]
-        public string Error { get; set; }        
+        public string Error { get; set; }
+
+        [DataMember]
+        public bool IsInternal { get; set; }
     }
 }

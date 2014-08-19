@@ -66,10 +66,12 @@
     <Compile Include="IoCRegistry.cs" />
     <Compile Include="LdapAuthentication.cs" />
     <Compile Include="Models\AddressModel.cs" />
+    <Compile Include="Models\ClearDeliveryModel.cs" />
     <Compile Include="Models\DeliveryOrderItemModel.cs" />
     <Compile Include="Models\MacDeliveryModel.cs" />
     <Compile Include="Models\OrderDeliveryModel.cs" />
     <Compile Include="Models\OrderLineItem.cs" />
+    <Compile Include="Models\ReturnModel.cs" />
     <Compile Include="Models\UniqueMacSearchItem.cs" />
     <Compile Include="Models\UserAuthenticationModel.cs" />
     <Compile Include="Models\VerifyUniqueMacModel.cs" />
