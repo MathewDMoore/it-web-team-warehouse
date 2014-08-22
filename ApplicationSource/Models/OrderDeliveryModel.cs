@@ -9,6 +9,8 @@ namespace ApplicationSource.Models
         {
             NotScannedItems = new List<DeliveryOrderItemModel>();
             ScannedItems = new List<DeliveryOrderItemModel>();
+            ActiveKit = new List<DeliveryOrderItemModel>();
+
         }
 
         public int DeliveryNumber { get; set; }
@@ -20,10 +22,10 @@ namespace ApplicationSource.Models
         public bool IsInternal { get; set; }
         public List<DeliveryOrderItemModel> NotScannedItems { get; set; }
         public List<DeliveryOrderItemModel> ScannedItems { get; set; }
-
+        public List<DeliveryOrderItemModel> ActiveKit { get; set; }
         public bool IsVerified
         {
-            get { return ScannedItems.Any(x => !x.Verified) && (NotScannedItems.Count == 0 ||  NotScannedItems.All(y => y.NoSerialRequired)) ; }
+            get { return ScannedItems.Any(x => !x.Verified  || !string.IsNullOrEmpty(x.ReturnedByUser)) && (NotScannedItems.Count == 0 ||  NotScannedItems.All(y => y.NoSerialRequired || !string.IsNullOrEmpty(y.ReturnedByUser))) ; }
             set { }
         }
     }

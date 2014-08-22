@@ -37,6 +37,9 @@
 			<result property="ProductFamily" column="PRODUCTFAMILY"/>
 			<result property="ProductPillar" column="PRODUCTPILLAR"/>
 			<result property="ReturnedByUser" column="RETURNEDBYUSER" />
+      <result property="KitId" column="KitId" />
+      <result property="KitCounter" column="KitCounter" />
+      <result property="ScannedBy" column="ScannedBy" />
 		</resultMap>
 		<resultMap id="DeliveryItemRM" class="SerialNumberItem">
 			<result property="Id" column="ID"/>
@@ -58,6 +61,9 @@
 			<result property="ProductPillar" column="PRODUCTPILLAR"/>
 			<result property="ReturnedByUser" column="RETURNEDBYUSER" />
 			<result property="Username" column="USERNAME" />
+			<result property="KitId" column="KitId" />
+			<result property="KitCounter" column="KitCounter" />
+			<result property="ScannedBy" column="ScannedBy" />
 		</resultMap>
 		<resultMap id="DeliveryOrderRM" class="Delivery">
 			<result column="DealerName" property="DealerName"/>
@@ -142,11 +148,11 @@
 			sp_ReturnDelivery
 		</procedure>
 		<update id="UpdateSerialNumberIR" parameterClass="SerialNumberItem" >
-			Update C4_GOODSISSUE_IR_OUT set SERIALCODE= UPPER(#SerialCode#), USERNAME= #Username#, MACID =#MacId#, RETURNEDBYUSER = null where ID = #Id#
+			Update C4_GOODSISSUE_IR_OUT set SERIALCODE= UPPER(#SerialCode#), ScannedBy= #ScannedBy#, MACID =#MacId#, RETURNEDBYUSER = null where ID = #Id#
 		</update>
 		<update id="UpdateSerialNumber" parameterClass="SerialNumberItem" >
-			Update C4_SERIALNUMBERS_OUT set SERIALCODE= UPPER(#SerialCode#), USERNAME= #Username#, MACID =#MacId#, RETURNEDBYUSER = null where ID = #Id#
-		</update>
+      Update C4_SERIALNUMBERS_OUT set SERIALCODE= UPPER(#SerialCode#), ScannedBy= #ScannedBy#, MACID =#MacId#, RETURNEDBYUSER = null where ID = #Id#
+    </update>
 		<update id="UpdateVerifiedOrder" parameterClass="DeliveryOrderQuery">
 			UPDATE C4_SERIALNUMBERS_OUT
 			SET VERIFIED = 1,

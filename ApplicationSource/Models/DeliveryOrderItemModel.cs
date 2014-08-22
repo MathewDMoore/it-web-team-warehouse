@@ -18,5 +18,8 @@ namespace ApplicationSource.Models
         public string Color { get; set; }   
         public string ProductGroup { get; set; }
         public bool Verified { get; set; }
+        public int KitId { get; set; }
+        public int KitCounter { get; set; }
+        public string ScannedBy { get; set; }
     }
 }

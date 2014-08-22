@@ -47,7 +47,7 @@
                         </div>
                     </div>
                     <div class="panel-body">
-                        <div style="width: 200px; float: right; margin-bottom: 0px; text-align: center;" class="alert alert-success" ng-show="scan.Delivery.NotScannedItems.length==0">Scan Complete <i class="glyphicon glyphicon-check"></i></div>
+                        <div style="width: 200px; float: right; margin-bottom: 0px; text-align: center;" class="alert alert-success" ng-show="scan.Delivery.GetDeliveryStatus()">Scan Complete <i class="glyphicon glyphicon-check"></i></div>
                         <h3 style="margin-top: 0px;">Dealer: {{scan.Delivery.DealerName}}/<small>{{scan.Delivery.DealerId}}</small></h3>
                         <div ng-if="scan.Delivery.IsInternal" class="verified text-danger" style="float: right;">[ Internal Order ]</div>
                         <label>Address: {{scan.Delivery.Address}}</label><br />
@@ -74,6 +74,24 @@
                         text-align: left;
                     }
                 </style>
+                <div ng-if="scan.Delivery.ActiveKit.length > 0" style="clear: both;">
+                    <h3>Current Kit</h3>
+                    <div>
+                        <table ng-table="scan.Delivery.TableParams3" class="table">
+                            <tr ng-repeat="kitItem in $data track by $index">
+                                <td data-title="'ID'" sortable="'Id'">{{kitItem.Id}}</td>
+                                <td data-title="'Kit Code'" sortable="'ItemCode'">{{kitItem.ItemCode}}</td>
+                                <%--<td data-title="'Kit Id'" sortable="'KitId'">{{kitItem.KitId}}</td>
+                                <td data-title="'Kit Counter'" sortable="'KitCounter'">{{kitItem.KitCounter}}</td>--%>
+                                <td data-title="'Item Code'" sortable="'RealItemCode'">{{kitItem.RealItemCode}}</td>
+                                <td data-title="'Description'" sortable="'AltText'">{{kitItem.AltText}}</td>
+                                <td data-title="'#'" sortable="'SerialNum'">{{kitItem.SerialNum}}</td>
+                                <td data-title="'Serial #'" sortable="'SerialCode'">{{kitItem.SerialCode}}</td>
+                                <td data-title="'Scanned By'" sortable="'ScannedBy'">{{kitItem.ScannedBy}}</td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
                 <div ng-if="scan.Delivery.NotScannedItems.length>0" style="clear: both;">
                     <h3>Not Scanned Items</h3>
                     <div>
@@ -87,6 +105,8 @@
                         <tr ng-repeat="item in $data track by $index">
                             <td data-title="'ID'" sortable="'Id'">{{item.Id}}</td>
                             <td data-title="'Kit Code'" sortable="'ItemCode'">{{item.ItemCode}}</td>
+                            <%--  <td data-title="'Kit Id'" sortable="'KitId'">{{item.KitId}}</td>
+                            <td data-title="'Kit Counter'" sortable="'KitCounter'">{{item.KitCounter}}</td>--%>
                             <td data-title="'Item Code'" sortable="'RealItemCode'">{{item.RealItemCode}}</td>
                             <td data-title="'Description'" sortable="'AltText'">{{item.AltText}}</td>
                             <td data-title="'#'" sortable="'SerialNum'">{{item.SerialNum}}</td>
@@ -109,11 +129,13 @@
                                 <input type="checkbox" ng-model="scannedItem.IsSelected" /></td>
                             <td data-title="'ID'" sortable="'Id'">{{scannedItem.Id}}</td>
                             <td data-title="'Kit Code'" sortable="'ItemCode'">{{scannedItem.ItemCode}}</td>
+                            <%-- <td data-title="'Kit Id'" sortable="'KitId'">{{scannedItem.KitId}}</td>
+                            <td data-title="'Kit Counter'" sortable="'KitCounter'">{{scannedItem.KitCounter}}</td>--%>
                             <td data-title="'Item Code'" sortable="'RealItemCode'">{{scannedItem.RealItemCode}}</td>
                             <td data-title="'Description'" sortable="'AltText'">{{scannedItem.AltText}}</td>
                             <td data-title="'#'" sortable="'SerialNum'">{{scannedItem.SerialNum}}</td>
                             <td data-title="'Serial #'" sortable="'SerialCode'">{{scannedItem.SerialCode}}</td>
-                            <td data-title="'Scanned By'" sortable="'Username'">{{scannedItem.Username}}</td>
+                            <td data-title="'Scanned By'" sortable="'ScannedBy'">{{scannedItem.ScannedBy}}</td>
                         </tr>
                     </table>
                 </div>

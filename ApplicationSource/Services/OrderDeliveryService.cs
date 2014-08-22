@@ -4,6 +4,7 @@ using System.Configuration;
 using System.Data;
 using System.Data.SqlClient;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Security.Principal;
 using System.ServiceModel;
 using System.ServiceModel.Activation;
@@ -50,6 +51,17 @@ namespace ApplicationSource.Services
                 deliveryModel = delivery.Map<Delivery, OrderDeliveryModel>();
                 deliveryModel.DeliveryNumber = lookup.DeliveryNumber;
                 deliveryModel.IsInternal = lookup.IsInternal;
+
+                var kits = items.Where(x => x.KitId != 0);//.GroupBy(y => new { y.KitId, y.KitCounter });
+                var kitRow = kits.FirstOrDefault(k => !string.IsNullOrEmpty(k.ScannedBy) && k.ScannedBy == _identity.Name);
+                var kitRows = kits.Where(k => k.KitId == kitRow.KitId && k.KitCounter == kitRow.KitCounter);
+                
+                kitRows.ToList().ForEach(i =>
+                {
+                    var model = i.Map<SerialNumberItem, DeliveryOrderItemModel>();
+                    deliveryModel.ActiveKit.Add(model);
+
+                });
                 items.ToList().ForEach(i =>
                 {
                     var model = i.Map<SerialNumberItem, DeliveryOrderItemModel>();
@@ -80,7 +92,7 @@ namespace ApplicationSource.Services
                     {
                         result = new MacDeliveryModel
                         {
-                            DeliveryNumber = delivery.DeliveryNumber, 
+                            DeliveryNumber = delivery.DeliveryNumber,
                             IsInternal = delivery.IsIrDelivery
                         };
                     }
@@ -212,7 +224,7 @@ namespace ApplicationSource.Services
 
         private bool UpdateRecord(string serialCode, string macId, int id, bool isInternal)
         {
-            var success = _repo.UpdateSerialNumberItem(new SerialNumberItem { Id = id, MacId = macId, SerialCode = serialCode, Username = HttpContext.Current.User.Identity.Name }, isInternal);
+            var success = _repo.UpdateSerialNumberItem(new SerialNumberItem { Id = id, MacId = macId, SerialCode = serialCode, ScannedBy = HttpContext.Current.User.Identity.Name }, isInternal);
             return success;
         }
     }

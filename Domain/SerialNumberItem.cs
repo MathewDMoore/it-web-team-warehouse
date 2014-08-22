@@ -29,5 +29,8 @@ namespace Domain
         public string ProductFamily { get; set; }
         public string ProductPillar { get; set; }
         public string ReturnedByUser { get; set; }
+        public int KitId { get; set; }
+        public int KitCounter { get; set; }
+        public string ScannedBy { get; set; }
 	}
 }
