@@ -77,7 +77,7 @@
                 <div ng-if="scan.Delivery.ActiveKit.length > 0" style="clear: both;">
                     <h3>Current Kit</h3>
                     <div>
-                        <table ng-table="scan.Delivery.TableParams3" class="table">
+                        <table ng-table="scan.TableParams3" class="table">
                             <tr ng-repeat="kitItem in $data track by $index">
                                 <td data-title="'ID'" sortable="'Id'">{{kitItem.Id}}</td>
                                 <td data-title="'Kit Code'" sortable="'ItemCode'">{{kitItem.ItemCode}}</td>
