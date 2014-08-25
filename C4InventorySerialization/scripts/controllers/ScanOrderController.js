@@ -80,6 +80,7 @@ app.controller("ScanController", function ($scope, $modal, $filter, $timeout, ng
         scan.TableParams3.filter(filter);
     };
     scan.LookUp = function (orderId, isInternal) {
+        scan.Delivery = null;
         if (parseInt(orderId) != NaN && parseInt(orderId) > 0) {
 
             scan.IsSearching = true;
@@ -95,33 +96,38 @@ app.controller("ScanController", function ($scope, $modal, $filter, $timeout, ng
                 scan.ScannedFilter = null;
                 scan.IsSearching = false;
 
-                scan.Delivery = FirebaseDeliveryService.GetDelivery(response.data.DeliveryNumber);
-                _.each(response.data.ScannedItems, function (item) {
-                    angular.extend(item, { IsSelected: false });
-                });
-                _.each(response.data.NotScannedItems, function (item) {
-                    angular.extend(item, { IsSelected: false, SerialCode: "" });
-                });
-                angular.extend(scan.Delivery, {
-                    DeliveryNumber: response.data.DeliveryNumber,
-                    DealerId: response.data.DealerId,
-                    DealerName: response.data.DealerName,
-                    Address: response.data.Address,
-                    Comments: response.data.Comments,
-                    NotScannedItems: response.data.NotScannedItems || [{}],
-                    ScannedItems: response.data.ScannedItems || [{}],
-                    IsVerified: response.data.IsVerified,
-                    IsInternal: response.data.IsInternal,
-                    ActiveKit: response.data.ActiveKit
-                });
+                if (response.data) {
+                    scan.Delivery = FirebaseDeliveryService.GetDelivery(response.data.DeliveryNumber);
+                    _.each(response.data.ScannedItems, function (item) {
+                        angular.extend(item, { IsSelected: false });
+                    });
+                    _.each(response.data.NotScannedItems, function (item) {
+                        angular.extend(item, { IsSelected: false, SerialCode: "" });
+                    });
+                    angular.extend(scan.Delivery, {
+                        DeliveryNumber: response.data.DeliveryNumber,
+                        DealerId: response.data.DealerId,
+                        DealerName: response.data.DealerName,
+                        Address: response.data.Address,
+                        Comments: response.data.Comments,
+                        NotScannedItems: response.data.NotScannedItems || [{}],
+                        ScannedItems: response.data.ScannedItems || [{}],
+                        IsVerified: response.data.IsVerified,
+                        IsInternal: response.data.IsInternal,
+                        ActiveKit: response.data.ActiveKit
+                    });
 
-                scan.Delivery.$save();
 
-                //scan.Delivery.$watch(function () {
-                scan.TableParams.reload();
-                scan.TableParams2.reload();
-                scan.TableParams3.reload();
-                //});
+                    scan.Delivery.$save();
+
+                    //scan.Delivery.$watch(function () {
+                    scan.TableParams.reload();
+                    scan.TableParams2.reload();
+                    scan.TableParams3.reload();
+                    //});
+                } else {
+                    scan.DeliveryActionMessage = "Delivery not found in SAP. Check delivery number.";
+                }
             });
         } else if (orderId) {
             scan.IsSearching = true;

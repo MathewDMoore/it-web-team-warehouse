@@ -36,10 +36,10 @@ namespace ApplicationSource.Services
         public OrderDeliveryModel OrderLookUp(MacDeliveryModel lookup)
         {
             var delivery = _repo.GetDelivery(new DeliveryOrderQuery { DocNum = lookup.DeliveryNumber, ServerLocation = _settings.GetServerLocation, IsInternal = lookup.IsInternal });
-            delivery.IsIrDelivery = lookup.IsInternal;
             OrderDeliveryModel deliveryModel = null;
             if (delivery != null)
             {
+                delivery.IsIrDelivery = lookup.IsInternal;
                 var items =
                     _repo.GetDeliveryItems(new DeliveryOrderItemsQuery
                     {
