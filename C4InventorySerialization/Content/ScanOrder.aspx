@@ -5,7 +5,12 @@
     <script type="text/javascript" src="../scripts/services/ScanOrderService.js"></script>
     <script type="text/javascript" src="../scripts/services/firebaseDeliveryService.js"></script>
     <script type="text/javascript" src="../scripts/controllers/ScanOrderController.js"></script>
-    <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
+    <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet" />
+    <script src="https://cdn.firebase.com/js/simple-login/1.6.3/firebase-simple-login.js"></script>
+    <script type="text/javascript">
+        var app = angular.module("shipApp");
+        app.constant("AUTH_TOKEN", "<%=Token%>");        
+    </script>
     <div style="min-height: 140px;">
         <h2>Deliveries</h2>
         <div ng-controller="ScanController as scan" class="well" ng-init="scan.Username='<%=User.Identity.Name %>'">
@@ -62,12 +67,12 @@
                 <div style="float: left; margin-bottom: 20px;">
                     <label>Enter Serial Code: </label>
                     <div class="input-group" style="width: 328px">
-                        <input class="form-control" autofocus auto-select select="!scan.SerialScanStatus.Success" ng-model="scan.SerialCodeLookUp" ng-change="scan.VerifyLineitem(scan.SerialCodeLookUp)" />
+                        <input class="form-control" autofocus auto-select select="scan.SerialScanStatus.Select" ng-model="scan.SerialCodeLookUp" ng-change="scan.VerifyLineitem(scan.SerialCodeLookUp)" />
                         <span class="input-group-addon"><i class="glyphicon glyphicon-search"></i></span>
                     </div>
                     <span class="text-info">{{scan.Delivery.ScannedItems? scan.Delivery.ScannedItems.length:0}} of {{scan.Delivery.NotScannedItems.length +scan.Delivery.ScannedItems.length}} Products Scanned</span>
                 </div>
-                <div class="alert" style="width: 600px; float: left; margin-left: 10px; position: relative; top: 14px;" ng-class="{'alert-danger':!scan.SerialScanStatus.Success, 'alert-success':scan.SerialScanStatus.Success}" ng-show="scan.SerialScanStatus">&nbsp;&nbsp;{{scan.SerialScanStatus.Message}}</div>
+                <div class="alert" style="width: 600px; float: left; margin-left: 10px; position: relative; top: 14px;" ng-class="{'alert-danger':!scan.SerialScanStatus.Success, 'alert-success':scan.SerialScanStatus.Success}" ng-show="scan.SerialScanStatus && scan.SerialScanStatus.Message">&nbsp;&nbsp;{{scan.SerialScanStatus.Message}}</div>
 
                 <style>
                     .table .header {

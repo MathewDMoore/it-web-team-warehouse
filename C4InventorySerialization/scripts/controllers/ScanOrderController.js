@@ -119,11 +119,13 @@ app.controller("ScanController", function ($scope, $modal, $filter, $timeout, ng
 
 
                     scan.Delivery.$save();
-
+                    $timeout(function() {
+                        scan.TableParams.reload();
+                        scan.TableParams2.reload();
+                        scan.TableParams3.reload();
+                    }, 500);
                     //scan.Delivery.$watch(function () {
-                    scan.TableParams.reload();
-                    scan.TableParams2.reload();
-                    scan.TableParams3.reload();
+
                     //});
                 } else {
                     scan.DeliveryActionMessage = "Delivery not found in SAP. Check delivery number.";
@@ -204,7 +206,7 @@ app.controller("ScanController", function ($scope, $modal, $filter, $timeout, ng
 
             if (modifiedMac.length != 12) {
                 if (modifiedMac.length != 16) {
-                    scan.SerialScanStatus = { Success: false, Message: "You have scanned in a code that is not the correct length!" };
+                    scan.SerialScanStatus = { Success: false,Select: true, Message: "You have scanned in a code that is not the correct length!" };
                     return false;
                 }
             }
@@ -243,11 +245,11 @@ app.controller("ScanController", function ($scope, $modal, $filter, $timeout, ng
                             scan.Delivery.$save();
                             //                            scan.TableParams.reload();
                             //                            scan.TableParams2.reload();
-                            scan.SerialScanStatus = { Success: true, Message: "Serial Successfully Updated" };
+                            scan.SerialScanStatus = { Success: true, Message: "Serial Successfully Updated", Select:false };
 
 
                         } else {
-                            scan.SerialScanStatus = { Success: false, Message: result.data.ErrorMessage + result.data.ErrorDeliveryNumber };
+                            scan.SerialScanStatus = { Success: false, Message: result.data.ErrorMessage + result.data.ErrorDeliveryNumber, Select : true };
 
                         }
                     });
