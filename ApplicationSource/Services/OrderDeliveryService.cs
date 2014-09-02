@@ -52,20 +52,7 @@ namespace ApplicationSource.Services
                 deliveryModel.DeliveryNumber = lookup.DeliveryNumber;
                 deliveryModel.IsInternal = lookup.IsInternal;
 
-                var kits = items.Where(x => x.KitId != 0);
-                var kitRow = kits.FirstOrDefault(k => !string.IsNullOrEmpty(k.ScannedBy) && k.ScannedBy == _identity.Name);
-                IEnumerable<SerialNumberItem> kitRows = null;
-                if (kitRow != null)
-                {
-                    kitRows = kits.Where(k => k.KitId == kitRow.KitId && k.KitCounter == kitRow.KitCounter);
-
-                    kitRows.ToList().ForEach(i =>
-                    {
-                        var model = i.Map<SerialNumberItem, DeliveryOrderItemModel>();
-                        deliveryModel.ActiveKit.Add(model);
-                        items.Remove(i);
-                    });
-                }
+                FindActiveKits(items, deliveryModel);
 
                 items.ForEach(i =>
                 {
@@ -81,6 +68,28 @@ namespace ApplicationSource.Services
                 });
             }
             return deliveryModel;
+        }
+
+        private void FindActiveKits(List<SerialNumberItem> items, OrderDeliveryModel deliveryModel)
+        {
+            var kits = items.Where(x => x.KitId > 0 && x.KitCounter > 0 && !string.IsNullOrEmpty(x.ScannedBy)).GroupBy(x => x.ScannedBy);
+            var kitGroups = new Dictionary<string, List<DeliveryOrderItemModel>>();
+            kits.ToList().ForEach(group =>
+            {
+                var matched = group.FirstOrDefault();
+                var kitItems = items.Where(i => i.KitCounter.Equals(matched.KitCounter) && i.KitId.Equals(matched.KitId));
+                if (!kitGroups.ContainsKey(group.Key))
+                {
+                    kitGroups.Add(group.Key, kitItems.Map<IEnumerable<SerialNumberItem>, List<DeliveryOrderItemModel>>());
+
+                }
+                else
+                {
+                    kitGroups[group.Key].AddRange(kitItems.Map<IEnumerable<SerialNumberItem>, List<DeliveryOrderItemModel>>());                    
+                }
+                kitItems.ToList().ForEach(ki=>items.Remove(ki));
+            });
+            deliveryModel.ActiveKits = kitGroups;
         }
 
         public MacDeliveryModel LocateMacIds(string macId)

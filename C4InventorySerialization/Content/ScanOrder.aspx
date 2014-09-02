@@ -79,7 +79,7 @@
                         text-align: left;
                     }
                 </style>
-                <div ng-if="scan.Delivery.ActiveKit.length > 0" style="clear: both;">
+                <div ng-if="scan.ActiveKit" style="clear: both;">
                     <h3>Current Kit</h3>
                     <div>
                         <table ng-table="scan.TableParams3" class="table">

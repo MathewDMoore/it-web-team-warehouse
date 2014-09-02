@@ -63,7 +63,7 @@ app.controller("ScanController", function ($scope, $modal, $filter, $timeout, ng
                 {
                     total: 0, // length of data
                     getData: function ($defer, params) {
-                        var orderedData = params.sorting() ? $filter('orderBy')(scan.Delivery.ActiveKit, params.orderBy()) : scan.Delivery.ActiveKit;
+                        var orderedData = params.sorting() ? $filter('orderBy')(scan.ActiveKit, params.orderBy()) : scan.ActiveKit;
                         orderedData = params.filter() ? $filter('filter')(orderedData, params.filter()) : orderedData;
                         orderedData = orderedData || [];
                         params.total(orderedData.length);
@@ -113,11 +113,13 @@ app.controller("ScanController", function ($scope, $modal, $filter, $timeout, ng
                         NotScannedItems: response.data.NotScannedItems || [{}],
                         ScannedItems: response.data.ScannedItems || [{}],
                         IsVerified: response.data.IsVerified,
-                        IsInternal: response.data.IsInternal,
-                        ActiveKit: response.data.ActiveKit
+                        IsInternal: response.data.IsInternal,                        
                     });
-
-
+                    var activeKit = _.where(response.data.ActiveKit, { Key: CURRENTUSER });
+                    if (activeKit && activeKit.length > 0) {
+                        scan.ActiveKit = activeKit[0];
+                    }
+                    
                     scan.Delivery.$save();
                     $timeout(function () {
                         scan.TableParams.reload();
@@ -213,8 +215,8 @@ app.controller("ScanController", function ($scope, $modal, $filter, $timeout, ng
             var productId = serialCode.substring(serialCode.length, serialCode.length - 7).substring(0, 5);
             var color = serialCode.substring(serialCode.length, serialCode.length - 7).substring(5, 7);
             var matched = null;
-            if (scan.Delivery.ActiveKit != null && scan.Delivery.ActiveKit.length > 0) {
-                matched = _.where(scan.Delivery.ActiveKit, { ProductId: productId, Color: color });
+            if (scan.ActiveKit != null && scan.ActiveKit.length > 0) {
+                matched = _.where(scan.ActiveKit, { ProductId: productId, Color: color });
             } else {
                 matched = _.where(scan.Delivery.NotScannedItems, { ProductId: productId, Color: color });
             }
@@ -231,28 +233,28 @@ app.controller("ScanController", function ($scope, $modal, $filter, $timeout, ng
                             matched[0].SerialCode = serialCode;
                             matched[0].ScannedBy = CURRENTUSER;
                             var matchedKitItems = null;
-                            if (scan.Delivery.ActiveKit==null && matched[0].KitId > 0) {
-                                scan.Delivery.ActiveKit = [];
+                            if (scan.ActiveKit==null && matched[0].KitId > 0) {
+                                scan.ActiveKit = [];
                             }
 
-                            if (scan.Delivery.ActiveKit) {
+                            if (scan.ActiveKit) {
                                 matchedKitItems = _.where(scan.Delivery.NotScannedItems, { KitId: matched[0].KitId, KitCounter: matched[0].KitCounter });
                                 _.each(matchedKitItems, function (item) {
                                     scan.Delivery.NotScannedItems.pop(item);
-                                    scan.Delivery.ActiveKit.push(item);
+                                    scan.ActiveKit.push(item);
                                 });
                             }
-                            if (scan.Delivery.ActiveKit == null) {
+                            if (scan.ActiveKit == null) {
                                 scan.Delivery.NotScannedItems.pop(matched[0]);
                                 scan.Delivery.ScannedItems.push(matched[0]);
                             }
-                            if (scan.Delivery.ActiveKit && _.filter(scan.Delivery.ActiveKit, function (kitRow) {
+                            if (scan.ActiveKit && _.filter(scan.ActiveKit, function (kitRow) {
                                 return kitRow.SerialCode != null;
                             }).length == 0) {
-                                _.each(scan.Delivery.ActiveKit, function (kitRow) {
+                                _.each(scan.ActiveKit, function (kitRow) {
                                     scan.Delivery.ScannedItems.push(kitRow);
                                 });
-                                scan.Delivery.ActiveKit = null;
+                                scan.ActiveKit = null;
                             }
 
                             angular.extend(matched[0], { IsSelected: false });
@@ -271,7 +273,7 @@ app.controller("ScanController", function ($scope, $modal, $filter, $timeout, ng
                     });
                 }
             } else {
-                if (scan.Delivery.ActiveKit == null) {
+                if (scan.ActiveKit == null) {
                     scan.SerialScanStatus = { Success: false, Message: "No items found that match that Serial Code. Verify Serial Code and try again", Select: true };
                 } else {
                     scan.SerialScanStatus = { Success: false, Message: "No items found that match that Serial Code in the current kit. Complete kit scanned before proceeding", Select: true };
