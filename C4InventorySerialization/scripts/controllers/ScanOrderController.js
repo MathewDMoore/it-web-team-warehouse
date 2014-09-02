@@ -242,7 +242,7 @@ app.controller("ScanController", function ($scope, $modal, $filter, $timeout, ng
             var color = serialCode.substring(serialCode.length, serialCode.length - 7).substring(5, 7);
             var matched = null;
             if (scan.ActiveKit != null && scan.ActiveKit.length > 0) {
-                matched = _.where(scan.ActiveKit, { ProductId: productId, Color: color });
+                matched = _.where(scan.ActiveKit, { ProductId: productId, Color: color, SerialCode: '' });
             } else {
                 matched = _.where(scan.Delivery.NotScannedItems, { ProductId: productId, Color: color });
             }
@@ -302,7 +302,7 @@ app.controller("ScanController", function ($scope, $modal, $filter, $timeout, ng
                 if (scan.ActiveKit == null) {
                     scan.SerialScanStatus = { Success: false, Message: "No items found that match that Serial Code. Verify Serial Code and try again", Select: true };
                 } else {
-                    scan.SerialScanStatus = { Success: false, Message: "No items found that match that Serial Code in the current kit. Complete kit scanned before proceeding", Select: true };
+                    scan.SerialScanStatus = { Success: false, Message: "No items found in the current kit that match this serial number. Please scan a serial code that matches the products in the current kit.", Select: true };
 
                 }
             }
