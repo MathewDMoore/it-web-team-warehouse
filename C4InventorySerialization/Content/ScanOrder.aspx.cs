@@ -10,7 +10,7 @@ namespace C4InventorySerialization.Content
 
         protected void Page_Load(object sender, EventArgs e)
         {
-            var tokenGenerator = new TokenGenerator("JtY774uVRKPCHdqO0YDZvW2pt2yJiHMvRVQ7Vf4S");
+            var tokenGenerator = new TokenGenerator("YFzdEpVh1MoLsHp5FVizP54BASybmEXSNyK8iKcF");
             var arbitraryAuthPayload = new Dictionary<string, object>
                 {
                     { "some", "arbitrary" },

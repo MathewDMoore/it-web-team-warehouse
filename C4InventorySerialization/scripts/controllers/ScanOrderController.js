@@ -1,5 +1,5 @@
 ﻿var app = angular.module("shipApp");
-app.constant("FIREBASE_URL", "https://flickering-fire-2083.firebaseio.com/");
+app.constant("FIREBASE_URL", "https://c4shiptool.firebaseio.com/");
 app.controller("ScanController", function ($scope, $modal, $filter, $timeout, ngTableParams, ScanOrderService, FirebaseDeliveryService) {
 
     $scope.$watch('filter.$', function () {
