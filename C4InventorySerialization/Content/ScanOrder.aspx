@@ -9,7 +9,8 @@
     <script src="https://cdn.firebase.com/js/simple-login/1.6.3/firebase-simple-login.js"></script>
     <script type="text/javascript">
         var app = angular.module("shipApp");
-        app.constant("AUTH_TOKEN", "<%=Token%>");        
+        app.constant("AUTH_TOKEN", "<%=Token%>");
+        app.constant("CURRENTUSER", "<%=User.Identity.Name%>");
     </script>
     <div style="min-height: 140px;">
         <h2>Deliveries</h2>
@@ -38,7 +39,6 @@
                         <h3 style="margin: 5px 0px; display: inline-block">Delivery Number: {{scan.Delivery.DeliveryNumber}} </h3>
                         <div style="display: inline-block; margin-left: 30px; display: inline-block; -webkit-transform: rotate(-5deg);" class="verified" ng-class="{'text-success':scan.Delivery.IsVerified, 'text-danger':!scan.Delivery.IsVerified}"><i class="glyphicon" ng-class="{'glyphicon-check':scan.Delivery.IsVerified, 'glyphicon-remove-circle' : !scan.Delivery.IsVerified }"></i>{{scan.GetDeliveryStatus()}}</div>
                         <div style="float: right; position: relative; top: -5px;">
-
                             <div class="btn-group">
                                 <button class="btn btn-lg btn-primary">Export <i class="glyphicon glyphicon-export"></i></button>
                                 <button type="button" class="btn btn-lg btn-primary dropdown-toggle" data-toggle="dropdown">

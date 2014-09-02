@@ -1,6 +1,6 @@
 ﻿var app = angular.module("shipApp");
 app.constant("FIREBASE_URL", "https://c4shiptool.firebaseio.com/");
-app.controller("ScanController", function ($scope, $modal, $filter, $timeout, ngTableParams, ScanOrderService, FirebaseDeliveryService) {
+app.controller("ScanController", function ($scope, $modal, $filter, $timeout, ngTableParams, ScanOrderService, FirebaseDeliveryService, CURRENTUSER) {
 
     $scope.$watch('filter.$', function () {
         if (scan.Delivery && (scan.Delivery.ScannedItems || scan.Delivery.NotScannedItems)) {
@@ -119,7 +119,7 @@ app.controller("ScanController", function ($scope, $modal, $filter, $timeout, ng
 
 
                     scan.Delivery.$save();
-                    $timeout(function() {
+                    $timeout(function () {
                         scan.TableParams.reload();
                         scan.TableParams2.reload();
                         scan.TableParams3.reload();
@@ -206,7 +206,7 @@ app.controller("ScanController", function ($scope, $modal, $filter, $timeout, ng
 
             if (modifiedMac.length != 12) {
                 if (modifiedMac.length != 16) {
-                    scan.SerialScanStatus = { Success: false,Select: true, Message: "You have scanned in a code that is not the correct length!" };
+                    scan.SerialScanStatus = { Success: false, Select: true, Message: "You have scanned in a code that is not the correct length!" };
                     return false;
                 }
             }
@@ -219,14 +219,29 @@ app.controller("ScanController", function ($scope, $modal, $filter, $timeout, ng
                 matched = _.where(scan.Delivery.NotScannedItems, { ProductId: productId, Color: color });
             }
             if (matched.length > 0) {
-
+                
+                //Create active kit table, if item scanned is a kit item
                 if (!matched[0].SmartCodeOnly) {
 
+               
                     var deliveryItem = { IsInternal: scan.Delivery.IsInternal, SerialCode: serialCode, MacId: modifiedMac, Id: matched[0].Id, ProductGroup: matched[0].ProductGroup };
                     ScanOrderService.SaveDeliveryItem(deliveryItem).then(function (result) {
                         if (!result.data.ErrorMessage) {
-                            //var copy = _.clone(matched);
                             scan.Delivery.ScannedItems = scan.Delivery.ScannedItems || [];
+                            matched[0].SerialCode = serialCode;
+                            matched[0].ScannedBy = CURRENTUSER;
+                            var matchedKitItems = null;
+                            if (scan.Delivery.ActiveKit==null && matched[0].KitId > 0) {
+                                scan.Delivery.ActiveKit = [];
+                            }
+
+                            if (scan.Delivery.ActiveKit) {
+                                matchedKitItems = _.where(scan.Delivery.NotScannedItems, { KitId: matched[0].KitId, KitCounter: matched[0].KitCounter });
+                                _.each(matchedKitItems, function (item) {
+                                    scan.Delivery.NotScannedItems.pop(item);
+                                    scan.Delivery.ActiveKit.push(item);
+                                });
+                            }
                             if (scan.Delivery.ActiveKit == null) {
                                 scan.Delivery.NotScannedItems.pop(matched[0]);
                                 scan.Delivery.ScannedItems.push(matched[0]);
@@ -239,23 +254,29 @@ app.controller("ScanController", function ($scope, $modal, $filter, $timeout, ng
                                 });
                                 scan.Delivery.ActiveKit = null;
                             }
-                            matched[0].SerialCode = serialCode;
+
                             angular.extend(matched[0], { IsSelected: false });
                             scan.SerialCodeLookUp = null;
                             scan.Delivery.$save();
-                            //                            scan.TableParams.reload();
-                            //                            scan.TableParams2.reload();
-                            scan.SerialScanStatus = { Success: true, Message: "Serial Successfully Updated", Select:false };
+                            scan.TableParams.reload();
+                            scan.TableParams2.reload();
+                            scan.TableParams3.reload();
+                            scan.SerialScanStatus = { Success: true, Message: "Serial Successfully Updated", Select: false };
 
 
                         } else {
-                            scan.SerialScanStatus = { Success: false, Message: result.data.ErrorMessage + result.data.ErrorDeliveryNumber, Select : true };
+                            scan.SerialScanStatus = { Success: false, Message: result.data.ErrorMessage + result.data.ErrorDeliveryNumber, Select: true };
 
                         }
                     });
                 }
             } else {
-                scan.SerialScanStatus = { Success: false, Message: "No items found that match that Serial Code. Verify Serial Code and try again" };
+                if (scan.Delivery.ActiveKit == null) {
+                    scan.SerialScanStatus = { Success: false, Message: "No items found that match that Serial Code. Verify Serial Code and try again", Select: true };
+                } else {
+                    scan.SerialScanStatus = { Success: false, Message: "No items found that match that Serial Code in the current kit. Complete kit scanned before proceeding", Select: true };
+
+                }
             }
         }
     };
@@ -277,7 +298,8 @@ app.controller("ScanController", function ($scope, $modal, $filter, $timeout, ng
                         scan.Delivery.NotScannedItems.push(item);
                     });
                     scan.Delivery.$save();
-
+                    scan.TableParams.reload();
+                    scan.TableParams2.reload();
                 }
             });
         }

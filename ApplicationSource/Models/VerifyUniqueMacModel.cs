@@ -32,5 +32,6 @@ namespace ApplicationSource.Models
         
         [DataMember]
         public bool IsInternal { get; set; }
+
     }
 }

@@ -47,22 +47,27 @@ namespace ApplicationSource.Services
                         ServerLocation = _settings.GetServerLocation,
                         Username = _identity.Name,
                         IsInternal = delivery.IsIrDelivery
-                    });
+                    }).ToList();
                 deliveryModel = delivery.Map<Delivery, OrderDeliveryModel>();
                 deliveryModel.DeliveryNumber = lookup.DeliveryNumber;
                 deliveryModel.IsInternal = lookup.IsInternal;
 
-                var kits = items.Where(x => x.KitId != 0);//.GroupBy(y => new { y.KitId, y.KitCounter });
+                var kits = items.Where(x => x.KitId != 0);
                 var kitRow = kits.FirstOrDefault(k => !string.IsNullOrEmpty(k.ScannedBy) && k.ScannedBy == _identity.Name);
-                var kitRows = kits.Where(k => k.KitId == kitRow.KitId && k.KitCounter == kitRow.KitCounter);
-                
-                kitRows.ToList().ForEach(i =>
+                IEnumerable<SerialNumberItem> kitRows = null;
+                if (kitRow != null)
                 {
-                    var model = i.Map<SerialNumberItem, DeliveryOrderItemModel>();
-                    deliveryModel.ActiveKit.Add(model);
+                    kitRows = kits.Where(k => k.KitId == kitRow.KitId && k.KitCounter == kitRow.KitCounter);
 
-                });
-                items.ToList().ForEach(i =>
+                    kitRows.ToList().ForEach(i =>
+                    {
+                        var model = i.Map<SerialNumberItem, DeliveryOrderItemModel>();
+                        deliveryModel.ActiveKit.Add(model);
+                        items.Remove(i);
+                    });
+                }
+
+                items.ForEach(i =>
                 {
                     var model = i.Map<SerialNumberItem, DeliveryOrderItemModel>();
                     if (string.IsNullOrEmpty(i.MacId))
@@ -76,7 +81,6 @@ namespace ApplicationSource.Services
                 });
             }
             return deliveryModel;
-
         }
 
         public MacDeliveryModel LocateMacIds(string macId)
