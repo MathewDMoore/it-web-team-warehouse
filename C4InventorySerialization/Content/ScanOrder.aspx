@@ -70,7 +70,7 @@
                         <input class="form-control" autofocus auto-select select="scan.SerialScanStatus.Select" ng-model="scan.SerialCodeLookUp" ng-change="scan.VerifyLineitem(scan.SerialCodeLookUp)" />
                         <span class="input-group-addon"><i class="glyphicon glyphicon-search"></i></span>
                     </div>
-                    <span class="text-info">{{scan.Delivery.ScannedItems? scan.Delivery.ScannedItems.length:0}} of {{scan.Delivery.NotScannedItems.length +scan.Delivery.ScannedItems.length}} Products Scanned</span>
+                    <span class="text-info">{{scan.Delivery.ScannedItems? scan.Delivery.ScannedItems.length:0}} of {{scan.GetScanTotals()}} Products Scanned</span>
                 </div>
                 <div class="alert" style="width: 600px; float: left; margin-left: 10px; position: relative; top: 14px;" ng-class="{'alert-danger':!scan.SerialScanStatus.Success, 'alert-success':scan.SerialScanStatus.Success}" ng-show="scan.SerialScanStatus && scan.SerialScanStatus.Message">&nbsp;&nbsp;{{scan.SerialScanStatus.Message}}</div>
 

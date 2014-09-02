@@ -70,6 +70,11 @@ app.controller("ScanController", function ($scope, $modal, $filter, $timeout, ng
                         $defer.resolve(orderedData.slice((params.page() - 1) * params.count(), params.page() * params.count()));
                     },
                 });
+    scan.GetScanTotals = function () {
+        var matches = _.pluck(scan.Delivery.ActiveKits, "Value");
+        var kitItemsCount = matches? matches[0].length:0;
+        return scan.Delivery.NotScannedItems.length + scan.Delivery.ScannedItems.length + kitItemsCount;
+    };
     scan.ScannedSearch = function (filter) {
         scan.TableParams2.filter(filter);
     };
@@ -113,11 +118,12 @@ app.controller("ScanController", function ($scope, $modal, $filter, $timeout, ng
                         NotScannedItems: response.data.NotScannedItems || [{}],
                         ScannedItems: response.data.ScannedItems || [{}],
                         IsVerified: response.data.IsVerified,
-                        IsInternal: response.data.IsInternal,                        
+                        IsInternal: response.data.IsInternal,
+                        ActiveKits: response.data.ActiveKits
                     });
-                    var activeKit = _.where(response.data.ActiveKit, { Key: CURRENTUSER });
+                    var activeKit = _.where(response.data.ActiveKits, { Key: CURRENTUSER });
                     if (activeKit && activeKit.length > 0) {
-                        scan.ActiveKit = activeKit[0];
+                        scan.ActiveKit = activeKit[0].Value;
                     }
                     
                     scan.Delivery.$save();
