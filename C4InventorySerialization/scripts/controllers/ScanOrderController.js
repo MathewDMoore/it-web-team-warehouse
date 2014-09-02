@@ -72,8 +72,28 @@ app.controller("ScanController", function ($scope, $modal, $filter, $timeout, ng
                 });
     scan.GetScanTotals = function () {
         var matches = _.pluck(scan.Delivery.ActiveKits, "Value");
-        var kitItemsCount = matches? matches[0].length:0;
-        return scan.Delivery.NotScannedItems.length + scan.Delivery.ScannedItems.length + kitItemsCount;
+        var scannedCount = scan.Delivery.ScannedItems? scan.Delivery.ScannedItems.length:0;
+        var notScannedCount = scan.Delivery.NotScannedItems? scan.Delivery.NotScannedItems.length:0;
+        var kitItemsCount = 0;
+        if (matches) {
+            _.each(matches, function(match) {
+                kitItemsCount += match.length;
+            });
+        }
+        return scannedCount +notScannedCount + kitItemsCount;
+    };
+
+    scan.GetCurrentScan = function () {
+        var matches = _.pluck(scan.Delivery.ActiveKits, "Value");
+        var scannedCount = scan.Delivery.ScannedItems? scan.Delivery.ScannedItems.length:0;
+        var kitItemsCount = 0;
+        if (matches) {
+            _.each(matches, function(match) {
+                var activeScan = _.filter(match, function(item) { return item.ScannedBy;});
+                kitItemsCount += activeScan.length;
+            });
+        }
+        return scannedCount + kitItemsCount;
     };
     scan.ScannedSearch = function (filter) {
         scan.TableParams2.filter(filter);
