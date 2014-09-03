@@ -11,6 +11,7 @@ app.controller("ScanController", function ($scope, $modal, $filter, $timeout, ng
     });
     var scan = this;
     scan.LookUpIsInternal = false;
+    scan.VerifyingLineItem = false;
     scan.Username = null;
     scan.ScannedBy = null;
     scan.OrderIdLookUp = null;
@@ -106,6 +107,7 @@ app.controller("ScanController", function ($scope, $modal, $filter, $timeout, ng
     };
     scan.LookUp = function (orderId, isInternal) {
         scan.Delivery = null;
+        scan.ActiveKit = null;
         if (parseInt(orderId) != NaN && parseInt(orderId) > 0) {
 
             scan.IsSearching = true;
@@ -229,11 +231,13 @@ app.controller("ScanController", function ($scope, $modal, $filter, $timeout, ng
     scan.VerifyLineitem = function (serialCode) {
         if (serialCode) {
             scan.SerialScanStatus = null;
+            scan.VerifyingLineItem = true;
 
             var modifiedMac = serialCode.substring(0, serialCode.length - 17);
 
             if (modifiedMac.length != 12) {
                 if (modifiedMac.length != 16) {
+                    scan.VerifyingLineItem = false;
                     scan.SerialScanStatus = { Success: false, Select: true, Message: "You have scanned in a code that is not the correct length!" };
                     return false;
                 }
@@ -242,7 +246,7 @@ app.controller("ScanController", function ($scope, $modal, $filter, $timeout, ng
             var color = serialCode.substring(serialCode.length, serialCode.length - 7).substring(5, 7);
             var matched = null;
             if (scan.ActiveKit != null && scan.ActiveKit.length > 0) {
-                matched = _.where(scan.ActiveKit, { ProductId: productId, Color: color, SerialCode: '' });
+                matched = _.where(scan.ActiveKit, { ProductId: productId, Color: color, ScannedBy: null});
             } else {
                 matched = _.where(scan.Delivery.NotScannedItems, { ProductId: productId, Color: color });
             }
@@ -251,9 +255,11 @@ app.controller("ScanController", function ($scope, $modal, $filter, $timeout, ng
                 //Create active kit table, if item scanned is a kit item
                 if (!matched[0].SmartCodeOnly) {
 
-               
+                    
                     var deliveryItem = { IsInternal: scan.Delivery.IsInternal, SerialCode: serialCode, MacId: modifiedMac, Id: matched[0].Id, ProductGroup: matched[0].ProductGroup };
                     ScanOrderService.SaveDeliveryItem(deliveryItem).then(function (result) {
+                        scan.VerifyingLineItem = false;
+
                         if (!result.data.ErrorMessage) {
                             scan.Delivery.ScannedItems = scan.Delivery.ScannedItems || [];
                             matched[0].SerialCode = serialCode;
@@ -267,6 +273,9 @@ app.controller("ScanController", function ($scope, $modal, $filter, $timeout, ng
                                 matchedKitItems = _.where(scan.Delivery.NotScannedItems, { KitId: matched[0].KitId, KitCounter: matched[0].KitCounter });
                                 _.each(matchedKitItems, function (item) {
                                     scan.Delivery.NotScannedItems.pop(item);
+                                    if (item.SerialCode == undefined) {
+                                        angular.extend(item, { SerialCode: null });
+                                    }
                                     scan.ActiveKit.push(item);
                                 });
                             }
@@ -274,9 +283,8 @@ app.controller("ScanController", function ($scope, $modal, $filter, $timeout, ng
                                 scan.Delivery.NotScannedItems.pop(matched[0]);
                                 scan.Delivery.ScannedItems.push(matched[0]);
                             }
-                            if (scan.ActiveKit && _.filter(scan.ActiveKit, function (kitRow) {
-                                return kitRow.SerialCode != null;
-                            }).length == 0) {
+
+                            if (scan.ActiveKit && _.where(scan.ActiveKit, {SerialCode :null}).length == 0) {
                                 _.each(scan.ActiveKit, function (kitRow) {
                                     scan.Delivery.ScannedItems.push(kitRow);
                                 });
@@ -298,7 +306,11 @@ app.controller("ScanController", function ($scope, $modal, $filter, $timeout, ng
                         }
                     });
                 }
+                scan.VerifyingLineItem = false;
+
             } else {
+                scan.VerifyingLineItem = false;
+
                 if (scan.ActiveKit == null) {
                     scan.SerialScanStatus = { Success: false, Message: "No items found that match that Serial Code. Verify Serial Code and try again", Select: true };
                 } else {

@@ -81,13 +81,19 @@ namespace ApplicationSource.Services
                 if (!kitGroups.ContainsKey(group.Key))
                 {
                     kitGroups.Add(group.Key, kitItems.Map<IEnumerable<SerialNumberItem>, List<DeliveryOrderItemModel>>());
-
                 }
                 else
                 {
                     kitGroups[group.Key].AddRange(kitItems.Map<IEnumerable<SerialNumberItem>, List<DeliveryOrderItemModel>>());                    
                 }
-                kitItems.ToList().ForEach(ki=>items.Remove(ki));
+                if (kitGroups[group.Key].All(i => !string.IsNullOrEmpty(i.ScannedBy)))
+                {
+                    kitGroups.Remove(group.Key);
+                }
+                else
+                {
+                    kitItems.ToList().ForEach(ki => items.Remove(ki));                    
+                }
             });
             deliveryModel.ActiveKits = kitGroups;
         }
