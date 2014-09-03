@@ -46,7 +46,7 @@
                                 </button>
                                 <ul class="dropdown-menu" role="menu">
                                     <li><a style="cursor: pointer" ng-click="scan.ExportCSV()">Export to CSV</a></li>
-                                    <li><a style="cursor: pointer" ng-click="scan.ExportMacId()" ng-disable="scan.Delivery.ScannedItems.length >0 ">Export MacIDs</a></li>
+                                    <li><a style="cursor: pointer" ng-click="scan.ExportMacId()" ng-disabled="scan.Delivery.ScannedItems.length >0 ">Export MacIDs</a></li>
                                 </ul>
                             </div>
                         </div>

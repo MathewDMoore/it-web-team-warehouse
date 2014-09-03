@@ -13,8 +13,7 @@ app.controller("ScanController", function ($scope, $modal, $filter, $timeout, ng
     scan.LookUpIsInternal = false;
     scan.VerifyingLineItem = false;
     scan.Username = null;
-    scan.ScannedBy = null;
-    scan.OrderIdLookUp = null;
+   scan.OrderIdLookUp = null;
     scan.Delivery = null;
     scan.TableParams = null;
     scan.Data = [];
@@ -129,7 +128,7 @@ app.controller("ScanController", function ($scope, $modal, $filter, $timeout, ng
                         angular.extend(item, { IsSelected: false });
                     });
                     _.each(response.data.NotScannedItems, function (item) {
-                        angular.extend(item, { IsSelected: false, SerialCode: "" });
+                        angular.extend(item, { IsSelected: false, SerialCode: "", ScannedBy:null });
                     });
                     angular.extend(scan.Delivery, {
                         DeliveryNumber: response.data.DeliveryNumber,
@@ -141,7 +140,7 @@ app.controller("ScanController", function ($scope, $modal, $filter, $timeout, ng
                         ScannedItems: response.data.ScannedItems || [{}],
                         IsVerified: response.data.IsVerified,
                         IsInternal: response.data.IsInternal,
-                        ActiveKits: response.data.ActiveKits
+                        ActiveKits: response.data.ActiveKits,
                     });
                     var activeKit = _.where(response.data.ActiveKits, { Key: CURRENTUSER });
                     if (activeKit && activeKit.length > 0) {
@@ -277,6 +276,16 @@ app.controller("ScanController", function ($scope, $modal, $filter, $timeout, ng
                                         angular.extend(item, { SerialCode: null });
                                     }
                                     scan.ActiveKit.push(item);
+                                    if (!scan.Delivery.ActiveKits) {
+                                        scan.Delivery.ActiveKits = [];
+                                    }
+                                    var usersKit = _.where(scan.Delivery.ActiveKits, { Key: CURRENTUSER });
+                                    if (!usersKit||usersKit.length==0) {
+                                        scan.Delivery.ActiveKits.push([{ Key: CURRENTUSER, Value: [] }]);
+                                        usersKit = _.where(scan.Delivery.ActiveKits, { Key: CURRENTUSER });
+                                    }
+
+                                    usersKit[0].Value.push(item);
                                 });
                             }
                             if (scan.ActiveKit == null) {
@@ -290,13 +299,14 @@ app.controller("ScanController", function ($scope, $modal, $filter, $timeout, ng
                                 });
                                 scan.ActiveKit = null;
                             }
-
-                            angular.extend(matched[0], { IsSelected: false });
-                            scan.SerialCodeLookUp = null;
+                            matched[0].IsSelected = false;
+                           scan.SerialCodeLookUp = null;
                             scan.Delivery.$save();
-                            scan.TableParams.reload();
-                            scan.TableParams2.reload();
-                            scan.TableParams3.reload();
+                            $timeout(function () {
+                                scan.TableParams.reload();
+                                scan.TableParams2.reload();
+                                scan.TableParams3.reload();
+                            }, 500);
                             scan.SerialScanStatus = { Success: true, Message: "Serial Successfully Updated", Select: false };
 
 
@@ -334,12 +344,16 @@ app.controller("ScanController", function ($scope, $modal, $filter, $timeout, ng
                     _.each(selected, function (item) {
                         // delete item.IsSelected;
                         item.SerialCode = null;
+                        item.ScannedBy = null;
                         scan.Delivery.ScannedItems.pop(item);
                         scan.Delivery.NotScannedItems.push(item);
                     });
                     scan.Delivery.$save();
-                    scan.TableParams.reload();
-                    scan.TableParams2.reload();
+                    $timeout(function () {
+                        scan.TableParams.reload();
+                        scan.TableParams2.reload();
+//                        scan.TableParams3.reload();
+                    }, 500);
                 }
             });
         }
