@@ -10,10 +10,48 @@ app.controller("ScanController", function ($scope, $modal, $filter, $timeout, ng
         }
     });
     var scan = this;
+
+    function _cleanUpKit() {
+        //Remove Active Kit if all scanned items are complete
+        if (scan.ActiveKit && _.where(scan.ActiveKit, { SerialCode: null, SerialCode: '' }).length == 0) {
+            _.each(scan.ActiveKit, function (kitRow) {
+                scan.Delivery.ScannedItems.push(kitRow);
+            });
+            scan.ActiveKit = null;
+
+            scan.Delivery.ActiveKits.pop(_.where(scan.Delivery.ActiveKits, { Key: CURRENTUSER })[0]);
+        }
+    }
+
+    function _processKit(scanItem) {
+        //Find Kit Items for SerialCode
+        var matchedKitItems = _.where(scan.Delivery.NotScannedItems, { KitId: scanItem.KitId, KitCounter: scanItem.KitCounter });
+        if (matchedKitItems.length > 0) {
+            //Initialize ActiveKit
+            if (scan.ActiveKit == null && scanItem.KitId > 0) {
+                scan.ActiveKit = [];
+                var newKit = { Key: CURRENTUSER, Value: [] };
+                _.each(matchedKitItems, function (item) {
+                    scan.Delivery.NotScannedItems.pop(item);
+                    if (item.SerialCode == undefined) {
+                        angular.extend(item, { SerialCode: null });
+                    }
+                    scan.ActiveKit.push(item);
+                });
+                if (!scan.Delivery.ActiveKits) {
+                    newKit.Value = scan.ActiveKit;
+                    scan.Delivery.ActiveKits = [];
+                    scan.Delivery.ActiveKits.push(newKit);
+                }
+
+            }
+        }
+    }
+
     scan.LookUpIsInternal = false;
     scan.VerifyingLineItem = false;
     scan.Username = null;
-   scan.OrderIdLookUp = null;
+    scan.OrderIdLookUp = null;
     scan.Delivery = null;
     scan.TableParams = null;
     scan.Data = [];
@@ -72,24 +110,24 @@ app.controller("ScanController", function ($scope, $modal, $filter, $timeout, ng
                 });
     scan.GetScanTotals = function () {
         var matches = _.pluck(scan.Delivery.ActiveKits, "Value");
-        var scannedCount = scan.Delivery.ScannedItems? scan.Delivery.ScannedItems.length:0;
-        var notScannedCount = scan.Delivery.NotScannedItems? scan.Delivery.NotScannedItems.length:0;
+        var scannedCount = scan.Delivery.ScannedItems ? scan.Delivery.ScannedItems.length : 0;
+        var notScannedCount = scan.Delivery.NotScannedItems ? scan.Delivery.NotScannedItems.length : 0;
         var kitItemsCount = 0;
-        if (matches) {
-            _.each(matches, function(match) {
+        if (matches && matches.length > 0) {
+            _.each(matches, function (match) {
                 kitItemsCount += match.length;
             });
         }
-        return scannedCount +notScannedCount + kitItemsCount;
+        return scannedCount + notScannedCount + kitItemsCount;
     };
 
     scan.GetCurrentScan = function () {
         var matches = _.pluck(scan.Delivery.ActiveKits, "Value");
-        var scannedCount = scan.Delivery.ScannedItems? scan.Delivery.ScannedItems.length:0;
+        var scannedCount = scan.Delivery.ScannedItems ? scan.Delivery.ScannedItems.length : 0;
         var kitItemsCount = 0;
-        if (matches) {
-            _.each(matches, function(match) {
-                var activeScan = _.filter(match, function(item) { return item.ScannedBy;});
+        if (matches && matches.length > 0) {
+            _.each(matches, function (match) {
+                var activeScan = _.filter(match, function (item) { return item.ScannedBy; });
                 kitItemsCount += activeScan.length;
             });
         }
@@ -128,7 +166,7 @@ app.controller("ScanController", function ($scope, $modal, $filter, $timeout, ng
                         angular.extend(item, { IsSelected: false });
                     });
                     _.each(response.data.NotScannedItems, function (item) {
-                        angular.extend(item, { IsSelected: false, SerialCode: "", ScannedBy:null });
+                        angular.extend(item, { IsSelected: false, SerialCode: "", ScannedBy: null });
                     });
                     angular.extend(scan.Delivery, {
                         DeliveryNumber: response.data.DeliveryNumber,
@@ -146,7 +184,7 @@ app.controller("ScanController", function ($scope, $modal, $filter, $timeout, ng
                     if (activeKit && activeKit.length > 0) {
                         scan.ActiveKit = activeKit[0].Value;
                     }
-                    
+
                     scan.Delivery.$save();
                     $timeout(function () {
                         scan.TableParams.reload();
@@ -245,16 +283,14 @@ app.controller("ScanController", function ($scope, $modal, $filter, $timeout, ng
             var color = serialCode.substring(serialCode.length, serialCode.length - 7).substring(5, 7);
             var matched = null;
             if (scan.ActiveKit != null && scan.ActiveKit.length > 0) {
-                matched = _.where(scan.ActiveKit, { ProductId: productId, Color: color, ScannedBy: null});
+                matched = _.filter(scan.ActiveKit, function(match) { return match.ProductId == productId && match.Color == color && (!match.SerialCode || !match.ScannedBy); });
             } else {
                 matched = _.where(scan.Delivery.NotScannedItems, { ProductId: productId, Color: color });
             }
             if (matched.length > 0) {
-                
-                //Create active kit table, if item scanned is a kit item
+
                 if (!matched[0].SmartCodeOnly) {
 
-                    
                     var deliveryItem = { IsInternal: scan.Delivery.IsInternal, SerialCode: serialCode, MacId: modifiedMac, Id: matched[0].Id, ProductGroup: matched[0].ProductGroup };
                     ScanOrderService.SaveDeliveryItem(deliveryItem).then(function (result) {
                         scan.VerifyingLineItem = false;
@@ -263,44 +299,17 @@ app.controller("ScanController", function ($scope, $modal, $filter, $timeout, ng
                             scan.Delivery.ScannedItems = scan.Delivery.ScannedItems || [];
                             matched[0].SerialCode = serialCode;
                             matched[0].ScannedBy = CURRENTUSER;
-                            var matchedKitItems = null;
-                            if (scan.ActiveKit==null && matched[0].KitId > 0) {
-                                scan.ActiveKit = [];
-                            }
 
-                            if (scan.ActiveKit) {
-                                matchedKitItems = _.where(scan.Delivery.NotScannedItems, { KitId: matched[0].KitId, KitCounter: matched[0].KitCounter });
-                                _.each(matchedKitItems, function (item) {
-                                    scan.Delivery.NotScannedItems.pop(item);
-                                    if (item.SerialCode == undefined) {
-                                        angular.extend(item, { SerialCode: null });
-                                    }
-                                    scan.ActiveKit.push(item);
-                                    if (!scan.Delivery.ActiveKits) {
-                                        scan.Delivery.ActiveKits = [];
-                                    }
-                                    var usersKit = _.where(scan.Delivery.ActiveKits, { Key: CURRENTUSER });
-                                    if (!usersKit||usersKit.length==0) {
-                                        scan.Delivery.ActiveKits.push([{ Key: CURRENTUSER, Value: [] }]);
-                                        usersKit = _.where(scan.Delivery.ActiveKits, { Key: CURRENTUSER });
-                                    }
+                            _processKit(matched[0]);
 
-                                    usersKit[0].Value.push(item);
-                                });
-                            }
+                            //Remove and Add non Kit Item to correct tables
                             if (scan.ActiveKit == null) {
                                 scan.Delivery.NotScannedItems.pop(matched[0]);
                                 scan.Delivery.ScannedItems.push(matched[0]);
                             }
-
-                            if (scan.ActiveKit && _.where(scan.ActiveKit, {SerialCode :null}).length == 0) {
-                                _.each(scan.ActiveKit, function (kitRow) {
-                                    scan.Delivery.ScannedItems.push(kitRow);
-                                });
-                                scan.ActiveKit = null;
-                            }
+                            _cleanUpKit();
                             matched[0].IsSelected = false;
-                           scan.SerialCodeLookUp = null;
+                            scan.SerialCodeLookUp = null;
                             scan.Delivery.$save();
                             $timeout(function () {
                                 scan.TableParams.reload();
@@ -352,7 +361,7 @@ app.controller("ScanController", function ($scope, $modal, $filter, $timeout, ng
                     $timeout(function () {
                         scan.TableParams.reload();
                         scan.TableParams2.reload();
-//                        scan.TableParams3.reload();
+                        //                        scan.TableParams3.reload();
                     }, 500);
                 }
             });
