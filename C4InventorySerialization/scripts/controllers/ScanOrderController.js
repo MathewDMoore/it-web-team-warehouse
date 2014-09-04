@@ -48,8 +48,8 @@ app.controller("ScanController", function ($scope, $modal, $filter, $timeout, ng
         }
     }
 
+    scan.SavingItem = false;
     scan.LookUpIsInternal = false;
-    scan.VerifyingLineItem = false;
     scan.Username = null;
     scan.OrderIdLookUp = null;
     scan.Delivery = null;
@@ -268,13 +268,13 @@ app.controller("ScanController", function ($scope, $modal, $filter, $timeout, ng
     scan.VerifyLineitem = function (serialCode) {
         if (serialCode) {
             scan.SerialScanStatus = null;
-            scan.VerifyingLineItem = true;
+            scan.SavingItem = true;
 
             var modifiedMac = serialCode.substring(0, serialCode.length - 17);
 
             if (modifiedMac.length != 12) {
                 if (modifiedMac.length != 16) {
-                    scan.VerifyingLineItem = false;
+                    scan.SavingItem = false;
                     scan.SerialScanStatus = { Success: false, Select: true, Message: "You have scanned in a code that is not the correct length!" };
                     return false;
                 }
@@ -293,7 +293,7 @@ app.controller("ScanController", function ($scope, $modal, $filter, $timeout, ng
 
                     var deliveryItem = { IsInternal: scan.Delivery.IsInternal, SerialCode: serialCode, MacId: modifiedMac, Id: matched[0].Id, ProductGroup: matched[0].ProductGroup };
                     ScanOrderService.SaveDeliveryItem(deliveryItem).then(function (result) {
-                        scan.VerifyingLineItem = false;
+                        scan.SavingItem = false;
 
                         if (!result.data.ErrorMessage) {
                             scan.Delivery.ScannedItems = scan.Delivery.ScannedItems || [];
@@ -325,10 +325,10 @@ app.controller("ScanController", function ($scope, $modal, $filter, $timeout, ng
                         }
                     });
                 }
-                scan.VerifyingLineItem = false;
+                scan.SavingItem = false;
 
             } else {
-                scan.VerifyingLineItem = false;
+                scan.SavingItem = false;
 
                 if (scan.ActiveKit == null) {
                     scan.SerialScanStatus = { Success: false, Message: "No items found that match that Serial Code. Verify Serial Code and try again", Select: true };
