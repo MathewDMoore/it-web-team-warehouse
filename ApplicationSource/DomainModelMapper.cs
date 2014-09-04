@@ -9,7 +9,8 @@ namespace ApplicationSource
         public static void Initialize()
         {
             Mapper.CreateMap<Delivery, OrderDeliveryModel>();
-            Mapper.CreateMap<SerialNumberItem, DeliveryOrderItemModel>();
+            Mapper.CreateMap<SerialNumberItem, DeliveryOrderItemModel>()
+                .ForMember(d => d.Verified, s => s.MapFrom(v => v.IsVerified));
 
         }
 

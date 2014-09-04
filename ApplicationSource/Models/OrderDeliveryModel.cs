@@ -24,7 +24,7 @@ namespace ApplicationSource.Models
         public Dictionary<string, List<DeliveryOrderItemModel>> ActiveKits { get; set; }
         public bool IsVerified
         {
-            get { return ScannedItems.Any(x => !x.Verified  || !string.IsNullOrEmpty(x.ReturnedByUser)) && (NotScannedItems.Count == 0 ||  NotScannedItems.All(y => y.NoSerialRequired || !string.IsNullOrEmpty(y.ReturnedByUser))) ; }
+            get { return (NotScannedItems.Any(x => x.Verified) || ScannedItems.Any(x => x.Verified)); }
             set { }
         }
     }

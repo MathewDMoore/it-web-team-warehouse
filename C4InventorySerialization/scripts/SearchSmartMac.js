@@ -18,7 +18,7 @@
         var data = $.toJSON(self.PrepareData());
 
         $.ajax({
-            url: "/ship/services/MacIdSearchService.svc/LocateMacIds",
+            url: "/services/MacIdSearchService.svc/LocateMacIds",
             type: "POST",
             data: data,
             dataType: "html",

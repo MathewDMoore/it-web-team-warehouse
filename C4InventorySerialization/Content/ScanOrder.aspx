@@ -52,7 +52,7 @@
                         </div>
                     </div>
                     <div class="panel-body">
-                        <div style="width: 200px; float: right; margin-bottom: 0px; text-align: center;" class="alert alert-success" ng-show="scan.Delivery.GetDeliveryStatus()">Scan Complete <i class="glyphicon glyphicon-check"></i></div>
+                        <div style="width: 200px; float: right; margin-bottom: 0px; text-align: center;" class="alert alert-success" ng-show="scan.IsScanComplete()">Scan Complete <i class="glyphicon glyphicon-check"></i></div>
                         <h3 style="margin-top: 0px;">Dealer: {{scan.Delivery.DealerName}}/<small>{{scan.Delivery.DealerId}}</small></h3>
                         <div ng-if="scan.Delivery.IsInternal" class="verified text-danger" style="float: right;">[ Internal Order ]</div>
                         <label>Address: {{scan.Delivery.Address}}</label><br />
@@ -60,7 +60,7 @@
                         <div style="float: right;">
                             <button class="btn btn-warning" id="returnDelivery" ng-click="scan.ReturnDelivery(scan.Delivery)">Return Entire Delivery</button>
                             <button class="btn btn-danger" id="clearDelivery" ng-click="scan.ClearDelivery(scan.Delivery.DeliveryNumber)">Clear Delivery</button>
-                            <button class="btn btn-success" id="VerifiedDelivery" ng-disabled="scan.GetDeliveryStatus()" ng-click="scan.VerifyDelivery(scan.Delivery.DeliveryNumber)">Verify Delivery</button>
+                            <button class="btn btn-success" id="VerifiedDelivery" ng-disabled="scan.Delivery.IsVerified || !scan.IsScanComplete()" ng-click="scan.VerifyDelivery(scan.Delivery.DeliveryNumber)">Verify Delivery</button>
                         </div>
                     </div>
                 </div>

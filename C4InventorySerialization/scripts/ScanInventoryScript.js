@@ -67,7 +67,7 @@ function validate(record) {
         var preparedData = $.toJSON(smartMacData);
         var isUniqueMac = false;
         $.ajax({
-            url: "/ship/services/VerifyUniqueMacService.svc/VerifyUniqueMac",
+            url: "/services/VerifyUniqueMacService.svc/VerifyUniqueMac",
             type: "POST",
             data: preparedData,
             dataType: "html",
@@ -98,7 +98,7 @@ function ClearIRDelivery(docNumber) {
         var deliveryData = $.toJSON(docNumber);
 
         $.ajax({
-            url: "/ship/services/PartReturnService.svc/ClearIRDelivery",
+            url: "/services/PartReturnService.svc/ClearIRDelivery",
             type: "POST",
             data: deliveryData,
             dataType: "html",

@@ -24,7 +24,7 @@ app.controller("ReturnsController", function ($scope, $http) {
         };
 
         $http({
-            url: "/ship/services/PartReturnService.svc/ReturnParts",
+            url: "/services/PartReturnService.svc/ReturnParts",
             method: "POST",
             data: data
         }).success(

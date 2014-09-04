@@ -29,7 +29,7 @@
 			<result property="NoSerialization" column="NOSERIALIZATION"/>
 			<result property="SmartCodeOnly" column="SMARTCODEONLY"/>
 			<result property="SerialCode" column="SERIALCODE"/>
-			<result property="Verified" column="VERIFIED"/>
+			<result property="IsVerified" column="VERIFIED"/>
 			<result property="Username" column="USERNAME"/>
 			<result property="MacId" column="MACID"/>
 			<result property="RealItemCode" column="REALITEMCODE"/>
@@ -64,6 +64,7 @@
 			<result property="KitId" column="KitId" />
 			<result property="KitCounter" column="KitCounter" />
 			<result property="ScannedBy" column="ScannedBy" />
+			<result property="IsVerified" column="VERIFIED" />
 		</resultMap>
 		<resultMap id="DeliveryOrderRM" class="Delivery">
 			<result column="DealerName" property="DealerName"/>

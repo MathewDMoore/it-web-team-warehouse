@@ -43,7 +43,7 @@ function SubmitLogin() {
     var preparedData = $.toJSON(loginData);
     $.ajax({
         type: "POST",
-        url: "/ship/services/UserAuthenticationService.svc/UserAuthenticationLogin",
+        url: "/services/UserAuthenticationService.svc/UserAuthenticationLogin",
         data: preparedData,
         contentType: "application/json; charset=utf-8",
         dataType: "json",

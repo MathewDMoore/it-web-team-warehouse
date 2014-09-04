@@ -50,7 +50,7 @@ function validate(record, $http) {
         var preparedData = $.toJSON(smartMacData);
         var isUniqueMac = false;
         $.ajax({
-            url: "/ship/services/VerifyUniqueMacService.svc/VerifyUniqueMac",
+            url: "/services/VerifyUniqueMacService.svc/VerifyUniqueMac",
             type: "POST",
             data: preparedData,
             dataType: "html",
@@ -99,7 +99,7 @@ function ClearDelivery(docNumber) {
         var deliveryData = $.toJSON(docNumber);
 
         $.ajax({
-            url: "/ship/services/PartReturnService.svc/ClearDelivery",
+            url: "/services/PartReturnService.svc/ClearDelivery",
             type: "POST",
             data: deliveryData,
             dataType: "html",
@@ -182,7 +182,7 @@ function onDoubleClick() {
     if (editingRs != null) {
         var nextRs = parseInt(editingRs) + 1 || 0;
         document.getElementById('save_rownum').value = nextRs;
-        //  grid1.updateRecord(editingRs);
+        grid1.updateRecord(editingRs);
         //call validate
     } else {
         dblClickRs = null;

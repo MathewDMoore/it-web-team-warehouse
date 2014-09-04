@@ -21,7 +21,7 @@ namespace Domain
         public bool NoSerialization { get; set; }
         public bool SmartCodeOnly { get; set; }
         public string SerialCode { get; set; }
-        public bool Verified { get; set; }
+        public bool IsVerified { get; set; }
         public string Username { get; set; }
         public string MacId { get; set; }
         public string RealItemCode { get; set; }

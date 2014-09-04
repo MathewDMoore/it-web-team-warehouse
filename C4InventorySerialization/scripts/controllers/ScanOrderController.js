@@ -283,7 +283,7 @@ app.controller("ScanController", function ($scope, $modal, $filter, $timeout, ng
             var color = serialCode.substring(serialCode.length, serialCode.length - 7).substring(5, 7);
             var matched = null;
             if (scan.ActiveKit != null && scan.ActiveKit.length > 0) {
-                matched = _.filter(scan.ActiveKit, function(match) { return match.ProductId == productId && match.Color == color && (!match.SerialCode || !match.ScannedBy); });
+                matched = _.filter(scan.ActiveKit, function (match) { return match.ProductId == productId && match.Color == color && (!match.SerialCode || !match.ScannedBy); });
             } else {
                 matched = _.where(scan.Delivery.NotScannedItems, { ProductId: productId, Color: color });
             }
@@ -367,31 +367,28 @@ app.controller("ScanController", function ($scope, $modal, $filter, $timeout, ng
             });
         }
     };
-    scan.VerifyDelivery = function (orderID) {
-        //Verify all items are scanned
-        if (scan.Delivery.IsVerified) {
-            var modalInstance = $modal.open({
-                templateUrl: '/scripts/templates/VerifyDeliveryModal.html',
-                controller: VerifyModalCtrl,
-                resolve: {
-                    docNum: function () {
-                        return docNumber;
-                    }
+    scan.VerifyDelivery = function (docNum) {
+        var modalInstance = $modal.open({
+            templateUrl: '/scripts/templates/VerifyDeliveryModal.html',
+            controller: VerifyModalCtrl,
+            resolve: {
+                docNum: function () {
+                    return docNum;
+                }
+            }
+        });
+        modalInstance.result.then(function () {
+            ScanOrderService.VerifyDelivery(docNum).then(function (result) {
+                if (result.data) {
+                    scan.Delivery = null;
+                    scan.DeliveryActionMessage = "Successfully verified delivery" + docNum;
+                } else {
+                    alert("There was an error verifying this delivery.");
                 }
             });
-            modalInstance.result.then(function () {
-                ScanOrderService.VerifyDelivery(orderID).then(function (result) {
-                    if (result.data) {
-                        scan.Delivery = null;
-                        scan.DeliveryActionMessage = "Successfully cleared delivery" + docNumber;
-                    } else {
-                        alert("There was an error clearing this delivery.");
-                    }
-                });
-            }, function () {
-                //$log.info('Modal dismissed at: ' + new Date());
-            });
-        }
+        }, function () {
+            //$log.info('Modal dismissed at: ' + new Date());
+        });
     };
     scan.ExportCSV = function () {
         var scannedItems = [];
@@ -443,7 +440,25 @@ app.controller("ScanController", function ($scope, $modal, $filter, $timeout, ng
 
     };
     scan.GetDeliveryStatus = function () {
-        return scan.Delivery.IsVerified ? "Delivery Verified" : "Delivery Not Verified";
+        // See if the order is ready to be validated.
+
+        return scan.Delivery.IsVerified ? "Delivery Verified!" : "Delivery Not Verified!";
+    }
+    scan.IsScanComplete = function () {
+
+        var notScannedValid = _.where(scan.Delivery.NotScannedItems, function (item) {
+            return item.NoSerialRequired || !item.ReturnedByUser;
+        });
+
+        var activeKitValid = (!scan.Delivery.ActiveKits || scan.Delivery.ActiveKits.length == 0);
+        return notScannedValid && activeKitValid;
+    }
+    scan.GetDeliveryStatusText = function () {
+        var successful = scan.GetDeliveryStatus();
+        if (successful) {
+            return "Delivery Verified!";
+        }
+        return "Delivery Not Verified!";
     }
     scan.EnablVerification = function () {
         var items1 = _.filter(scan.Delivery.NotScannedItems, function (item) {
