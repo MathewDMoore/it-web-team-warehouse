@@ -266,7 +266,7 @@ app.controller("ScanController", function ($scope, $modal, $filter, $timeout, ng
 
     };
     scan.VerifyLineitem = function (serialCode) {
-        if (serialCode) {
+        if (serialCode && (serialCode.length == 29|| serialCode.length==33)) {
             scan.SerialScanStatus = null;
             scan.SavingItem = true;
 
@@ -316,7 +316,7 @@ app.controller("ScanController", function ($scope, $modal, $filter, $timeout, ng
                                 scan.TableParams2.reload();
                                 scan.TableParams3.reload();
                             }, 500);
-                            scan.SerialScanStatus = { Success: true, Message: "Serial Successfully Updated", Select: false };
+                            scan.SerialScanStatus = { Success: true, Message: "Serial Successfully Updated", Select: true };
 
 
                         } else {
