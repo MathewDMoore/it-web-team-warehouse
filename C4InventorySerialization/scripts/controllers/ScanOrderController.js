@@ -10,7 +10,21 @@ app.controller("ScanController", function ($scope, $modal, $filter, $timeout, ng
         }
     });
     var scan = this;
-
+    $scope.$watch("scan.Delivery.ScannedItems", function (newValue, oldValue) {
+        if (newValue != oldValue) {
+            scan.TableParams2.reload();
+        }
+    });
+    $scope.$watch("scan.Delivery.NotScannedItems", function (newValue, oldValue) {
+        if (newValue != oldValue) {
+            scan.TableParams.reload();
+        }
+    });
+    $scope.$watch("scan.Delivery.Kits", function(newValue, oldValue) {
+        if (newValue != oldValue) {
+            scan.TableParams3.reload();
+        }
+    });
     function _cleanUpKit() {
         //Remove Active Kit if all scanned items are complete
         if (scan.ActiveKit && _.where(scan.ActiveKit, { SerialCode: null, SerialCode: '' }).length == 0) {
@@ -186,11 +200,11 @@ app.controller("ScanController", function ($scope, $modal, $filter, $timeout, ng
                     }
 
                     scan.Delivery.$save();
-                    $timeout(function () {
-                        scan.TableParams.reload();
-                        scan.TableParams2.reload();
-                        scan.TableParams3.reload();
-                    }, 500);
+//                    $timeout(function () {
+//                        scan.TableParams.reload();
+//                        scan.TableParams2.reload();
+//                        scan.TableParams3.reload();
+//                    }, 500);
                     //scan.Delivery.$watch(function () {
 
                     //});
@@ -266,7 +280,7 @@ app.controller("ScanController", function ($scope, $modal, $filter, $timeout, ng
 
     };
     scan.VerifyLineitem = function (serialCode) {
-        if (serialCode && (serialCode.length == 29|| serialCode.length==33)) {
+        if (serialCode && (serialCode.length == 29 || serialCode.length == 33)) {
             scan.SerialScanStatus = null;
             scan.SavingItem = true;
 
@@ -311,11 +325,11 @@ app.controller("ScanController", function ($scope, $modal, $filter, $timeout, ng
                             matched[0].IsSelected = false;
                             scan.SerialCodeLookUp = null;
                             scan.Delivery.$save();
-                            $timeout(function () {
-                                scan.TableParams.reload();
-                                scan.TableParams2.reload();
-                                scan.TableParams3.reload();
-                            }, 500);
+//                            $timeout(function () {
+//                                scan.TableParams.reload();
+//                                scan.TableParams2.reload();
+//                                scan.TableParams3.reload();
+//                            }, 500);
                             scan.SerialScanStatus = { Success: true, Message: "Serial Successfully Updated", Select: true };
 
 
@@ -358,11 +372,11 @@ app.controller("ScanController", function ($scope, $modal, $filter, $timeout, ng
                         scan.Delivery.NotScannedItems.push(item);
                     });
                     scan.Delivery.$save();
-                    $timeout(function () {
-                        scan.TableParams.reload();
-                        scan.TableParams2.reload();
-                        //                        scan.TableParams3.reload();
-                    }, 500);
+//                    $timeout(function () {
+//                        scan.TableParams.reload();
+//                        scan.TableParams2.reload();
+//                        //                        scan.TableParams3.reload();
+//                    }, 500);
                 }
             });
         }
