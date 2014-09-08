@@ -145,7 +145,7 @@ app.controller("ScanController", function ($scope, $modal, $filter, $timeout, ng
     scan.LookUp = function (orderId, isInternal) {
         scan.Delivery = null;
         scan.ActiveKit = null;
-        if (parseInt(orderId) != NaN && parseInt(orderId) > 0) {
+        if (!isNaN(orderId) && parseInt(orderId) > 0) {
 
             scan.IsSearching = true;
             scan.DeliveryActionMessage = null;
