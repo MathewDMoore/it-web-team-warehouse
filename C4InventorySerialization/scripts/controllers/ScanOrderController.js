@@ -204,8 +204,8 @@ app.controller("ScanController", function ($scope, $modal, $filter, $timeout, ng
             ScanOrderService.LookUpByMacId(orderId).then(function (result) {
                 scan.IsSearching = false;
 
-                if (result.data > 0) {
-                    scan.LookUp(result.data);
+                if (result.data.DeliveryNumber > 0) {
+                    scan.LookUp(result.data.DeliveryNumber);
                 } else {
                     scan.DeliveryActionMessage = "Delivery Not Found";
                 }
