@@ -300,6 +300,8 @@ app.controller("ScanController", function ($scope, $modal, $filter, $timeout, ng
                 matched = _.filter(scan.ActiveKit, function (match) { return match.ProductId == productId && match.Color == color && (!match.SerialCode || !match.ScannedBy); });
             } else {
                 matched = _.where(scan.Delivery.NotScannedItems, { ProductId: productId, Color: color });
+                scan.Delivery.NotScanned.pop(matched[0]);
+                scan.Delivery.$save();
             }
             if (matched.length > 0) {
 
@@ -317,8 +319,7 @@ app.controller("ScanController", function ($scope, $modal, $filter, $timeout, ng
                             _processKit(matched[0]);
 
                             //Remove and Add non Kit Item to correct tables
-                            if (scan.ActiveKit == null) {
-                                scan.Delivery.NotScannedItems.pop(matched[0]);
+                            if (scan.ActiveKit == null) {                              
                                 scan.Delivery.ScannedItems.push(matched[0]);
                             }
                             _cleanUpKit();
@@ -335,7 +336,8 @@ app.controller("ScanController", function ($scope, $modal, $filter, $timeout, ng
 
                         } else {
                             scan.SerialScanStatus = { Success: false, Message: result.data.ErrorMessage + result.data.ErrorDeliveryNumber, Select: true };
-
+                            scan.Delivery.NotScanned.push(matched[0]);
+                            scan.Delivery.$save();
                         }
                     });
                 }
