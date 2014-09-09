@@ -241,7 +241,7 @@ app.controller("ScanController", function ($scope, $modal, $filter, $timeout, ng
 
         modalInstance.result.then(function () {
             ScanOrderService.ClearDelivery({ DeliveryNumber: docNumber, IsInternal: scan.Delivery.IsInternal }).then(function (result) {
-                if (result.data) {
+                if (result.data ==="true") {
                     scan.Delivery = null;
                     scan.DeliveryActionMessage = "Successfully cleared delivery " + docNumber;
                 } else {
