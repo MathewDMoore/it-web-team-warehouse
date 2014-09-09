@@ -300,8 +300,10 @@ app.controller("ScanController", function ($scope, $modal, $filter, $timeout, ng
                 matched = _.filter(scan.ActiveKit, function (match) { return match.ProductId == productId && match.Color == color && (!match.SerialCode || !match.ScannedBy); });
             } else {
                 matched = _.where(scan.Delivery.NotScannedItems, { ProductId: productId, Color: color });
-                scan.Delivery.NotScanned.pop(matched[0]);
-                scan.Delivery.$save();
+                if(matched.length==0){
+					scan.Delivery.NotScanned.pop(matched[0]);
+					scan.Delivery.$save();
+				}
             }
             if (matched.length > 0) {
 
