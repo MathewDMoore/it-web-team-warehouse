@@ -89,6 +89,7 @@
 		<parameterMap id="ClearDeliveryOrderPM" class="DeliveryOrderQuery">
 			<parameter property="Username" column="USERNAME"/>
 			<parameter property="DocNum" column="DELIVERYNUMBER"/>
+			<parameter property="IsInternal" column="ISINTERNAL"/>
 		</parameterMap>
 		<parameterMap id="ReturnDeliveryOrderPM" class="DeliveryOrderQuery">
 			<parameter property="Username" column="USERNAME"/>
