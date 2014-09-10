@@ -301,7 +301,7 @@ app.controller("ScanController", function ($scope, $modal, $filter, $timeout, ng
             } else {
                 matched = _.where(scan.Delivery.NotScannedItems, { ProductId: productId, Color: color });
                 if(matched.length==0){
-					scan.Delivery.NotScanned.pop(matched[0]);
+					scan.Delivery.NotScannedItems.pop(matched[0]);
 					scan.Delivery.$save();
 				}
             }
@@ -466,10 +466,10 @@ app.controller("ScanController", function ($scope, $modal, $filter, $timeout, ng
 
         var notScannedValid = _.where(scan.Delivery.NotScannedItems, function (item) {
             return item.NoSerialRequired || !item.ReturnedByUser;
-        });
+        }).length>0;
 
-        var activeKitValid = (!scan.Delivery.ActiveKits || scan.Delivery.ActiveKits.length == 0);
-        return notScannedValid && activeKitValid;
+        var noActiveKits = (scan.Delivery.ActiveKits && scan.Delivery.ActiveKits.length == 0);
+        return !notScannedValid && noActiveKits;
     }
     scan.GetDeliveryStatusText = function () {
         var successful = scan.GetDeliveryStatus();
