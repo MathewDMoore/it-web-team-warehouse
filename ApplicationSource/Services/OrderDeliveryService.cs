@@ -141,27 +141,31 @@ namespace ApplicationSource.Services
                 {
                     if (parsedMacId.Length == 12 || parsedMacId.Length == 16)
                     {
-                        var serialItem = _repo.SelectSmartMac(new SerialNumberItemQuery
+
+                        SerialNumberItem serialItem = null;
+
+                        if (model.IsUnique)
+                        {
+                             serialItem = _repo.SelectSmartMac(new SerialNumberItemQuery
                             {
                                 MacId = parsedMacId,
                                 ProductGroup = productGroup
                             });
-                        if (serialItem != null)
-                        {
-                            model.IsUnique = false;
-                            model.ErrorMessage = "This item has been scanned on another delivery order - #";
-                            model.ErrorDeliveryNumber = serialItem.DocNum;
 
-                        }
-                        else
-                        {
-                            model.IsUnique = true;
-                            if (!UpdateRecord(model.SerialCode, parsedMacId, model.Id, model.IsInternal))
+                            if (serialItem != null)
                             {
-                                model.ErrorMessage =
-                                    "There was an error saving this item into the database. Please review the SerialCode or contact IT support.";
-
+                                model.ErrorMessage = "This item has been scanned on another delivery order - #";
+                                model.ErrorDeliveryNumber = serialItem.DocNum;
+                                return model;
                             }
+                            
+                        }
+
+                        if (!UpdateRecord(model.SerialCode, parsedMacId, model.Id, model.IsInternal))
+                        {
+                            model.ErrorMessage =
+                                "There was an error saving this item into the database. Please review the SerialCode or contact IT support.";
+
                         }
                     }
 

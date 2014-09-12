@@ -20,7 +20,7 @@ app.controller("ScanController", function ($scope, $modal, $filter, $timeout, ng
             scan.TableParams.reload();
         }
     });
-    $scope.$watch("scan.Delivery.Kits", function(newValue, oldValue) {
+    $scope.$watch("scan.Delivery.Kits", function (newValue, oldValue) {
         if (newValue != oldValue) {
             scan.TableParams3.reload();
         }
@@ -33,7 +33,7 @@ app.controller("ScanController", function ($scope, $modal, $filter, $timeout, ng
             });
             scan.ActiveKit = null;
 
-            scan.Delivery.ActiveKits.pop(_.where(scan.Delivery.ActiveKits, { Key: CURRENTUSER })[0]);
+            scan.Delivery.ActiveKits.remove(_.where(scan.Delivery.ActiveKits, { Key: CURRENTUSER })[0]);
         }
     }
 
@@ -46,7 +46,7 @@ app.controller("ScanController", function ($scope, $modal, $filter, $timeout, ng
                 scan.ActiveKit = [];
                 var newKit = { Key: CURRENTUSER, Value: [] };
                 _.each(matchedKitItems, function (item) {
-                    scan.Delivery.NotScannedItems.pop(item);
+                    scan.Delivery.NotScannedItems.remove(item);
                     if (item.SerialCode == undefined) {
                         angular.extend(item, { SerialCode: null });
                     }
@@ -200,11 +200,11 @@ app.controller("ScanController", function ($scope, $modal, $filter, $timeout, ng
                     }
 
                     scan.Delivery.$save();
-//                    $timeout(function () {
-//                        scan.TableParams.reload();
-//                        scan.TableParams2.reload();
-//                        scan.TableParams3.reload();
-//                    }, 500);
+                    //                    $timeout(function () {
+                    //                        scan.TableParams.reload();
+                    //                        scan.TableParams2.reload();
+                    //                        scan.TableParams3.reload();
+                    //                    }, 500);
                     //scan.Delivery.$watch(function () {
 
                     //});
@@ -241,7 +241,7 @@ app.controller("ScanController", function ($scope, $modal, $filter, $timeout, ng
 
         modalInstance.result.then(function () {
             ScanOrderService.ClearDelivery({ DeliveryNumber: docNumber, IsInternal: scan.Delivery.IsInternal }).then(function (result) {
-                if (result.data ==="true") {
+                if (result.data === "true") {
                     scan.Delivery = null;
                     scan.DeliveryActionMessage = "Successfully cleared delivery " + docNumber;
                 } else {
@@ -280,10 +280,24 @@ app.controller("ScanController", function ($scope, $modal, $filter, $timeout, ng
 
     };
     scan.VerifyLineitem = function (serialCode) {
-        if (serialCode && (serialCode.length == 29 || serialCode.length == 33)) {
+
+        var productId = serialCode.substring(serialCode.length, serialCode.length - 7).substring(0, 5);
+        var color = serialCode.substring(serialCode.length, serialCode.length - 7).substring(5, 7);
+        var matched = null;
+        if (scan.ActiveKit != null && scan.ActiveKit.length > 0) {
+            matched = _.find(scan.ActiveKit, function (match) { return match.ProductId == productId && match.Color == color && (!match.SerialCode || !match.ScannedBy); });
+        } else {
+            matched = _.find(scan.Delivery.NotScannedItems, function (item) { return item.ProductId == productId && item.Color == color; });
+            if (matched) {
+                scan.Delivery.NotScannedItems.remove(matched);
+                scan.Delivery.$save();
+            }
+        }
+
+        if (serialCode && matched) {
             scan.SerialScanStatus = null;
             scan.SavingItem = true;
-
+          
             var modifiedMac = serialCode.substring(0, serialCode.length - 17);
 
             if (modifiedMac.length != 12) {
@@ -293,242 +307,230 @@ app.controller("ScanController", function ($scope, $modal, $filter, $timeout, ng
                     return false;
                 }
             }
-            var productId = serialCode.substring(serialCode.length, serialCode.length - 7).substring(0, 5);
-            var color = serialCode.substring(serialCode.length, serialCode.length - 7).substring(5, 7);
-            var matched = null;
-            if (scan.ActiveKit != null && scan.ActiveKit.length > 0) {
-                matched = _.filter(scan.ActiveKit, function (match) { return match.ProductId == productId && match.Color == color && (!match.SerialCode || !match.ScannedBy); });
-            } else {
-                matched = _.where(scan.Delivery.NotScannedItems, { ProductId: productId, Color: color });
-                if(matched.length==0){
-					scan.Delivery.NotScannedItems.pop(matched[0]);
-					scan.Delivery.$save();
-				}
-            }
-            if (matched.length > 0) {
-
-                if (!matched[0].SmartCodeOnly) {
-
-                    var deliveryItem = { IsInternal: scan.Delivery.IsInternal, SerialCode: serialCode, MacId: modifiedMac, Id: matched[0].Id, ProductGroup: matched[0].ProductGroup };
-                    ScanOrderService.SaveDeliveryItem(deliveryItem).then(function (result) {
-                        scan.SavingItem = false;
-
-                        if (!result.data.ErrorMessage) {
-                            scan.Delivery.ScannedItems = scan.Delivery.ScannedItems || [];
-                            matched[0].SerialCode = serialCode;
-                            matched[0].ScannedBy = CURRENTUSER;
-
-                            _processKit(matched[0]);
-
-                            //Remove and Add non Kit Item to correct tables
-                            if (scan.ActiveKit == null) {                              
-                                scan.Delivery.ScannedItems.push(matched[0]);
-                            }
-                            _cleanUpKit();
-                            matched[0].IsSelected = false;
-                            scan.SerialCodeLookUp = null;
-                            scan.Delivery.$save();
-//                            $timeout(function () {
-//                                scan.TableParams.reload();
-//                                scan.TableParams2.reload();
-//                                scan.TableParams3.reload();
-//                            }, 500);
-                            scan.SerialScanStatus = { Success: true, Message: "Serial Successfully Updated", Select: true };
 
 
-                        } else {
-                            scan.SerialScanStatus = { Success: false, Message: result.data.ErrorMessage + result.data.ErrorDeliveryNumber, Select: true };
-                            scan.Delivery.NotScanned.push(matched[0]);
-                            scan.Delivery.$save();
+            if ((!matched.SmartCodeOnly && !matched.NoSerialRequired) || (matched.SmartCodeOnly && !matched.NoSerialRequired)) {
+
+                var isUnique = !matched.SmartCodeOnly && !matched.NoSerialRequired;
+
+                var deliveryItem = { IsInternal: scan.Delivery.IsInternal, SerialCode: serialCode, MacId: modifiedMac, Id: matched.Id, ProductGroup: matched.ProductGroup, IsUnique: isUnique };
+                ScanOrderService.SaveDeliveryItem(deliveryItem).then(function (result) {
+                    scan.SavingItem = false;
+
+                    if (!result.data.ErrorMessage) {
+                        scan.Delivery.ScannedItems = scan.Delivery.ScannedItems || [];
+                        matched.SerialCode = serialCode;
+                        matched.ScannedBy = CURRENTUSER;
+
+                        _processKit(matched);
+
+                        //Remove and Add non Kit Item to correct tables
+                        if (scan.ActiveKit == null) {
+                            scan.Delivery.ScannedItems.push(matched);
                         }
-                    });
-                }
-                scan.SavingItem = false;
+                        _cleanUpKit();
+                        matched.IsSelected = false;
+                        scan.SerialCodeLookUp = null;
+                        scan.Delivery.$save();
+                        //                            $timeout(function () {
+                        //                                scan.TableParams.reload();
+                        //                                scan.TableParams2.reload();
+                        //                                scan.TableParams3.reload();
+                        //                            }, 500);
+                        scan.SerialScanStatus = { Success: true, Message: "Serial Successfully Updated", Select: true };
 
+
+                    } else {
+                        scan.SerialScanStatus = { Success: false, Message: result.data.ErrorMessage + result.data.ErrorDeliveryNumber, Select: true };
+                        scan.Delivery.NotScanned.push(matched);
+                        scan.Delivery.$save();
+                    }
+                });
+                scan.SavingItem = false;
+            }
+        } else {
+            scan.SavingItem = false;
+
+            if (scan.ActiveKit == null) {
+                scan.SerialScanStatus = { Success: false, Message: "No items found that match that Serial Code. Verify Serial Code and try again", Select: true };
             } else {
-                scan.SavingItem = false;
+                scan.SerialScanStatus = { Success: false, Message: "No items found in the current kit that match this serial number. Please scan a serial code that matches the products in the current kit.", Select: true };
 
-                if (scan.ActiveKit == null) {
-                    scan.SerialScanStatus = { Success: false, Message: "No items found that match that Serial Code. Verify Serial Code and try again", Select: true };
-                } else {
-                    scan.SerialScanStatus = { Success: false, Message: "No items found in the current kit that match this serial number. Please scan a serial code that matches the products in the current kit.", Select: true };
-
-                }
             }
-        }
-    };
-    scan.HasSelectedReturns = function () {
-        var selected = _.where(scan.Delivery.ScannedItems, { IsSelected: true });
-        return selected.length > 0;
-    };
-    scan.ReturnSelectedItems = function () {
-        var selected = _.where(scan.Delivery.ScannedItems, { IsSelected: true });
-        scan.Delivery.NotScannedItems = scan.Delivery.NotScannedItems || [];
-        if (selected.length > 0) {
-            var ids = _.pluck(selected, 'Id');
-            ScanOrderService.ReturnSelectedItems(ids, scan.Delivery.IsInternal).then(function (result) {
-                if (result.data) {
-                    _.each(selected, function (item) {
-                        // delete item.IsSelected;
-                        item.SerialCode = null;
-                        item.ScannedBy = null;
-                        scan.Delivery.ScannedItems.pop(item);
-                        scan.Delivery.NotScannedItems.push(item);
-                    });
-                    scan.Delivery.$save();
-//                    $timeout(function () {
-//                        scan.TableParams.reload();
-//                        scan.TableParams2.reload();
-//                        //                        scan.TableParams3.reload();
-//                    }, 500);
-                }
-            });
-        }
-    };
-    scan.VerifyDelivery = function (docNum) {
-        var modalInstance = $modal.open({
-            templateUrl: '/scripts/templates/VerifyDeliveryModal.html',
-            controller: VerifyModalCtrl,
-            resolve: {
-                docNum: function () {
-                    return docNum;
-                }
+        };
+        scan.HasSelectedReturns = function () {
+            var selected = _.where(scan.Delivery.ScannedItems, { IsSelected: true });
+            return selected.length > 0;
+        };
+        scan.ReturnSelectedItems = function () {
+            var selected = _.where(scan.Delivery.ScannedItems, { IsSelected: true });
+            scan.Delivery.NotScannedItems = scan.Delivery.NotScannedItems || [];
+            if (selected.length > 0) {
+                var ids = _.pluck(selected, 'Id');
+                ScanOrderService.ReturnSelectedItems(ids, scan.Delivery.IsInternal).then(function (result) {
+                    if (result.data) {
+                        _.each(selected, function (item) {
+                            // delete item.IsSelected;
+                            item.SerialCode = null;
+                            item.ScannedBy = null;
+                            scan.Delivery.ScannedItems.remove(item);
+                            scan.Delivery.NotScannedItems.push(item);
+                        });
+                        scan.Delivery.$save();
+                        //                    $timeout(function () {
+                        //                        scan.TableParams.reload();
+                        //                        scan.TableParams2.reload();
+                        //                        //                        scan.TableParams3.reload();
+                        //                    }, 500);
+                    }
+                });
             }
-        });
-        modalInstance.result.then(function () {
-            ScanOrderService.VerifyDelivery(docNum).then(function (result) {
-                if (result.data) {
-                    scan.Delivery = null;
-                    scan.DeliveryActionMessage = "Successfully verified delivery" + docNum;
-                } else {
-                    alert("There was an error verifying this delivery.");
+        };
+        scan.VerifyDelivery = function (docNum) {
+            var modalInstance = $modal.open({
+                templateUrl: '/scripts/templates/VerifyDeliveryModal.html',
+                controller: VerifyModalCtrl,
+                resolve: {
+                    docNum: function () {
+                        return docNum;
+                    }
                 }
             });
-        }, function () {
-            //$log.info('Modal dismissed at: ' + new Date());
-        });
-    };
-    scan.ExportCSV = function () {
-        var scannedItems = [];
-        _.each(scan.Delivery.ScannedItems, function (item) {
-            delete item.IsSelected;
-            scannedItems.push(item);
-        });
-
-        var data = scannedItems.concat(scan.Delivery.NotScannedItems);
-
-        var firstItem = data[0];
-        var csvContent = "data:text/csv;charset=utf-8,";
-
-        csvContent += _.keys(firstItem).join(",");
-        csvContent += "\n";
-
-        _.each(data, function (item, index) {
-            var values = _.values(item);
-            _.each(values, function (text, index) {
-                if (_.isString(text)) {
-                    values[index] = text.replace(",", " ");
-                }
+            modalInstance.result.then(function () {
+                ScanOrderService.VerifyDelivery(docNum).then(function (result) {
+                    if (result.data) {
+                        scan.Delivery = null;
+                        scan.DeliveryActionMessage = "Successfully verified delivery" + docNum;
+                    } else {
+                        alert("There was an error verifying this delivery.");
+                    }
+                });
+            }, function () {
+                //$log.info('Modal dismissed at: ' + new Date());
+            });
+        };
+        scan.ExportCSV = function () {
+            var scannedItems = [];
+            _.each(scan.Delivery.ScannedItems, function (item) {
+                delete item.IsSelected;
+                scannedItems.push(item);
             });
 
-            var dataString = values.join(",");
-            csvContent += index < values.length ? dataString + "\n" : dataString;
-        });
+            var data = scannedItems.concat(scan.Delivery.NotScannedItems);
 
-        var encodedUri = encodeURI(csvContent);
-        var link = document.createElement("a");
-        link.setAttribute("href", encodedUri);
-        link.setAttribute("download", scan.Delivery.DeliveryNumber + "_export.csv");
-        link.click();
+            var firstItem = data[0];
+            var csvContent = "data:text/csv;charset=utf-8,";
 
-    };
-    scan.ExportMacId = function () {
-        var data = _.pluck(scan.Delivery.ScannedItems, "SerialCode");
+            csvContent += _.keys(firstItem).join(",");
+            csvContent += "\n";
 
-        var csvContent = "data:text/csv;charset=utf-8,";
+            _.each(data, function (item, index) {
+                var values = _.values(item);
+                _.each(values, function (text, index) {
+                    if (_.isString(text)) {
+                        values[index] = text.replace(",", " ");
+                    }
+                });
 
-        csvContent += "SerialCode \n";
-        csvContent += data.join("\n");
+                var dataString = values.join(",");
+                csvContent += index < values.length ? dataString + "\n" : dataString;
+            });
 
-        var encodedUri = encodeURI(csvContent);
-        var link = document.createElement("a");
-        link.setAttribute("href", encodedUri);
-        link.setAttribute("download", scan.Delivery.DeliveryNumber + "_export.csv");
-        link.click();
+            var encodedUri = encodeURI(csvContent);
+            var link = document.createElement("a");
+            link.setAttribute("href", encodedUri);
+            link.setAttribute("download", scan.Delivery.DeliveryNumber + "_export.csv");
+            link.click();
 
-    };
-    scan.GetDeliveryStatus = function () {
-        // See if the order is ready to be validated.
+        };
+        scan.ExportMacId = function () {
+            var data = _.pluck(scan.Delivery.ScannedItems, "SerialCode");
 
-        return scan.Delivery.IsVerified ? "Delivery Verified!" : "Delivery Not Verified!";
-    }
-    scan.IsScanComplete = function () {
+            var csvContent = "data:text/csv;charset=utf-8,";
 
-        var notScannedValid = _.where(scan.Delivery.NotScannedItems, function (item) {
-            return item.NoSerialRequired || !item.ReturnedByUser;
-        }).length>0;
+            csvContent += "SerialCode \n";
+            csvContent += data.join("\n");
 
-        var noActiveKits = (scan.Delivery.ActiveKits && scan.Delivery.ActiveKits.length == 0);
-        return !notScannedValid && noActiveKits;
-    }
-    scan.GetDeliveryStatusText = function () {
-        var successful = scan.GetDeliveryStatus();
-        if (successful) {
-            return "Delivery Verified!";
+            var encodedUri = encodeURI(csvContent);
+            var link = document.createElement("a");
+            link.setAttribute("href", encodedUri);
+            link.setAttribute("download", scan.Delivery.DeliveryNumber + "_export.csv");
+            link.click();
+
+        };
+        scan.GetDeliveryStatus = function () {
+            // See if the order is ready to be validated.
+
+            return scan.Delivery.IsVerified ? "Delivery Verified!" : "Delivery Not Verified!";
         }
-        return "Delivery Not Verified!";
-    }
-    scan.EnablVerification = function () {
-        var items1 = _.filter(scan.Delivery.NotScannedItems, function (item) {
-            return item.NoSerialRequired == false;
-        });
-        if (scan.Delivery.NotScannedItems.length == 0 || items1.length == 0) {
-            return true;
+        scan.IsScanComplete = function () {
+            var notScannedValid = _.find(scan.Delivery.NotScannedItems, function (item) {
+
+                return (!item.SmartCodeOnly && !item.NoSerialRequired) || (item.SmartCodeOnly && !item.NoSerialRequired);
+            }) == null;
+
+            var noActiveKits = (scan.Delivery.ActiveKits && scan.Delivery.ActiveKits.length == 0);
+
+            return notScannedValid && noActiveKits;
         }
-        return false;
-    }
-});
+        scan.GetDeliveryStatusText = function () {
+            var successful = scan.GetDeliveryStatus();
+            if (successful) {
+                return "Delivery Verified!";
+            }
+            return "Delivery Not Verified!";
+        }
+        scan.EnablVerification = function () {
+            var items1 = _.filter(scan.Delivery.NotScannedItems, function (item) {
+                return item.NoSerialRequired == false;
+            });
+            if (scan.Delivery.NotScannedItems.length == 0 || items1.length == 0) {
+                return true;
+            }
+            return false;
+        }
+    });
 
-var ClearModalCtrl = function ($scope, $modalInstance, docNum) {
+    var ClearModalCtrl = function ($scope, $modalInstance, docNum) {
 
-    $scope.DocNum = docNum;
-    $scope.ok = function () {
-        $modalInstance.close();
+        $scope.DocNum = docNum;
+        $scope.ok = function () {
+            $modalInstance.close();
+        };
+
+        $scope.cancel = function () {
+            $modalInstance.dismiss('cancel');
+        };
     };
 
-    $scope.cancel = function () {
-        $modalInstance.dismiss('cancel');
+
+    var VerifyModalCtrl = function ($scope, $modalInstance, docNum) {
+
+        $scope.DocNum = docNum;
+        $scope.ok = function () {
+            $modalInstance.close();
+        };
+
+        $scope.cancel = function () {
+            $modalInstance.dismiss('cancel');
+        };
     };
-};
+    var ReturnDeliveryModalCtrl = function ($scope, $modalInstance, docNum) {
 
+        $scope.DocNum = docNum;
+        $scope.ok = function () {
+            $modalInstance.close();
+        };
 
-var VerifyModalCtrl = function ($scope, $modalInstance, docNum) {
-
-    $scope.DocNum = docNum;
-    $scope.ok = function () {
-        $modalInstance.close();
+        $scope.cancel = function () {
+            $modalInstance.dismiss('cancel');
+        };
     };
 
-    $scope.cancel = function () {
-        $modalInstance.dismiss('cancel');
+    Array.prototype.remove = function (elem) {
+        var match = -1;
+
+        while ((match = this.indexOf(elem)) > -1) {
+            this.splice(match, 1);
+        }
     };
-};
-var ReturnDeliveryModalCtrl = function ($scope, $modalInstance, docNum) {
-
-    $scope.DocNum = docNum;
-    $scope.ok = function () {
-        $modalInstance.close();
-    };
-
-    $scope.cancel = function () {
-        $modalInstance.dismiss('cancel');
-    };
-};
-
-Array.prototype.remove = function (elem) {
-    var match = -1;
-
-    while ((match = this.indexOf(elem)) > -1) {
-        this.splice(match, 1);
-    }
-};
