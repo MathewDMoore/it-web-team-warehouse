@@ -1,8 +1,8 @@
 ﻿var app = angular.module("shipApp");
 app.constant("FIREBASE_URL", "https://c4shiptool.firebaseio.com/");
-app.controller("ScanController", function($scope, $modal, $filter, $timeout, ngTableParams, ScanOrderService, FirebaseDeliveryService, CURRENTUSER) {
+app.controller("ScanController", function ($scope, $modal, $filter, $timeout, ngTableParams, ScanOrderService, FirebaseDeliveryService, CURRENTUSER) {
 
-    $scope.$watch('filter.$', function() {
+    $scope.$watch('filter.$', function () {
         if (scan.Delivery && (scan.Delivery.ScannedItems || scan.Delivery.NotScannedItems)) {
             scan.TableParams.reload(); // TODO: Fix {scope: null} racecondition
             scan.TableParams2.reload(); // TODO: Fix {scope: null} racecondition
@@ -10,17 +10,17 @@ app.controller("ScanController", function($scope, $modal, $filter, $timeout, ngT
         }
     });
     var scan = this;
-    $scope.$watch("scan.Delivery.ScannedItems", function(newValue, oldValue) {
+    $scope.$watch("scan.Delivery.ScannedItems", function (newValue, oldValue) {
         if (newValue != oldValue) {
             scan.TableParams2.reload();
         }
     });
-    $scope.$watch("scan.Delivery.NotScannedItems", function(newValue, oldValue) {
+    $scope.$watch("scan.Delivery.NotScannedItems", function (newValue, oldValue) {
         if (newValue != oldValue) {
             scan.TableParams.reload();
         }
     });
-    $scope.$watch("scan.Delivery.Kits", function(newValue, oldValue) {
+    $scope.$watch("scan.Delivery.Kits", function (newValue, oldValue) {
         if (newValue != oldValue) {
             scan.TableParams3.reload();
         }
@@ -29,7 +29,7 @@ app.controller("ScanController", function($scope, $modal, $filter, $timeout, ngT
     function _cleanUpKit() {
         //Remove Active Kit if all scanned items are complete
         if (scan.ActiveKit && _.where(scan.ActiveKit, { SerialCode: null, SerialCode: '' }).length == 0) {
-            _.each(scan.ActiveKit, function(kitRow) {
+            _.each(scan.ActiveKit, function (kitRow) {
                 scan.Delivery.ScannedItems.push(kitRow);
             });
             scan.ActiveKit = null;
@@ -46,7 +46,7 @@ app.controller("ScanController", function($scope, $modal, $filter, $timeout, ngT
             if (scan.ActiveKit == null && scanItem.KitId > 0) {
                 scan.ActiveKit = [];
                 var newKit = { Key: CURRENTUSER, Value: [] };
-                _.each(matchedKitItems, function(item) {
+                _.each(matchedKitItems, function (item) {
                     scan.Delivery.NotScannedItems.remove(item);
                     if (item.SerialCode == undefined) {
                         angular.extend(item, { SerialCode: null });
@@ -82,7 +82,7 @@ app.controller("ScanController", function($scope, $modal, $filter, $timeout, ngT
     },
     {
         total: 0, // length of data
-        getData: function($defer, params) {
+        getData: function ($defer, params) {
             var orderedData = params.sorting() ? $filter('orderBy')(scan.Delivery.NotScannedItems, params.orderBy()) : scan.Delivery.NotScannedItems;
             orderedData = params.filter() ? $filter('filter')(orderedData, params.filter()) : orderedData;
             orderedData = orderedData || [];
@@ -98,7 +98,7 @@ app.controller("ScanController", function($scope, $modal, $filter, $timeout, ngT
         }
     }, {
         total: 0, // length of data
-        getData: function($defer, params) {
+        getData: function ($defer, params) {
             var orderedData = params.sorting() ? $filter('orderBy')(scan.Delivery.ScannedItems, params.orderBy()) : scan.Delivery.ScannedItems;
             orderedData = params.filter() ? $filter('filter')(orderedData, params.filter()) : orderedData;
             orderedData = orderedData || [];
@@ -115,7 +115,7 @@ app.controller("ScanController", function($scope, $modal, $filter, $timeout, ngT
     },
     {
         total: 0, // length of data
-        getData: function($defer, params) {
+        getData: function ($defer, params) {
             var orderedData = params.sorting() ? $filter('orderBy')(scan.ActiveKit, params.orderBy()) : scan.ActiveKit;
             orderedData = params.filter() ? $filter('filter')(orderedData, params.filter()) : orderedData;
             orderedData = orderedData || [];
@@ -123,41 +123,41 @@ app.controller("ScanController", function($scope, $modal, $filter, $timeout, ngT
             $defer.resolve(orderedData.slice((params.page() - 1) * params.count(), params.page() * params.count()));
         },
     });
-    scan.GetScanTotals = function() {
+    scan.GetScanTotals = function () {
         var matches = _.pluck(scan.Delivery.ActiveKits, "Value");
         var scannedCount = scan.Delivery.ScannedItems ? scan.Delivery.ScannedItems.length : 0;
         var notScannedCount = scan.Delivery.NotScannedItems ? scan.Delivery.NotScannedItems.length : 0;
         var kitItemsCount = 0;
         if (matches && matches.length > 0) {
-            _.each(matches, function(match) {
+            _.each(matches, function (match) {
                 kitItemsCount += match.length;
             });
         }
         return scannedCount + notScannedCount + kitItemsCount;
     };
 
-    scan.GetCurrentScan = function() {
+    scan.GetCurrentScan = function () {
         var matches = _.pluck(scan.Delivery.ActiveKits, "Value");
         var scannedCount = scan.Delivery.ScannedItems ? scan.Delivery.ScannedItems.length : 0;
         var kitItemsCount = 0;
         if (matches && matches.length > 0) {
-            _.each(matches, function(match) {
-                var activeScan = _.filter(match, function(item) { return item.ScannedBy; });
+            _.each(matches, function (match) {
+                var activeScan = _.filter(match, function (item) { return item.ScannedBy; });
                 kitItemsCount += activeScan.length;
             });
         }
         return scannedCount + kitItemsCount;
     };
-    scan.ScannedSearch = function(filter) {
+    scan.ScannedSearch = function (filter) {
         scan.TableParams2.filter(filter);
     };
-    scan.NotScannedSearch = function(filter) {
+    scan.NotScannedSearch = function (filter) {
         scan.TableParams.filter(filter);
     };
-    scan.ActiveKitSearch = function(filter) {
+    scan.ActiveKitSearch = function (filter) {
         scan.TableParams3.filter(filter);
     };
-    scan.LookUp = function(orderId, isInternal) {
+    scan.LookUp = function (orderId, isInternal) {
         scan.Delivery = null;
         scan.ActiveKit = null;
         if (!isNaN(orderId) && parseInt(orderId) > 0) {
@@ -166,7 +166,7 @@ app.controller("ScanController", function($scope, $modal, $filter, $timeout, ngT
             scan.DeliveryActionMessage = null;
             scan.SerialError = null;
 
-            ScanOrderService.LookUp(orderId, isInternal).then(function(response) {
+            ScanOrderService.LookUp(orderId, isInternal).then(function (response) {
 
                 scan.SerialScanStatus = null;
                 scan.OrderIdLookUp = null;
@@ -177,10 +177,10 @@ app.controller("ScanController", function($scope, $modal, $filter, $timeout, ngT
 
                 if (response.data) {
                     scan.Delivery = FirebaseDeliveryService.GetDelivery(response.data.DeliveryNumber);
-                    _.each(response.data.ScannedItems, function(item) {
+                    _.each(response.data.ScannedItems, function (item) {
                         angular.extend(item, { IsSelected: false });
                     });
-                    _.each(response.data.NotScannedItems, function(item) {
+                    _.each(response.data.NotScannedItems, function (item) {
                         angular.extend(item, { IsSelected: false, SerialCode: "", ScannedBy: null });
                     });
                     angular.extend(scan.Delivery, {
@@ -216,7 +216,7 @@ app.controller("ScanController", function($scope, $modal, $filter, $timeout, ngT
         } else if (orderId) {
             scan.IsSearching = true;
 
-            ScanOrderService.LookUpByMacId(orderId).then(function(result) {
+            ScanOrderService.LookUpByMacId(orderId).then(function (result) {
                 scan.IsSearching = false;
 
                 if (result.data.DeliveryNumber > 0) {
@@ -228,20 +228,20 @@ app.controller("ScanController", function($scope, $modal, $filter, $timeout, ngT
         }
 
     };
-    scan.ClearDelivery = function(docNumber) {
+    scan.ClearDelivery = function (docNumber) {
 
         var modalInstance = $modal.open({
             templateUrl: '/scripts/templates/ClearDeliveryModal.html',
             controller: ClearModalCtrl,
             resolve: {
-                docNum: function() {
+                docNum: function () {
                     return docNumber;
                 }
             }
         });
 
-        modalInstance.result.then(function() {
-            ScanOrderService.ClearDelivery({ DeliveryNumber: docNumber, IsInternal: scan.Delivery.IsInternal }).then(function(result) {
+        modalInstance.result.then(function () {
+            ScanOrderService.ClearDelivery({ DeliveryNumber: docNumber, IsInternal: scan.Delivery.IsInternal }).then(function (result) {
                 if (result.data === "true") {
                     scan.Delivery = null;
                     scan.DeliveryActionMessage = "Successfully cleared delivery " + docNumber;
@@ -249,25 +249,25 @@ app.controller("ScanController", function($scope, $modal, $filter, $timeout, ngT
                     scan.DeliveryActionMessage = "There was an error clearing this delivery.";
                 }
             });
-        }, function() {
+        }, function () {
             //$log.info('Modal dismissed at: ' + new Date());
         });
 
     };
-    scan.ReturnDelivery = function(delivery) {
+    scan.ReturnDelivery = function (delivery) {
 
         var modalInstance = $modal.open({
             templateUrl: '/scripts/templates/ReturnDeliveryModal.html',
             controller: ReturnDeliveryModalCtrl,
             resolve: {
-                docNum: function() {
+                docNum: function () {
                     return delivery.DeliveryNumber;
                 }
             }
         });
 
-        modalInstance.result.then(function() {
-            ScanOrderService.ReturnDelivery({ DeliveryNumber: delivery.DeliveryNumber, IsInternal: delivery.IsInternal }).then(function(result) {
+        modalInstance.result.then(function () {
+            ScanOrderService.ReturnDelivery({ DeliveryNumber: delivery.DeliveryNumber, IsInternal: delivery.IsInternal }).then(function (result) {
                 if (result.data) {
                     scan.DeliveryActionMessage = "Successfully returned delivery items " + delivery.DeliveryNumber;
                     scan.LookUp(delivery.DeliveryNumber, delivery.IsInternal);
@@ -275,22 +275,22 @@ app.controller("ScanController", function($scope, $modal, $filter, $timeout, ngT
                     scan.DeliveryActionMessage = "There was an error returning this delivery.";
                 }
             });
-        }, function() {
+        }, function () {
             //$log.info('Modal dismissed at: ' + new Date());
         });
 
     };
     scan.VerifyLineitem = function (serialCode) {
 
-            var productId = serialCode.substring(serialCode.length, serialCode.length - 7).substring(0, 5);
-            var color = serialCode.substring(serialCode.length, serialCode.length - 7).substring(5, 7);
+        var productId = serialCode.substring(serialCode.length, serialCode.length - 7).substring(0, 5);
+        var color = serialCode.substring(serialCode.length, serialCode.length - 7).substring(5, 7);
         var matched = null;
 
 
         if (scan.ActiveKit != null && scan.ActiveKit.length > 0) {
-            matched = _.find(scan.ActiveKit, function(match) { return match.ProductId == productId && match.Color == color && (!match.SerialCode || !match.ScannedBy); });
+            matched = _.find(scan.ActiveKit, function (match) { return match.ProductId == productId && match.Color == color && (!match.SerialCode || !match.ScannedBy); });
         } else {
-            matched = _.find(scan.Delivery.NotScannedItems, function(item) { return item.ProductId == productId && item.Color == color; });
+            matched = _.find(scan.Delivery.NotScannedItems, function (item) { return item.ProductId == productId && item.Color == color; });
             if (matched) {
                 scan.Delivery.NotScannedItems.remove(matched);
                 scan.Delivery.$save();
@@ -301,7 +301,7 @@ app.controller("ScanController", function($scope, $modal, $filter, $timeout, ngT
             scan.SerialScanStatus = null;
             scan.SavingItem = true;
 
-           
+
 
             if ((!matched.SmartCodeOnly && !matched.NoSerialRequired) || (matched.SmartCodeOnly && !matched.NoSerialRequired)) {
 
@@ -318,13 +318,13 @@ app.controller("ScanController", function($scope, $modal, $filter, $timeout, ngT
                         }
                     }
                 }
-                else modifiedMac = serialCode;
-               
+                else { modifiedMac = serialCode; }
 
-                var isUnique = !matched.SmartCodeOnly && !matched.NoSerialRequired;
+
+                var isUnique = matched.SmartCodeOnly && !matched.NoSerialRequired;
 
                 var deliveryItem = { IsInternal: scan.Delivery.IsInternal, SerialCode: serialCode, MacId: modifiedMac, Id: matched.Id, ProductGroup: matched.ProductGroup, IsUnique: isUnique };
-                ScanOrderService.SaveDeliveryItem(deliveryItem).then(function(result) {
+                ScanOrderService.SaveDeliveryItem(deliveryItem).then(function (result) {
                     scan.SavingItem = false;
 
                     if (!result.data.ErrorMessage) {
@@ -371,18 +371,18 @@ app.controller("ScanController", function($scope, $modal, $filter, $timeout, ngT
             }
         }
     };
-    scan.HasSelectedReturns = function() {
+    scan.HasSelectedReturns = function () {
         var selected = _.where(scan.Delivery.ScannedItems, { IsSelected: true });
         return selected.length > 0;
     };
-    scan.ReturnSelectedItems = function() {
+    scan.ReturnSelectedItems = function () {
         var selected = _.where(scan.Delivery.ScannedItems, { IsSelected: true });
         scan.Delivery.NotScannedItems = scan.Delivery.NotScannedItems || [];
         if (selected.length > 0) {
             var ids = _.pluck(selected, 'Id');
-            ScanOrderService.ReturnSelectedItems(ids, scan.Delivery.IsInternal).then(function(result) {
+            ScanOrderService.ReturnSelectedItems(ids, scan.Delivery.IsInternal).then(function (result) {
                 if (result.data) {
-                    _.each(selected, function(item) {
+                    _.each(selected, function (item) {
                         // delete item.IsSelected;
                         item.SerialCode = null;
                         item.ScannedBy = null;
@@ -399,18 +399,18 @@ app.controller("ScanController", function($scope, $modal, $filter, $timeout, ngT
             });
         }
     };
-    scan.VerifyDelivery = function(docNum) {
+    scan.VerifyDelivery = function (docNum) {
         var modalInstance = $modal.open({
             templateUrl: '/scripts/templates/VerifyDeliveryModal.html',
             controller: VerifyModalCtrl,
             resolve: {
-                docNum: function() {
+                docNum: function () {
                     return docNum;
                 }
             }
         });
-        modalInstance.result.then(function() {
-            ScanOrderService.VerifyDelivery(docNum).then(function(result) {
+        modalInstance.result.then(function () {
+            ScanOrderService.VerifyDelivery(docNum).then(function (result) {
                 if (result.data) {
                     scan.Delivery = null;
                     scan.DeliveryActionMessage = "Successfully verified delivery" + docNum;
@@ -418,13 +418,13 @@ app.controller("ScanController", function($scope, $modal, $filter, $timeout, ngT
                     alert("There was an error verifying this delivery.");
                 }
             });
-        }, function() {
+        }, function () {
             //$log.info('Modal dismissed at: ' + new Date());
         });
     };
-    scan.ExportCSV = function() {
+    scan.ExportCSV = function () {
         var scannedItems = [];
-        _.each(scan.Delivery.ScannedItems, function(item) {
+        _.each(scan.Delivery.ScannedItems, function (item) {
             delete item.IsSelected;
             scannedItems.push(item);
         });
@@ -437,9 +437,9 @@ app.controller("ScanController", function($scope, $modal, $filter, $timeout, ngT
         csvContent += _.keys(firstItem).join(",");
         csvContent += "\n";
 
-        _.each(data, function(item, index) {
+        _.each(data, function (item, index) {
             var values = _.values(item);
-            _.each(values, function(text, index) {
+            _.each(values, function (text, index) {
                 if (_.isString(text)) {
                     values[index] = text.replace(",", " ");
                 }
@@ -456,7 +456,7 @@ app.controller("ScanController", function($scope, $modal, $filter, $timeout, ngT
         link.click();
 
     };
-    scan.ExportMacId = function() {
+    scan.ExportMacId = function () {
         var data = _.pluck(scan.Delivery.ScannedItems, "SerialCode");
 
         var csvContent = "data:text/csv;charset=utf-8,";
@@ -471,30 +471,30 @@ app.controller("ScanController", function($scope, $modal, $filter, $timeout, ngT
         link.click();
 
     };
-    scan.GetDeliveryStatus = function() {
+    scan.GetDeliveryStatus = function () {
         // See if the order is ready to be validated.
 
         return scan.Delivery.IsVerified ? "Delivery Verified!" : "Delivery Not Verified!";
     }
-    scan.IsScanComplete = function() {
-        var notScannedValid = _.find(scan.Delivery.NotScannedItems, function(item) {
+    scan.IsScanComplete = function () {
+        var notScannedValid = _.find(scan.Delivery.NotScannedItems, function (item) {
 
             return (!item.SmartCodeOnly && !item.NoSerialRequired) || (item.SmartCodeOnly && !item.NoSerialRequired);
         }) == null;
 
-        var noActiveKits = (scan.Delivery.ActiveKits == undefined||scan.Delivery.ActiveKits && scan.Delivery.ActiveKits.length == 0);
+        var noActiveKits = (scan.Delivery.ActiveKits == undefined || scan.Delivery.ActiveKits && scan.Delivery.ActiveKits.length == 0);
 
         return notScannedValid && noActiveKits;
     }
-    scan.GetDeliveryStatusText = function() {
+    scan.GetDeliveryStatusText = function () {
         var successful = scan.GetDeliveryStatus();
         if (successful) {
             return "Delivery Verified!";
         }
         return "Delivery Not Verified!";
     }
-    scan.EnablVerification = function() {
-        var items1 = _.filter(scan.Delivery.NotScannedItems, function(item) {
+    scan.EnablVerification = function () {
+        var items1 = _.filter(scan.Delivery.NotScannedItems, function (item) {
             return item.NoSerialRequired == false;
         });
         if (scan.Delivery.NotScannedItems.length == 0 || items1.length == 0) {
@@ -504,43 +504,43 @@ app.controller("ScanController", function($scope, $modal, $filter, $timeout, ngT
     };
 
 
-    var ClearModalCtrl = function($scope, $modalInstance, docNum) {
+    var ClearModalCtrl = function ($scope, $modalInstance, docNum) {
 
         $scope.DocNum = docNum;
-        $scope.ok = function() {
+        $scope.ok = function () {
             $modalInstance.close();
         };
 
-        $scope.cancel = function() {
+        $scope.cancel = function () {
             $modalInstance.dismiss('cancel');
         };
     };
 
 
-    var VerifyModalCtrl = function($scope, $modalInstance, docNum) {
+    var VerifyModalCtrl = function ($scope, $modalInstance, docNum) {
 
         $scope.DocNum = docNum;
-        $scope.ok = function() {
+        $scope.ok = function () {
             $modalInstance.close();
         };
 
-        $scope.cancel = function() {
+        $scope.cancel = function () {
             $modalInstance.dismiss('cancel');
         };
     };
-    var ReturnDeliveryModalCtrl = function($scope, $modalInstance, docNum) {
+    var ReturnDeliveryModalCtrl = function ($scope, $modalInstance, docNum) {
 
         $scope.DocNum = docNum;
-        $scope.ok = function() {
+        $scope.ok = function () {
             $modalInstance.close();
         };
 
-        $scope.cancel = function() {
+        $scope.cancel = function () {
             $modalInstance.dismiss('cancel');
         };
     };
 
-    Array.prototype.remove = function(elem) {
+    Array.prototype.remove = function (elem) {
         var match = -1;
 
         while ((match = this.indexOf(elem)) > -1) {
