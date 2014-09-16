@@ -281,7 +281,9 @@ app.controller("ScanController", function ($scope, $modal, $filter, $timeout, ng
 
     };
     scan.VerifyLineitem = function (serialCode) {
-
+        if (!serialCode) {
+            scan.IsSearching = false;
+        }
         var productId = serialCode.substring(serialCode.length, serialCode.length - 7).substring(0, 5);
         var color = serialCode.substring(serialCode.length, serialCode.length - 7).substring(5, 7);
         var matched = null;
