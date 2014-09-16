@@ -280,11 +280,13 @@ app.controller("ScanController", function($scope, $modal, $filter, $timeout, ngT
         });
 
     };
-    scan.VerifyLineitem = function(serialCode) {
+    scan.VerifyLineitem = function (serialCode) {
 
-        var productId = serialCode.substring(serialCode.length, serialCode.length - 7).substring(0, 5);
-        var color = serialCode.substring(serialCode.length, serialCode.length - 7).substring(5, 7);
+            var productId = serialCode.substring(serialCode.length, serialCode.length - 7).substring(0, 5);
+            var color = serialCode.substring(serialCode.length, serialCode.length - 7).substring(5, 7);
         var matched = null;
+
+
         if (scan.ActiveKit != null && scan.ActiveKit.length > 0) {
             matched = _.find(scan.ActiveKit, function(match) { return match.ProductId == productId && match.Color == color && (!match.SerialCode || !match.ScannedBy); });
         } else {
@@ -299,18 +301,25 @@ app.controller("ScanController", function($scope, $modal, $filter, $timeout, ngT
             scan.SerialScanStatus = null;
             scan.SavingItem = true;
 
-            var modifiedMac = serialCode.substring(0, serialCode.length - 17);
-
-            if (modifiedMac.length != 12) {
-                if (modifiedMac.length != 16) {
-                    scan.SavingItem = false;
-                    scan.SerialScanStatus = { Success: false, Select: true, Message: "You have scanned in a code that is not the correct length!" };
-                    return false;
-                }
-            }
-
+           
 
             if ((!matched.SmartCodeOnly && !matched.NoSerialRequired) || (matched.SmartCodeOnly && !matched.NoSerialRequired)) {
+
+                var modifiedMac = null;
+
+                if ((matched.SmartCodeOnly && !matched.NoSerialRequired)) {
+                    modifiedMac = serialCode.substring(0, serialCode.length - 17);
+
+                    if (modifiedMac.length != 12) {
+                        if (modifiedMac.length != 16) {
+                            scan.SavingItem = false;
+                            scan.SerialScanStatus = { Success: false, Select: true, Message: "You have scanned in a code that is not the correct length!" };
+                            return false;
+                        }
+                    }
+                }
+                else modifiedMac = serialCode;
+               
 
                 var isUnique = !matched.SmartCodeOnly && !matched.NoSerialRequired;
 
@@ -350,8 +359,10 @@ app.controller("ScanController", function($scope, $modal, $filter, $timeout, ngT
                 scan.SavingItem = false;
             }
         } else {
-            scan.SavingItem = false;
 
+            scan.SavingItem = false;
+            scan.Delivery.NotScannedItems.pushed(matched);
+            scan.Delivery.$save();
             if (scan.ActiveKit == null) {
                 scan.SerialScanStatus = { Success: false, Message: "No items found that match that Serial Code. Verify Serial Code and try again", Select: true };
             } else {

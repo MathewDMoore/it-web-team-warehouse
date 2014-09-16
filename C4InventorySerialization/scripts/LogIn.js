@@ -56,7 +56,7 @@ function SubmitLogin() {
                 $.cookie(result.CookieName, result.EncryptedTicket);
                 var returnUrl = $.getUrlVar('ReturnUrl');
                 if (returnUrl === undefined) {
-                    returnUrl = '/Content/ScanSerialNumber.aspx/';
+                    returnUrl = '/Content/ScanOrder.aspx/';
                 }
                 window.location = unescape(returnUrl);
             }

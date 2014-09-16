@@ -2,10 +2,10 @@
 <%@ Import Namespace="ApplicationSource" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="MainContent" runat="server">
-    <script type="text/javascript" src="/scripts/underscore-min.js"></script>
-    <script type="text/javascript" src="/scripts/services/ScanOrderService.js"></script>
-    <script type="text/javascript" src="/scripts/services/firebaseDeliveryService.js"></script>
-    <script type="text/javascript" src="/scripts/controllers/ScanOrderController.js"></script>
+    <script type="text/javascript" src="../scripts/underscore-min.js"></script>
+    <script type="text/javascript" src="../scripts/services/ScanOrderService.js"></script>
+    <script type="text/javascript" src="../scripts/services/firebaseDeliveryService.js"></script>
+    <script type="text/javascript" src="../scripts/controllers/ScanOrderController.js"></script>
     <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet" />
     <script src="https://cdn.firebase.com/js/simple-login/1.6.3/firebase-simple-login.js"></script>
     <script type="text/javascript">
