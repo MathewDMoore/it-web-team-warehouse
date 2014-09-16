@@ -471,7 +471,7 @@ app.controller("ScanController", function($scope, $modal, $filter, $timeout, ngT
             return (!item.SmartCodeOnly && !item.NoSerialRequired) || (item.SmartCodeOnly && !item.NoSerialRequired);
         }) == null;
 
-        var noActiveKits = (scan.Delivery.ActiveKits && scan.Delivery.ActiveKits.length == 0);
+        var noActiveKits = (scan.Delivery.ActiveKits == undefined||scan.Delivery.ActiveKits && scan.Delivery.ActiveKits.length == 0);
 
         return notScannedValid && noActiveKits;
     }

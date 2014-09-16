@@ -51,18 +51,16 @@
                         </div>
                     </div>
                     <div class="panel-body" style="max-height: 160px;">
-
-                        <div style="width: 200px; float: right; margin-bottom: 0px; text-align: center;" class="alert alert-success" ng-show="scan.IsScanComplete()">Scan Complete <i class="glyphicon glyphicon-check"></i></div>
                         <h3 style="margin-top: 0px;">Dealer: {{scan.Delivery.DealerName}}/<small>{{scan.Delivery.DealerId}}</small></h3>
                         <div ng-if="scan.Delivery.IsInternal" class="verified text-danger" style="float: right;">[ Internal Order ]</div>
                         <label>Address: {{scan.Delivery.Address}}</label><br />
                         <label>Comments: {{scan.Delivery.Comments}}</label><br />
-                        <div style="float: right;">
+                        <div style="float: right;margin-top:20px;">
                             <button class="btn btn-warning" id="returnDelivery" ng-click="scan.ReturnDelivery(scan.Delivery)">Return Entire Delivery</button>
                             <button class="btn btn-danger" id="clearDelivery" ng-click="scan.ClearDelivery(scan.Delivery.DeliveryNumber)">Clear Delivery</button>
                             <button class="btn btn-success" id="VerifiedDelivery" ng-disabled="scan.Delivery.IsVerified || !scan.IsScanComplete()" ng-click="scan.VerifyDelivery(scan.Delivery.DeliveryNumber)">Verify Delivery</button>
                         </div>
-                        <div style="-webkit-transform: rotate(-5deg); position: relative; left: 408px; font-size: 32px; border: solid; border-radius: 8px; padding: 8px; border-style: solid; display: inline-block; top: -65px;" class="verified" ng-class="{'text-success':scan.Delivery.IsVerified, 'text-danger':!scan.Delivery.IsVerified}"><i class="glyphicon" ng-class="{'glyphicon-check':scan.Delivery.IsVerified, 'glyphicon-remove-circle' : !scan.Delivery.IsVerified }"></i>{{scan.GetDeliveryStatus()}}</div>
+                        <div style="-webkit-transform: rotate(-5deg);position: relative;left: 408px;font-size: 32px;border: solid;border-radius: 8px;padding: 8px;border-style: solid;top: -80px;float: right;" class="verified" ng-class="{'text-success':scan.Delivery.IsVerified, 'text-danger':!scan.Delivery.IsVerified}"><i class="glyphicon" ng-class="{'glyphicon-check':scan.Delivery.IsVerified, 'glyphicon-remove-circle' : !scan.Delivery.IsVerified }"></i>{{scan.GetDeliveryStatus()}}</div>
 
                     </div>
                 </div>
@@ -75,7 +73,7 @@
                     <span class="text-info">{{scan.GetCurrentScan()}} of {{scan.GetScanTotals()}} Products Scanned</span>
                 </div>
                 <div class="alert" style="width: 600px; float: left; margin-left: 10px; position: relative; top: 14px;" ng-class="{'alert-danger':!scan.SerialScanStatus.Success, 'alert-success':scan.SerialScanStatus.Success}" ng-show="scan.SerialScanStatus && scan.SerialScanStatus.Message">&nbsp;&nbsp;{{scan.SerialScanStatus.Message}}</div>
-
+                <div style="width: 200px; float: right; margin-bottom: 0px; text-align: center;" class="alert alert-success" ng-show="scan.IsScanComplete()">Scan Complete <i class="glyphicon glyphicon-check"></i></div>
                 <style>
                     .table .header {
                         text-align: left;
