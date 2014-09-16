@@ -1,8 +1,11 @@
 ﻿using System;
 using System.Configuration;
+using System.Reflection;
 using System.Web;
 using System.Web.Security;
 using ApplicationSource;
+using Common;
+using StructureMap;
 
 namespace C4InventorySerialization
 {
@@ -32,6 +35,10 @@ namespace C4InventorySerialization
             {
                 if (adAuth.IsAuthenticated(UserName.Text, Password.Text))
                 {
+                    var log = ObjectFactory.GetInstance<ILogger>();
+
+                    log.LogAttempt(MethodBase.GetCurrentMethod().GetType(), OperationType.LOGIN, "LOGIN ATTEMPT", UserName.Text);
+
                     String groups = adAuth.GetGroups();
 
                     //    Create the ticket, and add the groups.
@@ -61,6 +68,9 @@ namespace C4InventorySerialization
             }
             catch (Exception ex)
             {
+                var log =ObjectFactory.GetInstance<ILogger>();
+                log.LogException(MethodBase.GetCurrentMethod().GetType(), OperationType.LOGIN, ex, ex.Message);
+
                 Output.Text = "Error authenticating. " + ex.Message;
             }
         }

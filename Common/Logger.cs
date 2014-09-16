@@ -194,7 +194,9 @@ namespace Common
         CCAUTH,
         MAPPERCALL,
         PAYTRACECALL,
-        SAVETSINFO
+        SAVETSINFO,
+        LOGIN,
+        GLOBAL_APP_ERROR
     } ;
 
     public enum StatusType

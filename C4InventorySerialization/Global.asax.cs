@@ -1,8 +1,10 @@
 ﻿using System;
+using System.Reflection;
 using System.Security.Principal;
 using System.Web;
 using System.Web.Security;
 using ApplicationSource;
+using Common;
 using StructureMap;
 using IoCRegistry = C4InventorySerialization.Helpers.IoCRegistry;
 
@@ -10,11 +12,12 @@ namespace C4InventorySerialization
 {
     public class Global : HttpApplication
     {
-
+        private ILogger _log;
         protected void Application_Start(object sender, EventArgs e)
         {
             ObjectFactory.Initialize(x => x.AddRegistry<IoCRegistry>());     
             DomainModelMapper.Initialize();
+            _log = ObjectFactory.GetInstance<ILogger>();
         }
          
         protected void Session_Start(object sender, EventArgs e)
@@ -45,7 +48,7 @@ namespace C4InventorySerialization
             }
             catch (Exception ex)
             {
-                //Write the exception to the Event Log.
+                _log.LogException(MethodBase.GetCurrentMethod().GetType(), OperationType.LOGIN,ex, ex.Message);
                 return;
             }
 
@@ -71,6 +74,7 @@ namespace C4InventorySerialization
         protected void Application_Error(object sender, EventArgs e)
         {
             var ex = HttpContext.Current.Server.GetLastError();
+            _log.LogException(MethodBase.GetCurrentMethod().GetType(), OperationType.GLOBAL_APP_ERROR, ex, ex.Message);
 
             // Do whatever with the exception here.
 
