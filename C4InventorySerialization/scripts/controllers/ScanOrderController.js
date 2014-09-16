@@ -305,11 +305,11 @@ app.controller("ScanController", function ($scope, $modal, $filter, $timeout, ng
 
 
 
-            if ((!matched.SmartCodeOnly && !matched.NoSerialRequired) || (matched.SmartCodeOnly && !matched.NoSerialRequired)) {
+            if ((matched.SmartCodeOnly && matched.NoSerialRequired) || (matched.SmartCodeOnly && !matched.NoSerialRequired)) {
 
                 var modifiedMac = null;
 
-                if ((!matched.SmartCodeOnly && !matched.NoSerialRequired)) {
+                if ((matched.SmartCodeOnly && matched.NoSerialRequired)) {
                     modifiedMac = serialCode.substring(0, serialCode.length - 17);
 
                     if (modifiedMac.length != 12) {
@@ -323,7 +323,7 @@ app.controller("ScanController", function ($scope, $modal, $filter, $timeout, ng
                 else { modifiedMac = serialCode; }
 
 
-                var isUnique = matched.SmartCodeOnly && !matched.NoSerialRequired;
+                var isUnique = matched.SmartCodeOnly && matched.NoSerialRequired;
 
                 var deliveryItem = { IsInternal: scan.Delivery.IsInternal, SerialCode: serialCode, MacId: modifiedMac, Id: matched.Id, ProductGroup: matched.ProductGroup, IsUnique: isUnique };
                 ScanOrderService.SaveDeliveryItem(deliveryItem).then(function (result) {
@@ -482,7 +482,7 @@ app.controller("ScanController", function ($scope, $modal, $filter, $timeout, ng
     scan.IsScanComplete = function () {
         var notScannedValid = _.find(scan.Delivery.NotScannedItems, function (item) {
 
-            return (!item.SmartCodeOnly && !item.NoSerialRequired) || (item.SmartCodeOnly && !item.NoSerialRequired);
+            return (item.SmartCodeOnly && item.NoSerialRequired) || (item.SmartCodeOnly && !item.NoSerialRequired);
         }) == null;
 
         var noActiveKits = (scan.Delivery.ActiveKits == undefined || scan.Delivery.ActiveKits && scan.Delivery.ActiveKits.length == 0);

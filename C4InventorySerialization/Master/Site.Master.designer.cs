@@ -22,22 +22,22 @@ namespace C4InventorySerialization.Master {
         protected global::OboutInc.EasyMenu_Pro.EasyMenu EasymenuMain;
         
         /// <summary>
-        /// MenuItem1 control.
+        /// MenuItem11 control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::OboutInc.EasyMenu_Pro.MenuItem MenuItem1;
+        protected global::OboutInc.EasyMenu_Pro.MenuItem MenuItem11;
         
         /// <summary>
-        /// MenuSeparator1 control.
+        /// MenuSeparator11 control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::OboutInc.EasyMenu_Pro.MenuSeparator MenuSeparator1;
+        protected global::OboutInc.EasyMenu_Pro.MenuSeparator MenuSeparator11;
         
         /// <summary>
         /// MenuItem2 control.
@@ -56,24 +56,6 @@ namespace C4InventorySerialization.Master {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::OboutInc.EasyMenu_Pro.MenuSeparator MenuSeparator2;
-        
-        /// <summary>
-        /// MenuItem11 control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::OboutInc.EasyMenu_Pro.MenuItem MenuItem11;
-        
-        /// <summary>
-        /// MenuSeparator11 control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::OboutInc.EasyMenu_Pro.MenuSeparator MenuSeparator11;
         
         /// <summary>
         /// MenuItem3 control.
