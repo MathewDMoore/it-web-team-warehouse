@@ -56,11 +56,11 @@
                                 <%--<oem:MenuItem InnerHtml="Deliveries" ID="MenuItem1" Url="../Content/ScanSerialNumber.aspx"></oem:MenuItem>
                                 <oem:MenuSeparator InnerHtml="|" ID="MenuSeparator1"></oem:MenuSeparator>--%>
 
+                                <oem:MenuItem InnerHtml="Deliveries" ID="MenuItem11" Url="../Content/ScanOrder.aspx"></oem:MenuItem>
+                                <oem:MenuSeparator InnerHtml="|" ID="MenuSeparator11"></oem:MenuSeparator>
+
                                 <oem:MenuItem InnerHtml="Inventory Requests" ID="MenuItem2" Url="../Content/ScanInventoryRequest.aspx"></oem:MenuItem>
                                 <oem:MenuSeparator InnerHtml="|" ID="MenuSeparator2"></oem:MenuSeparator>
-
-                                <oem:MenuItem InnerHtml="Scan Order" ID="MenuItem11" Url="../Content/ScanOrder.aspx"></oem:MenuItem>
-                                <oem:MenuSeparator InnerHtml="|" ID="MenuSeparator11"></oem:MenuSeparator>
 
                                 <oem:MenuItem InnerHtml="Returns" ID="MenuItem3" Url="../Content/Returns.aspx"></oem:MenuItem>
                                 <oem:MenuSeparator InnerHtml="|" ID="MenuSeparator3"></oem:MenuSeparator>
