@@ -139,7 +139,7 @@ namespace ApplicationSource.Services
                 var parsedMacId = macId.Length >= 29 ? macId.Remove(macId.Length - 17, 17) : macId;
                 try
                 {
-                    if (parsedMacId.Length == 12 || parsedMacId.Length == 16)
+                    if (parsedMacId.Length == 12 || parsedMacId.Length == 16 || !model.IsUnique)
                     {
 
                         SerialNumberItem serialItem = null;

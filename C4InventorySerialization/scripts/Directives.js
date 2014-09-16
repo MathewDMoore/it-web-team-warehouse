@@ -15,16 +15,23 @@ Directives.directive('onEnter', function () {
         }
     };
 })
-.directive("autoSelect", function () {
+.directive("autoSelect", function ($timeout) {
     return {
-        scope: { Select: "=select" },
+        scope: { Select: "=select", ShouldDisable: "=isSaving" },
         link: function (scope, element, attrs) {
+            $timeout(function () { element.focus(); }, 800);
+
             scope.$watch("Select", function (newValue) {
                 if (newValue) {
                     element.select();
                     element.focus();
                 }
-                scope.Select = false;               
+                scope.Select = false;
+            });
+            scope.$watch("ShouldDisable", function (newValue) {
+                if (newValue) {
+                    element.disable();
+                }
             });
         }
     };

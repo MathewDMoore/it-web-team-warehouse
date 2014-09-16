@@ -37,7 +37,6 @@
                 <div class="panel panel-info">
                     <div class="panel-heading">
                         <h3 style="margin: 5px 0px; display: inline-block">Delivery Number: {{scan.Delivery.DeliveryNumber}} </h3>
-                        <div style="display: inline-block; margin-left: 30px; display: inline-block; -webkit-transform: rotate(-5deg);" class="verified" ng-class="{'text-success':scan.Delivery.IsVerified, 'text-danger':!scan.Delivery.IsVerified}"><i class="glyphicon" ng-class="{'glyphicon-check':scan.Delivery.IsVerified, 'glyphicon-remove-circle' : !scan.Delivery.IsVerified }"></i>{{scan.GetDeliveryStatus()}}</div>
                         <div style="float: right; position: relative; top: -5px;">
                             <div class="btn-group">
                                 <button class="btn btn-lg btn-primary">Export <i class="glyphicon glyphicon-export"></i></button>
@@ -52,7 +51,9 @@
                         </div>
                     </div>
                     <div class="panel-body">
-                        <div style="width: 200px; float: right; margin-bottom: 0px; text-align: center;" class="alert alert-success" ng-show="scan.IsScanComplete()">Scan Complete <i class="glyphicon glyphicon-check"></i></div>
+                      <div style="-webkit-transform: rotate(-5deg);position: absolute;right: 470px;margin-top: 13px;font-size: 34px;border: solid;border-radius: 8px;padding: 8px;border-style: solid;" class="verified" ng-class="{'text-success':scan.Delivery.IsVerified, 'text-danger':!scan.Delivery.IsVerified}"><i class="glyphicon" ng-class="{'glyphicon-check':scan.Delivery.IsVerified, 'glyphicon-remove-circle' : !scan.Delivery.IsVerified }"></i>{{scan.GetDeliveryStatus()}}</div>
+                        
+                          <div style="width: 200px; float: right; margin-bottom: 0px; text-align: center;" class="alert alert-success" ng-show="scan.IsScanComplete()">Scan Complete <i class="glyphicon glyphicon-check"></i></div>
                         <h3 style="margin-top: 0px;">Dealer: {{scan.Delivery.DealerName}}/<small>{{scan.Delivery.DealerId}}</small></h3>
                         <div ng-if="scan.Delivery.IsInternal" class="verified text-danger" style="float: right;">[ Internal Order ]</div>
                         <label>Address: {{scan.Delivery.Address}}</label><br />
@@ -67,7 +68,7 @@
                 <div style="float: left; margin-bottom: 20px;">
                     <label>Enter Serial Code: </label>
                     <div class="input-group" style="width: 328px">
-                        <input class="form-control" tabindex="-1" autofocus auto-select select="scan.SerialScanStatus.Select" ng-model="scan.SerialCodeLookUp" disable-me="scan.SavingItem" ng-blur="scan.VerifyLineitem(scan.SerialCodeLookUp)" />
+                        <input class="form-control" tabindex="-1" autofocus auto-select select="scan.SerialScanStatus.Select" ng-model="scan.SerialCodeLookUp" is-saving="scan.SavingItem" ng-blur="scan.VerifyLineitem(scan.SerialCodeLookUp)" ng-focus="scan.ShouldFocus" />
                         <span class="input-group-addon"><i class="glyphicon glyphicon-search"></i></span>
                     </div>
                     <span class="text-info">{{scan.GetCurrentScan()}} of {{scan.GetScanTotals()}} Products Scanned</span>
