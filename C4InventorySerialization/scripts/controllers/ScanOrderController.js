@@ -231,7 +231,7 @@ app.controller("ScanController", function ($scope, $modal, $filter, $timeout, ng
     scan.ClearDelivery = function (docNumber) {
 
         var modalInstance = $modal.open({
-            templateUrl: '/scripts/templates/ClearDeliveryModal.html',
+            templateUrl: '../scripts/templates/ClearDeliveryModal.html',
             controller: ClearModalCtrl,
             resolve: {
                 docNum: function () {
@@ -257,7 +257,7 @@ app.controller("ScanController", function ($scope, $modal, $filter, $timeout, ng
     scan.ReturnDelivery = function (delivery) {
 
         var modalInstance = $modal.open({
-            templateUrl: '/scripts/templates/ReturnDeliveryModal.html',
+            templateUrl: '../scripts/templates/ReturnDeliveryModal.html',
             controller: ReturnDeliveryModalCtrl,
             resolve: {
                 docNum: function () {
@@ -305,7 +305,7 @@ app.controller("ScanController", function ($scope, $modal, $filter, $timeout, ng
 
 
 
-            if ((matched.SmartCodeOnly && matched.NoSerialRequired) || (matched.SmartCodeOnly && !matched.NoSerialRequired)) {
+            if ((!matched.SmartCodeOnly && !matched.NoSerialRequired) || (matched.SmartCodeOnly && !matched.NoSerialRequired)) {
 
                 var modifiedMac = null;
 
@@ -323,7 +323,7 @@ app.controller("ScanController", function ($scope, $modal, $filter, $timeout, ng
                 else { modifiedMac = serialCode; }
 
 
-                var isUnique = matched.SmartCodeOnly && matched.NoSerialRequired;
+                var isUnique = !matched.SmartCodeOnly && !matched.NoSerialRequired;
 
                 var deliveryItem = { IsInternal: scan.Delivery.IsInternal, SerialCode: serialCode, MacId: modifiedMac, Id: matched.Id, ProductGroup: matched.ProductGroup, IsUnique: isUnique };
                 ScanOrderService.SaveDeliveryItem(deliveryItem).then(function (result) {
@@ -406,7 +406,7 @@ app.controller("ScanController", function ($scope, $modal, $filter, $timeout, ng
     };
     scan.VerifyDelivery = function (docNum) {
         var modalInstance = $modal.open({
-            templateUrl: '/scripts/templates/VerifyDeliveryModal.html',
+            templateUrl: '../scripts/templates/VerifyDeliveryModal.html',
             controller: VerifyModalCtrl,
             resolve: {
                 docNum: function () {
@@ -484,11 +484,11 @@ app.controller("ScanController", function ($scope, $modal, $filter, $timeout, ng
     scan.IsScanComplete = function () {
         var notScannedValid = _.find(scan.Delivery.NotScannedItems, function (item) {
 
-            return (item.SmartCodeOnly && item.NoSerialRequired) || (item.SmartCodeOnly && !item.NoSerialRequired);
+            return (item.SmartCodeOnly != null && item.NoSerialRequired != null) || item.SmartCodeOnly && item.NoSerialRequired || (item.SmartCodeOnly && !item.NoSerialRequired) ;
         }) == null;
 
         var noActiveKits = (scan.Delivery.ActiveKits == undefined || scan.Delivery.ActiveKits && scan.Delivery.ActiveKits.length == 0);
-
+        
         return notScannedValid && noActiveKits;
     }
     scan.GetDeliveryStatusText = function () {
