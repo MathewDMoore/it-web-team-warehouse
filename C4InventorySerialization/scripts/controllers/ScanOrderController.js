@@ -307,7 +307,7 @@ app.controller("ScanController", function ($scope, $modal, $filter, $timeout, ng
 
                 var modifiedMac = null;
 
-                if ((matched.SmartCodeOnly && !matched.NoSerialRequired)) {
+                if ((!matched.SmartCodeOnly && !matched.NoSerialRequired)) {
                     modifiedMac = serialCode.substring(0, serialCode.length - 17);
 
                     if (modifiedMac.length != 12) {
