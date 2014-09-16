@@ -40,7 +40,7 @@
                         <div style="float: right; position: relative; top: -5px;">
                             <div class="btn-group">
                                 <button class="btn btn-lg btn-primary">Export <i class="glyphicon glyphicon-export"></i></button>
-                                <button type="button" class="btn btn-lg btn-primary dropdown-toggle" style="height:46px;" data-toggle="dropdown">
+                                <button type="button" class="btn btn-lg btn-primary dropdown-toggle" style="height: 46px;" data-toggle="dropdown">
                                     <span class="caret" style="font-size: 20px"></span>
                                 </button>
                                 <ul class="dropdown-menu" role="menu">
@@ -50,10 +50,9 @@
                             </div>
                         </div>
                     </div>
-                    <div class="panel-body">
-                      <div style="-webkit-transform: rotate(-5deg);position: absolute;right: 470px;margin-top: 13px;font-size: 34px;border: solid;border-radius: 8px;padding: 8px;border-style: solid;" class="verified" ng-class="{'text-success':scan.Delivery.IsVerified, 'text-danger':!scan.Delivery.IsVerified}"><i class="glyphicon" ng-class="{'glyphicon-check':scan.Delivery.IsVerified, 'glyphicon-remove-circle' : !scan.Delivery.IsVerified }"></i>{{scan.GetDeliveryStatus()}}</div>
-                        
-                          <div style="width: 200px; float: right; margin-bottom: 0px; text-align: center;" class="alert alert-success" ng-show="scan.IsScanComplete()">Scan Complete <i class="glyphicon glyphicon-check"></i></div>
+                    <div class="panel-body" style="max-height: 215px;">
+
+                        <div style="width: 200px; float: right; margin-bottom: 0px; text-align: center;" class="alert alert-success" ng-show="scan.IsScanComplete()">Scan Complete <i class="glyphicon glyphicon-check"></i></div>
                         <h3 style="margin-top: 0px;">Dealer: {{scan.Delivery.DealerName}}/<small>{{scan.Delivery.DealerId}}</small></h3>
                         <div ng-if="scan.Delivery.IsInternal" class="verified text-danger" style="float: right;">[ Internal Order ]</div>
                         <label>Address: {{scan.Delivery.Address}}</label><br />
@@ -63,6 +62,8 @@
                             <button class="btn btn-danger" id="clearDelivery" ng-click="scan.ClearDelivery(scan.Delivery.DeliveryNumber)">Clear Delivery</button>
                             <button class="btn btn-success" id="VerifiedDelivery" ng-disabled="scan.Delivery.IsVerified || !scan.IsScanComplete()" ng-click="scan.VerifyDelivery(scan.Delivery.DeliveryNumber)">Verify Delivery</button>
                         </div>
+                        <div style="-webkit-transform: rotate(-5deg);position: relative;left: 408px;font-size: 34px;border: solid;border-radius: 8px;padding: 8px;border-style: solid;display: inline-block;top: -72px;" class="verified" ng-class="{'text-success':scan.Delivery.IsVerified, 'text-danger':!scan.Delivery.IsVerified}"><i class="glyphicon" ng-class="{'glyphicon-check':scan.Delivery.IsVerified, 'glyphicon-remove-circle' : !scan.Delivery.IsVerified }"></i>{{scan.GetDeliveryStatus()}}</div>
+
                     </div>
                 </div>
                 <div style="float: left; margin-bottom: 20px;">
