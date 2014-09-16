@@ -364,8 +364,10 @@ app.controller("ScanController", function ($scope, $modal, $filter, $timeout, ng
         } else {
 
             scan.SavingItem = false;
-            scan.Delivery.NotScannedItems.pushed(matched);
-            scan.Delivery.$save();
+            if(matched) {
+                scan.Delivery.NotScannedItems.pushed(matched);
+                scan.Delivery.$save();
+            }
             if (scan.ActiveKit == null) {
                 scan.SerialScanStatus = { Success: false, Message: "No items found that match that Serial Code. Verify Serial Code and try again", Select: true };
             } else {
