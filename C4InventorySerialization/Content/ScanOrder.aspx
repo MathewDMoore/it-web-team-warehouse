@@ -1,4 +1,5 @@
 ﻿<%@ Page Language="C#" MasterPageFile="~/Master/Redesign.master" AutoEventWireup="true" CodeBehind="ScanOrder.aspx.cs" Inherits="C4InventorySerialization.Content.ScanOrder1" %>
+<%@ Import Namespace="ApplicationSource" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="MainContent" runat="server">
     <script type="text/javascript" src="/scripts/underscore-min.js"></script>
@@ -11,6 +12,7 @@
         var app = angular.module("shipApp");
         app.constant("AUTH_TOKEN", "<%=Token%>");
         app.constant("CURRENTUSER", "<%=User.Identity.Name%>");
+        app.constant("SERVICES_PATH", "/ship/services/");
     </script>
     <div style="min-height: 140px;">
         <h2>Deliveries</h2>
