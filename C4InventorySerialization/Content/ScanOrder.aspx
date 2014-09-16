@@ -50,7 +50,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="panel-body" style="max-height: 215px;">
+                    <div class="panel-body" style="max-height: 160px;">
 
                         <div style="width: 200px; float: right; margin-bottom: 0px; text-align: center;" class="alert alert-success" ng-show="scan.IsScanComplete()">Scan Complete <i class="glyphicon glyphicon-check"></i></div>
                         <h3 style="margin-top: 0px;">Dealer: {{scan.Delivery.DealerName}}/<small>{{scan.Delivery.DealerId}}</small></h3>
@@ -62,7 +62,7 @@
                             <button class="btn btn-danger" id="clearDelivery" ng-click="scan.ClearDelivery(scan.Delivery.DeliveryNumber)">Clear Delivery</button>
                             <button class="btn btn-success" id="VerifiedDelivery" ng-disabled="scan.Delivery.IsVerified || !scan.IsScanComplete()" ng-click="scan.VerifyDelivery(scan.Delivery.DeliveryNumber)">Verify Delivery</button>
                         </div>
-                        <div style="-webkit-transform: rotate(-5deg);position: relative;left: 408px;font-size: 34px;border: solid;border-radius: 8px;padding: 8px;border-style: solid;display: inline-block;top: -72px;" class="verified" ng-class="{'text-success':scan.Delivery.IsVerified, 'text-danger':!scan.Delivery.IsVerified}"><i class="glyphicon" ng-class="{'glyphicon-check':scan.Delivery.IsVerified, 'glyphicon-remove-circle' : !scan.Delivery.IsVerified }"></i>{{scan.GetDeliveryStatus()}}</div>
+                        <div style="-webkit-transform: rotate(-5deg); position: relative; left: 408px; font-size: 32px; border: solid; border-radius: 8px; padding: 8px; border-style: solid; display: inline-block; top: -65px;" class="verified" ng-class="{'text-success':scan.Delivery.IsVerified, 'text-danger':!scan.Delivery.IsVerified}"><i class="glyphicon" ng-class="{'glyphicon-check':scan.Delivery.IsVerified, 'glyphicon-remove-circle' : !scan.Delivery.IsVerified }"></i>{{scan.GetDeliveryStatus()}}</div>
 
                     </div>
                 </div>
