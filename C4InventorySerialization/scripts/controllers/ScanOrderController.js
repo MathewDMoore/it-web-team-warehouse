@@ -484,7 +484,7 @@ app.controller("ScanController", function ($scope, $modal, $filter, $timeout, ng
     scan.IsScanComplete = function () {
         var notScannedValid = _.find(scan.Delivery.NotScannedItems, function (item) {
 
-            return ( !item.ProductId || item.SmartCodeOnly && item.NoSerialRequired || (item.SmartCodeOnly && !item.NoSerialRequired) );
+            return ( item.ProductId || item.SmartCodeOnly && item.NoSerialRequired || (item.SmartCodeOnly && !item.NoSerialRequired) );
         }) == null;
 
         var noActiveKits = (scan.Delivery.ActiveKits == undefined || scan.Delivery.ActiveKits && scan.Delivery.ActiveKits.length == 0);

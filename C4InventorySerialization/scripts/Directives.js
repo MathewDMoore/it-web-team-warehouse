@@ -29,9 +29,8 @@ Directives.directive('onEnter', function () {
                 scope.Select = false;
             });
             scope.$watch("ShouldDisable", function (newValue) {
-                if (newValue) {
-                    element.disable();
-                }
+                    element.disabled = newValue;
+                
             });
         }
     };
