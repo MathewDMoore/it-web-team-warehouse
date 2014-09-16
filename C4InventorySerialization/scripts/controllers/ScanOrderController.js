@@ -344,6 +344,9 @@ app.controller("ScanController", function ($scope, $modal, $filter, $timeout, ng
                         matched.IsSelected = false;
                         scan.SerialCodeLookUp = null;
                         scan.Delivery.$save();
+                        if (scan.IsScanComplete() && !scan.Delivery.IsVerified) {
+                            scan.VerifyDelivery(scan.Delivery.DeliveryNumber);
+                        }
                         //                            $timeout(function () {
                         //                                scan.TableParams.reload();
                         //                                scan.TableParams2.reload();
