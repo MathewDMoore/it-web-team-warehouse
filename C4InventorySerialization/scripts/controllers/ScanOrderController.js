@@ -358,7 +358,9 @@ app.controller("ScanController", function ($scope, $modal, $filter, $timeout, ng
                     } else {
                         scan.SerialScanStatus = { Success: false, Message: result.data.ErrorMessage + result.data.ErrorDeliveryNumber, Select: true };
                         scan.IsSearching = false;
-                        scan.Delivery.NotScannedItems.push(matched);
+                        if (!scan.Delivery.NotScannedItems) {
+                            scan.Delivery.NotScannedItems.push(matched);
+                        }                       
                         scan.Delivery.$save();
                     }
                 });
