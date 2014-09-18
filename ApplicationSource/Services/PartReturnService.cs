@@ -37,7 +37,7 @@ namespace ApplicationSource.Services
                                         CommandType = CommandType.StoredProcedure
                                     };
                                 sCmd.Parameters.Add("@MACID", SqlDbType.NVarChar);
-                                sCmd.Parameters["@MACID"].Value = item.SmartCode;
+                                sCmd.Parameters["@MACID"].Value = item.MacId;
                                 sCmd.Parameters.Add("@USERNAME", SqlDbType.NVarChar);
                                 sCmd.Parameters["@USERNAME"].Value = _userName;
                                 using (IDataReader reader1 = sCmd.ExecuteReader())
