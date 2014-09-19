@@ -1,7 +1,7 @@
 ﻿var app = angular.module("shipApp");
-app.constant("FIREBASE_URL", "https://c4shiptool.firebaseio.com/");
-app.controller("ScanController", function ($scope, $modal, $filter, $timeout, ngTableParams, ScanOrderService, FirebaseDeliveryService, CURRENTUSER) {
-
+app.constant("FIREBASE_URL", "https://c4shiptool.firebaseio.com/dev/");
+app.controller("ScanController", function ($scope, $modal, $filter, $timeout, ngTableParams, ScanOrderService, FirebaseDeliveryService,ngAudio, CURRENTUSER) {
+    
     $scope.$watch('filter.$', function () {
         if (scan.Delivery && (scan.Delivery.ScannedItems || scan.Delivery.NotScannedItems)) {
             scan.TableParams.reload(); // TODO: Fix {scope: null} racecondition
@@ -10,6 +10,9 @@ app.controller("ScanController", function ($scope, $modal, $filter, $timeout, ng
         }
     });
     var scan = this;
+    _errorSound = function() {
+        ngAudio.play("/content/divehorn.mp3");
+    }
     $scope.$watch("scan.Delivery.ScannedItems", function (newValue, oldValue) {
         if (newValue != oldValue) {
             scan.TableParams2.reload();
@@ -40,25 +43,28 @@ app.controller("ScanController", function ($scope, $modal, $filter, $timeout, ng
 
     function _processKit(scanItem) {
         //Find Kit Items for SerialCode
-        var matchedKitItems = _.where(scan.Delivery.NotScannedItems, { KitId: scanItem.KitId, KitCounter: scanItem.KitCounter });
-        if (matchedKitItems.length > 0) {
-            //Initialize ActiveKit
-            if (scan.ActiveKit == null && scanItem.KitId > 0) {
-                scan.ActiveKit = [];
-                var newKit = { Key: CURRENTUSER, Value: [] };
-                _.each(matchedKitItems, function (item) {
-                    scan.Delivery.NotScannedItems.remove(item);
-                    if (item.SerialCode == undefined) {
-                        angular.extend(item, { SerialCode: null });
+        if (scan.ActiveKit == null && scanItem.KitId > 0) {
+            var matchedKitItems = _.where(scan.Delivery.NotScannedItems, { KitId: scanItem.KitId, KitCounter: scanItem.KitCounter });
+            if (matchedKitItems.length > 0) {
+                //Initialize ActiveKit
+                if (scan.ActiveKit == null && scanItem.KitId > 0) {
+                    scan.ActiveKit = [];
+                    var newKit = { Key: CURRENTUSER, Value: [] };
+                    _.each(matchedKitItems, function(item) {
+                        scan.Delivery.NotScannedItems.remove(item);
+                        if (item.SerialCode == undefined) {
+                            angular.extend(item, { SerialCode: null });
+                        }
+                        scan.ActiveKit.push(item);
+                    });
+                    scan.ActiveKit.push(scanItem);
+                    if (!scan.Delivery.ActiveKits) {
+                        newKit.Value = scan.ActiveKit;
+                        scan.Delivery.ActiveKits = [];
+                        scan.Delivery.ActiveKits.push(newKit);
                     }
-                    scan.ActiveKit.push(item);
-                });
-                if (!scan.Delivery.ActiveKits) {
-                    newKit.Value = scan.ActiveKit;
-                    scan.Delivery.ActiveKits = [];
-                    scan.Delivery.ActiveKits.push(newKit);
-                }
 
+                }
             }
         }
     }
@@ -292,7 +298,16 @@ app.controller("ScanController", function ($scope, $modal, $filter, $timeout, ng
         if (scan.ActiveKit != null && scan.ActiveKit.length > 0) {
             matched = _.find(scan.ActiveKit, function (match) { return match.ProductId == productId && match.Color == color && (!match.SerialCode || !match.ScannedBy); });
         } else {
-            matched = _.find(scan.Delivery.NotScannedItems, function (item) { return item.ProductId == productId && item.Color == color; });
+//            matched = _.find(scan.Delivery.NotScannedItems, function (item) { return item.ProductId == productId && item.Color == color; });
+           var matchedList = _.where(scan.Delivery.NotScannedItems, { ProductId: productId, Color: color });
+            if (matchedList.length > 0) {
+                var mixedBag = _.every(matchedList, function (item) { return item.KitCode > 0; })&& matchedList;
+                if (mixedBag) {
+                   
+                } else {
+                    matched = matchedList[0];
+                }                
+            }
             if (matched) {
                 scan.Delivery.NotScannedItems.remove(matched);
                 scan.Delivery.$save();
@@ -333,20 +348,18 @@ app.controller("ScanController", function ($scope, $modal, $filter, $timeout, ng
                         scan.Delivery.ScannedItems = scan.Delivery.ScannedItems || [];
                         matched.SerialCode = serialCode;
                         matched.ScannedBy = CURRENTUSER;
-
-                        _processKit(matched);
-
+                            _processKit(matched);
                         //Remove and Add non Kit Item to correct tables
                         if (scan.ActiveKit == null) {
                             scan.Delivery.ScannedItems.push(matched);
-                        }
-                        _cleanUpKit();
+                        } else { _cleanUpKit(); }
+                       
                         matched.IsSelected = false;
                         scan.SerialCodeLookUp = null;
                         scan.Delivery.$save();
-                        if (scan.IsScanComplete() && !scan.Delivery.IsVerified) {
-                            scan.VerifyDelivery(scan.Delivery.DeliveryNumber);
-                        }
+//                        if (scan.IsScanComplete() && !scan.Delivery.IsVerified) {
+//                            scan.VerifyDelivery(scan.Delivery.DeliveryNumber);
+//                        }
                         //                            $timeout(function () {
                         //                                scan.TableParams.reload();
                         //                                scan.TableParams2.reload();
@@ -374,8 +387,10 @@ app.controller("ScanController", function ($scope, $modal, $filter, $timeout, ng
                 scan.Delivery.$save();
             }
             if (scan.ActiveKit == null) {
+                _errorSound();
                 scan.SerialScanStatus = { Success: false, Message: "No items found that match that Serial Code. Verify Serial Code and try again", Select: true };
             } else {
+                _errorSound();
                 scan.SerialScanStatus = { Success: false, Message: "No items found in the current kit that match this serial number. Please scan a serial code that matches the products in the current kit.", Select: true };
 
             }
@@ -408,6 +423,22 @@ app.controller("ScanController", function ($scope, $modal, $filter, $timeout, ng
                 }
             });
         }
+    };
+    scan.ClearUpScanConfusion = function(mixedBag) {
+        var modalInstance = $modal.open({
+            templateUrl: '../scripts/templates/confusingModal.html',
+            controller: ConfusingCtrl,
+            resolve: {
+                MixedBag: function () {
+                    return mixedBag;
+                }
+            }
+        });
+        modalInstance.result.then(function (matchedItem) {
+            
+        }, function () {
+            //$log.info('Modal dismissed at: ' + new Date());
+        });
     };
     scan.VerifyDelivery = function (docNum) {
         var modalInstance = $modal.open({
@@ -549,6 +580,17 @@ app.controller("ScanController", function ($scope, $modal, $filter, $timeout, ng
             $modalInstance.dismiss('cancel');
         };
     };
+
+    function ConfusingCtrl($scope, $modalInstance, MixedBag) {
+        $scope.Items = MixedBag;
+        $scope.ok = function (item) {
+            $modalInstance.close(item);
+        };
+
+        $scope.cancel = function () {
+            $modalInstance.dismiss('cancel');
+        };
+    }
 
     Array.prototype.remove = function (elem) {
         var match = -1;

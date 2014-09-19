@@ -1,0 +1,13 @@
+﻿<div class="modal-header">
+    <h3 class="modal-title">Clarify Scanning Item: {{DocNum}}</h3>
+</div>
+<div class="modal-body">
+    The item you scanned was found on various kits please pick the correct kit or treat as a non-kit item.
+    <div>
+        <button ng-repeat="item in Items">{{item.KitCode ===0? item.AltText:item.AltText +'Kit:'+item.KitCode}}</button>
+    </div>
+</div>
+<div class="modal-footer">
+    <button class="btn btn-primary" ng-click="ok()" autofocus="">OK</button>
+    <button class="btn btn-default" ng-click="cancel()">Cancel</button>
+</div>

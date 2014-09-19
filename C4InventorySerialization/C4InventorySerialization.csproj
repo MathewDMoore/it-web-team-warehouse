@@ -131,6 +131,7 @@
     <Content Include="scripts\libs\angular-bootstrap\ui-bootstrap-tpls.min.js" />
     <Content Include="scripts\libs\angular-bootstrap\ui-bootstrap.js" />
     <Content Include="scripts\libs\angular-bootstrap\ui-bootstrap.min.js" />
+    <Content Include="scripts\libs\angular.audio.js" />
     <Content Include="scripts\LogIn.js" />
     <Content Include="scripts\MaintainKits.js" />
     <Content Include="scripts\ng-table-export.js" />
@@ -144,6 +145,7 @@
     <Content Include="scripts\services\ScanOrderService.js" />
     <Content Include="scripts\shippingFilters.js" />
     <Content Include="scripts\ShipToolScript.js" />
+    <Content Include="scripts\templates\confusingModal.html" />
     <Content Include="scripts\templates\VerifyDeliveryModal.html" />
     <Content Include="scripts\templates\ClearDeliveryModal.html" />
     <Content Include="scripts\templates\ReturnDeliveryModal.html" />
