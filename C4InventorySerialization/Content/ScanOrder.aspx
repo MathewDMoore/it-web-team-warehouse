@@ -69,7 +69,7 @@
                 <div style="float: left; margin-bottom: 20px;">
                     <label>Enter Serial Code: </label>
                     <div class="input-group" style="width: 328px">
-                        <input class="form-control" tabindex="-1" autofocus auto-select select="scan.SerialScanStatus.Select" ng-model="scan.SerialCodeLookUp" is-saving="scan.SavingItem" ng-blur="scan.VerifyLineitem(scan.SerialCodeLookUp)" ng-focus="scan.ShouldFocus" />
+                        <input class="form-control" tabindex="-1" select="scan.SerialScanStatus.Select" ng-model="scan.SerialCodeLookUp" is-saving="scan.SavingItem" ng-blur="scan.VerifyLineitem(scan.SerialCodeLookUp)" ng-focus="scan.ShouldFocus" />
                         <span class="input-group-addon"><i class="glyphicon glyphicon-search"></i></span>
                     </div>
                     <span class="text-info">{{scan.GetCurrentScan()}} of {{scan.GetScanTotals()}} Products Scanned</span>
