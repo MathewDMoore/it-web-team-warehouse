@@ -301,7 +301,7 @@ app.controller("ScanController", function ($scope, $modal, $filter, $timeout, ng
             //            matched = _.find(scan.Delivery.NotScannedItems, function (item) { return item.ProductId == productId && item.Color == color; });
             var matchedListNotScanned = _.where(scan.Delivery.NotScannedItems, { ProductId: productId, Color: color });
             var matchedListScanned = _.where(scan.Delivery.ScannedItems, { ProductId: productId, Color: color });
-
+            var isMixed = matchedListNotScanned.length > 0 && _.find(matchedListScanned.length, function(item) { return item.Color == color && item.ProductId == productId; });
             if (matchedListNotScanned.length > 0) {
                 var notMixedBag = _.every(matchedListNotScanned, function (item) { return item.KitId == 0; }) && matchedListNotScanned;
                 if (!notMixedBag) {
@@ -314,7 +314,7 @@ app.controller("ScanController", function ($scope, $modal, $filter, $timeout, ng
                         return false;
                     }
                 } else {
-                    if (matchedListNotScanned.length > 0 && _.find(matchedListScanned.length, function(item) { return item.Color == color && item.ProductId == productId; })) {
+                    if (isMixed) {
                         scan.SavingItem = false;
                         scan.SerialScanStatus = { Success: false, Select: true, Message: "You have scanned in a code that does not have a single item in the order. Did you mean to scan a kit item?" };
                         return false;
