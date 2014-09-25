@@ -10,7 +10,8 @@ app.controller("ScanController", function ($scope, $modal, $filter, $timeout, ng
         }
     });
     var scan = this;
-    _errorSound = function () {
+    scan.Colors = ['#ffb81e', '#2a767d', '#3ebebe', '#d85927', '#c6b912', '#7e6591', '#ca4346', '#67773f', '#f49630', '#aa8965', '#4fa0bf', '#b9e1e5', '#ffb81e', '#2a767d', '#3ebebe', '#d85927', '#c6b912', '#7e6591', '#ca4346', '#67773f', '#f49630', '#aa8965', '#4fa0bf', '#b9e1e5'];
+    function _errorSound() {
         ngAudio.play("/content/divehorn.mp3");
     }
     $scope.$watch("scan.Delivery.ScannedItems", function (newValue, oldValue) {
@@ -69,13 +70,14 @@ app.controller("ScanController", function ($scope, $modal, $filter, $timeout, ng
         }
     }
 
+    scan.ChartData = {Chart:null};
+    scan.ChartFilter = {value:null,filter:null};
     scan.SavingItem = false;
     scan.LookUpIsInternal = false;
     scan.Username = null;
     scan.OrderIdLookUp = null;
     scan.Delivery = null;
     scan.TableParams = null;
-    scan.Data = [];
     scan.SerialScanStatus = null;
     scan.DeliveryActionMessage = null;
     scan.IsSearching = false;
@@ -180,9 +182,15 @@ app.controller("ScanController", function ($scope, $modal, $filter, $timeout, ng
                 scan.NotScannedFilter = null;
                 scan.ScannedFilter = null;
                 scan.IsSearching = false;
-
                 if (response.data) {
+
                     scan.Delivery = FirebaseDeliveryService.GetDelivery(response.data.DeliveryNumber);
+                    var chart = [];
+                    _.each(response.data.ChartData, function (item) {
+                        chart.push({ data: item.Value, label: item.Key +"("+item.Value+")"});
+                    });
+                    scan.ChartData.Chart = chart;
+                    
                     _.each(response.data.ScannedItems, function (item) {
                         angular.extend(item, { IsSelected: false });
                     });
@@ -205,7 +213,7 @@ app.controller("ScanController", function ($scope, $modal, $filter, $timeout, ng
                     if (activeKit && activeKit.length > 0) {
                         scan.ActiveKit = activeKit[0].Value;
                     }
-
+                    scan.ChartFilter.value = scan.GetScanTotals();
                     scan.Delivery.$save();
                     //                    $timeout(function () {
                     //                        scan.TableParams.reload();

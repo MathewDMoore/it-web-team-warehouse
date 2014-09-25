@@ -66,6 +66,10 @@ namespace ApplicationSource.Services
                         deliveryModel.ScannedItems.Add(model);
                     }
                 });
+                var dictionary = new Dictionary<string, int>();
+                var grouped = items.GroupBy(i => i.RealItemCode).ToList();
+                grouped.ForEach(g=>dictionary.Add(g.Key,g.Count()));
+                deliveryModel.ChartData = dictionary;
             }
             return deliveryModel;
         }

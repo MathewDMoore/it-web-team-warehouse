@@ -19,6 +19,9 @@ namespace ApplicationSource.Models
         public string Comments { get; set; }
         public string Error { get; set; }
         public bool IsInternal { get; set; }
+
+        public IDictionary<string, int> ChartData { get; set; }
+
         public List<DeliveryOrderItemModel> NotScannedItems { get; set; }
         public List<DeliveryOrderItemModel> ScannedItems { get; set; }
         public Dictionary<string, List<DeliveryOrderItemModel>> ActiveKits { get; set; }

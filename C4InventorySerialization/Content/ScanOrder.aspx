@@ -1,4 +1,5 @@
 ﻿<%@ Page Language="C#" MasterPageFile="~/Master/Redesign.master" AutoEventWireup="true" CodeBehind="ScanOrder.aspx.cs" Inherits="C4InventorySerialization.Content.ScanOrder1" %>
+
 <%@ Import Namespace="ApplicationSource" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="MainContent" runat="server">
@@ -14,6 +15,17 @@
         app.constant("CURRENTUSER", "<%=User.Identity.Name%>");
         app.constant("SERVICES_PATH", "/ship/services/");
     </script>
+    <!-- USED FOR EASY PIE CHARTS -->
+    <script src="/Scripts/libs/jquery.easypiechart.min.js"></script>
+
+    <script src="/Scripts/libs/jquery.flot.min.js"></script>
+    <script src="/Scripts/libs/jquery.flot.time.min.js"></script>
+    <script src="/Scripts/libs/jquery.flot.min.js"></script>
+    <script src="/Scripts/libs/jquery.flot.time.min.js"></script>
+    <script src="/Scripts/libs/jquery.flot.tooltip.min.js"></script>
+    <script src="/Scripts/libs/jquery.flot.resize.min.js"></script>
+    <script src="/Scripts/libs/jquery.flot.orderBars.js"></script>
+    <script src="/Scripts/libs/jquery.flot.pie.min.js"></script>
     <div style="min-height: 140px;">
         <h2>Deliveries</h2>
         <div ng-controller="ScanController as scan" class="well" ng-init="scan.Username='<%=User.Identity.Name %>'">
@@ -57,25 +69,36 @@
                         <div ng-if="scan.Delivery.IsInternal" class="verified text-danger" style="float: right;">[ Internal Order ]</div>
                         <label>Address: {{scan.Delivery.Address}}</label><br />
                         <label>Comments: {{scan.Delivery.Comments}}</label><br />
-                        <div style="float: right;margin-top:20px;">
+                        <div style="float: right; margin-top: 20px;">
                             <button class="btn btn-warning" id="returnDelivery" ng-click="scan.ReturnDelivery(scan.Delivery)">Return Entire Delivery</button>
                             <button class="btn btn-danger" id="clearDelivery" ng-click="scan.ClearDelivery(scan.Delivery.DeliveryNumber)">Clear Delivery</button>
                             <button class="btn btn-success" id="VerifiedDelivery" ng-disabled="scan.Delivery.IsVerified || !scan.IsScanComplete()" ng-click="scan.VerifyDelivery(scan.Delivery.DeliveryNumber)">Verify Delivery</button>
                         </div>
-                        <div style="-webkit-transform: rotate(-5deg);position: relative;left: 408px;font-size: 32px;border: solid;border-radius: 8px;padding: 8px;border-style: solid;top: -80px;float: right;" class="verified" ng-class="{'text-success':scan.Delivery.IsVerified, 'text-danger':!scan.Delivery.IsVerified}"><i class="glyphicon" ng-class="{'glyphicon-check':scan.Delivery.IsVerified, 'glyphicon-remove-circle' : !scan.Delivery.IsVerified }"></i>{{scan.GetDeliveryStatus()}}</div>
+                        <div style="-webkit-transform: rotate(-5deg); position: relative; left: 408px; font-size: 32px; border: solid; border-radius: 8px; padding: 8px; border-style: solid; top: -80px; float: right;" class="verified" ng-class="{'text-success':scan.Delivery.IsVerified, 'text-danger':!scan.Delivery.IsVerified}"><i class="glyphicon" ng-class="{'glyphicon-check':scan.Delivery.IsVerified, 'glyphicon-remove-circle' : !scan.Delivery.IsVerified }"></i>{{scan.GetDeliveryStatus()}}</div>
 
+                    </div>
+                </div>
+                <div ng-show="false" class="animate-show">
+                    <div id="donut-container" class="onethird" style="margin-right: 20px;">
+                        <div class="well" style="width:50%;">
+                            <div>
+                                <button class="btn pull-right" ng-if="scan.Filtered"><i class="glyphicon glyphicon-arrow-left"></i></button>
+                                <h2>Item Types</h2>
+                                <pie-chart data="scan.ChartData" colors="{{scan.Colors}}" filter="scan.ChartFilter"></pie-chart>
+                            </div>
+                        </div>
                     </div>
                 </div>
                 <div style="float: left; margin-bottom: 20px;">
                     <label>Enter Serial Code: </label>
                     <div class="input-group" style="width: 328px">
-                        <input class="form-control" tabindex="-1" select="scan.SerialScanStatus.Select" ng-model="scan.SerialCodeLookUp" is-saving="scan.SavingItem" ng-blur="scan.VerifyLineitem(scan.SerialCodeLookUp)" ng-focus="scan.ShouldFocus" />
+                        <input class="form-control" auto-select select="scan.SerialScanStatus.Select" ng-model="scan.SerialCodeLookUp" is-saving="scan.SavingItem" ng-blur="scan.VerifyLineitem(scan.SerialCodeLookUp)" ng-focus="scan.ShouldFocus" />
                         <span class="input-group-addon"><i class="glyphicon glyphicon-search"></i></span>
                     </div>
                     <span class="text-info">{{scan.GetCurrentScan()}} of {{scan.GetScanTotals()}} Products Scanned</span>
                 </div>
                 <div class="alert" style="width: 600px; float: left; margin-left: 10px; position: relative; top: 14px;" ng-class="{'alert-danger':!scan.SerialScanStatus.Success, 'alert-success':scan.SerialScanStatus.Success}" ng-show="scan.SerialScanStatus && scan.SerialScanStatus.Message">&nbsp;&nbsp;{{scan.SerialScanStatus.Message}}</div>
-                <div style="width: 200px; float: right; margin-bottom: 0px; text-align: center;" class="alert alert-success" ng-show="scan.IsScanComplete()" >Scan Complete<i class="glyphicon glyphicon-check"></i></div>
+                <div style="width: 200px; float: right; margin-bottom: 0px; text-align: center;" class="alert alert-success" ng-show="scan.IsScanComplete()">Scan Complete<i class="glyphicon glyphicon-check"></i></div>
                 <style>
                     .table .header {
                         text-align: left;
