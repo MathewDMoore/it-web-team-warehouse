@@ -304,9 +304,9 @@ app.controller("ScanController", function ($scope, $modal, $filter, $timeout, ng
             var matchedListScanned = _.where(scan.Delivery.ScannedItems, { ProductId: productId, Color: color });
             var itemList = _.union(matchedListNotScanned, matchedListScanned);
             //find if there are single items
-            var singleItemsExist = _.contains(itemList, function (item) { return item.KitId === 0; });
+            var singleItemsExist = _.find(itemList, function (item) { return item.KitId === 0; });
             //find if there are kit items
-            var kitItemsExist = _.contains(itemList, function (item) { return item.KitId > 0; });
+            var kitItemsExist = _.find(itemList, function (item) { return item.KitId > 0; });
             //Do items exist in both single and kit items? Then isMixed = true;
             var isMixed = singleItemsExist && kitItemsExist;
 
@@ -326,8 +326,8 @@ app.controller("ScanController", function ($scope, $modal, $filter, $timeout, ng
                     }
                 } else {
                     //Determine if the item is the primary key.
-                    var isPrimary = false;
-                    if (!isPrimary) {
+                    matched = _.find(scan.Delivery.NotScannedItems, function (item) { return item.ProductId == productId && item.Color == color; });
+                    if (matched.ItemCode != matched.RealItemCode) {
                         //Its not primary, force them to scan primary
                         scan.SavingItem = false;
                         scan.SerialScanStatus = { Success: false, Select: true, Message: "You have scanned in a code that does not have a single item in the order. Did you mean to scan a kit item?" };
