@@ -302,17 +302,17 @@ app.controller("ScanController", function ($scope, $modal, $filter, $timeout, ng
             var matchedListNotScanned = _.where(scan.Delivery.NotScannedItems, { ProductId: productId, Color: color });
             //find all matches in the scanned table
             var matchedListScanned = _.where(scan.Delivery.ScannedItems, { ProductId: productId, Color: color });
+            var itemList = _.union(matchedListNotScanned, matchedListScanned);
             //find if there are single items
-            var singleItemsExist = false;
+            var singleItemsExist = _.contains(itemList, function (item) { return item.KitId === 0; });
             //find if there are kit items
-            var kitItemsExist = false;
+            var kitItemsExist = _.contains(itemList, function (item) { return item.KitId > 0; });
             //Do items exist in both single and kit items? Then isMixed = true;
-            var isMixed = false;
-            
+            var isMixed = singleItemsExist && kitItemsExist;
+
             if (matchedListNotScanned.length > 0) {
                 //Delete this and in the if statement call isMixed
-                var mixedBag = _.every(matchedListNotScanned, function (item) { return item.KitId == 0; });
-                if (mixedBag) {
+                if (isMixed) {
                     //We know the item is mixed, so find if it has a single item that is scannable
                     var containsSingle = _.find(matchedListNotScanned, function (item) { return item.KitId == 0; });
                     if (containsSingle) {
@@ -325,13 +325,15 @@ app.controller("ScanController", function ($scope, $modal, $filter, $timeout, ng
                         return false;
                     }
                 } else {
-                    if (isMixed) {
-                        //This logic check should change, but essentially it still exists in a kit and we 
-                        //need to scan the primary item first
+                    //Determine if the item is the primary key.
+                    var isPrimary = false;
+                    if (!isPrimary) {
+                        //Its not primary, force them to scan primary
                         scan.SavingItem = false;
                         scan.SerialScanStatus = { Success: false, Select: true, Message: "You have scanned in a code that does not have a single item in the order. Did you mean to scan a kit item?" };
                         return false;
-                    } else {
+                    }
+                    else {
                         //Item is a primary key, SAVE IT!
                         matched = matchedListNotScanned[0];
                         scan.VerifyAndSaveScan(serialCode, matched);
