@@ -79,12 +79,12 @@ namespace C4InventorySerialization
             // Do whatever with the exception here.
 
         }
-
+            
         protected void Session_End(object sender, EventArgs e)
         {
             Context.Request.Cookies.Clear();
             Context.Response.Cookies.Clear();
-            Session.Clear();
+            Session.Clear();    
             Session.RemoveAll();
             Session.Abandon();
             

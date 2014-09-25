@@ -299,19 +299,37 @@ app.controller("ScanController", function ($scope, $modal, $filter, $timeout, ng
             scan.VerifyAndSaveScan(serialCode, matched);
         } else {
             //            matched = _.find(scan.Delivery.NotScannedItems, function (item) { return item.ProductId == productId && item.Color == color; });
-            var matchedList = _.where(scan.Delivery.NotScannedItems, { ProductId: productId, Color: color });
-            if (matchedList.length > 0) {
-                var mixedBag = _.every(matchedList, function (item) { return item.KitId > 0; }) && matchedList;
-                if (mixedBag) {
-                    scan.ClearUpScanConfusion(serialCode, _.groupBy(matchedList, function (item) { return item.ItemCode; }));
+            var matchedListNotScanned = _.where(scan.Delivery.NotScannedItems, { ProductId: productId, Color: color });
+            var matchedListScanned = _.where(scan.Delivery.ScannedItems, { ProductId: productId, Color: color });
+
+            if (matchedListNotScanned.length > 0) {
+                var notMixedBag = _.every(matchedListNotScanned, function (item) { return item.KitId == 0; }) && matchedListNotScanned;
+                if (!notMixedBag) {
+                    var containsSingle = _.find(matchedListNotScanned, function (item) { return item.KitId == 0; });
+                    if (containsSingle) {
+                        scan.VerifyAndSaveScan(serialCode, containsSingle);
+                    } else {
+                        scan.SavingItem = false;
+                        scan.SerialScanStatus = { Success: false, Select: true, Message: "You have scanned in a code that does not have a single item in the order. Did you mean to scan a kit item?" };
+                        return false;
+                    }
                 } else {
-                    matched = matchedList[0];
-                    scan.VerifyAndSaveScan(serialCode, matched);
-                }
+                    if (matchedListNotScanned.length > 0 && _.find(matchedListScanned.length, function(item) { return item.Color == color && item.ProductId == productId; })) {
+                        scan.SavingItem = false;
+                        scan.SerialScanStatus = { Success: false, Select: true, Message: "You have scanned in a code that does not have a single item in the order. Did you mean to scan a kit item?" };
+                        return false;
+                    } else {
+                        matched = matchedListNotScanned[0];
+                        scan.VerifyAndSaveScan(serialCode, matched);
+                    }
+                };
+            } else {
+                scan.SavingItem = false;
+                scan.SerialScanStatus = { Success: false, Select: true, Message: "Item not found on order." };
+                return false;
             }
         }
     };
-
     scan.VerifyAndSaveScan = function (serialCode, matched) {
 
         if (serialCode && matched) {
@@ -405,7 +423,7 @@ app.controller("ScanController", function ($scope, $modal, $filter, $timeout, ng
         return selected.length > 0;
     };
     scan.ReturnSelectedItems = function () {
-        var selected = _.where(scan.Delivery.ScannedItems, { IsSelected: true });
+        var selected = _.where(scan.Delivery.ScannedItems, { IsSelected: true }); z
         scan.Delivery.NotScannedItems = scan.Delivery.NotScannedItems || [];
         if (selected.length > 0) {
             var ids = _.pluck(selected, 'Id');
@@ -419,36 +437,31 @@ app.controller("ScanController", function ($scope, $modal, $filter, $timeout, ng
                         scan.Delivery.NotScannedItems.push(item);
                     });
                     scan.Delivery.$save();
-                    //                    $timeout(function () {
-                    //                        scan.TableParams.reload();
-                    //                        scan.TableParams2.reload();
-                    //                        //                        scan.TableParams3.reload();
-                    //                    }, 500);
                 }
             });
         }
-    };
-    scan.ClearUpScanConfusion = function (serialCode, mixedBag) {
-        var modalInstance = $modal.open({
-            templateUrl: '../scripts/templates/confusingModal.html',
-            controller: ConfusingCtrl,
-            resolve: {
-                MixedBag: function () {
-                    return mixedBag;
-                }
-            }
-        });
-        scan.SerialScanStatus = null;
-        scan.SavingItem = false;
-        modalInstance.result.then(function (matchedItem) {
-            scan.VerifyAndSaveScan(serialCode, _.find(mixedBag[matchedItem], function (item) {
-                return item.ItemCode === matchedItem;
-            }));
+    }; //TODO: Remove 
+    //scan.ClearUpScanConfusion = function (serialCode, mixedBag) {
+    //    var modalInstance = $modal.open({
+    //        templateUrl: '../scripts/templates/confusingModal.html',
+    //        controller: ConfusingCtrl,
+    //        resolve: {
+    //            MixedBag: function () {
+    //                return mixedBag;
+    //            }
+    //        }
+    //    });
+    //    scan.SerialScanStatus = null;
+    //    scan.SavingItem = false;
+    //    modalInstance.result.then(function (matchedItem) {
+    //        scan.VerifyAndSaveScan(serialCode, _.find(mixedBag[matchedItem], function (item) {
+    //            return item.ItemCode === matchedItem;
+    //        }));
 
-        }, function () {
-            //$log.info('Modal dismissed at: ' + new Date());
-        });
-    };
+    //    }, function () {
+    //        //$log.info('Modal dismissed at: ' + new Date());
+    //    });
+    //};
     scan.VerifyDelivery = function (docNum) {
         var modalInstance = $modal.open({
             templateUrl: '../scripts/templates/VerifyDeliveryModal.html',
@@ -590,25 +603,25 @@ app.controller("ScanController", function ($scope, $modal, $filter, $timeout, ng
             $modalInstance.dismiss('cancel');
         };
     };
+    //TODO: Remove
+    //function ConfusingCtrl($scope, $modalInstance, MixedBag) {
+    //    $scope.Items = Object.keys(MixedBag);
+    //    $scope.HasNonKit = _.find(MixedBag, function (kit) {
+    //        return _.find(kit, function (item) {
+    //            return item.KitId === 0;
+    //        }) != null;
+    //    });
+    //    $scope.ok = function (item) {
+    //        console.log("Ok!");
+    //        $modalInstance.close(item);
 
-    function ConfusingCtrl($scope, $modalInstance, MixedBag) {
-        $scope.Items = Object.keys(MixedBag);
-        $scope.HasNonKit = _.find(MixedBag, function (kit) {
-            return _.find(kit, function (item) {
-                return item.KitId === 0;
-            }) != null;
-        });
-        $scope.ok = function (item) {
-            console.log("Ok!");
-            $modalInstance.close(item);
+    //    };
 
-        };
-
-        $scope.cancel = function () {
-            console.log("Cancelled!");
-            $modalInstance.dismiss('cancel');
-        };
-    }
+    //    $scope.cancel = function () {
+    //        console.log("Cancelled!");
+    //        $modalInstance.dismiss('cancel');
+    //    };
+    //}
 
     Array.prototype.remove = function (elem) {
         var match = -1;
