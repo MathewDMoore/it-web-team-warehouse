@@ -12,7 +12,7 @@ app.controller("ScanController", function ($scope, $modal, $filter, $timeout, ng
     var scan = this;
     scan.Colors = ['#ffb81e', '#2a767d', '#3ebebe', '#d85927', '#c6b912', '#7e6591', '#ca4346', '#67773f', '#f49630', '#aa8965', '#4fa0bf', '#b9e1e5', '#ffb81e', '#2a767d', '#3ebebe', '#d85927', '#c6b912', '#7e6591', '#ca4346', '#67773f', '#f49630', '#aa8965', '#4fa0bf', '#b9e1e5'];
     function _errorSound() {
-        ngAudio.play("/content/divehorn.mp3");
+        ngAudio.play("/content/beep.mp3");
     }
     $scope.$watch("scan.Delivery.ScannedItems", function (newValue, oldValue) {
         if (newValue != oldValue) {
@@ -81,6 +81,7 @@ app.controller("ScanController", function ($scope, $modal, $filter, $timeout, ng
     scan.SerialScanStatus = null;
     scan.DeliveryActionMessage = null;
     scan.IsSearching = false;
+    scan.ShouldFocus = false;
     scan.TableParams = new ngTableParams({
         page: 1, // show first page
         count: 10, // count per page

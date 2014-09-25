@@ -108,6 +108,7 @@
     <Reference Include="System.Xml.Linq" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Content\beep.mp3" />
     <Content Include="Content\DuplicateMacReport.aspx" />
     <Content Include="Content\Returns.aspx" />
     <Content Include="Content\ScanOrder.aspx" />
