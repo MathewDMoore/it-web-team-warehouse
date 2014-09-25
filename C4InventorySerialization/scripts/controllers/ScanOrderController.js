@@ -298,32 +298,47 @@ app.controller("ScanController", function ($scope, $modal, $filter, $timeout, ng
             matched = _.find(scan.ActiveKit, function (match) { return match.ProductId == productId && match.Color == color && (!match.SerialCode || !match.ScannedBy); });
             scan.VerifyAndSaveScan(serialCode, matched);
         } else {
-            //            matched = _.find(scan.Delivery.NotScannedItems, function (item) { return item.ProductId == productId && item.Color == color; });
+            //Find all matches in the not scanned table
             var matchedListNotScanned = _.where(scan.Delivery.NotScannedItems, { ProductId: productId, Color: color });
+            //find all matches in the scanned table
             var matchedListScanned = _.where(scan.Delivery.ScannedItems, { ProductId: productId, Color: color });
-            var isMixed = matchedListNotScanned.length > 0 && _.find(matchedListScanned.length, function(item) { return item.Color == color && item.ProductId == productId; });
+            //find if there are single items
+            var singleItemsExist = false;
+            //find if there are kit items
+            var kitItemsExist = false;
+            //Do items exist in both single and kit items? Then isMixed = true;
+            var isMixed = false;
+            
             if (matchedListNotScanned.length > 0) {
-                var notMixedBag = _.every(matchedListNotScanned, function (item) { return item.KitId == 0; }) && matchedListNotScanned;
-                if (!notMixedBag) {
+                //Delete this and in the if statement call isMixed
+                var mixedBag = _.every(matchedListNotScanned, function (item) { return item.KitId == 0; });
+                if (mixedBag) {
+                    //We know the item is mixed, so find if it has a single item that is scannable
                     var containsSingle = _.find(matchedListNotScanned, function (item) { return item.KitId == 0; });
                     if (containsSingle) {
+                        //Found a single item that is scannable, SAVE IT!
                         scan.VerifyAndSaveScan(serialCode, containsSingle);
                     } else {
+                        //No more single items found, item must be in a kit because it still exists in the NotScannedTable
                         scan.SavingItem = false;
                         scan.SerialScanStatus = { Success: false, Select: true, Message: "You have scanned in a code that does not have a single item in the order. Did you mean to scan a kit item?" };
                         return false;
                     }
                 } else {
                     if (isMixed) {
+                        //This logic check should change, but essentially it still exists in a kit and we 
+                        //need to scan the primary item first
                         scan.SavingItem = false;
                         scan.SerialScanStatus = { Success: false, Select: true, Message: "You have scanned in a code that does not have a single item in the order. Did you mean to scan a kit item?" };
                         return false;
                     } else {
+                        //Item is a primary key, SAVE IT!
                         matched = matchedListNotScanned[0];
                         scan.VerifyAndSaveScan(serialCode, matched);
                     }
                 };
             } else {
+                //Item code not found in not scanned table, or doesnt exist on order
                 scan.SavingItem = false;
                 scan.SerialScanStatus = { Success: false, Select: true, Message: "Item not found on order." };
                 return false;
