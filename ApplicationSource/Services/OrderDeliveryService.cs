@@ -67,7 +67,7 @@ namespace ApplicationSource.Services
                     }
                 });
                 var dictionary = new Dictionary<string, int>();
-                var grouped = items.GroupBy(i => i.RealItemCode).ToList();
+                var grouped = items.Where(i=>i.RealItemCode != null).GroupBy(i => i.RealItemCode).ToList();
                 grouped.ForEach(g=>dictionary.Add(g.Key,g.Count()));
                 deliveryModel.ChartData = dictionary;
             }
