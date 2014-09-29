@@ -501,6 +501,7 @@ app.controller("ScanController", function ($scope, $modal, $filter, $timeout, ng
         var modalInstance = $modal.open({
             templateUrl: '../scripts/templates/VerifyDeliveryModal.html',
             controller: VerifyModalCtrl,
+
             resolve: {
                 docNum: function () {
                     return docNum;

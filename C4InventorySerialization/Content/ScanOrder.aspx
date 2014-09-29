@@ -80,7 +80,7 @@
                 </div>
                 <div ng-show="false" class="animate-show">
                     <div id="donut-container" class="onethird" style="margin-right: 20px;">
-                        <div class="well" style="width:50%;">
+                        <div class="well" style="width: 50%;">
                             <div>
                                 <button class="btn pull-right" ng-if="scan.Filtered"><i class="glyphicon glyphicon-arrow-left"></i></button>
                                 <h2>Item Types</h2>
@@ -90,12 +90,14 @@
                     </div>
                 </div>
                 <div style="float: left; margin-bottom: 20px;">
-                    <label>Enter Serial Code: </label>
-                    <div class="input-group" style="width: 328px">
-                        <input class="form-control" ng-model="scan.SerialCodeLookUp" is-saving="scan.SavingItem" ng-blur="scan.VerifyLineitem(scan.SerialCodeLookUp)" ng-focus="scan.ShouldFocus" />
-                        <span class="input-group-addon"><i class="glyphicon glyphicon-search"></i></span>
-                    </div>
-                    <span class="text-info">{{scan.GetCurrentScan()}} of {{scan.GetScanTotals()}} Products Scanned</span>
+                    <form style="display: inline-block;" ng-submit="scan.VerifyLineitem(scan.SerialCodeLookUp)" <%=init %>>
+                        <label>Enter Serial Code: </label>
+                        <div class="input-group" style="width: 328px">
+                            <input class="form-control" ng-model="scan.SerialCodeLookUp" is-saving="scan.SavingItem" ng-focus="scan.ShouldFocus" />
+                            <span class="input-group-addon"><i class="glyphicon glyphicon-search"></i></span>
+                        </div>
+                        <span class="text-info">{{scan.GetCurrentScan()}} of {{scan.GetScanTotals()}} Products Scanned</span>
+                    </form>
                 </div>
                 <div class="alert" style="width: 600px; float: left; margin-left: 10px; position: relative; top: 14px;" ng-class="{'alert-danger':!scan.SerialScanStatus.Success, 'alert-success':scan.SerialScanStatus.Success}" ng-show="scan.SerialScanStatus && scan.SerialScanStatus.Message">&nbsp;&nbsp;{{scan.SerialScanStatus.Message}}</div>
                 <div style="width: 200px; float: right; margin-bottom: 0px; text-align: center;" class="alert alert-success" ng-show="scan.IsScanComplete()">Scan Complete<i class="glyphicon glyphicon-check"></i></div>

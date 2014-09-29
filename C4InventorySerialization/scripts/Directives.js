@@ -81,7 +81,7 @@ Directives.directive('onEnter', function () {
 
                             _.each(elem.find(".legendLabel"), function (i) {
                                 var jItem = $(i);
-                                    
+
                                 jItem.css("font-weight", "normal"); if (jItem.html() == s) { jItem.css("font-weight", "bold"); }
                             });
 
@@ -184,9 +184,28 @@ Directives.directive('onEnter', function () {
                 scope.Select = false;
             });
             scope.$watch("ShouldDisable", function (newValue) {
-                    element.disabled = newValue;
-                
+                element.disabled = newValue;
+
             });
         }
     };
+})
+    .directive('ngEnter', function ($document) {
+    return {
+        scope: {
+            ngEnter: "&"
+        },
+        link: function (scope, element, attrs) {
+            var enterWatcher = function (event) {
+                if (event.which === 13) {
+                    scope.ngEnter();
+                    scope.$apply();
+                    console.log('ENTER')
+                    event.preventDefault();
+                    $document.unbind("keydown keypress", enterWatcher);
+                }
+            };
+            $document.bind("keydown keypress", enterWatcher);
+        }
+    }
 });
