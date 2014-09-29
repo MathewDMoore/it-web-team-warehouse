@@ -38,7 +38,7 @@
                }%>
             <form style="display: inline-block;" ng-submit="scan.LookUp(scan.OrderIdLookUp,scan.LookUpIsInternal)" <%=init %>>
                 <div class="input-group" style="width: 300px;">
-                    <input class="form-control" placeholder="Delivery Number or MacId" ng-disabled="scan.IsSearching" autofocus id="orderIdInput" type="text" ng-model="scan.OrderIdLookUp" ng-blur="scan.LookUp(scan.OrderIdLookUp,scan.LookUpIsInternal)" />
+                    <input class="form-control" placeholder="Delivery Number or MacId" ng-disabled="scan.IsSearching" ng-focus="scan.FocusDeliveryInput"  id="orderIdInput" type="text" ng-model="scan.OrderIdLookUp" ng-blur="scan.LookUp(scan.OrderIdLookUp,scan.LookUpIsInternal)" />
                     <span type="submit" class="input-group-addon " style="cursor: pointer" id="loadDelivery">{{scan.IsSearching?'Loading...':'Load Delivery'}}</span>
                 </div>
                 <div style="display: inline-block;">
@@ -92,7 +92,7 @@
                 <div style="float: left; margin-bottom: 20px;">
                     <label>Enter Serial Code: </label>
                     <div class="input-group" style="width: 328px">
-                        <input class="form-control" auto-select select="scan.SerialScanStatus.Select" ng-model="scan.SerialCodeLookUp" is-saving="scan.SavingItem" ng-blur="scan.VerifyLineitem(scan.SerialCodeLookUp)" ng-focus="scan.ShouldFocus" />
+                        <input class="form-control" ng-model="scan.SerialCodeLookUp" is-saving="scan.SavingItem" ng-blur="scan.VerifyLineitem(scan.SerialCodeLookUp)" ng-focus="scan.ShouldFocus" />
                         <span class="input-group-addon"><i class="glyphicon glyphicon-search"></i></span>
                     </div>
                     <span class="text-info">{{scan.GetCurrentScan()}} of {{scan.GetScanTotals()}} Products Scanned</span>
