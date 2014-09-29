@@ -47,7 +47,7 @@ app.controller("ReturnsController", function ($scope, $http) {
         $('input.textbox').on('keydown', function (e) {
             var keyCode = e.keyCode || e.which;
 
-            if (keyCode == 9) {
+            if (keyCode == 13) {
                 e.preventDefault();
                 $scope.addInput();
                 $scope.$apply();

@@ -14,7 +14,7 @@ app.controller("ScanController", function ($scope, $modal, $filter, $timeout, ng
     scan.FocusDeliveryInput = true;
     scan.Colors = ['#ffb81e', '#2a767d', '#3ebebe', '#d85927', '#c6b912', '#7e6591', '#ca4346', '#67773f', '#f49630', '#aa8965', '#4fa0bf', '#b9e1e5', '#ffb81e', '#2a767d', '#3ebebe', '#d85927', '#c6b912', '#7e6591', '#ca4346', '#67773f', '#f49630', '#aa8965', '#4fa0bf', '#b9e1e5'];
     function _errorSound() {
-        ngAudio.play("/content/beep.mp3");
+        ngAudio.play("/content/error.mp3");
         scan.ShouldSelect = true;
     }
     $scope.$watch("scan.Delivery.ScannedItems", function (newValue, oldValue) {
