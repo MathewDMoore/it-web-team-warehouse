@@ -523,6 +523,7 @@ app.controller("ScanController", function ($scope, $modal, $filter, $timeout, ng
                 if (result.data) {
                     scan.Delivery = null;
                     scan.DeliveryActionMessage = "Successfully verified delivery" + docNum;
+                    scan.FocusDeliveryInput = true;
                 } else {
                     alert("There was an error verifying this delivery.");
                 }
