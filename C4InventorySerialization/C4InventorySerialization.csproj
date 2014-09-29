@@ -110,6 +110,7 @@
   <ItemGroup>
     <Content Include="Content\beep.mp3" />
     <Content Include="Content\DuplicateMacReport.aspx" />
+    <Content Include="Content\error1.mp3" />
     <Content Include="Content\Returns.aspx" />
     <Content Include="Content\ScanOrder.aspx" />
     <Content Include="Content\Search.aspx" />

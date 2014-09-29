@@ -14,7 +14,7 @@ app.controller("ScanController", function ($scope, $modal, $filter, $timeout, ng
     scan.FocusDeliveryInput = true;
     scan.Colors = ['#ffb81e', '#2a767d', '#3ebebe', '#d85927', '#c6b912', '#7e6591', '#ca4346', '#67773f', '#f49630', '#aa8965', '#4fa0bf', '#b9e1e5', '#ffb81e', '#2a767d', '#3ebebe', '#d85927', '#c6b912', '#7e6591', '#ca4346', '#67773f', '#f49630', '#aa8965', '#4fa0bf', '#b9e1e5'];
     function _errorSound() {
-        ngAudio.play("/content/error.mp3");
+        ngAudio.play("/content/error1.mp3");
         scan.ShouldSelect = true;
     }
     $scope.$watch("scan.Delivery.ScannedItems", function (newValue, oldValue) {
@@ -73,8 +73,8 @@ app.controller("ScanController", function ($scope, $modal, $filter, $timeout, ng
         }
     }
 
-    scan.ChartData = {Chart:null};
-    scan.ChartFilter = {value:null,filter:null};
+    scan.ChartData = { Chart: null };
+    scan.ChartFilter = { value: null, filter: null };
     scan.SavingItem = false;
     scan.LookUpIsInternal = false;
     scan.Username = null;
@@ -191,10 +191,10 @@ app.controller("ScanController", function ($scope, $modal, $filter, $timeout, ng
                     scan.Delivery = FirebaseDeliveryService.GetDelivery(response.data.DeliveryNumber);
                     var chart = [];
                     _.each(response.data.ChartData, function (item) {
-                        chart.push({ data: item.Value, label: item.Key +"("+item.Value+")"});
+                        chart.push({ data: item.Value, label: item.Key + "(" + item.Value + ")" });
                     });
                     scan.ChartData.Chart = chart;
-                    
+
                     _.each(response.data.ScannedItems, function (item) {
                         angular.extend(item, { IsSelected: false });
                     });
@@ -228,7 +228,7 @@ app.controller("ScanController", function ($scope, $modal, $filter, $timeout, ng
 
                     //});
                     scan.FocusDeliveryInput = false;
-//                    scan.ShouldFocus = true;
+                    //                    scan.ShouldFocus = true;
                     $timeout(function () { scan.ShouldFocus = true; }, 500);
                 } else {
                     scan.DeliveryActionMessage = "Delivery not found in SAP. Check delivery number.";
@@ -317,7 +317,10 @@ app.controller("ScanController", function ($scope, $modal, $filter, $timeout, ng
         var matched = null;
 
         if (scan.ActiveKit != null && scan.ActiveKit.length > 0) {
+            var combinedLists = scan.ActiveKit.concat(scan.Delivery.ScannedItems);
+
             matched = _.find(scan.ActiveKit, function (match) { return match.ProductId == productId && match.Color == color && (!match.SerialCode || !match.ScannedBy); });
+            
             scan.VerifyAndSaveScan(serialCode, matched, true);
         } else {
             //Find all matches in the not scanned table
@@ -375,7 +378,7 @@ app.controller("ScanController", function ($scope, $modal, $filter, $timeout, ng
         if (serialCode && matched) {
             if (!isKitItem) {
                 scan.Delivery.NotScannedItems.remove(matched);
-            } 
+            }
             scan.Delivery.$save();
             scan.SerialScanStatus = null;
             scan.SavingItem = true;
@@ -401,6 +404,26 @@ app.controller("ScanController", function ($scope, $modal, $filter, $timeout, ng
 
 
                 var isUnique = !matched.SmartCodeOnly && !matched.NoSerialRequired;
+                
+                if (!scan.Delivery.ScannedItems) {
+                    scan.Delivery.ScannedItems = [];
+                }
+
+                
+                if(isKitItem){
+                    var combinedLists = scan.ActiveKit.concat(scan.Delivery.ScannedItems);
+                    var foundItem = _.find(combinedLists, function(item) { return item.SerialCode == serialCode; }) != null;
+                    if (foundItem) {
+                        _errorSound();
+                        scan.SavingItem = false;
+                        scan.SerialScanStatus = { Success: false, Select: true, Message: "You have scanned in a code that already exists on this order!" };
+                        return false;
+                    }
+                }
+
+              
+                
+                
 
                 var deliveryItem = { IsInternal: scan.Delivery.IsInternal, SerialCode: serialCode, MacId: modifiedMac, Id: matched.Id, ProductGroup: matched.ProductGroup, IsUnique: isUnique };
                 ScanOrderService.SaveDeliveryItem(deliveryItem).then(function (result) {
@@ -436,7 +459,10 @@ app.controller("ScanController", function ($scope, $modal, $filter, $timeout, ng
                         _errorSound();
                         scan.SerialScanStatus = { Success: false, Message: result.data.ErrorMessage + result.data.ErrorDeliveryNumber, Select: true };
                         scan.IsSearching = false;
-                        if (!scan.Delivery.NotScannedItems) {
+                        if (scan.Delivery.NotScannedItems && scan.Delivery.NotScannedItems.length >= 0 ) {
+                            scan.Delivery.NotScannedItems.push(matched);
+                        } else {
+                            scan.Delivery.NotScannedItems = [];
                             scan.Delivery.NotScannedItems.push(matched);
                         }
                         scan.Delivery.$save();
