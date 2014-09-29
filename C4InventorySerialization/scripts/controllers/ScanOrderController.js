@@ -363,6 +363,7 @@ app.controller("ScanController", function ($scope, $modal, $filter, $timeout, ng
                 };
             } else {
                 //Item code not found in not scanned table, or doesnt exist on order
+                _errorSound();
                 scan.SavingItem = false;
                 scan.SerialScanStatus = { Success: false, Select: true, Message: "Item not found on order." };
                 return false;
