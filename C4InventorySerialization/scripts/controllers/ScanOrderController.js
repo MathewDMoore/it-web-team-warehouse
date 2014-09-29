@@ -305,7 +305,7 @@ app.controller("ScanController", function ($scope, $modal, $filter, $timeout, ng
 
         if (scan.ActiveKit != null && scan.ActiveKit.length > 0) {
             matched = _.find(scan.ActiveKit, function (match) { return match.ProductId == productId && match.Color == color && (!match.SerialCode || !match.ScannedBy); });
-            scan.VerifyAndSaveScan(serialCode, matched);
+            scan.VerifyAndSaveScan(serialCode, matched, true);
         } else {
             //Find all matches in the not scanned table
             var matchedListNotScanned = _.where(scan.Delivery.NotScannedItems, { ProductId: productId, Color: color });
@@ -326,7 +326,7 @@ app.controller("ScanController", function ($scope, $modal, $filter, $timeout, ng
                     var containsSingle = _.find(matchedListNotScanned, function (item) { return item.KitId == 0; });
                     if (containsSingle) {
                         //Found a single item that is scannable, SAVE IT!
-                        scan.VerifyAndSaveScan(serialCode, containsSingle);
+                        scan.VerifyAndSaveScan(serialCode, containsSingle, false);
                     } else {
                         //No more single items found, item must be in a kit because it still exists in the NotScannedTable
                         scan.SavingItem = false;
@@ -336,7 +336,7 @@ app.controller("ScanController", function ($scope, $modal, $filter, $timeout, ng
                 } else {
                     //Determine if the item is the primary key.
                     matched = _.find(scan.Delivery.NotScannedItems, function (item) { return item.ProductId == productId && item.Color == color; });
-                    if (matched.ItemCode != matched.RealItemCode) {
+                    if (matched.ItemCode.toLowerCase() != matched.RealItemCode.toLowerCase()) {
                         //Its not primary, force them to scan primary
                         scan.SavingItem = false;
                         scan.SerialScanStatus = { Success: false, Select: true, Message: "You have scanned in a code that does not have a single item in the order. Did you mean to scan a kit item?" };
@@ -345,7 +345,7 @@ app.controller("ScanController", function ($scope, $modal, $filter, $timeout, ng
                     else {
                         //Item is a primary key, SAVE IT!
                         matched = matchedListNotScanned[0];
-                        scan.VerifyAndSaveScan(serialCode, matched);
+                        scan.VerifyAndSaveScan(serialCode, matched, false);
                     }
                 };
             } else {
@@ -356,10 +356,12 @@ app.controller("ScanController", function ($scope, $modal, $filter, $timeout, ng
             }
         }
     };
-    scan.VerifyAndSaveScan = function (serialCode, matched) {
+    scan.VerifyAndSaveScan = function (serialCode, matched, isKitItem) {
 
         if (serialCode && matched) {
-            scan.Delivery.NotScannedItems.remove(matched);
+            if (!isKitItem) {
+                scan.Delivery.NotScannedItems.remove(matched);
+            } 
             scan.Delivery.$save();
             scan.SerialScanStatus = null;
             scan.SavingItem = true;
@@ -449,7 +451,7 @@ app.controller("ScanController", function ($scope, $modal, $filter, $timeout, ng
         return selected.length > 0;
     };
     scan.ReturnSelectedItems = function () {
-        var selected = _.where(scan.Delivery.ScannedItems, { IsSelected: true }); z
+        var selected = _.where(scan.Delivery.ScannedItems, { IsSelected: true });
         scan.Delivery.NotScannedItems = scan.Delivery.NotScannedItems || [];
         if (selected.length > 0) {
             var ids = _.pluck(selected, 'Id');
