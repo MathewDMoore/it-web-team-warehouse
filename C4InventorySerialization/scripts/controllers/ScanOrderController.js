@@ -268,6 +268,7 @@ app.controller("ScanController", function ($scope, $modal, $filter, $timeout, ng
                 if (result.data === "true") {
                     scan.Delivery = null;
                     scan.DeliveryActionMessage = "Successfully cleared delivery " + docNumber;
+                    scan.FocusDeliveryInput = true;
                 } else {
                     scan.DeliveryActionMessage = "There was an error clearing this delivery.";
                 }
