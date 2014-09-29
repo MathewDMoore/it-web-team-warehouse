@@ -10,8 +10,9 @@ namespace ApplicationSource
         {
             Mapper.CreateMap<Delivery, OrderDeliveryModel>();
             Mapper.CreateMap<SerialNumberItem, DeliveryOrderItemModel>()
-                .ForMember(d => d.Verified, s => s.MapFrom(v => v.IsVerified));
-
+                .ForMember(d => d.Verified, s => s.MapFrom(v => v.IsVerified))
+                .ForMember(d => d.ItemCode, s => s.MapFrom(v => v.ItemCode.Trim()))
+                .ForMember(d => d.RealItemCode, s => s.MapFrom(v => v.RealItemCode.Trim()));
         }
 
         public static TDestination Map<TSource, TDestination>(this TSource value)
