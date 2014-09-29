@@ -10,10 +10,12 @@ app.controller("ScanController", function ($scope, $modal, $filter, $timeout, ng
         }
     });
     var scan = this;
+    scan.ShouldSelect = false;
     scan.FocusDeliveryInput = true;
     scan.Colors = ['#ffb81e', '#2a767d', '#3ebebe', '#d85927', '#c6b912', '#7e6591', '#ca4346', '#67773f', '#f49630', '#aa8965', '#4fa0bf', '#b9e1e5', '#ffb81e', '#2a767d', '#3ebebe', '#d85927', '#c6b912', '#7e6591', '#ca4346', '#67773f', '#f49630', '#aa8965', '#4fa0bf', '#b9e1e5'];
     function _errorSound() {
         ngAudio.play("/content/beep.mp3");
+        scan.ShouldSelect = true;
     }
     $scope.$watch("scan.Delivery.ScannedItems", function (newValue, oldValue) {
         if (newValue != oldValue) {
@@ -368,7 +370,7 @@ app.controller("ScanController", function ($scope, $modal, $filter, $timeout, ng
         }
     };
     scan.VerifyAndSaveScan = function (serialCode, matched, isKitItem) {
-
+        scan.ShouldSelect = false;
         if (serialCode && matched) {
             if (!isKitItem) {
                 scan.Delivery.NotScannedItems.remove(matched);
@@ -386,6 +388,7 @@ app.controller("ScanController", function ($scope, $modal, $filter, $timeout, ng
 
                     if (modifiedMac.length != 12) {
                         if (modifiedMac.length != 16) {
+                            _errorSound();
                             scan.SavingItem = false;
                             scan.SerialScanStatus = { Success: false, Select: true, Message: "You have scanned in a code that is not the correct length!" };
                             return false;
@@ -429,6 +432,7 @@ app.controller("ScanController", function ($scope, $modal, $filter, $timeout, ng
 
 
                     } else {
+                        _errorSound();
                         scan.SerialScanStatus = { Success: false, Message: result.data.ErrorMessage + result.data.ErrorDeliveryNumber, Select: true };
                         scan.IsSearching = false;
                         if (!scan.Delivery.NotScannedItems) {

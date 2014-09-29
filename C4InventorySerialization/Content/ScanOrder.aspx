@@ -93,7 +93,7 @@
                     <form style="display: inline-block;" ng-submit="scan.VerifyLineitem(scan.SerialCodeLookUp)" <%=init %>>
                         <label>Enter Serial Code: </label>
                         <div class="input-group" style="width: 328px">
-                            <input class="form-control" ng-model="scan.SerialCodeLookUp" is-saving="scan.SavingItem" ng-blur="scan.VerifyLineitem(scan.SerialCodeLookUp)" focus-select="scan.ShouldFocus" />
+                            <input class="form-control" ng-model="scan.SerialCodeLookUp" is-saving="scan.SavingItem" ng-blur="scan.VerifyLineitem(scan.SerialCodeLookUp)" focus-select="scan.ShouldFocus" select="scan.ShouldSelect" />
                             <span class="input-group-addon"><i class="glyphicon glyphicon-search"></i></span>
                         </div>
                         <span class="text-info">{{scan.GetCurrentScan()}} of {{scan.GetScanTotals()}} Products Scanned</span>
