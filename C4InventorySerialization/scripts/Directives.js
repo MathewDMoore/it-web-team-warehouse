@@ -185,6 +185,7 @@ Directives.directive('onEnter', function () {
             scope.$watch("ShouldFocus", function (newValue) {
                 if (newValue) {
                     element.focus();
+                    scope.ShouldFocus = false;
                 }
             });
             scope.$watch("ShouldDisable", function (newValue) {
