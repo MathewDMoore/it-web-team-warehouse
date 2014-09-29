@@ -226,7 +226,8 @@ app.controller("ScanController", function ($scope, $modal, $filter, $timeout, ng
 
                     //});
                     scan.FocusDeliveryInput = false;
-                    scan.ShouldFocus = true;
+//                    scan.ShouldFocus = true;
+                    $timeout(function () { scan.ShouldFocus = true; }, 500);
                 } else {
                     scan.DeliveryActionMessage = "Delivery not found in SAP. Check delivery number.";
                     scan.FocusDeliveryInput = true;
@@ -305,6 +306,8 @@ app.controller("ScanController", function ($scope, $modal, $filter, $timeout, ng
     scan.VerifyLineitem = function (serialCode) {
         if (!serialCode) {
             scan.IsSearching = false;
+            scan.ShouldFocus = true;
+            return;
         }
         var productId = serialCode.substring(serialCode.length, serialCode.length - 7).substring(0, 5);
         var color = serialCode.substring(serialCode.length, serialCode.length - 7).substring(5, 7);

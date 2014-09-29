@@ -170,18 +170,22 @@ Directives.directive('onEnter', function () {
             }
         };
     })
-.directive("autoSelect", function ($timeout) {
+.directive("focusSelect", function ($timeout) {
     return {
-        scope: { Select: "=select", ShouldDisable: "=isSaving" },
+        scope: { Select: "=select", ShouldFocus: "=focusSelect", ShouldDisable: "=isSaving" },
         link: function (scope, element, attrs) {
-            $timeout(function () { element.focus(); }, 800);
+            //            $timeout(function () { element.focus(); }, 800);
 
             scope.$watch("Select", function (newValue) {
                 if (newValue) {
                     element.select();
-                    element.focus();
                 }
                 scope.Select = false;
+            });
+            scope.$watch("ShouldFocus", function (newValue) {
+                if (newValue) {
+                    element.focus();
+                }
             });
             scope.$watch("ShouldDisable", function (newValue) {
                 element.disabled = newValue;
@@ -190,7 +194,7 @@ Directives.directive('onEnter', function () {
         }
     };
 })
-    .directive('ngEnter', function ($document) {
+.directive('ngEnter', function ($document) {
     return {
         scope: {
             ngEnter: "&"
