@@ -179,8 +179,8 @@ Directives.directive('onEnter', function () {
             scope.$watch("Select", function (newValue) {
                 if (newValue) {
                     element.select();
+                    scope.Select = false;
                 }
-                scope.Select = false;
             });
             scope.$watch("ShouldFocus", function (newValue) {
                 if (newValue) {
