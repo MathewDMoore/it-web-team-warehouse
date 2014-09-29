@@ -10,6 +10,7 @@ app.controller("ScanController", function ($scope, $modal, $filter, $timeout, ng
         }
     });
     var scan = this;
+    scan.FocusDeliveryInput = true;
     scan.Colors = ['#ffb81e', '#2a767d', '#3ebebe', '#d85927', '#c6b912', '#7e6591', '#ca4346', '#67773f', '#f49630', '#aa8965', '#4fa0bf', '#b9e1e5', '#ffb81e', '#2a767d', '#3ebebe', '#d85927', '#c6b912', '#7e6591', '#ca4346', '#67773f', '#f49630', '#aa8965', '#4fa0bf', '#b9e1e5'];
     function _errorSound() {
         ngAudio.play("/content/beep.mp3");
@@ -224,8 +225,12 @@ app.controller("ScanController", function ($scope, $modal, $filter, $timeout, ng
                     //scan.Delivery.$watch(function () {
 
                     //});
+                    scan.FocusDeliveryInput = false;
+                    scan.ShouldFocus = true;
                 } else {
                     scan.DeliveryActionMessage = "Delivery not found in SAP. Check delivery number.";
+                    scan.FocusDeliveryInput = true;
+                    scan.ShouldFocus = false;
                 }
             });
         } else if (orderId) {
@@ -238,6 +243,8 @@ app.controller("ScanController", function ($scope, $modal, $filter, $timeout, ng
                     scan.LookUp(result.data.DeliveryNumber);
                 } else {
                     scan.DeliveryActionMessage = "Delivery Not Found";
+                    scan.FocusDeliveryInput = true;
+                    scan.ShouldFocus = false;
                 }
             });
         }
