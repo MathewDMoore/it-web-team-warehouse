@@ -172,10 +172,10 @@ Directives.directive('onEnter', function () {
     })
 .directive("focusSelect", function ($timeout) {
     return {
-        scope: { Select: "=select", ShouldFocus: "=focusSelect", ShouldDisable: "=isSaving" },
+        transclude:true,
+        scope: { Select: "=select", ShouldFocus: "=focusSelect", DisableIt: "=isSaving" },
         link: function (scope, element, attrs) {
-            //            $timeout(function () { element.focus(); }, 800);
-
+            
             scope.$watch("Select", function (newValue) {
                 if (newValue) {
                     element.select();
@@ -188,9 +188,11 @@ Directives.directive('onEnter', function () {
                     scope.ShouldFocus = false;
                 }
             });
-            scope.$watch("ShouldDisable", function (newValue) {
-                element.disabled = newValue;
-
+            scope.$watch("DisableIt", function (newValue) {
+                if(newValue !=null) {
+                    element.disabled = newValue;
+                    console.info("The element disabled is : " + element.disabled);
+                }
             });
         }
     };
@@ -205,7 +207,7 @@ Directives.directive('onEnter', function () {
                 if (event.which === 13) {
                     scope.ngEnter();
                     scope.$apply();
-                    console.log('ENTER')
+                    console.log('ENTER');
                     event.preventDefault();
                     $document.unbind("keydown keypress", enterWatcher);
                 }

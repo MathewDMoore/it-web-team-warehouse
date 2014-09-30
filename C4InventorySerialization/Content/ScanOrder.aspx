@@ -39,7 +39,7 @@
             <form style="display: inline-block;" ng-submit="scan.LookUp(scan.OrderIdLookUp,scan.LookUpIsInternal)" <%=init %>>
                 <div class="input-group" style="width: 300px;">
                     <input class="form-control" placeholder="Delivery Number or MacId" ng-disabled="scan.IsSearching" focus-select="scan.FocusDeliveryInput"  id="orderIdInput" type="text" ng-model="scan.OrderIdLookUp" ng-blur="scan.LookUp(scan.OrderIdLookUp,scan.LookUpIsInternal)" />
-                    <span type="submit" class="input-group-addon " style="cursor: pointer" id="loadDelivery">{{scan.IsSearching?'Loading...':'Load Delivery'}}</span>
+                    <span class="input-group-addon " style="cursor: pointer" id="loadDelivery">{{scan.IsSearching?'Loading...':'Load Delivery'}}</span>
                 </div>
                 <div style="display: inline-block;">
                     <input name="IsInternal" type="radio" ng-model="scan.LookUpIsInternal" ng-value="false" />Dealer Order
@@ -93,7 +93,7 @@
                     <form style="display: inline-block;" ng-submit="scan.VerifyLineitem(scan.SerialCodeLookUp)" <%=init %>>
                         <label>Enter Serial Code: </label>
                         <div class="input-group" style="width: 328px">
-                            <input class="form-control" ng-model="scan.SerialCodeLookUp" is-saving="scan.SavingItem" focus-select="scan.ShouldFocus" select="scan.ShouldSelect" />
+                            <input class="form-control" ng-model="scan.SerialCodeLookUp" focus-select="scan.ShouldFocus" select="scan.ShouldSelect" ng-disabled="scan.SavingItem" />
                             <span class="input-group-addon"><i class="glyphicon glyphicon-search"></i></span>
                         </div>
                         <span class="text-info">{{scan.GetCurrentScan()}} of {{scan.GetScanTotals()}} Products Scanned</span>
@@ -113,8 +113,6 @@
                             <tr ng-repeat="kitItem in $data track by $index">
                                 <td data-title="'ID'" sortable="'Id'">{{kitItem.Id}}</td>
                                 <td data-title="'Kit Code'" sortable="'ItemCode'">{{kitItem.ItemCode}}</td>
-                                <%--<td data-title="'Kit Id'" sortable="'KitId'">{{kitItem.KitId}}</td>
-                                <td data-title="'Kit Counter'" sortable="'KitCounter'">{{kitItem.KitCounter}}</td>--%>
                                 <td data-title="'Item Code'" sortable="'RealItemCode'">{{kitItem.RealItemCode}}</td>
                                 <td data-title="'Description'" sortable="'AltText'">{{kitItem.AltText}}</td>
                                 <td data-title="'#'" sortable="'SerialNum'">{{kitItem.SerialNum}}</td>

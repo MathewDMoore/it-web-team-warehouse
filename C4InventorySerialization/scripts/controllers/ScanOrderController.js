@@ -15,6 +15,7 @@ app.controller("ScanController", function ($scope, $modal, $filter, $timeout, ng
     scan.Colors = ['#ffb81e', '#2a767d', '#3ebebe', '#d85927', '#c6b912', '#7e6591', '#ca4346', '#67773f', '#f49630', '#aa8965', '#4fa0bf', '#b9e1e5', '#ffb81e', '#2a767d', '#3ebebe', '#d85927', '#c6b912', '#7e6591', '#ca4346', '#67773f', '#f49630', '#aa8965', '#4fa0bf', '#b9e1e5'];
     function _errorSound() {
         ngAudio.play("/content/error1.mp3");
+        scan.SavingItem = false;
         scan.ShouldSelect = true;
     }
     $scope.$watch("scan.Delivery.ScannedItems", function (newValue, oldValue) {
@@ -135,6 +136,10 @@ app.controller("ScanController", function ($scope, $modal, $filter, $timeout, ng
             $defer.resolve(orderedData.slice((params.page() - 1) * params.count(), params.page() * params.count()));
         },
     });
+    scan.IsSaving = function(saving) {
+        console.info("DAMIT: " + saving);
+        return saving;
+    };
     scan.GetScanTotals = function () {
         var matches = _.pluck(scan.Delivery.ActiveKits, "Value");
         var scannedCount = scan.Delivery.ScannedItems ? scan.Delivery.ScannedItems.length : 0;
@@ -307,15 +312,17 @@ app.controller("ScanController", function ($scope, $modal, $filter, $timeout, ng
 
     };
     scan.VerifyLineitem = function (serialCode) {
+        scan.SavingItem = true;
+
         if (!serialCode) {
             scan.IsSearching = false;
             scan.ShouldFocus = true;
-            return;
+            scan.SavingItem = false;
+            return false;
         }
         var productId = serialCode.substring(serialCode.length, serialCode.length - 7).substring(0, 5);
         var color = serialCode.substring(serialCode.length, serialCode.length - 7).substring(5, 7);
         var matched = null;
-
         if (scan.ActiveKit != null && scan.ActiveKit.length > 0) {
             var combinedLists = scan.ActiveKit.concat(scan.Delivery.ScannedItems);
 
@@ -344,8 +351,8 @@ app.controller("ScanController", function ($scope, $modal, $filter, $timeout, ng
                         //Found a single item that is scannable, SAVE IT!
                         scan.VerifyAndSaveScan(serialCode, containsSingle, false);
                     } else {
+                        _errorSound();
                         //No more single items found, item must be in a kit because it still exists in the NotScannedTable
-                        scan.SavingItem = false;
                         scan.SerialScanStatus = { Success: false, Select: true, Message: "You have scanned in a code that does not have a single item in the order. Did you mean to scan a kit item?" };
                         return false;
                     }
@@ -354,7 +361,7 @@ app.controller("ScanController", function ($scope, $modal, $filter, $timeout, ng
                     matched = _.find(scan.Delivery.NotScannedItems, function (item) { return item.ProductId == productId && item.Color == color; });
                     if (matched.ItemCode.toLowerCase() != matched.RealItemCode.toLowerCase()) {
                         //Its not primary, force them to scan primary
-                        scan.SavingItem = false;
+                        _errorSound();
                         scan.SerialScanStatus = { Success: false, Select: true, Message: "You have scanned in a code that does not have a single item in the order. Did you mean to scan a kit item?" };
                         return false;
                     }
@@ -367,11 +374,10 @@ app.controller("ScanController", function ($scope, $modal, $filter, $timeout, ng
             } else {
                 //Item code not found in not scanned table, or doesnt exist on order
                 _errorSound();
-                scan.SavingItem = false;
                 scan.SerialScanStatus = { Success: false, Select: true, Message: "Item not found on order." };
                 return false;
             }
-        }
+        }        
     };
     scan.VerifyAndSaveScan = function (serialCode, matched, isKitItem) {
         scan.ShouldSelect = false;
@@ -381,8 +387,7 @@ app.controller("ScanController", function ($scope, $modal, $filter, $timeout, ng
             }
             scan.Delivery.$save();
             scan.SerialScanStatus = null;
-            scan.SavingItem = true;
-
+          
             if ((!matched.SmartCodeOnly && !matched.NoSerialRequired) || (matched.SmartCodeOnly && !matched.NoSerialRequired)) {
 
                 var modifiedMac = null;
@@ -393,7 +398,6 @@ app.controller("ScanController", function ($scope, $modal, $filter, $timeout, ng
                     if (modifiedMac.length != 12) {
                         if (modifiedMac.length != 16) {
                             _errorSound();
-                            scan.SavingItem = false;
                             scan.SerialScanStatus = { Success: false, Select: true, Message: "You have scanned in a code that is not the correct length!" };
                             return false;
                         }
@@ -427,7 +431,7 @@ app.controller("ScanController", function ($scope, $modal, $filter, $timeout, ng
 
                 var deliveryItem = { IsInternal: scan.Delivery.IsInternal, SerialCode: serialCode, MacId: modifiedMac, Id: matched.Id, ProductGroup: matched.ProductGroup, IsUnique: isUnique };
                 ScanOrderService.SaveDeliveryItem(deliveryItem).then(function (result) {
-                    scan.SavingItem = false;
+                    
 
                     if (!result.data.ErrorMessage) {
                         scan.Delivery.ScannedItems = scan.Delivery.ScannedItems || [];
@@ -444,14 +448,7 @@ app.controller("ScanController", function ($scope, $modal, $filter, $timeout, ng
                         matched.IsSelected = false;
                         scan.SerialCodeLookUp = null;
                         scan.Delivery.$save();
-                        //                        if (scan.IsScanComplete() && !scan.Delivery.IsVerified) {
-                        //                            scan.VerifyDelivery(scan.Delivery.DeliveryNumber);
-                        //                        }
-                        //                            $timeout(function () {
-                        //                                scan.TableParams.reload();
-                        //                                scan.TableParams2.reload();
-                        //                                scan.TableParams3.reload();
-                        //                            }, 500);
+
                         scan.SerialScanStatus = { Success: true, Message: "Serial Successfully Updated", Select: true };
 
 
@@ -467,12 +464,10 @@ app.controller("ScanController", function ($scope, $modal, $filter, $timeout, ng
                         }
                         scan.Delivery.$save();
                     }
+                    scan.SavingItem = false;
                 });
-                scan.SavingItem = false;
             }
         } else {
-
-            scan.SavingItem = false;
             if (matched) {
                 scan.Delivery.NotScannedItems.pushed(matched);
                 scan.Delivery.$save();
