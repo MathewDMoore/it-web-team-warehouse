@@ -136,8 +136,10 @@ namespace ApplicationSource.Services
 
         public VerifyUniqueMacModel SaveDeliveryItem(VerifyUniqueMacModel model)
         {
-            var macId = model.MacId;
+            var macId = model.MacId.Trim();
+            macId = macId.Replace(" ", "");
             var productGroup = model.ProductGroup;
+
             if (!string.IsNullOrEmpty(model.MacId) || !string.IsNullOrEmpty(productGroup))
             {
                 var parsedMacId = macId.Length >= 29 ? macId.Remove(macId.Length - 17, 17) : macId;
@@ -165,7 +167,7 @@ namespace ApplicationSource.Services
                             
                         }
 
-                        if (!UpdateRecord(model.SerialCode, parsedMacId, model.Id, model.IsInternal))
+                        if (!UpdateRecord(model.SerialCode, parsedMacId, model.Id, model.IsInternal, model.SerialNum, model.DocNum))
                         {
                             model.ErrorMessage =
                                 "There was an error saving this item into the database. Please review the SerialCode or contact IT support.";
@@ -179,6 +181,11 @@ namespace ApplicationSource.Services
                     model.IsUnique = false;
                     model.ErrorMessage = e.Message;
                 }
+            }
+            else
+            {
+                model.ErrorMessage =
+                               "There was an error saving this item into the database. Please review the SerialCode or contact IT support.";
             }
             return model;
         }
@@ -210,7 +217,7 @@ namespace ApplicationSource.Services
             var success = false;
             try
             {
-                returns.Ids.ForEach(i => _repo.ReturnDeliveryLineItem(new SerialNumberItem { Id = i, Username = _identity.Name }, returns.IsInternal));
+                returns.SelectedList.ForEach(i => _repo.ReturnDeliveryLineItem(new SerialNumberItem { Id = i.Id, DocNum = i.DocNum, SerialNum = i.SerialNum, Username = _identity.Name }, returns.IsInternal));
                 success = true;
             }
             catch (Exception e)
@@ -249,9 +256,9 @@ namespace ApplicationSource.Services
             return _repo.VerifyDelivery(query);
         }
 
-        private bool UpdateRecord(string serialCode, string macId, int id, bool isInternal)
+        private bool UpdateRecord(string serialCode, string macId, int id, bool isInternal, int serialNum, int docNum)
         {
-            var success = _repo.UpdateSerialNumberItem(new SerialNumberItem { Id = id, MacId = macId, SerialCode = serialCode, ScannedBy = HttpContext.Current.User.Identity.Name }, isInternal);
+            var success = _repo.UpdateSerialNumberItem(new SerialNumberItem { Id = id, MacId = macId, SerialCode = serialCode, ScannedBy = HttpContext.Current.User.Identity.Name, SerialNum = serialNum, DocNum = docNum}, isInternal);
             return success;
         }
     }

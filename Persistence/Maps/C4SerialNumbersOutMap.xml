@@ -97,6 +97,8 @@
 		<parameterMap id="ReturnSerialNumberItemPM" class="SerialNumberItem">
 			<parameter property="Username" column="USERNAME"/>
 			<parameter property="Id" column="ID"/>
+			<parameter property="SerialNum" column="SERIALNUM"/>
+			<parameter property="DocNum" column="DOCNUM"/>
 		</parameterMap>
 		<parameterMap id="DeliveryOrderItemsPM" class="DeliveryOrderItemsQuery">
 			<parameter property="ServerLocation" column="SERVERLOCATION"/>
@@ -149,11 +151,11 @@
 			sp_ReturnDelivery
 		</procedure>
 		<update id="UpdateSerialNumberIR" parameterClass="SerialNumberItem" >
-			Update C4_GOODSISSUE_IR_OUT set SERIALCODE= UPPER(#SerialCode#), ScannedBy= #ScannedBy#, MACID =#MacId#, RETURNEDBYUSER = null where ID = #Id#
-		</update>
-		<update id="UpdateSerialNumber" parameterClass="SerialNumberItem" >
-      Update C4_SERIALNUMBERS_OUT set SERIALCODE= UPPER(#SerialCode#), ScannedBy= #ScannedBy#, MACID =#MacId#, RETURNEDBYUSER = null where ID = #Id#
+      Update C4_GOODSISSUE_IR_OUT set SERIALCODE= UPPER(#SerialCode#), ScannedBy= #ScannedBy#, MACID =#MacId#, RETURNEDBYUSER = null where DOCNUM = #DocNum# and SERIALNUM = #SerialNum#
     </update>
+		<update id="UpdateSerialNumber" parameterClass="SerialNumberItem" >
+      Update C4_SERIALNUMBERS_OUT set SERIALCODE= UPPER(#SerialCode#), ScannedBy= #ScannedBy#, MACID =#MacId#, RETURNEDBYUSER = null where DOCNUM = #DocNum# and SERIALNUM = #SerialNum#;
+      </update>
 		<update id="UpdateVerifiedOrder" parameterClass="DeliveryOrderQuery">
 			UPDATE C4_SERIALNUMBERS_OUT
 			SET VERIFIED = 1,

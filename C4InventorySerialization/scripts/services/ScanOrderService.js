@@ -38,8 +38,8 @@
                     return result;
                 });
         },
-        ReturnSelectedItems: function(ids,isInternal) {
-            return $http({ data: { Ids: ids, IsInternal: isInternal }, method: "POST", url: SERVICES_PATH + "OrderDeliveryService.svc/ReturnDeliveryLineItem" })
+        ReturnSelectedItems: function(selected,isInternal) {
+            return $http({ data: { SelectedList: selected, IsInternal: isInternal }, method: "POST", url: SERVICES_PATH + "OrderDeliveryService.svc/ReturnDeliveryLineItem" })
                 .success(function(result) {
                     return result;
                 });

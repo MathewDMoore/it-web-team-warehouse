@@ -31,7 +31,13 @@ namespace ApplicationSource.Models
         public int Id { get; set; }
         
         [DataMember]
-        public bool IsInternal { get; set; }
+        public bool IsInternal { get; set; } 
+        
+        [DataMember]
+        public int SerialNum { get; set; }        
+        
+        [DataMember]
+        public int DocNum { get; set; }
 
     }
 }
