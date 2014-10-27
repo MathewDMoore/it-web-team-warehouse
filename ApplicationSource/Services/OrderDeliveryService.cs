@@ -217,7 +217,7 @@ namespace ApplicationSource.Services
             var success = false;
             try
             {
-                returns.SelectedList.ForEach(i => _repo.ReturnDeliveryLineItem(new SerialNumberItem { Id = i.Id, DocNum = i.DocNum, SerialNum = i.SerialNum, Username = _identity.Name }, returns.IsInternal));
+                returns.SelectedList.ForEach(i => _repo.ReturnDeliveryLineItem(new SerialNumberItem { Id = i.Id, DocNum = returns.DeliveryNumber, SerialNum = i.SerialNum, Username = _identity.Name }, returns.IsInternal));
                 success = true;
             }
             catch (Exception e)

@@ -516,9 +516,9 @@ app.controller("ScanController", function ($scope, $modal, $filter, $timeout, ng
         scan.Delivery.NotScannedItems = scan.Delivery.NotScannedItems || [];
         if (selected.length > 0) {
             if (selected.KitId > 0 && selected.IsVerified != 1) {
-                var ids = _.where(scan.Delivery.ScannedItems, { KitId: selected.KitId });
+                //var ids = _.where(scan.Delivery.ScannedItems, { KitId: selected.KitId });
 
-                ScanOrderService.ReturnSelectedItems(selected, scan.Delivery.IsInternal).then(function (result) {
+                ScanOrderService.ReturnSelectedItems(selected, scan.Delivery.IsInternal, scan.Delivery.DeliveryNumber).then(function (result) {
                     //TODO: Add success instead of just doing it.
                     if (result.data) {
                         _.each(selected, function (item) {
@@ -532,8 +532,8 @@ app.controller("ScanController", function ($scope, $modal, $filter, $timeout, ng
                     }
                 });
             } else if (selected.IsVerified != 1) {
-                var ids = _.pluck(selected, 'Id');
-                ScanOrderService.ReturnSelectedItems(selected, scan.Delivery.IsInternal).then(function (result) {
+                //var ids = _.pluck(selected, 'Id');
+                ScanOrderService.ReturnSelectedItems(selected, scan.Delivery.IsInternal, scan.Delivery.DeliveryNumber).then(function (result) {
                     //TODO: Add success instead of just doing it.
                     if (result.data) {
                         _.each(selected, function (item) {
