@@ -315,7 +315,6 @@ app.controller("ScanController", function ($scope, $modal, $filter, $timeout, ng
         }, function () {
             //$log.info('Modal dismissed at: ' + new Date());
         });
-
     };
     scan.VerifyLineitem = function (serialCode) {
         scan.SavingItem = true;
@@ -364,18 +363,18 @@ app.controller("ScanController", function ($scope, $modal, $filter, $timeout, ng
                         return false;
                     }
                 } else {
-                    //Determine if the item is the primary key.
+                   
                     matched = _.find(scan.Delivery.NotScannedItems, function (item) { return item.ProductId == productId && item.Color == color; });
-                    //Its not primary, force them to scan primary
+                    //Determine if the item is the primary key.Its not primary, force them to scan primary
                     if (matched.ItemCode.toLowerCase() != matched.RealItemCode.toLowerCase()) {
                         _errorSound();
                         scan.SerialScanStatus = { Success: false, Select: true, Message: "You have scanned in a code that does not have a single item in the order. Did you mean to scan a kit item?" };
                         return false;
                     }
                     else {
-                        //Item is a primary key, SAVE IT!
+                        //Item is a primary key or single item, SAVE IT!
                         matched = matchedListNotScanned[0];
-                        scan.VerifyAndSaveScan(serialCode, matched, true);
+                        scan.VerifyAndSaveScan(serialCode, matched, false);
                     }
                 };
             } else {
