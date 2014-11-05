@@ -363,7 +363,7 @@ app.controller("ScanController", function ($scope, $modal, $filter, $timeout, ng
                         return false;
                     }
                 } else {
-                   
+
                     matched = _.find(scan.Delivery.NotScannedItems, function (item) { return item.ProductId == productId && item.Color == color; });
                     //Determine if the item is the primary key.Its not primary, force them to scan primary
                     if (matched.ItemCode.toLowerCase() != matched.RealItemCode.toLowerCase()) {
@@ -372,8 +372,13 @@ app.controller("ScanController", function ($scope, $modal, $filter, $timeout, ng
                         return false;
                     }
                     else {
-                        //Item is a primary key or single item, SAVE IT!
                         matched = matchedListNotScanned[0];
+                        //Determine if the item is a kit item or not.
+                        if (matched.KitId > 0) {
+                            scan.VerifyAndSaveScan(serialCode, matched, true);
+                        }
+                        //Item is a primary key or single item, SAVE IT!
+
                         scan.VerifyAndSaveScan(serialCode, matched, false);
                     }
                 };
@@ -431,7 +436,7 @@ app.controller("ScanController", function ($scope, $modal, $filter, $timeout, ng
                     } else {
                         _itemList = scan.Delivery.ScannedItems;
                     }
-                    
+
                     var foundItem = _.find(_itemList, function (item) { return item.SerialCode == serialCode; }) != null;
                     if (foundItem) {
                         _errorSound();
@@ -454,9 +459,8 @@ app.controller("ScanController", function ($scope, $modal, $filter, $timeout, ng
                             _processKit(matched);
                             _cleanUpKit();
                         }
-                        //Remove and Add non Kit Item to correct tables
-                        else
-                        {
+                            //Remove and Add non Kit Item to correct tables
+                        else {
                             scan.Delivery.ScannedItems.push(matched);
                         }
 
@@ -467,9 +471,9 @@ app.controller("ScanController", function ($scope, $modal, $filter, $timeout, ng
                         scan.Delivery.$save();
                         _successSound();
                     }
-                    // If there is an error message.
+                        // If there is an error message.
                     else {
-                        
+
                         scan.SerialScanStatus = { Success: false, Message: result.data.ErrorMessage + result.data.ErrorDeliveryNumber, Select: true };
                         scan.IsSearching = false;
                         scan.SerialCodeLookUp = null;

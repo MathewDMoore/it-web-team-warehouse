@@ -111,7 +111,7 @@
 			SELECT DOCNUM, 0 AS ISIRDELIVERY FROM C4_SERIALNUMBERS_OUT
 			WHERE MACID = #value#
 			UNION ALL
-			SELECT DOCNUM, 1 AS ISIRDELIVERY FROM C4_GOODSISSUE_IR_OUT
+			SELECT DOCNUM, 1 AS ISIRDELIVERY FROM C4_GOODSISSUE_IR_OUT  
 			WHERE MACID = #value#
 		</select>
 		<procedure  id="sp_ClearDelivery" parameterMap="ClearDeliveryOrderPM">
@@ -151,11 +151,11 @@
 			sp_ReturnDelivery
 		</procedure>
 		<update id="UpdateSerialNumberIR" parameterClass="SerialNumberItem" >
-      Update C4_GOODSISSUE_IR_OUT set SERIALCODE= UPPER(#SerialCode#), ScannedBy= #ScannedBy#, MACID =#MacId#, RETURNEDBYUSER = null where DOCNUM = #DocNum# and SERIALNUM = #SerialNum#
+      Update C4_GOODSISSUE_IR_OUT WITH(ROWLOCK) set SERIALCODE= UPPER(#SerialCode#), ScannedBy= #ScannedBy#, MACID =#MacId#, RETURNEDBYUSER = null where DOCNUM = #DocNum# and SERIALNUM = #SerialNum#
     </update>
 		<update id="UpdateSerialNumber" parameterClass="SerialNumberItem" >
-      Update C4_SERIALNUMBERS_OUT set SERIALCODE= UPPER(#SerialCode#), ScannedBy= #ScannedBy#, MACID =#MacId#, RETURNEDBYUSER = null where DOCNUM = #DocNum# and SERIALNUM = #SerialNum#;
-      </update>
+      Update C4_SERIALNUMBERS_OUT WITH(ROWLOCK) set SERIALCODE= UPPER(#SerialCode#), ScannedBy= #ScannedBy#, MACID =#MacId#, RETURNEDBYUSER = null where DOCNUM = #DocNum# and SERIALNUM = #SerialNum#;
+    </update>
 		<update id="UpdateVerifiedOrder" parameterClass="DeliveryOrderQuery">
 			UPDATE C4_SERIALNUMBERS_OUT
 			SET VERIFIED = 1,
