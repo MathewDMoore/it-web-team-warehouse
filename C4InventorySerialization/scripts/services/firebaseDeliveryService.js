@@ -17,7 +17,6 @@
           },
           SaveNotScanned: function (item, delivery) {
               var items = $firebase(new Firebase(FIREBASE_URL + "Deliveries/" + delivery + "/notscanned"));
-              var items = $firebase(new Firebase(FIREBASE_URL + "Deliveries/" + delivery + "/notscanned"));
               items.$push(item);
           },
 

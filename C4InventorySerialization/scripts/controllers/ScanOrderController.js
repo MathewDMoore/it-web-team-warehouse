@@ -374,7 +374,7 @@ app.controller("ScanController", function ($scope, $modal, $filter, $timeout, ng
                     else {
                         matched = matchedListNotScanned[0];
                         //Determine if the item is a kit item or not.
-                        if (matched.KitId > 0) {
+                        if (matched.KitId && matched.KitId > 0) {
                             scan.VerifyAndSaveScan(serialCode, matched, true);
                         }
                         //Item is a primary key or single item, SAVE IT!
@@ -390,6 +390,7 @@ app.controller("ScanController", function ($scope, $modal, $filter, $timeout, ng
             }
         }
     };
+
     scan.VerifyAndSaveScan = function (serialCode, matched, isKitItem) {
         scan.ShouldSelect = false;
         //Make sure that there is a serialcode and a matched product
