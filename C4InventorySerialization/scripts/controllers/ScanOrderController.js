@@ -377,9 +377,11 @@ app.controller("ScanController", function ($scope, $modal, $filter, $timeout, ng
                         if (matched.KitId && matched.KitId > 0) {
                             scan.VerifyAndSaveScan(serialCode, matched, true);
                         }
-                        //Item is a primary key or single item, SAVE IT!
+                            //Item is a primary key or single item, SAVE IT!
+                        else {
+                            scan.VerifyAndSaveScan(serialCode, matched, false);
+                        }
 
-                        scan.VerifyAndSaveScan(serialCode, matched, false);
                     }
                 };
             } else {
