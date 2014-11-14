@@ -154,6 +154,7 @@
     <Content Include="scripts\SearchSmartMac.js" />
     <Content Include="scripts\services\firebaseDeliveryService.js" />
     <Content Include="scripts\services\ScanOrderService.js" />
+    <Content Include="scripts\shippingApp.js" />
     <Content Include="scripts\shippingFilters.js" />
     <Content Include="scripts\ShipToolScript.js" />
     <Content Include="scripts\templates\confusingModal.html" />

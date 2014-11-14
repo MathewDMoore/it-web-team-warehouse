@@ -26,7 +26,7 @@ app.controller("ScanController", function ($scope, $modal, $filter, $timeout, ng
     $scope.$watch("scan.Delivery.ScannedItems", function (newValue, oldValue) {
         if (newValue != oldValue) {
             scan.TableParams2.reload();
-            scan.Delivery.$save();  
+            scan.Delivery.$save();
         }
     });
     $scope.$watch("scan.Delivery.NotScannedItems", function (newValue, oldValue) {
@@ -272,9 +272,12 @@ app.controller("ScanController", function ($scope, $modal, $filter, $timeout, ng
         modalInstance.result.then(function () {
             ScanOrderService.ClearDelivery({ DeliveryNumber: docNumber, IsInternal: scan.Delivery.IsInternal }).then(function (result) {
                 if (result.data === "true") {
-                    scan.Delivery = null;
-                    scan.DeliveryActionMessage = "Successfully cleared delivery " + docNumber;
-                    scan.FocusDeliveryInput = true;
+                    FirebaseDeliveryService.Delete(scan.Delivery).then(function(ref) {
+                        scan.Delivery.$destroy();
+                        scan.Delivery = null;
+                        scan.DeliveryActionMessage = "Successfully cleared delivery " + docNumber;
+                        scan.FocusDeliveryInput = true;
+                    });
                 } else {
                     scan.DeliveryActionMessage = "There was an error clearing this delivery.";
                 }
@@ -369,12 +372,11 @@ app.controller("ScanController", function ($scope, $modal, $filter, $timeout, ng
                         //Determine if the item is a kit item or not.
                         if (matched.KitId && matched.KitId > 0) {
                             scan.VerifyAndSaveScan(serialCode, matched, true);
-                        }
+                        } else {
                             //Item is a primary key or single item, SAVE IT!
-                        else {
+
                             scan.VerifyAndSaveScan(serialCode, matched, false);
                         }
-
                     }
                 };
             } else {
@@ -565,9 +567,12 @@ app.controller("ScanController", function ($scope, $modal, $filter, $timeout, ng
         modalInstance.result.then(function () {
             ScanOrderService.VerifyDelivery(docNum).then(function (result) {
                 if (result.data) {
-                    scan.Delivery = null;
-                    scan.DeliveryActionMessage = "Successfully verified delivery" + docNum;
-                    scan.FocusDeliveryInput = true;
+                    FirebaseDeliveryService.Delete(scan.Delivery).then(function (ref) {
+                        scan.Delivery.$destroy();
+                        scan.Delivery = null;
+                        scan.DeliveryActionMessage = "Successfully verified delivery" + docNum;
+                        scan.FocusDeliveryInput = true;
+                    });
                 } else {
                     alert("There was an error verifying this delivery.");
                 }

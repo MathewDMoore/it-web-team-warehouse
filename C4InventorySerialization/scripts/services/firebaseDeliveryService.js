@@ -24,6 +24,9 @@
 //              this.CurrentDelivery = delivery;
               var items = $firebase(new Firebase(FIREBASE_URL + "Deliveries/"+delivery)).$asObject();
               return items;
+          },
+          Delete: function(delivery) {
+              return $firebase(new Firebase(FIREBASE_URL + "Deliveries/" + delivery.DeliveryNumber)).$remove();
           }
       };
     return fbService;

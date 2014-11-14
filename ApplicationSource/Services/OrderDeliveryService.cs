@@ -222,7 +222,7 @@ namespace ApplicationSource.Services
             }
             catch (Exception e)
             {
-
+                success = false;
             }
             return success;
         }
