@@ -56,7 +56,7 @@ app.controller("ScanController", function ($scope, $modal, $filter, $timeout, ng
             if (scan.Delivery.ActiveKits && scan.Delivery.ActiveKits.length > 0) {
                 scan.Delivery.ActiveKits.remove(_.where(scan.Delivery.ActiveKits, { Key: CURRENTUSER })[0]);
             }
-            
+
         }
         scan.Delivery.$save();
     }
@@ -280,7 +280,7 @@ app.controller("ScanController", function ($scope, $modal, $filter, $timeout, ng
         modalInstance.result.then(function () {
             ScanOrderService.ClearDelivery({ DeliveryNumber: docNumber, IsInternal: scan.Delivery.IsInternal }).then(function (result) {
                 if (result.data === "true") {
-                    FirebaseDeliveryService.Delete(scan.Delivery).then(function(ref) {
+                    FirebaseDeliveryService.Delete(scan.Delivery).then(function (ref) {
                         scan.Delivery.$destroy();
                         scan.Delivery = null;
                         scan.DeliveryActionMessage = "Successfully cleared delivery " + docNumber;
@@ -340,59 +340,67 @@ app.controller("ScanController", function ($scope, $modal, $filter, $timeout, ng
             scan.VerifyAndSaveScan(serialCode, matched, true);
         }
         else {
-            //Find all matches in the not scanned table
-            var matchedListNotScanned = _.where(scan.Delivery.NotScannedItems, { ProductId: productId, Color: color });
-            //find all matches in the scanned table
-            var matchedListScanned = _.where(scan.Delivery.ScannedItems, { ProductId: productId, Color: color });
-            var itemList = _.union(matchedListNotScanned, matchedListScanned);
-            //find if there are single items
-            var singleItemsExist = _.find(itemList, function (item) { return item.KitId === 0; });
-            //find if there are kit items
-            var kitItemsExist = _.find(itemList, function (item) { return item.KitId > 0; });
-            //Do items exist in both single and kit items? Then isMixed = true;
-            var isMixed = singleItemsExist && kitItemsExist;
 
-            if (matchedListNotScanned.length > 0) {
-                //Delete this and in the if statement call isMixed
-                if (isMixed) {
-                    //We know the item is mixed, so find if it has a single item that is scannable
-                    var containsSingle = _.find(matchedListNotScanned, function (item) { return item.KitId == 0; });
-                    if (containsSingle) {
-                        //Found a single item that is scannable, SAVE IT!
-                        scan.VerifyAndSaveScan(serialCode, containsSingle, false);
-                    } else {
-                        _errorSound();
-                        //No more single items found, item must be in a kit because it still exists in the NotScannedTable
-                        scan.SerialScanStatus = { Success: false, Select: true, Message: "You have scanned in a code that does not have a single item in the order. Did you mean to scan a kit item?" };
-                        return false;
-                    }
-                } else {
+            //set matched item
+            matched = _.find(scan.Delivery.NotScannedItems, function (item) { return item.ProductId == productId && item.Color == color; });
+            if (matched) {
+                scan.Delivery.NotScannedItems.remove(matched);
 
-                    matched = _.find(scan.Delivery.NotScannedItems, function (item) { return item.ProductId == productId && item.Color == color; });
-                    //Determine if the item is the primary key.Its not primary, force them to scan primary
-                    if (matched.ItemCode.toLowerCase() != matched.RealItemCode.toLowerCase()) {
-                        _errorSound();
-                        scan.SerialScanStatus = { Success: false, Select: true, Message: "You have scanned in a code that does not have a single item in the order. Did you mean to scan a kit item?" };
-                        return false;
-                    }
-                    else {
-                        //matched = matchedListNotScanned[0];
-                        scan.Delivery.NotScannedItems.remove(matched);
-                        //Determine if the item is a kit item or not.
-                        if (matched.KitId && matched.KitId > 0) {
-                            scan.VerifyAndSaveScan(serialCode, matched, true);
+
+                //Find all matches in the not scanned table
+                var matchedListNotScanned = _.where(scan.Delivery.NotScannedItems, { ProductId: productId, Color: color });
+                //find all matches in the scanned table
+                var matchedListScanned = _.where(scan.Delivery.ScannedItems, { ProductId: productId, Color: color });
+                var itemList = _.union(matchedListNotScanned, matchedListScanned);
+                //find if there are single items
+                var singleItemsExist = _.find(itemList, function (item) { return item.KitId === 0; });
+                //find if there are kit items
+                var kitItemsExist = _.find(itemList, function (item) { return item.KitId > 0; });
+                //Do items exist in both single and kit items? Then isMixed = true;
+                var isMixed = singleItemsExist && kitItemsExist;
+
+                if (matchedListNotScanned.length > 0) {
+                    //Delete this and in the if statement call isMixed
+                    if (isMixed) {
+                        //We know the item is mixed, so find if it has a single item that is scannable
+                        var containsSingle = _.find(matchedListNotScanned, function (item) { return item.KitId == 0; });
+                        if (containsSingle) {
+                            //Found a single item that is scannable, SAVE IT!
+
+                            scan.VerifyAndSaveScan(serialCode, containsSingle, false);
                         } else {
-                            //Item is a primary key or single item, SAVE IT!
-
-                            scan.VerifyAndSaveScan(serialCode, matched, false);
+                            _errorSound();
+                            //No more single items found, item must be in a kit because it still exists in the NotScannedTable
+                            scan.SerialScanStatus = { Success: false, Select: true, Message: "You have scanned in a code that does not have a single item in the order. Did you mean to scan a kit item?" };
+                            return false;
                         }
-                    }
-                };
-            } else {
-                //Item code not found in not scanned table, or doesnt exist on order
-                _errorSound();
-                scan.SerialScanStatus = { Success: false, Select: true, Message: "Item not found on order." };
-                return false;
+                    } else {
+
+                        //Determine if the item is the primary key.Its not primary, force them to scan primary
+                        if (matched.ItemCode.toLowerCase() != matched.RealItemCode.toLowerCase()) {
+                            _errorSound();
+                            scan.SerialScanStatus = { Success: false, Select: true, Message: "You have scanned in a code that does not have a single item in the order. Did you mean to scan a kit item?" };
+                            return false;
+                        }
+                        else {
+                            //matched = matchedListNotScanned[0];
+                            scan.Delivery.NotScannedItems.remove(matched);
+                            //Determine if the item is a kit item or not.
+                            if (matched.KitId && matched.KitId > 0) {
+                                scan.VerifyAndSaveScan(serialCode, matched, true);
+                            } else {
+                                //Item is a primary key or single item, SAVE IT!
+
+                                scan.VerifyAndSaveScan(serialCode, matched, false);
+                            }
+                        }
+                    };
+                } else {
+                    //Item code not found in not scanned table, or doesnt exist on order
+                    _errorSound();
+                    scan.SerialScanStatus = { Success: false, Select: true, Message: "Item not found on order." };
+                    return false;
+                }
             }
         }
     };
