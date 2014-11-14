@@ -25,20 +25,23 @@ app.controller("ScanController", function ($scope, $modal, $filter, $timeout, ng
     }
     $scope.$watch("scan.Delivery.ScannedItems", function (newValue, oldValue) {
         if (newValue != oldValue) {
-            scan.TableParams2.reload();
             scan.Delivery.$save();
+            scan.TableParams2.reload();
+
         }
     });
     $scope.$watch("scan.Delivery.NotScannedItems", function (newValue, oldValue) {
         if (newValue != oldValue) {
-            scan.TableParams.reload();
             scan.Delivery.$save();
+            scan.TableParams.reload();
+
         }
     });
     $scope.$watch("scan.Delivery.Kits", function (newValue, oldValue) {
         if (newValue != oldValue) {
-            scan.TableParams3.reload();
             scan.Delivery.$save();
+            scan.TableParams3.reload();
+
         }
     });
 
@@ -50,7 +53,10 @@ app.controller("ScanController", function ($scope, $modal, $filter, $timeout, ng
             });
             scan.ActiveKit = null;
 
-            scan.Delivery.ActiveKits.remove(_.where(scan.Delivery.ActiveKits, { Key: CURRENTUSER })[0]);
+            if (scan.Delivery.ActiveKits && scan.Delivery.ActiveKits.length > 0) {
+                scan.Delivery.ActiveKits.remove(_.where(scan.Delivery.ActiveKits, { Key: CURRENTUSER })[0]);
+            }
+            
         }
         scan.Delivery.$save();
     }
@@ -63,6 +69,8 @@ app.controller("ScanController", function ($scope, $modal, $filter, $timeout, ng
                 //Initialize ActiveKit
                 if (scan.ActiveKit == null && scanItem.KitId > 0) {
                     scan.ActiveKit = [];
+                    //Add the scan item to the active kit.
+                    matchedKitItems.push(scanItem);
                     var newKit = { Key: CURRENTUSER, Value: [] };
                     _.each(matchedKitItems, function (item) {
                         scan.Delivery.NotScannedItems.remove(item);
@@ -368,7 +376,8 @@ app.controller("ScanController", function ($scope, $modal, $filter, $timeout, ng
                         return false;
                     }
                     else {
-                        matched = matchedListNotScanned[0];
+                        //matched = matchedListNotScanned[0];
+                        scan.Delivery.NotScannedItems.remove(matched);
                         //Determine if the item is a kit item or not.
                         if (matched.KitId && matched.KitId > 0) {
                             scan.VerifyAndSaveScan(serialCode, matched, true);
