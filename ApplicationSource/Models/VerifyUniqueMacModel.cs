@@ -32,6 +32,8 @@ namespace ApplicationSource.Models
         
         [DataMember]
         public bool IsInternal { get; set; } 
+        [DataMember]
+        public bool AlreadyScanned { get; set; } 
         
         [DataMember]
         public int SerialNum { get; set; }        
