@@ -67,8 +67,8 @@ namespace ApplicationSource.Services
                     }
                 });
                 var dictionary = new Dictionary<string, int>();
-                var grouped = items.Where(i=>i.RealItemCode != null).GroupBy(i => i.RealItemCode).ToList();
-                grouped.ForEach(g=>dictionary.Add(g.Key,g.Count()));
+                var grouped = items.Where(i => i.RealItemCode != null).GroupBy(i => i.RealItemCode).ToList();
+                grouped.ForEach(g => dictionary.Add(g.Key, g.Count()));
                 deliveryModel.ChartData = dictionary;
             }
             return deliveryModel;
@@ -88,7 +88,7 @@ namespace ApplicationSource.Services
                 }
                 else
                 {
-                    kitGroups[group.Key].AddRange(kitItems.Map<IEnumerable<SerialNumberItem>, List<DeliveryOrderItemModel>>());                    
+                    kitGroups[group.Key].AddRange(kitItems.Map<IEnumerable<SerialNumberItem>, List<DeliveryOrderItemModel>>());
                 }
                 if (kitGroups[group.Key].All(i => !string.IsNullOrEmpty(i.ScannedBy)))
                 {
@@ -96,7 +96,7 @@ namespace ApplicationSource.Services
                 }
                 else
                 {
-                    kitItems.ToList().ForEach(ki => items.Remove(ki));                    
+                    kitItems.ToList().ForEach(ki => items.Remove(ki));
                 }
             });
             deliveryModel.ActiveKits = kitGroups;
@@ -152,11 +152,11 @@ namespace ApplicationSource.Services
 
                         if (model.IsUnique)
                         {
-                             serialItem = _repo.SelectSmartMac(new SerialNumberItemQuery
-                            {
-                                MacId = parsedMacId,
-                                ProductGroup = productGroup
-                            });
+                            serialItem = _repo.SelectSmartMac(new SerialNumberItemQuery
+                           {
+                               MacId = parsedMacId,
+                               ProductGroup = productGroup
+                           });
 
                             if (serialItem != null)
                             {
@@ -164,14 +164,14 @@ namespace ApplicationSource.Services
                                 model.ErrorDeliveryNumber = serialItem.DocNum;
                                 return model;
                             }
-                            
-                        }
 
-                        if (!UpdateRecord(model.SerialCode, parsedMacId, model.Id, model.IsInternal, model.SerialNum, model.DocNum))
+                        }
+                        model.AlreadyScanned = _repo.IsScanned(new SerialNumberItem { SerialNum = model.SerialNum, DocNum = model.DocNum });
+
+                        if (!model.AlreadyScanned && !UpdateRecord(model.SerialCode, parsedMacId, model.Id, model.IsInternal, model.SerialNum, model.DocNum))
                         {
                             model.ErrorMessage =
                                 "There was an error saving this item into the database. Please review the SerialCode or contact IT support.";
-
                         }
                     }
 
@@ -258,7 +258,7 @@ namespace ApplicationSource.Services
 
         private bool UpdateRecord(string serialCode, string macId, int id, bool isInternal, int serialNum, int docNum)
         {
-            var success = _repo.UpdateSerialNumberItem(new SerialNumberItem { Id = id, MacId = macId, SerialCode = serialCode, ScannedBy = HttpContext.Current.User.Identity.Name, SerialNum = serialNum, DocNum = docNum}, isInternal);
+            var success = _repo.UpdateSerialNumberItem(new SerialNumberItem { Id = id, MacId = macId, SerialCode = serialCode, ScannedBy = HttpContext.Current.User.Identity.Name, SerialNum = serialNum, DocNum = docNum }, isInternal);
             return success;
         }
     }

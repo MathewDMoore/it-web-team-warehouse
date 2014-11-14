@@ -16,7 +16,7 @@
                 $log.error("ScanOrderService -> OrderLookUp " + result);
             });
         },
-        SaveDeliveryItem: function(deliveryItem) {
+            SaveDeliveryItem: function(deliveryItem) {
             return $http({ data: deliveryItem, method: "POST", url: SERVICES_PATH + "OrderDeliveryService.svc/SaveDeliveryItem" })
                 .success(function(result) {
                     return result;
