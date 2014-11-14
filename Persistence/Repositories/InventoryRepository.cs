@@ -103,5 +103,10 @@ namespace Persistence.Repositories
         {
             return _sqlMapperFactory.InventoryMasterMapper.ReturnDelivery(query);
         }
+
+        public bool IsScanned(SerialNumberItem item)
+        {
+            return _sqlMapperFactory.InventoryMasterMapper.IsScanned(item);
+        }
     }
 }

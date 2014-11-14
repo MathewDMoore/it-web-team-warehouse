@@ -114,6 +114,12 @@
 			SELECT DOCNUM, 1 AS ISIRDELIVERY FROM C4_GOODSISSUE_IR_OUT
 			WHERE MACID = #value#
 		</select>
+    <select id="IsScanned" parameterClass="SerialNumberItem">
+      SELECT * FROM C4_SERIALNUMBERS_OUT 
+      WHERE DOCNUM = #DocNum#
+      AND SERIALNUM = #SerialNum#
+      AND SERIALCODE IS NOT NULL
+    </select>
 		<procedure  id="sp_ClearDelivery" parameterMap="ClearDeliveryOrderPM">
 			sp_ClearDelivery
 		</procedure>

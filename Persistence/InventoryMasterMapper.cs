@@ -58,6 +58,11 @@ namespace Persistence
             return _sqlMapper.Update(query.IsInternal ? "ReturnDeliveryIR" : "ReturnDelivery", query) > 0;
         }
 
+        public bool IsScanned(SerialNumberItem item)
+        {
+            return _sqlMapper.QueryForObject<SerialNumberItem>("IsScanned", item) != null;
+        }
+
         public InventoryMasterMapper(ISqlMapper sqlMapper)
         {
             _sqlMapper = sqlMapper;
