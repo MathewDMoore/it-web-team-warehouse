@@ -122,7 +122,7 @@
                         </table>
                     </div>
                 </div>
-                <div ng-if="scan.Delivery.NotScannedItems.length>0" style="clear: both;">
+                <div ng-if="scan.Delivery.NotScannedItems&& scan.Delivery.NotScannedItems.length>0" style="clear: both;">
                     <h3>Not Scanned Items</h3>
                     <div>
                         Search
@@ -144,7 +144,7 @@
                         </tr>
                     </table>
                 </div>
-                <div ng-if="scan.Delivery.ScannedItems.length>0" style="clear: both;">
+                <div ng-if="scan.Delivery.ScannedItems && scan.Delivery.ScannedItems.length>0" style="clear: both;">
                     <h3>Scanned Items <span class="btn btn-warning" ng-click="scan.ReturnSelectedItems()" ng-show="scan.HasSelectedReturns()" style="margin-left: 10px;">Return Selected Items</span></h3>
                     <div>
                         Search
