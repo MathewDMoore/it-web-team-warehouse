@@ -114,7 +114,7 @@
 			SELECT DOCNUM, 1 AS ISIRDELIVERY FROM C4_GOODSISSUE_IR_OUT
 			WHERE MACID = #value#
 		</select>
-    <select id="IsScanned" parameterClass="SerialNumberItem">
+    <select id="IsScanned" parameterClass="SerialNumberItem" resultMap="SerialNumberItemRM">
       SELECT * FROM C4_SERIALNUMBERS_OUT 
       WHERE DOCNUM = #DocNum#
       AND SERIALNUM = #SerialNum#
