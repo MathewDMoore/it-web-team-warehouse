@@ -58,7 +58,7 @@ app.controller("ScanController", function ($scope, $modal, $filter, $timeout, ng
             }
 
         }
-        //        scan.Delivery.$save();
+                scan.Delivery.$save();
     }
 
     function _processKit(scanItem) {
@@ -86,7 +86,7 @@ app.controller("ScanController", function ($scope, $modal, $filter, $timeout, ng
                 }
             }
         }
-        //        scan.Delivery.$save();
+                scan.Delivery.$save();
     }
 
     scan.ChartData = { Chart: null };
@@ -327,6 +327,8 @@ app.controller("ScanController", function ($scope, $modal, $filter, $timeout, ng
     };
     scan.VerifyLineitem = function (serialCode) {
         scan.SavingItem = true;
+        var random = Math.floor((Math.random() * 15) + 1) * 100;
+        console.info(random);
         $timeout(function () {
             if (!serialCode) {
                 scan.IsSearching = false;
@@ -409,7 +411,7 @@ app.controller("ScanController", function ($scope, $modal, $filter, $timeout, ng
                     return false;
                 }
             }
-        }, Math.floor((Math.random() * 8) + 1) * 100);
+        }, random);
     };
 
     scan.VerifyAndSaveScan = function (serialCode, matched, isKitItem) {
