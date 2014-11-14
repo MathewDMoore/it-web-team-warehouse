@@ -345,8 +345,6 @@ app.controller("ScanController", function ($scope, $modal, $filter, $timeout, ng
             matched = _.find(scan.Delivery.NotScannedItems, function (item) { return item.ProductId == productId && item.Color == color; });
             if (matched) {
                 scan.Delivery.NotScannedItems.remove(matched);
-
-
                 //Find all matches in the not scanned table
                 var matchedListNotScanned = _.where(scan.Delivery.NotScannedItems, { ProductId: productId, Color: color });
                 //find all matches in the scanned table
@@ -401,6 +399,11 @@ app.controller("ScanController", function ($scope, $modal, $filter, $timeout, ng
                     scan.SerialScanStatus = { Success: false, Select: true, Message: "Item not found on order." };
                     return false;
                 }
+            } else {
+                //Item code not found in not scanned table, or doesnt exist on order
+                _errorSound();
+                scan.SerialScanStatus = { Success: false, Select: true, Message: "Item not found on order." };
+                return false;
             }
         }
     };
@@ -469,10 +472,11 @@ app.controller("ScanController", function ($scope, $modal, $filter, $timeout, ng
 
                 ScanOrderService.SaveDeliveryItem(deliveryItem).then(function (result) {
                     if (!result.data.ErrorMessage) {
-                        scan.Delivery.ScannedItems = scan.Delivery.ScannedItems || [];
+                        if (!scan.Delivery.ScannedItems) {
+                            scan.Delivery.ScannedItems = [];
+                        }
                         matched.SerialCode = serialCode;
                         matched.ScannedBy = CURRENTUSER;
-                        scan.Delivery.$save();
                         //Remove and update kit item to correct tables
                         if (isKitItem) {
                             _processKit(matched);
@@ -487,6 +491,7 @@ app.controller("ScanController", function ($scope, $modal, $filter, $timeout, ng
                         scan.SerialCodeLookUp = null;
                         //Set the status to success
                         scan.SerialScanStatus = { Success: true, Message: "Serial Successfully Updated", Select: true };
+                        scan.Delivery.$save();
                         _successSound();
                     }
                         // If there is an error message.
