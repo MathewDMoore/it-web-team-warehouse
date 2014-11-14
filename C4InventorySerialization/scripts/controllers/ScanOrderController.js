@@ -58,7 +58,7 @@ app.controller("ScanController", function ($scope, $modal, $filter, $timeout, ng
             }
 
         }
-        scan.Delivery.$save();
+//        scan.Delivery.$save();
     }
 
     function _processKit(scanItem) {
@@ -86,7 +86,7 @@ app.controller("ScanController", function ($scope, $modal, $filter, $timeout, ng
                 }
             }
         }
-        scan.Delivery.$save();
+//        scan.Delivery.$save();
     }
 
     scan.ChartData = { Chart: null };
@@ -111,11 +111,13 @@ app.controller("ScanController", function ($scope, $modal, $filter, $timeout, ng
     {
         total: 0, // length of data
         getData: function ($defer, params) {
-            var orderedData = params.sorting() ? $filter('orderBy')(scan.Delivery.NotScannedItems, params.orderBy()) : scan.Delivery.NotScannedItems;
-            orderedData = params.filter() ? $filter('filter')(orderedData, params.filter()) : orderedData;
-            orderedData = orderedData || [];
-            params.total(orderedData.length);
-            $defer.resolve(orderedData.slice((params.page() - 1) * params.count(), params.page() * params.count()));
+            if (scan.Delivery.NotScannedItems && scan.Delivery.NotScannedItems.length > 0) {
+                var orderedData = params.sorting() ? $filter('orderBy')(scan.Delivery.NotScannedItems, params.orderBy()) : scan.Delivery.NotScannedItems;
+                orderedData = params.filter() ? $filter('filter')(orderedData, params.filter()) : orderedData;
+                orderedData = orderedData || [];
+                params.total(orderedData.length);
+                $defer.resolve(orderedData.slice((params.page() - 1) * params.count(), params.page() * params.count()));
+            }
         },
     });
     scan.TableParams2 = new ngTableParams({
@@ -127,11 +129,13 @@ app.controller("ScanController", function ($scope, $modal, $filter, $timeout, ng
     }, {
         total: 0, // length of data
         getData: function ($defer, params) {
-            var orderedData = params.sorting() ? $filter('orderBy')(scan.Delivery.ScannedItems, params.orderBy()) : scan.Delivery.ScannedItems;
-            orderedData = params.filter() ? $filter('filter')(orderedData, params.filter()) : orderedData;
-            orderedData = orderedData || [];
-            params.total(orderedData.length);
-            $defer.resolve(orderedData.slice((params.page() - 1) * params.count(), params.page() * params.count()));
+            if (scan.Delivery.ScannedItems && scan.Delivery.ScannedItems.length > 0) {
+                var orderedData = params.sorting() ? $filter('orderBy')(scan.Delivery.ScannedItems, params.orderBy()) : scan.Delivery.ScannedItems;
+                orderedData = params.filter() ? $filter('filter')(orderedData, params.filter()) : orderedData;
+                orderedData = orderedData || [];
+                params.total(orderedData.length);
+                $defer.resolve(orderedData.slice((params.page() - 1) * params.count(), params.page() * params.count()));
+            }
         },
     });
     scan.TableParams3 = new ngTableParams({
@@ -144,11 +148,13 @@ app.controller("ScanController", function ($scope, $modal, $filter, $timeout, ng
     {
         total: 0, // length of data
         getData: function ($defer, params) {
-            var orderedData = params.sorting() ? $filter('orderBy')(scan.ActiveKit, params.orderBy()) : scan.ActiveKit;
-            orderedData = params.filter() ? $filter('filter')(orderedData, params.filter()) : orderedData;
-            orderedData = orderedData || [];
-            params.total(orderedData.length);
-            $defer.resolve(orderedData.slice((params.page() - 1) * params.count(), params.page() * params.count()));
+            if (scan.ActiveKit && scan.ActiveKit.length > 0) {
+                var orderedData = params.sorting() ? $filter('orderBy')(scan.ActiveKit, params.orderBy()) : scan.ActiveKit;
+                orderedData = params.filter() ? $filter('filter')(orderedData, params.filter()) : orderedData;
+                orderedData = orderedData || [];
+                params.total(orderedData.length);
+                $defer.resolve(orderedData.slice((params.page() - 1) * params.count(), params.page() * params.count()));
+            }
         },
     });
     scan.IsSaving = function (saving) {
@@ -174,7 +180,7 @@ app.controller("ScanController", function ($scope, $modal, $filter, $timeout, ng
         var kitItemsCount = 0;
         if (matches && matches.length > 0) {
             _.each(matches, function (match) {
-                var activeScan = _.filter(match, function (item) { return item.ScannedBy; });
+                var activeScan = _.where(match, function (item) { return item.ScannedBy; });
                 kitItemsCount += activeScan.length;
             });
         }
@@ -238,7 +244,7 @@ app.controller("ScanController", function ($scope, $modal, $filter, $timeout, ng
                         scan.ActiveKit = activeKit[0].Value;
                     }
                     scan.ChartFilter.value = scan.GetScanTotals();
-                    scan.Delivery.$save();
+//                    scan.Delivery.$save();
 
                     $timeout(function () { scan.ShouldFocus = true; }, 500);
                 } else {
@@ -343,7 +349,7 @@ app.controller("ScanController", function ($scope, $modal, $filter, $timeout, ng
             matched = _.find(scan.Delivery.NotScannedItems, function (item) { return item.ProductId == productId && item.Color == color; });
             if (matched) {
                 scan.Delivery.NotScannedItems.remove(matched);
-                scan.Delivery.$save();
+//                scan.Delivery.$save();
 
                 //Find all matches in the not scanned table
                 var matchedListNotScanned = _.where(scan.Delivery.NotScannedItems, { ProductId: productId, Color: color });
@@ -443,14 +449,16 @@ app.controller("ScanController", function ($scope, $modal, $filter, $timeout, ng
                 //Check all tables to see if the ID exists anywhere in the order already
                 if (isKitItem) {
                     var _itemList;
-                    
+
                     //Find if the kit was already added, if so re-find the item again.
-                   _.each(scan.Delivery.ActiveKits, function (kit) {
-                        var foundItem = _.find(kit, function (item) {
+                    _.each(scan.Delivery.ActiveKits, function (kit) {
+                        var foundkitItem = _.find(kit.Value, function (item) {
+                            console.info(item);
+                            console.info(matched);
                             return item.SerialNum = matched.SerialNum;
                         });
-                        if (foundItem) {
-                            VerifyLineitem(matched.SerialCode);
+                        if (foundkitItem) {
+                            scan.VerifyLineitem(matched.SerialCode);
                         }
                     });
 
@@ -467,7 +475,7 @@ app.controller("ScanController", function ($scope, $modal, $filter, $timeout, ng
                         scan.SavingItem = false;
                         scan.Delivery.NotScannedItems.push(matched);
                         scan.SerialScanStatus = { Success: false, Select: true, Message: "You have scanned in a code that already exists on this order!" };
-                        scan.Delivery.$save();
+//                        scan.Delivery.$save();
                         _errorSound();
                         return false;
                     }
@@ -482,7 +490,7 @@ app.controller("ScanController", function ($scope, $modal, $filter, $timeout, ng
                         }
                         matched.SerialCode = serialCode;
                         matched.ScannedBy = CURRENTUSER;
-                        scan.Delivery.$save();
+//                        scan.Delivery.$save();
                         //Remove and update kit item to correct tables
                         if (isKitItem) {
                             _processKit(matched);
@@ -511,18 +519,18 @@ app.controller("ScanController", function ($scope, $modal, $filter, $timeout, ng
                             scan.Delivery.NotScannedItems = [];
                             scan.Delivery.NotScannedItems.push(matched);
                         }
-                        scan.Delivery.$save();
+//                        scan.Delivery.$save();
                         _errorSound();
                     }
                     scan.SavingItem = false;
                     scan.SerialCodeLookUp = null;
-                    scan.Delivery.$save();
+//                    scan.Delivery.$save();
                 });
             }
         } else {
             if (matched) {
                 scan.Delivery.NotScannedItems.pushed(matched);
-                scan.Delivery.$save();
+//                scan.Delivery.$save();
             }
             if (scan.ActiveKit == null) {
                 _errorSound();
@@ -559,7 +567,7 @@ app.controller("ScanController", function ($scope, $modal, $filter, $timeout, ng
                             scan.Delivery.ScannedItems.remove(item);
                             scan.Delivery.NotScannedItems.push(item);
                         });
-                        scan.Delivery.$save();
+//                        scan.Delivery.$save();
                     }
                 });
             } else if (selected.IsVerified != 1) {
@@ -574,7 +582,7 @@ app.controller("ScanController", function ($scope, $modal, $filter, $timeout, ng
                             scan.Delivery.ScannedItems.remove(item);
                             scan.Delivery.NotScannedItems.push(item);
                         });
-                        scan.Delivery.$save();
+//                        scan.Delivery.$save();
                     }
                 });
             }
