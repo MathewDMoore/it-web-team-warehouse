@@ -26,16 +26,19 @@ app.controller("ScanController", function ($scope, $modal, $filter, $timeout, ng
     $scope.$watch("scan.Delivery.ScannedItems", function (newValue, oldValue) {
         if (newValue != oldValue) {
             scan.TableParams2.reload();
+            scan.Delivery.$save();  
         }
     });
     $scope.$watch("scan.Delivery.NotScannedItems", function (newValue, oldValue) {
         if (newValue != oldValue) {
             scan.TableParams.reload();
+            scan.Delivery.$save();
         }
     });
     $scope.$watch("scan.Delivery.Kits", function (newValue, oldValue) {
         if (newValue != oldValue) {
             scan.TableParams3.reload();
+            scan.Delivery.$save();
         }
     });
 
@@ -73,11 +76,10 @@ app.controller("ScanController", function ($scope, $modal, $filter, $timeout, ng
                         scan.Delivery.ActiveKits = [];
                         scan.Delivery.ActiveKits.push(newKit);
                     }
-
                 }
-                scan.Delivery.$save();
             }
         }
+        scan.Delivery.$save();
     }
 
     scan.ChartData = { Chart: null };
@@ -230,16 +232,7 @@ app.controller("ScanController", function ($scope, $modal, $filter, $timeout, ng
                     }
                     scan.ChartFilter.value = scan.GetScanTotals();
                     scan.Delivery.$save();
-                    //                    $timeout(function () {
-                    //                        scan.TableParams.reload();
-                    //                        scan.TableParams2.reload();
-                    //                        scan.TableParams3.reload();
-                    //                    }, 500);
-                    //scan.Delivery.$watch(function () {
 
-                    //});
-                    scan.FocusDeliveryInput = false;
-                    //                    scan.ShouldFocus = true;
                     $timeout(function () { scan.ShouldFocus = true; }, 500);
                 } else {
                     scan.DeliveryActionMessage = "Delivery not found in SAP. Check delivery number.";
@@ -397,13 +390,15 @@ app.controller("ScanController", function ($scope, $modal, $filter, $timeout, ng
         scan.ShouldSelect = false;
         //Make sure that there is a serialcode and a matched product
         if (serialCode && matched) {
-            //Is it not a kit item?
+            //Remove it from the scanned items list if it is not a kit item, preventing other users from getting this item.
             if (!isKitItem) {
                 scan.Delivery.NotScannedItems.remove(matched);
             }
             //save firebase.
             scan.Delivery.$save();
+
             scan.SerialScanStatus = null;
+
             //If the the item is serializable or requires unique code
             var requiresUniqueScan = !matched.SmartCodeOnly && !matched.NoSerialRequired;
 
@@ -442,9 +437,11 @@ app.controller("ScanController", function ($scope, $modal, $filter, $timeout, ng
 
                     var foundItem = _.find(_itemList, function (item) { return item.SerialCode == serialCode; }) != null;
                     if (foundItem) {
-                        _errorSound();
+
                         scan.SavingItem = false;
                         scan.SerialScanStatus = { Success: false, Select: true, Message: "You have scanned in a code that already exists on this order!" };
+                        scan.Delivery.$save();
+                        _errorSound();
                         return false;
                     }
                 }
@@ -456,7 +453,7 @@ app.controller("ScanController", function ($scope, $modal, $filter, $timeout, ng
                         scan.Delivery.ScannedItems = scan.Delivery.ScannedItems || [];
                         matched.SerialCode = serialCode;
                         matched.ScannedBy = CURRENTUSER;
-
+                        scan.Delivery.$save();
                         //Remove and update kit item to correct tables
                         if (isKitItem) {
                             _processKit(matched);
@@ -471,12 +468,10 @@ app.controller("ScanController", function ($scope, $modal, $filter, $timeout, ng
                         scan.SerialCodeLookUp = null;
                         //Set the status to success
                         scan.SerialScanStatus = { Success: true, Message: "Serial Successfully Updated", Select: true };
-                        scan.Delivery.$save();
                         _successSound();
                     }
                         // If there is an error message.
                     else {
-
                         scan.SerialScanStatus = { Success: false, Message: result.data.ErrorMessage + result.data.ErrorDeliveryNumber, Select: true };
                         scan.IsSearching = false;
                         scan.SerialCodeLookUp = null;
@@ -493,7 +488,6 @@ app.controller("ScanController", function ($scope, $modal, $filter, $timeout, ng
                     scan.SavingItem = false;
                     scan.SerialCodeLookUp = null;
                     scan.Delivery.$save();
-
                 });
             }
         } else {
