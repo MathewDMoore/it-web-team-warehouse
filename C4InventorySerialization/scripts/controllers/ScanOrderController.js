@@ -510,7 +510,15 @@ app.controller("ScanController", function ($scope, $modal, $filter, $timeout, ng
                         scan.SerialScanStatus = { Success: true, Message: "Serial Successfully Updated", Select: true };
                         _successSound();
                     }
-                        // If there is an error message.
+                    else if (result.data.AlreadyScanned){
+                        if (scan.Delivery.NotScannedItems && scan.Delivery.NotScannedItems.length >= 0) {
+                            scan.Delivery.NotScannedItems.push(matched);
+                        } else {
+                            scan.Delivery.NotScannedItems = [];
+                            scan.Delivery.NotScannedItems.push(matched);
+                        }
+                        scan.VerifyLineitem(matched.SerialCode);
+                    } // If there is an error message.
                     else {
                         scan.SerialScanStatus = { Success: false, Message: result.data.ErrorMessage + result.data.ErrorDeliveryNumber, Select: true };
                         scan.IsSearching = false;
