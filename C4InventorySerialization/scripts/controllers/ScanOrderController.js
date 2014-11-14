@@ -73,7 +73,6 @@ app.controller("ScanController", function ($scope, $modal, $filter, $timeout, ng
                     matchedKitItems.push(scanItem);
                     var newKit = { Key: CURRENTUSER, Value: [] };
                     _.each(matchedKitItems, function (item) {
-                        scan.Delivery.NotScannedItems.remove(item);
                         if (item.SerialCode == undefined) {
                             angular.extend(item, { SerialCode: null });
                         }
@@ -338,13 +337,14 @@ app.controller("ScanController", function ($scope, $modal, $filter, $timeout, ng
         if (scan.ActiveKit != null && scan.ActiveKit.length > 0) {
             matched = _.find(scan.ActiveKit, function (match) { return match.ProductId == productId && match.Color == color && (!match.SerialCode || !match.ScannedBy); });
             scan.VerifyAndSaveScan(serialCode, matched, true);
-        }
-        else {
+        } else {
 
             //set matched item
             matched = _.find(scan.Delivery.NotScannedItems, function (item) { return item.ProductId == productId && item.Color == color; });
             if (matched) {
                 scan.Delivery.NotScannedItems.remove(matched);
+                scan.Delivery.$save();
+
                 //Find all matches in the not scanned table
                 var matchedListNotScanned = _.where(scan.Delivery.NotScannedItems, { ProductId: productId, Color: color });
                 //find all matches in the scanned table
@@ -368,6 +368,7 @@ app.controller("ScanController", function ($scope, $modal, $filter, $timeout, ng
                             scan.VerifyAndSaveScan(serialCode, containsSingle, false);
                         } else {
                             _errorSound();
+                            scan.Delivery.NotScannedItems.push(matched);
                             //No more single items found, item must be in a kit because it still exists in the NotScannedTable
                             scan.SerialScanStatus = { Success: false, Select: true, Message: "You have scanned in a code that does not have a single item in the order. Did you mean to scan a kit item?" };
                             return false;
@@ -376,13 +377,13 @@ app.controller("ScanController", function ($scope, $modal, $filter, $timeout, ng
 
                         //Determine if the item is the primary key.Its not primary, force them to scan primary
                         if (matched.ItemCode.toLowerCase() != matched.RealItemCode.toLowerCase()) {
+                            scan.Delivery.NotScannedItems.push(matched);
                             _errorSound();
                             scan.SerialScanStatus = { Success: false, Select: true, Message: "You have scanned in a code that does not have a single item in the order. Did you mean to scan a kit item?" };
                             return false;
-                        }
-                        else {
+                        } else {
                             //matched = matchedListNotScanned[0];
-                            scan.Delivery.NotScannedItems.remove(matched);
+                            //scan.Delivery.NotScannedItems.remove(matched);
                             //Determine if the item is a kit item or not.
                             if (matched.KitId && matched.KitId > 0) {
                                 scan.VerifyAndSaveScan(serialCode, matched, true);
@@ -393,14 +394,10 @@ app.controller("ScanController", function ($scope, $modal, $filter, $timeout, ng
                             }
                         }
                     };
-                } else {
-                    //Item code not found in not scanned table, or doesnt exist on order
-                    _errorSound();
-                    scan.SerialScanStatus = { Success: false, Select: true, Message: "Item not found on order." };
-                    return false;
                 }
             } else {
                 //Item code not found in not scanned table, or doesnt exist on order
+                scan.Delivery.NotScannedItems.push(matched);
                 _errorSound();
                 scan.SerialScanStatus = { Success: false, Select: true, Message: "Item not found on order." };
                 return false;
@@ -412,12 +409,6 @@ app.controller("ScanController", function ($scope, $modal, $filter, $timeout, ng
         scan.ShouldSelect = false;
         //Make sure that there is a serialcode and a matched product
         if (serialCode && matched) {
-            //Remove it from the scanned items list if it is not a kit item, preventing other users from getting this item.
-            if (!isKitItem) {
-                scan.Delivery.NotScannedItems.remove(matched);
-            }
-            //save firebase.
-            scan.Delivery.$save();
 
             scan.SerialScanStatus = null;
 
@@ -434,6 +425,7 @@ app.controller("ScanController", function ($scope, $modal, $filter, $timeout, ng
                     if (modifiedMac.length != 12) {
                         if (modifiedMac.length != 16) {
                             _errorSound();
+                            scan.Delivery.NotScannedItems.push(matched);
                             scan.SerialScanStatus = { Success: false, Select: true, Message: "You have scanned in a code that is not the correct length!" };
                             return false;
                         }
@@ -461,6 +453,7 @@ app.controller("ScanController", function ($scope, $modal, $filter, $timeout, ng
                     if (foundItem) {
 
                         scan.SavingItem = false;
+                        scan.Delivery.NotScannedItems.push(matched);
                         scan.SerialScanStatus = { Success: false, Select: true, Message: "You have scanned in a code that already exists on this order!" };
                         scan.Delivery.$save();
                         _errorSound();
@@ -477,6 +470,7 @@ app.controller("ScanController", function ($scope, $modal, $filter, $timeout, ng
                         }
                         matched.SerialCode = serialCode;
                         matched.ScannedBy = CURRENTUSER;
+                        scan.Delivery.$save();
                         //Remove and update kit item to correct tables
                         if (isKitItem) {
                             _processKit(matched);
@@ -491,7 +485,6 @@ app.controller("ScanController", function ($scope, $modal, $filter, $timeout, ng
                         scan.SerialCodeLookUp = null;
                         //Set the status to success
                         scan.SerialScanStatus = { Success: true, Message: "Serial Successfully Updated", Select: true };
-                        scan.Delivery.$save();
                         _successSound();
                     }
                         // If there is an error message.
@@ -521,10 +514,12 @@ app.controller("ScanController", function ($scope, $modal, $filter, $timeout, ng
             }
             if (scan.ActiveKit == null) {
                 _errorSound();
+                scan.Delivery.NotScannedItems.push(matched);
                 scan.SerialScanStatus = { Success: false, Message: "No items found that match that Serial Code. Verify Serial Code and try again", Select: true };
 
             } else {
                 _errorSound();
+                scan.Delivery.NotScannedItems.push(matched);
                 scan.SerialScanStatus = { Success: false, Message: "No items found in the current kit that match this serial number. Please scan a serial code that matches the products in the current kit.", Select: true };
 
             }
