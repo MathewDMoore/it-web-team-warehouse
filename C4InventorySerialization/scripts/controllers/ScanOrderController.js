@@ -58,7 +58,7 @@ app.controller("ScanController", function ($scope, $modal, $filter, $timeout, ng
             }
 
         }
-//        scan.Delivery.$save();
+        //        scan.Delivery.$save();
     }
 
     function _processKit(scanItem) {
@@ -86,7 +86,7 @@ app.controller("ScanController", function ($scope, $modal, $filter, $timeout, ng
                 }
             }
         }
-//        scan.Delivery.$save();
+        //        scan.Delivery.$save();
     }
 
     scan.ChartData = { Chart: null };
@@ -244,7 +244,7 @@ app.controller("ScanController", function ($scope, $modal, $filter, $timeout, ng
                         scan.ActiveKit = activeKit[0].Value;
                     }
                     scan.ChartFilter.value = scan.GetScanTotals();
-//                    scan.Delivery.$save();
+                    //                    scan.Delivery.$save();
 
                     $timeout(function () { scan.ShouldFocus = true; }, 500);
                 } else {
@@ -327,88 +327,89 @@ app.controller("ScanController", function ($scope, $modal, $filter, $timeout, ng
     };
     scan.VerifyLineitem = function (serialCode) {
         scan.SavingItem = true;
-
-        if (!serialCode) {
-            scan.IsSearching = false;
-            scan.ShouldFocus = true;
-            scan.SavingItem = false;
-            return false;
-        }
-        //get the color and product
-        var productId = serialCode.substring(serialCode.length, serialCode.length - 7).substring(0, 5);
-        var color = serialCode.substring(serialCode.length, serialCode.length - 7).substring(5, 7);
-        var matched = null;
-
-        // See if the item is in a Kit
-        if (scan.ActiveKit != null && scan.ActiveKit.length > 0) {
-            matched = _.find(scan.ActiveKit, function (match) { return match.ProductId == productId && match.Color == color && (!match.SerialCode || !match.ScannedBy); });
-            scan.VerifyAndSaveScan(serialCode, matched, true);
-        } else {
-
-            //set matched item
-            matched = _.find(scan.Delivery.NotScannedItems, function (item) { return item.ProductId == productId && item.Color == color; });
-            if (matched) {
-                scan.Delivery.NotScannedItems.remove(matched);
-//                scan.Delivery.$save();
-
-                //Find all matches in the not scanned table
-                var matchedListNotScanned = _.where(scan.Delivery.NotScannedItems, { ProductId: productId, Color: color });
-                //find all matches in the scanned table
-                var matchedListScanned = _.where(scan.Delivery.ScannedItems, { ProductId: productId, Color: color });
-                var itemList = _.union(matchedListNotScanned, matchedListScanned);
-                //find if there are single items
-                var singleItemsExist = _.find(itemList, function (item) { return item.KitId === 0; });
-                //find if there are kit items
-                var kitItemsExist = _.find(itemList, function (item) { return item.KitId > 0; });
-                //Do items exist in both single and kit items? Then isMixed = true;
-                var isMixed = singleItemsExist && kitItemsExist;
-
-                if (matchedListNotScanned.length > 0) {
-                    //Delete this and in the if statement call isMixed
-                    if (isMixed) {
-                        //We know the item is mixed, so find if it has a single item that is scannable
-                        var containsSingle = _.find(matchedListNotScanned, function (item) { return item.KitId == 0; });
-                        if (containsSingle) {
-                            //Found a single item that is scannable, SAVE IT!
-
-                            scan.VerifyAndSaveScan(serialCode, containsSingle, false);
-                        } else {
-                            _errorSound();
-                            scan.Delivery.NotScannedItems.push(matched);
-                            //No more single items found, item must be in a kit because it still exists in the NotScannedTable
-                            scan.SerialScanStatus = { Success: false, Select: true, Message: "You have scanned in a code that does not have a single item in the order. Did you mean to scan a kit item?" };
-                            return false;
-                        }
-                    } else {
-
-                        //Determine if the item is the primary key.Its not primary, force them to scan primary
-                        if (matched.ItemCode.toLowerCase() != matched.RealItemCode.toLowerCase()) {
-                            scan.Delivery.NotScannedItems.push(matched);
-                            _errorSound();
-                            scan.SerialScanStatus = { Success: false, Select: true, Message: "You have scanned in a code that does not have a single item in the order. Did you mean to scan a kit item?" };
-                            return false;
-                        } else {
-                            //matched = matchedListNotScanned[0];
-                            //scan.Delivery.NotScannedItems.remove(matched);
-                            //Determine if the item is a kit item or not.
-                            if (matched.KitId && matched.KitId > 0) {
-                                scan.VerifyAndSaveScan(serialCode, matched, true);
-                            } else {
-                                //Item is a primary key or single item, SAVE IT!
-
-                                scan.VerifyAndSaveScan(serialCode, matched, false);
-                            }
-                        }
-                    };
-                }
-            } else {
-                //Item code not found in not scanned table, or doesnt exist on order
-                scan.Delivery.NotScannedItems.push(matched);
-                _errorSound();
-                scan.SerialScanStatus = { Success: false, Select: true, Message: "Item not found on order." };
+        $timeout(function () {
+            if (!serialCode) {
+                scan.IsSearching = false;
+                scan.ShouldFocus = true;
+                scan.SavingItem = false;
                 return false;
             }
-        }
+            //get the color and product
+            var productId = serialCode.substring(serialCode.length, serialCode.length - 7).substring(0, 5);
+            var color = serialCode.substring(serialCode.length, serialCode.length - 7).substring(5, 7);
+            var matched = null;
+
+            // See if the item is in a Kit
+            if (scan.ActiveKit != null && scan.ActiveKit.length > 0) {
+                matched = _.find(scan.ActiveKit, function (match) { return match.ProductId == productId && match.Color == color && (!match.SerialCode || !match.ScannedBy); });
+                scan.VerifyAndSaveScan(serialCode, matched, true);
+            } else {
+
+                //set matched item
+                matched = _.find(scan.Delivery.NotScannedItems, function (item) { return item.ProductId == productId && item.Color == color; });
+                if (matched) {
+                    scan.Delivery.NotScannedItems.remove(matched);
+                    //                scan.Delivery.$save();
+
+                    //Find all matches in the not scanned table
+                    var matchedListNotScanned = _.where(scan.Delivery.NotScannedItems, { ProductId: productId, Color: color });
+                    //find all matches in the scanned table
+                    var matchedListScanned = _.where(scan.Delivery.ScannedItems, { ProductId: productId, Color: color });
+                    var itemList = _.union(matchedListNotScanned, matchedListScanned);
+                    //find if there are single items
+                    var singleItemsExist = _.find(itemList, function (item) { return item.KitId === 0; });
+                    //find if there are kit items
+                    var kitItemsExist = _.find(itemList, function (item) { return item.KitId > 0; });
+                    //Do items exist in both single and kit items? Then isMixed = true;
+                    var isMixed = singleItemsExist && kitItemsExist;
+
+                    if (matchedListNotScanned.length > 0) {
+                        //Delete this and in the if statement call isMixed
+                        if (isMixed) {
+                            //We know the item is mixed, so find if it has a single item that is scannable
+                            var containsSingle = _.find(matchedListNotScanned, function (item) { return item.KitId == 0; });
+                            if (containsSingle) {
+                                //Found a single item that is scannable, SAVE IT!
+
+                                scan.VerifyAndSaveScan(serialCode, containsSingle, false);
+                            } else {
+                                _errorSound();
+                                scan.Delivery.NotScannedItems.push(matched);
+                                //No more single items found, item must be in a kit because it still exists in the NotScannedTable
+                                scan.SerialScanStatus = { Success: false, Select: true, Message: "You have scanned in a code that does not have a single item in the order. Did you mean to scan a kit item?" };
+                                return false;
+                            }
+                        } else {
+
+                            //Determine if the item is the primary key.Its not primary, force them to scan primary
+                            if (matched.ItemCode.toLowerCase() != matched.RealItemCode.toLowerCase()) {
+                                scan.Delivery.NotScannedItems.push(matched);
+                                _errorSound();
+                                scan.SerialScanStatus = { Success: false, Select: true, Message: "You have scanned in a code that does not have a single item in the order. Did you mean to scan a kit item?" };
+                                return false;
+                            } else {
+                                //matched = matchedListNotScanned[0];
+                                //scan.Delivery.NotScannedItems.remove(matched);
+                                //Determine if the item is a kit item or not.
+                                if (matched.KitId && matched.KitId > 0) {
+                                    scan.VerifyAndSaveScan(serialCode, matched, true);
+                                } else {
+                                    //Item is a primary key or single item, SAVE IT!
+
+                                    scan.VerifyAndSaveScan(serialCode, matched, false);
+                                }
+                            }
+                        };
+                    }
+                } else {
+                    //Item code not found in not scanned table, or doesnt exist on order
+                    scan.Delivery.NotScannedItems.push(matched);
+                    _errorSound();
+                    scan.SerialScanStatus = { Success: false, Select: true, Message: "Item not found on order." };
+                    return false;
+                }
+            }
+        }, Math.floor((Math.random() * 8) + 1) * 100);
     };
 
     scan.VerifyAndSaveScan = function (serialCode, matched, isKitItem) {
@@ -475,7 +476,7 @@ app.controller("ScanController", function ($scope, $modal, $filter, $timeout, ng
                         scan.SavingItem = false;
                         scan.Delivery.NotScannedItems.push(matched);
                         scan.SerialScanStatus = { Success: false, Select: true, Message: "You have scanned in a code that already exists on this order!" };
-//                        scan.Delivery.$save();
+                        //                        scan.Delivery.$save();
                         _errorSound();
                         return false;
                     }
@@ -490,7 +491,7 @@ app.controller("ScanController", function ($scope, $modal, $filter, $timeout, ng
                         }
                         matched.SerialCode = serialCode;
                         matched.ScannedBy = CURRENTUSER;
-//                        scan.Delivery.$save();
+                        //                        scan.Delivery.$save();
                         //Remove and update kit item to correct tables
                         if (isKitItem) {
                             _processKit(matched);
@@ -519,18 +520,18 @@ app.controller("ScanController", function ($scope, $modal, $filter, $timeout, ng
                             scan.Delivery.NotScannedItems = [];
                             scan.Delivery.NotScannedItems.push(matched);
                         }
-//                        scan.Delivery.$save();
+                        //                        scan.Delivery.$save();
                         _errorSound();
                     }
                     scan.SavingItem = false;
                     scan.SerialCodeLookUp = null;
-//                    scan.Delivery.$save();
+                    //                    scan.Delivery.$save();
                 });
             }
         } else {
             if (matched) {
                 scan.Delivery.NotScannedItems.pushed(matched);
-//                scan.Delivery.$save();
+                //                scan.Delivery.$save();
             }
             if (scan.ActiveKit == null) {
                 _errorSound();
@@ -567,7 +568,7 @@ app.controller("ScanController", function ($scope, $modal, $filter, $timeout, ng
                             scan.Delivery.ScannedItems.remove(item);
                             scan.Delivery.NotScannedItems.push(item);
                         });
-//                        scan.Delivery.$save();
+                        //                        scan.Delivery.$save();
                     }
                 });
             } else if (selected.IsVerified != 1) {
@@ -582,7 +583,7 @@ app.controller("ScanController", function ($scope, $modal, $filter, $timeout, ng
                             scan.Delivery.ScannedItems.remove(item);
                             scan.Delivery.NotScannedItems.push(item);
                         });
-//                        scan.Delivery.$save();
+                        //                        scan.Delivery.$save();
                     }
                 });
             }
