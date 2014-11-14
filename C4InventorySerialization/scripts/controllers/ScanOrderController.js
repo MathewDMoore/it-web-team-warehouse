@@ -443,6 +443,18 @@ app.controller("ScanController", function ($scope, $modal, $filter, $timeout, ng
                 //Check all tables to see if the ID exists anywhere in the order already
                 if (isKitItem) {
                     var _itemList;
+                    
+                    //Find if the kit was already added, if so re-find the item again.
+                   _.each(scan.Delivery.ActiveKits, function (kit) {
+                        var foundItem = _.find(kit, function (item) {
+                            return item.SerialNum = matched.SerialNum;
+                        });
+                        if (foundItem) {
+                            VerifyLineitem(matched.SerialCode);
+                        }
+                    });
+
+
                     if (scan.ActiveKit) {
                         _itemList = scan.ActiveKit.concat(scan.Delivery.ScannedItems);
                     } else {
