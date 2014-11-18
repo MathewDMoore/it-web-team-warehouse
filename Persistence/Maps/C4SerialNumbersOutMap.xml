@@ -49,6 +49,7 @@
 			<result property="ProductId" column="PRODUCTID"/>
 			<result property="Color" column="COLOR"/>
 			<result property="NoSerialization" column="NOSERIALIZATION"/>
+			<result property="ProductGroup" column="PRODUCTGROUP"/>
 			<result property="SmartCodeOnly" column="SMARTCODEONLY"/>
 			<result property="KitId" column="KitId" />
 			<result property="KitCounter" column="KitCounter" />
@@ -127,7 +128,7 @@
 			WHERE MACID = #value#
 		</select>
 		<select id="FindUnScannedMatches" parameterClass="SerialNumberItemQuery" resultMap="SerialNumberItemLiteRM">
-			SELECT ID,SERIALNUM,PRODUCTID,COLOR,NOSERIALIZATION,SMARTCODEONLY,KitId,KitCounter,DOCNUM
+			SELECT ID,SERIALNUM,PRODUCTID,PRODUCTGROUP, COLOR,NOSERIALIZATION,SMARTCODEONLY,KitId,KitCounter,DOCNUM
 			FROM C4_SERIALNUMBERS_OUT WHERE PRODUCTID = #ProductId# AND COLOR = #Color# AND DOCNUM=#DocNum# AND ScannedBy IS NULL
 		</select>
 		<select id="IsScanned" parameterClass="SerialNumberItem" resultMap="SerialNumberItemRM">
