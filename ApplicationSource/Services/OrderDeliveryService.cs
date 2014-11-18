@@ -186,12 +186,13 @@ namespace ApplicationSource.Services
                             else
                             {
                                 model.ErrorMessage = error;
+                                break;
                             }
                         }
                     }
 
 
-                    if (match == null)
+                    if (match == null && string.IsNullOrEmpty(model.ErrorMessage))
                     {
                         model.ErrorMessage = "All matches already scanned";
                     }
