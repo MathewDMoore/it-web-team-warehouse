@@ -148,6 +148,18 @@ namespace ApplicationSource.Services
                     if (scanModel.KitId > 0)
                     {
                         match = matches.FirstOrDefault(m => m.KitCounter.Equals(scanModel.KitCounter) && m.KitId.Equals(scanModel.KitId));
+                        match.ScannedBy = _identity.Name;
+                        match.SerialCode = scanModel.SerialCode;
+                        var error = string.Empty;
+                        SmartMacCheck(match, out error);
+                        if (string.IsNullOrEmpty(error))
+                        {
+                            _repo.UpdateSerialNumberItem(match, scanModel.IsInternal);
+                        }
+                        else
+                        {
+                            model.ErrorMessage = error;
+                        }
                     }
                     else
                     {
@@ -177,7 +189,7 @@ namespace ApplicationSource.Services
                             }
                         }
                     }
-                    
+
 
                     if (match == null)
                     {
@@ -220,7 +232,7 @@ namespace ApplicationSource.Services
 
                     if (serialItem != null)
                     {
-                        errorMessage= "This item has been scanned on another delivery order - #" + serialItem.DocNum;
+                        errorMessage = "This item has been scanned on another delivery order - #" + serialItem.DocNum;
                         return;
                     }
 
