@@ -107,7 +107,7 @@
                     }
                 </style>
                 <div ng-if="scan.ActiveKit" style="clear: both;">
-                    <h3><i class="fa fa-list-alt"></i>Current Kit - {{kitItem.ItemCode}}</h3>
+                    <h3><i class="fa fa-list-alt" style="margin-right: 5px;"></i>Current Kit - {{kitItem[0].ItemCode}}</h3>
                     <div>
                         <table ng-table="scan.TableParams3" class="table">
                             <tr ng-repeat="kitItem in $data track by $index">
