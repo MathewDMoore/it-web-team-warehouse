@@ -148,17 +148,25 @@ namespace ApplicationSource.Services
                     if (scanModel.KitId > 0)
                     {
                         match = matches.FirstOrDefault(m => m.KitCounter.Equals(scanModel.KitCounter) && m.KitId.Equals(scanModel.KitId));
-                        match.ScannedBy = _identity.Name;
-                        match.SerialCode = scanModel.SerialCode;
-                        var error = string.Empty;
-                        SmartMacCheck(match, out error);
-                        if (string.IsNullOrEmpty(error))
+                        if (match != null)
                         {
-                            _repo.UpdateSerialNumberItem(match, scanModel.IsInternal);
+                            match.ScannedBy = _identity.Name;
+                            match.SerialCode = scanModel.SerialCode;
+                            var error = string.Empty;
+                            SmartMacCheck(match, out error);
+                            if (string.IsNullOrEmpty(error))
+                            {
+                                _repo.UpdateSerialNumberItem(match, scanModel.IsInternal);
+                            }
+                            else
+                            {
+                                model.ErrorMessage = error;
+                            }
                         }
                         else
                         {
-                            model.ErrorMessage = error;
+                            model.ErrorMessage =
+                                "No matches found in kit. You may have scanned the bar code incorrectly";
                         }
                     }
                     else
