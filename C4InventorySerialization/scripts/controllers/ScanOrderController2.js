@@ -340,7 +340,12 @@ app.controller("ScanController", function ($scope, $modal, $filter, $timeout, ng
             scan.SavingItem = false;
             return false;
         }
-        ScanOrderService.MatchAndSave({ DocNumber: scan.Delivery.DeliveryNumber, SerialCode: serialCode, IsInternal: scan.LookUpIsInternal }).then(function (result) {
+        var kitId = 0, kitCounter = 0;
+        if (scan.ActiveKit && scan.ActiveKit.length > 0) {
+            kitId = scan.ActiveKit[0].KitId;
+            kitCounter = scan.ActiveKit[0].KitCounter;
+        }
+        ScanOrderService.MatchAndSave({ DocNumber: scan.Delivery.DeliveryNumber, SerialCode: serialCode, IsInternal: scan.LookUpIsInternal,KitId:kitId,KitCounter:kitCounter }).then(function (result) {
             scan.SavingItem = false;
 
             if (result.data.ErrorMessage) {

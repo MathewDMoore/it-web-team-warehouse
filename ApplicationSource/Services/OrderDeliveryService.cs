@@ -145,31 +145,39 @@ namespace ApplicationSource.Services
                     var updated = false;
                     var matchIndex = 0;
                     SerialNumberItem match = null;
-                    while (!updated && matchIndex <= matches.Count - 1)
+                    if (scanModel.KitId > 0)
                     {
-                        var item = matches[matchIndex];
-                        item.ScannedBy = _identity.Name;
-                        item.SerialCode = scanModel.SerialCode;
-                        var error = string.Empty;
-                        SmartMacCheck(item,out error);
-                        if (string.IsNullOrEmpty(error))
+                        match = matches.FirstOrDefault(m => m.KitCounter.Equals(scanModel.KitCounter) && m.KitId.Equals(scanModel.KitId));
+                    }
+                    else
+                    {
+                        while (!updated && matchIndex <= matches.Count - 1)
                         {
-                            updated = _repo.UpdateSerialNumberItem(item, scanModel.IsInternal);
-                            if (!updated)
+                            var item = matches[matchIndex];
+                            item.ScannedBy = _identity.Name;
+                            item.SerialCode = scanModel.SerialCode;
+                            var error = string.Empty;
+                            SmartMacCheck(item, out error);
+                            if (string.IsNullOrEmpty(error))
                             {
-                                matchIndex++;
+                                updated = _repo.UpdateSerialNumberItem(item, scanModel.IsInternal);
+                                if (!updated)
+                                {
+                                    matchIndex++;
+                                }
+                                else
+                                {
+                                    match = matches[matchIndex];
+                                    break;
+                                }
                             }
                             else
                             {
-                                match = matches[matchIndex];
-                                break;
+                                model.ErrorMessage = error;
                             }
                         }
-                        else
-                        {
-                            model.ErrorMessage = error;
-                        }
                     }
+                    
 
                     if (match == null)
                     {
