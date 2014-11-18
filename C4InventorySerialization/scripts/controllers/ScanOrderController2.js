@@ -228,7 +228,7 @@ app.controller("ScanController", function ($scope, $modal, $filter, $timeout, ng
                         angular.extend(item, { IsSelected: false });
                     });
                     _.each(response.data.NotScannedItems, function (item) {
-                        angular.extend(item, { IsSelected: false, SerialCode: "", ScannedBy: null });
+                        angular.extend(item, { IsSelected: false});
                     });
                     angular.extend(scan.Delivery, {
                         DeliveryNumber: response.data.DeliveryNumber,
@@ -236,8 +236,8 @@ app.controller("ScanController", function ($scope, $modal, $filter, $timeout, ng
                         DealerName: response.data.DealerName,
                         Address: response.data.Address,
                         Comments: response.data.Comments,
-                        NotScannedItems: response.data.NotScannedItems || [{}],
-                        ScannedItems: response.data.ScannedItems || [{}],
+                        NotScannedItems: response.data.NotScannedItems || [],
+                        ScannedItems: response.data.ScannedItems || [],
                         IsVerified: response.data.IsVerified,
                         IsInternal: response.data.IsInternal,
                         ActiveKits: response.data.ActiveKits,

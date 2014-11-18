@@ -10,6 +10,8 @@ namespace ApplicationSource
         {
             Mapper.CreateMap<Delivery, OrderDeliveryModel>();
             Mapper.CreateMap<SerialNumberItem, DeliveryOrderItemModel>()
+                .ForMember(d => d.SerialCode, s => s.MapFrom(v => v.SerialCode??""))
+                .ForMember(d => d.ScannedBy, s => s.MapFrom(v => v.ScannedBy??""))
                 .ForMember(d => d.Verified, s => s.MapFrom(v => v.IsVerified))
                 .ForMember(d => d.ItemCode, s => s.MapFrom(v => !string.IsNullOrEmpty(v.ItemCode)?v.ItemCode.Trim():""))
                 .ForMember(d => d.RealItemCode, s => s.MapFrom(v => !string.IsNullOrEmpty(v.RealItemCode) ? v.RealItemCode.Trim() : ""));
