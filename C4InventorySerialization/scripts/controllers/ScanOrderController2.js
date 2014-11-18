@@ -389,6 +389,7 @@ app.controller("ScanController", function ($scope, $modal, $filter, $timeout, ng
                             // delete item.IsSelected;
                             item.SerialCode = null;
                             item.ScannedBy = null;
+                            item.IsSelected = false;
                             scan.Delivery.ScannedItems.remove(item);
                             scan.Delivery.NotScannedItems.push(item);
                         });
@@ -404,6 +405,7 @@ app.controller("ScanController", function ($scope, $modal, $filter, $timeout, ng
                             // delete item.IsSelected;
                             item.SerialCode = null;
                             item.ScannedBy = null;
+                            item.IsSelected = false;
                             scan.Delivery.ScannedItems.remove(item);
                             scan.Delivery.NotScannedItems.push(item);
                         });
