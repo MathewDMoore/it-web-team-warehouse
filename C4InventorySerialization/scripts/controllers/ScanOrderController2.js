@@ -74,6 +74,14 @@ app.controller("ScanController", function ($scope, $modal, $filter, $timeout, ng
             }
         },
     });
+    //$watches
+    $scope.$watch('filter.$', function () {
+        if (scan.Delivery && (scan.Delivery.ScannedItems || scan.Delivery.NotScannedItems)) {
+            scan.TableParams.reload(); // TODO: Fix {scope: null} racecondition
+            scan.TableParams2.reload(); // TODO: Fix {scope: null} racecondition
+            scan.TableParams3.reload(); // TODO: Fix {scope: null} racecondition
+        }
+    });
 
     //Private Functions
     function _errorSound() {
