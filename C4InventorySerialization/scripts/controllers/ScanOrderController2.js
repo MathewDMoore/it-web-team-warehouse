@@ -85,6 +85,11 @@ app.controller("ScanController", function ($scope, $modal, $filter, $timeout, ng
         ngAudio.play("/content/success.mp3");
         scan.SavingItem = false;
         scan.ShouldSelect = true;
+        scan.Delivery.$save();
+        scan.TableParams.reload();
+        scan.TableParams2.reload();
+        scan.TableParams3.reload();
+
     }
     function _cleanUpKit() {
         //Remove Active Kit if all scanned items are complete
@@ -130,28 +135,6 @@ app.controller("ScanController", function ($scope, $modal, $filter, $timeout, ng
         }
         scan.Delivery.$save();
     }
-    //$watches
-    $scope.$watch("scan.Delivery.ScannedItems", function (newValue, oldValue) {
-        if (newValue != oldValue) {
-            scan.Delivery.$save();
-            scan.TableParams2.reload();
-
-        }
-    });
-    $scope.$watch("scan.Delivery.NotScannedItems", function (newValue, oldValue) {
-        if (newValue != oldValue) {
-            scan.Delivery.$save();
-            scan.TableParams.reload();
-
-        }
-    });
-    $scope.$watch("scan.Delivery.Kits", function (newValue, oldValue) {
-        if (newValue != oldValue) {
-            scan.Delivery.$save();
-            scan.TableParams3.reload();
-
-        }
-    });
 
     //Public Functions
     scan.GetScanTotals = function () {
@@ -245,6 +228,10 @@ app.controller("ScanController", function ($scope, $modal, $filter, $timeout, ng
                     scan.FocusDeliveryInput = true;
                     scan.ShouldFocus = false;
                 }
+                scan.Delivery.$save();
+                scan.TableParams.reload();
+                scan.TableParams2.reload();
+                scan.TableParams3.reload();
             });
         } else if (orderId) {
             scan.IsSearching = true;
