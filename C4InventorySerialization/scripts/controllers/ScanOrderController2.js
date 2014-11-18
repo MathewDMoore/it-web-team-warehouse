@@ -132,7 +132,7 @@ app.controller("ScanController", function ($scope, $modal, $filter, $timeout, ng
             }
 
         }
-        //        scan.Delivery.$save();
+        scan.Delivery.$save();
     }
 
     function _processKit(scanItem) {
@@ -228,7 +228,7 @@ app.controller("ScanController", function ($scope, $modal, $filter, $timeout, ng
                         angular.extend(item, { IsSelected: false });
                     });
                     _.each(response.data.NotScannedItems, function (item) {
-                        angular.extend(item, { IsSelected: false});
+                        angular.extend(item, { IsSelected: false });
                     });
                     angular.extend(scan.Delivery, {
                         DeliveryNumber: response.data.DeliveryNumber,
@@ -345,7 +345,7 @@ app.controller("ScanController", function ($scope, $modal, $filter, $timeout, ng
             kitId = scan.ActiveKit[0].KitId;
             kitCounter = scan.ActiveKit[0].KitCounter;
         }
-        ScanOrderService.MatchAndSave({ DocNumber: scan.Delivery.DeliveryNumber, SerialCode: serialCode, IsInternal: scan.LookUpIsInternal,KitId:kitId,KitCounter:kitCounter }).then(function (result) {
+        ScanOrderService.MatchAndSave({ DocNumber: scan.Delivery.DeliveryNumber, SerialCode: serialCode, IsInternal: scan.LookUpIsInternal, KitId: kitId, KitCounter: kitCounter }).then(function (result) {
             scan.SavingItem = false;
 
             if (result.data.ErrorMessage) {
