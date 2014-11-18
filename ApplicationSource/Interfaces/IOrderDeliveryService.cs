@@ -35,6 +35,9 @@ namespace ApplicationSource.Interfaces
         [OperationContract]
         [WebInvoke(Method = "POST", BodyStyle = WebMessageBodyStyle.Bare, ResponseFormat = WebMessageFormat.Json, RequestFormat = WebMessageFormat.Json)]
         bool VerifyDelivery(int deliveryNumber);
-        
+
+        [OperationContract]
+        [WebInvoke(Method = "POST", BodyStyle = WebMessageBodyStyle.Bare, ResponseFormat = WebMessageFormat.Json, RequestFormat = WebMessageFormat.Json)]
+        SaveScanModel MatchAndSave(MatchModel scanModel);
     }
 }

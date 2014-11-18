@@ -8,6 +8,11 @@
                 $log.error("ScanOrderService -> OrderLookUp " + result);
             });
         },
+        MatchAndSave: function(serialCode) {
+            return $http({ data: serialCode, method: "POST", url: SERVICES_PATH + "OrderDeliveryService.svc/MatchAndSave" }).success(function (response) {
+                return response;
+            });
+        },
         LookUpByMacId: function(macId) {
 
             return $http({ data: macId, method: "POST", url: SERVICES_PATH +"OrderDeliveryService.svc/LocateMacIds" }).success(function(response) {

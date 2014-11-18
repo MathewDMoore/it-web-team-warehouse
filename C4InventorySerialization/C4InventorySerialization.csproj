@@ -122,6 +122,7 @@
     <Content Include="scripts\angular.min.js" />
     <Content Include="scripts\bootstrap.js" />
     <Content Include="scripts\common.js" />
+    <Content Include="scripts\controllers\ScanOrderController2.js" />
     <Content Include="scripts\Directives.js" />
     <Content Include="scripts\History.js" />
     <Content Include="scripts\jquery-1.8.2.min.js" />

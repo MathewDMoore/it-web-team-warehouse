@@ -1,10 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Configuration;
-using System.Data;
-using System.Data.SqlClient;
 using System.Linq;
-using System.Runtime.InteropServices;
 using System.Security.Principal;
 using System.ServiceModel;
 using System.ServiceModel.Activation;
@@ -132,7 +128,99 @@ namespace ApplicationSource.Services
             return result;
         }
 
+        public SaveScanModel MatchAndSave(MatchModel scanModel)
+        {
+            //Todo: Verify serialcode length
+            var productId = scanModel.SerialCode.Substring(scanModel.SerialCode.Length - 7, 5);
+            var color = scanModel.SerialCode.Substring(scanModel.SerialCode.Length - 2, 2);
+            var matches = _repo.FindUnScannedMatch(new SerialNumberItemQuery { ProductId = productId, Color = color, DocNum = scanModel.DocNumber });
+            var model = new SaveScanModel();
+            //Verify there are matches
+            if (matches.Any())
+            {
+                //check if match requires smart code
+                //All Singles
+                if (matches.All(m => m.KitId == 0) || matches.All(m => m.KitId > 0))
+                {
+                    var updated = false;
+                    var matchIndex = 0;
+                    SerialNumberItem match = null;
+                    while (!updated && matchIndex <= matches.Count - 1)
+                    {
+                        var item = matches[matchIndex];
+                        item.ScannedBy = _identity.Name;
+                        item.SerialCode = scanModel.SerialCode;
+                        var error = string.Empty;
+                        SmartMacCheck(item,out error);
+                        if (string.IsNullOrEmpty(error))
+                        {
+                            updated = _repo.UpdateSerialNumberItem(item, scanModel.IsInternal);
+                            if (!updated)
+                            {
+                                matchIndex++;
+                            }
+                            else
+                            {
+                                match = matches[matchIndex];
+                                break;
+                            }
+                        }
+                        else
+                        {
+                            model.ErrorMessage = error;
+                        }
+                    }
 
+                    if (match == null)
+                    {
+                        model.ErrorMessage = "All matches already scanned";
+                    }
+                    else
+                    {
+                        model.UpdatedItem = match.Map<SerialNumberItem, DeliveryOrderItemModel>();
+                    }
+                }
+                else
+                {
+                    model.ErrorMessage = "Please scan single items first. Then scan kits";
+                }
+            }
+            else
+            {
+                model.ErrorMessage = "No items found that match that MacId";
+            }
+            //return unique row number, js will need to find this and remove to proper table on view
+            return model;
+        }
+
+        private void SmartMacCheck(SerialNumberItem item, out string errorMessage)
+        {
+            item.MacId = item.SerialCode.Length >= 29 ? item.SerialCode.Remove(item.SerialCode.Length - 17, 17) : item.SerialCode;
+            var isUnique = !item.SmartCodeOnly && !item.NoSerialization;
+            if (item.MacId.Length == 12 || item.MacId.Length == 16 || !isUnique)
+            {
+
+                SerialNumberItem serialItem = null;
+
+                if (isUnique)
+                {
+                    serialItem = _repo.SelectSmartMac(new SerialNumberItemQuery
+                   {
+                       MacId = item.MacId,
+                       ProductGroup = item.ProductGroup
+                   });
+
+                    if (serialItem != null)
+                    {
+                        errorMessage= "This item has been scanned on another delivery order - #" + serialItem.DocNum;
+                        return;
+                    }
+
+                }
+
+            }
+            errorMessage = null;
+        }
 
         public VerifyUniqueMacModel SaveDeliveryItem(VerifyUniqueMacModel model)
         {

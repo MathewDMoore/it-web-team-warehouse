@@ -15,5 +15,6 @@ namespace Persistence.Repositories.Interfaces
         Delivery GetDeliveryByMacId(string macId);
         bool ReturnDelivery(DeliveryOrderQuery query);
         bool IsScanned(SerialNumberItem item);
+        IList<SerialNumberItem> FindUnScannedMatch(SerialNumberItemQuery query);
     }
 }

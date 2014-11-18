@@ -6,7 +6,7 @@
     <script type="text/javascript" src="../scripts/underscore-min.js"></script>
     <script type="text/javascript" src="../scripts/services/ScanOrderService.js"></script>
     <script type="text/javascript" src="../scripts/services/firebaseDeliveryService.js"></script>
-    <script type="text/javascript" src="../scripts/controllers/ScanOrderController.js"></script>
+    <script type="text/javascript" src="../scripts/controllers/ScanOrderController2.js"></script>
     <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet" />
     <script src="https://cdn.firebase.com/js/simple-login/1.6.3/firebase-simple-login.js"></script>
     <script type="text/javascript">
@@ -133,6 +133,7 @@
                     </div>
                     <table ng-table="scan.TableParams" class="table">
                         <tr ng-repeat="item in $data track by $index">
+                            <td><i ng-class="{'fa fa-list-alt':item.KitId>0}"></i></td>
                             <td data-title="'ID'" sortable="'Id'">{{item.Id}}</td>
                             <td data-title="'Kit Code'" sortable="'ItemCode'">{{item.ItemCode}}</td>
                             <%--  <td data-title="'Kit Id'" sortable="'KitId'">{{item.KitId}}</td>
@@ -155,6 +156,7 @@
                     </div>
                     <table ng-table="scan.TableParams2" class="table" export-csv="csv">
                         <tr ng-repeat="scannedItem in $data track by $index">
+                            <td><i ng-class="{'fa fa-list-alt':scannedItem.KitId>0}"></i></td>
                             <td>
                                 <input type="checkbox" ng-model="scannedItem.IsSelected" /></td>
                             <td data-title="'ID'" sortable="'Id'">{{scannedItem.Id}}</td>

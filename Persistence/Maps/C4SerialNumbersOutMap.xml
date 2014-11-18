@@ -8,6 +8,7 @@
 		<typeAlias alias="SerialNumberItem" type="Domain.SerialNumberItem" />
 		<typeAlias alias="DeliveryOrderItemsQuery" type="Domain.DeliveryOrderItemsQuery" />
 		<typeAlias alias="DeliveryOrderQuery" type="Domain.DeliveryOrderQuery" />
+		<typeAlias alias="SerialNumberItemQuery" type="Domain.SerialNumberItemQuery" />
 		<typeAlias alias="Delivery" type="Domain.Delivery" />
 	</alias>
 	<resultMaps>
@@ -40,6 +41,17 @@
 			<result property="KitId" column="KitId" />
 			<result property="KitCounter" column="KitCounter" />
 			<result property="ScannedBy" column="ScannedBy" />
+		</resultMap>
+		<resultMap id="SerialNumberItemLiteRM" class="SerialNumberItem">
+			<result property="Id" column="ID"/>
+			<result property="DocNum" column="DOCNUM"/>
+			<result property="SerialNum" column="SERIALNUM"/>
+			<result property="ProductId" column="PRODUCTID"/>
+			<result property="Color" column="COLOR"/>
+			<result property="NoSerialization" column="NOSERIALIZATION"/>
+			<result property="SmartCodeOnly" column="SMARTCODEONLY"/>
+			<result property="KitId" column="KitId" />
+			<result property="KitCounter" column="KitCounter" />
 		</resultMap>
 		<resultMap id="DeliveryItemRM" class="SerialNumberItem">
 			<result property="Id" column="ID"/>
@@ -114,12 +126,16 @@
 			SELECT DOCNUM, 1 AS ISIRDELIVERY FROM C4_GOODSISSUE_IR_OUT
 			WHERE MACID = #value#
 		</select>
-    <select id="IsScanned" parameterClass="SerialNumberItem" resultMap="SerialNumberItemRM">
-      SELECT * FROM C4_SERIALNUMBERS_OUT 
-      WHERE DOCNUM = #DocNum#
-      AND SERIALNUM = #SerialNum#
-      AND SERIALCODE IS NOT NULL
-    </select>
+		<select id="FindUnScannedMatches" parameterClass="SerialNumberItemQuery" resultMap="SerialNumberItemLiteRM">
+			SELECT ID,SERIALNUM,PRODUCTID,COLOR,NOSERIALIZATION,SMARTCODEONLY,KitId,KitCounter,DOCNUM
+			FROM C4_SERIALNUMBERS_OUT WHERE PRODUCTID = #ProductId# AND COLOR = #Color# AND DOCNUM=#DocNum# AND ScannedBy IS NULL
+		</select>
+		<select id="IsScanned" parameterClass="SerialNumberItem" resultMap="SerialNumberItemRM">
+			SELECT * FROM C4_SERIALNUMBERS_OUT
+			WHERE DOCNUM = #DocNum#
+			AND SERIALNUM = #SerialNum#
+			AND SERIALCODE IS NOT NULL
+		</select>
 		<procedure  id="sp_ClearDelivery" parameterMap="ClearDeliveryOrderPM">
 			sp_ClearDelivery
 		</procedure>
@@ -160,7 +176,7 @@
 			Update C4_GOODSISSUE_IR_OUT WITH(ROWLOCK) set SERIALCODE= UPPER(#SerialCode#), ScannedBy= #ScannedBy#, MACID =#MacId#, RETURNEDBYUSER = null where DOCNUM = #DocNum# and SERIALNUM = #SerialNum#
 		</update>
 		<update id="UpdateSerialNumber" parameterClass="SerialNumberItem" >
-			Update C4_SERIALNUMBERS_OUT WITH(ROWLOCK) set SERIALCODE= UPPER(#SerialCode#), ScannedBy= #ScannedBy#, MACID =#MacId#, RETURNEDBYUSER = null where DOCNUM = #DocNum# and SERIALNUM = #SerialNum#;
+			Update C4_SERIALNUMBERS_OUT WITH(ROWLOCK) set SERIALCODE= UPPER(#SerialCode#), ScannedBy= #ScannedBy#, MACID =#MacId#, RETURNEDBYUSER = null where DOCNUM = #DocNum# and SERIALNUM = #SerialNum# AND ScannedBy IS NULL;
 		</update>
 		<update id="UpdateVerifiedOrder" parameterClass="DeliveryOrderQuery">
 			UPDATE C4_SERIALNUMBERS_OUT

@@ -63,6 +63,11 @@ namespace Persistence
             return _sqlMapper.QueryForObject<SerialNumberItem>("IsScanned", item) != null;
         }
 
+        public IList<SerialNumberItem> FindUnScannedMatch(SerialNumberItemQuery query)
+        {
+            return _sqlMapper.QueryForList<SerialNumberItem>("FindUnScannedMatches", query);
+        }
+
         public InventoryMasterMapper(ISqlMapper sqlMapper)
         {
             _sqlMapper = sqlMapper;

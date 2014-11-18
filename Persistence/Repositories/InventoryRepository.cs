@@ -108,5 +108,10 @@ namespace Persistence.Repositories
         {
             return _sqlMapperFactory.InventoryMasterMapper.IsScanned(item);
         }
+
+        public IList<SerialNumberItem> FindUnScannedMatch(SerialNumberItemQuery query)
+        {
+            return _sqlMapperFactory.InventoryMasterMapper.FindUnScannedMatch(query);
+        }
     }
 }
