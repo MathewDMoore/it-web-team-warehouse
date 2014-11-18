@@ -372,7 +372,7 @@ app.controller("ScanController", function ($scope, $modal, $filter, $timeout, ng
                 var found = _.find(list, function (item) { return item.SerialNum === updatedItem.SerialNum; });
                 found.ScannedBy = updatedItem.ScannedBy;
                 found.SerialCode = serialCode;
-
+                scan.Delivery.ScannedItems = scan.Delivery.ScannedItems || [];
                 if (found.KitId == 0) {
                     scan.Delivery.ScannedItems.push(found);
                     scan.Delivery.NotScannedItems.remove(found);
