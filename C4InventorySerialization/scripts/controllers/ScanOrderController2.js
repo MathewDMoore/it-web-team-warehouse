@@ -97,6 +97,7 @@ app.controller("ScanController", function ($scope, $modal, $filter, $timeout, ng
         scan.TableParams.reload();
         scan.TableParams2.reload();
         scan.TableParams3.reload();
+        $scope.$apply();
 
     }
     function _cleanUpKit() {
