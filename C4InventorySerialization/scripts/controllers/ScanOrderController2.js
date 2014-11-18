@@ -82,7 +82,27 @@ app.controller("ScanController", function ($scope, $modal, $filter, $timeout, ng
             scan.TableParams3.reload(); // TODO: Fix {scope: null} racecondition
         }
     });
+    $scope.$watch("scan.Delivery.ScannedItems", function (newValue, oldValue) {
+        if (newValue != oldValue) {
+            scan.Delivery.$save();
+            scan.TableParams2.reload();
 
+        }
+    });
+    $scope.$watch("scan.Delivery.NotScannedItems", function (newValue, oldValue) {
+        if (newValue != oldValue) {
+            scan.Delivery.$save();
+            scan.TableParams.reload();
+
+        }
+    });
+    $scope.$watch("scan.Delivery.Kits", function (newValue, oldValue) {
+        if (newValue != oldValue) {
+            scan.Delivery.$save();
+            scan.TableParams3.reload();
+
+        }
+    });
     //Private Functions
     function _errorSound() {
         ngAudio.play("/content/error1.mp3");
@@ -97,8 +117,6 @@ app.controller("ScanController", function ($scope, $modal, $filter, $timeout, ng
         scan.TableParams.reload();
         scan.TableParams2.reload();
         scan.TableParams3.reload();
-        $scope.$apply();
-
     }
     function _cleanUpKit() {
         //Remove Active Kit if all scanned items are complete
