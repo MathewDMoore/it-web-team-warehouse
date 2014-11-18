@@ -364,6 +364,7 @@ app.controller("ScanController", function ($scope, $modal, $filter, $timeout, ng
             if (result.data.ErrorMessage) {
                 scan.SerialScanStatus = { Success: false, Select: true, Message: result.data.ErrorMessage };
                 _errorSound();
+                return false;
             }
             var updatedItem = result.data.UpdatedItem;
             if (updatedItem) {
