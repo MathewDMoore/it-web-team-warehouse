@@ -146,9 +146,6 @@ app.controller("ScanController", function ($scope, $modal, $filter, $timeout, ng
                     //Add the scan item to the active kit.
                     var newKit = { Key: CURRENTUSER, Value: [] };
                     _.each(matchedKitItems, function (item) {
-                        if (item.SerialCode == undefined) {
-                            angular.extend(item, { SerialCode: null });
-                        }
                         scan.ActiveKit.push(item);
                         scan.Delivery.NotScannedItems.remove(item);
                     });
