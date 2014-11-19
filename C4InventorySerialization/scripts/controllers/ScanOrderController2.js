@@ -146,14 +146,13 @@ app.controller("ScanController", function ($scope, $modal, $filter, $timeout, ng
                     //Add the scan item to the active kit.
                     var newKit = { Key: CURRENTUSER, Value: [] };
                     _.each(matchedKitItems, function (item) {
-                        scan.ActiveKit.push(item);
-                        scan.Delivery.NotScannedItems.remove(item);
+                        ScanOrderService.UpdateScanByUser({serialNum:item.SerialNum }).then(function (response) {
+                            scan.ActiveKit.push(item);
+                            scan.Delivery.NotScannedItems.remove(item);
+                        });                       
                     });
                     //item scan.orderdeliveryservice.updatescanbyuser(item) repo call and sets the particular serial num with the scan by user of the current user
-                    ScanOrderService.UpdateScanByUser({ userName: CURRENTUSER }).then(function (response) {
-
-
-                    });
+                   
 
                     if (!scan.Delivery.ActiveKits) {
                         newKit.Value = scan.ActiveKit;
