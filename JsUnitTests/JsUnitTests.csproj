@@ -44,6 +44,7 @@
   <ItemGroup />
   <ItemGroup>
     <Content Include="Scripts\libs\angular-animate.min.js" />
+    <Content Include="Scripts\libs\angular-mocks.js" />
     <Content Include="Scripts\libs\angular-resource.min.js" />
     <Content Include="Scripts\libs\angular-sanitize.min.js" />
     <Content Include="Scripts\libs\angular.min.js" />
