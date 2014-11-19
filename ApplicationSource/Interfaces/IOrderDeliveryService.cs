@@ -43,6 +43,6 @@ namespace ApplicationSource.Interfaces
 
         [OperationContract]
         [WebInvoke(Method = "POST", BodyStyle = WebMessageBodyStyle.Bare, ResponseFormat = WebMessageFormat.Json, RequestFormat = WebMessageFormat.Json)]
-        bool UpdateScanByUser(UpdateUserNameModel userNameQuery);
+        bool UpdateScanByUser(UpdateUserNameModel updateModel);
     }
 }

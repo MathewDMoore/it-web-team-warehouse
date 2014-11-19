@@ -222,11 +222,11 @@ namespace ApplicationSource.Services
             return model;
         }
 
-        public bool UpdateScanByUser(UpdateUserNameModel userNameQuery)
+        public bool UpdateScanByUser(UpdateUserNameModel updateModel)
         {
-            var matches = _repo.UpdateScanByUser(new UpdateUserNameQuery() { UserName = userNameQuery.UserName, DocNum = userNameQuery.DocNum, SerialNum = userNameQuery.SerialNum});
+            var successful = _repo.UpdateScanByUser(new UpdateUserNameQuery() { UserName = _identity.Name, DocNum = updateModel.DocNum, SerialNum = updateModel.SerialNum});
 
-            return matches;
+            return successful;
         }
 
 
