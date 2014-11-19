@@ -194,7 +194,7 @@
 		</update>
     <update id="UpdateScanByUser" parameterClass="UpdateUserNameQuery">
      UPDATE C4_SERIALNUMBERS_OUT
-     SET SCANNEDBY = #UserName#,
+     SET SCANNEDBY = #UserName#
      WHERE 
      DOCNUM = #DocNum#,
      AND SERIALNUM = #SerialNum#
