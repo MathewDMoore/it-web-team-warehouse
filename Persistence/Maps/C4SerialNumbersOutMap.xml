@@ -196,7 +196,7 @@
      UPDATE C4_SERIALNUMBERS_OUT
      SET SCANNEDBY = #UserName#
      WHERE 
-     DOCNUM = #DocNum#,
+     DOCNUM = #DocNum#
      AND SERIALNUM = #SerialNum#
     </update>
 	</statements>
