@@ -113,5 +113,10 @@ namespace Persistence.Repositories
         {
             return _sqlMapperFactory.InventoryMasterMapper.FindUnScannedMatch(query);
         }
+
+        public bool UpdateScanByUser(UpdateUserNameQuery userNameQuery)
+        {
+            return _sqlMapperFactory.InventoryMasterMapper.UpdateScanByUser(userNameQuery);
+        }
     }
 }

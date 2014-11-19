@@ -478,7 +478,7 @@
     <Content Include="interface\styles\black_glass\OboutButton\style.css" />
     <Content Include="App_Themes\GridView\GridView.skin" />
     <Content Include="Master\Site.Master" />
-    <Content Include="C4Styles.css" />
+    <Content Include="Master\C4Styles.css" />
     <Content Include="styles\black_glass\asc.gif" />
     <Content Include="styles\black_glass\desc.gif" />
     <Content Include="styles\black_glass\details_btn_close.gif" />

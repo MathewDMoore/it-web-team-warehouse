@@ -54,6 +54,16 @@
                 .success(function(result) {
                     return result;
                 });
+        },
+        UpdateScanByUser: function(item) {
+            return $http({
+                    data: item,
+                    method: "POST",
+                    url: SERVICES_PATH + "OrderDeliveryService.svc/UpdateScanByUser"
+                })
+                .success(function(result) {
+                    return result;
+                });
         }
     };
     return scanOrderObject;

@@ -49,6 +49,7 @@
     <Compile Include="QueryFilter.cs" />
     <Compile Include="SerialNumberItem.cs" />
     <Compile Include="SerialNumberItemQuery.cs" />
+    <Compile Include="UpdateUserNameQuery.cs" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="CodeValues\" />

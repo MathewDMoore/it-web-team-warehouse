@@ -222,6 +222,14 @@ namespace ApplicationSource.Services
             return model;
         }
 
+        public bool UpdateScanByUser(UpdateUserNameModel userNameQuery)
+        {
+            var matches = _repo.UpdateScanByUser(new UpdateUserNameQuery() { UserName = userNameQuery.UserName, DocNum = userNameQuery.DocNum, SerialNum = userNameQuery.SerialNum});
+
+            return matches;
+        }
+
+
         private void SmartMacCheck(SerialNumberItem item, out string errorMessage)
         {
             item.MacId = item.SerialCode.Length >= 29 ? item.SerialCode.Remove(item.SerialCode.Length - 17, 17) : item.SerialCode;

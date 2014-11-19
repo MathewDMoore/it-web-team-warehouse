@@ -75,6 +75,7 @@
     <Compile Include="Models\ReturnModel.cs" />
     <Compile Include="Models\SaveScanModel.cs" />
     <Compile Include="Models\UniqueMacSearchItem.cs" />
+    <Compile Include="Models\UpdateUserNameModel.cs" />
     <Compile Include="Models\UserAuthenticationModel.cs" />
     <Compile Include="Models\VerifyUniqueMacModel.cs" />
     <Compile Include="Models\PartReturnModel.cs" />

@@ -17,5 +17,6 @@ namespace Persistence.Repositories.Interfaces
         bool ReturnDelivery(DeliveryOrderQuery query);
         bool IsScanned(SerialNumberItem item);
         IList<SerialNumberItem> FindUnScannedMatch(SerialNumberItemQuery matches);
+        bool UpdateScanByUser(UpdateUserNameQuery userNameQuery);
     }
 }

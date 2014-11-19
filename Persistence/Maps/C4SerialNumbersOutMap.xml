@@ -9,6 +9,7 @@
 		<typeAlias alias="DeliveryOrderItemsQuery" type="Domain.DeliveryOrderItemsQuery" />
 		<typeAlias alias="DeliveryOrderQuery" type="Domain.DeliveryOrderQuery" />
 		<typeAlias alias="SerialNumberItemQuery" type="Domain.SerialNumberItemQuery" />
+		<typeAlias alias="UpdateUserNameQuery" type="Domain.UpdateUserNameQuery" />
 		<typeAlias alias="Delivery" type="Domain.Delivery" />
 	</alias>
 	<resultMaps>
@@ -191,5 +192,12 @@
 			[USERNAME] = #Username#
 			WHERE DOCNUM = #DocNum#
 		</update>
+    <update id="UpdateScanByUser" parameterClass="UpdateUserNameQuery">
+     UPDATE C4_SERIALNUMBERS_OUT
+     SET SCANNEDBY = #UserName#,
+     WHERE 
+     DOCNUM = #DocNum#,
+     AND SERIALNUM = #SerialNum#
+    </update>
 	</statements>
 </sqlMap>

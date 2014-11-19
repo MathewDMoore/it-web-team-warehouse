@@ -68,6 +68,11 @@ namespace Persistence
             return _sqlMapper.QueryForList<SerialNumberItem>("FindUnScannedMatches", query);
         }
 
+        public bool UpdateScanByUser(UpdateUserNameQuery userNameQuery)
+        {
+            return _sqlMapper.Update("UpdateScanByUser", userNameQuery) > 0;
+        }
+
         public InventoryMasterMapper(ISqlMapper sqlMapper)
         {
             _sqlMapper = sqlMapper;
