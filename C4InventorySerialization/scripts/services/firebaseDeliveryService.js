@@ -1,6 +1,6 @@
 ﻿angular.module('shipApp').service('FirebaseDeliveryService', function ($firebase, FIREBASE_URL, AUTH_TOKEN) {
     var ref = new Firebase(FIREBASE_URL);
-    ref.auth(AUTH_TOKEN, function (error) {
+    ref.authWithCustomToken(AUTH_TOKEN, function (error) {
         if (error) {
             console.log("Login Failed!", error);
         } else {
