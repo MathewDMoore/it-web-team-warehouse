@@ -86,7 +86,7 @@ namespace ApplicationSource.Services
                 {
                     kitGroups[group.Key].AddRange(kitItems.Map<IEnumerable<SerialNumberItem>, List<DeliveryOrderItemModel>>());
                 }
-                if (kitGroups[group.Key].All(i => !string.IsNullOrEmpty(i.ScannedBy)))
+                if (kitGroups[group.Key].All(i => !string.IsNullOrEmpty(i.SerialCode)))
                 {
                     kitGroups.Remove(group.Key);
                 }

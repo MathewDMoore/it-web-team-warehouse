@@ -162,9 +162,10 @@ app.controller("ScanController", function ($scope, $modal, $filter, $timeout, ng
                 }
             }
         }
-        scan.Delivery.$save();
         scan.TableParams3.reload();
         scan.TableParams.reload();
+        scan.Delivery.$save();
+
     }
 
     //Public Functions
