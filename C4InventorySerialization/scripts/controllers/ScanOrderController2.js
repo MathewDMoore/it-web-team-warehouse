@@ -146,10 +146,10 @@ app.controller("ScanController", function ($scope, $modal, $filter, $timeout, ng
                     //Add the scan item to the active kit.
                     var newKit = { Key: CURRENTUSER, Value: [] };
                     _.each(matchedKitItems, function (item) {
-                        ScanOrderService.UpdateScanByUser({SerialNum:item.SerialNum,DocNum:scan.Delivery.DeliveryNumber }).then(function (response) {
-                            scan.ActiveKit.push(item);
-                            scan.Delivery.NotScannedItems.remove(item);
-                        });                       
+                        ScanOrderService.UpdateScanByUser({ SerialNum: item.SerialNum, DocNum: scan.Delivery.DeliveryNumber });
+                        scan.ActiveKit = scan.ActiveKit || [];
+                        scan.ActiveKit.push(item);
+                        scan.Delivery.NotScannedItems.remove(item);
                     });
                     //item scan.orderdeliveryservice.updatescanbyuser(item) repo call and sets the particular serial num with the scan by user of the current user
                    
@@ -163,6 +163,8 @@ app.controller("ScanController", function ($scope, $modal, $filter, $timeout, ng
             }
         }
         scan.Delivery.$save();
+        scan.TableParams3.reload();
+        scan.TableParams.reload();
     }
 
     //Public Functions
@@ -293,7 +295,7 @@ app.controller("ScanController", function ($scope, $modal, $filter, $timeout, ng
 
         modalInstance.result.then(function () {
             ScanOrderService.ClearDelivery({ DeliveryNumber: docNumber, IsInternal: scan.Delivery.IsInternal }).then(function (result) {
-                if (result.data === "true") {
+                if (result.data) {
                     FirebaseDeliveryService.Delete(scan.Delivery).then(function (ref) {
                         scan.Delivery.$destroy();
                         scan.Delivery = null;
