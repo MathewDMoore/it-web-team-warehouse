@@ -107,5 +107,31 @@ namespace UnitTests
             Assert.AreEqual(lookup.DeliveryNumber, actual.DeliveryNumber);
 
         }
+
+        [Test]
+        public void VerifyDelivery_HappyPath()
+        {
+            _identity.Stub(i => i.Name).Return("USERNAME");
+            new OrderDeliveryService(_repo, _settings, _identity).VerifyDelivery(1234);
+
+            _repo.AssertWasCalled(r=>r.VerifyDelivery(Arg<DeliveryOrderQuery>.Matches(a=>a.DocNum.Equals(1234) && a.Username.Equals("USERNAME"))));
+        }
+
+        [Test]
+        public void ClearDelivery_DeliveryNumber0()
+        {
+            var actual = new OrderDeliveryService(_repo, _settings, _identity).ClearDelivery(new ClearDeliveryModel {DeliveryNumber = 0});
+            Assert.IsFalse(actual);
+
+        }
+        
+        [Test]
+        public void ClearDelivery_DeliveryNumber_123()
+        {
+            //_repo.Stub(r=>r.ClearDelivery(Arg<DeliveryOrderQuery>.Matches(a=>a.)))
+            var actual = new OrderDeliveryService(_repo, _settings, _identity).ClearDelivery(new ClearDeliveryModel {DeliveryNumber = 123});
+            Assert.IsFalse(actual);
+
+        }
     }
 }
