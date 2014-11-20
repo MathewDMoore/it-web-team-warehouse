@@ -140,7 +140,7 @@ namespace ApplicationSource.Services
             {
                 //check if match requires smart code
                 //All Singles
-                if (matches.All(m => m.KitId == 0) || matches.All(m => m.KitId > 0) || scanModel.KitId >0)
+                if (matches.All(m => m.KitId > 0) || scanModel.KitId >0)
                 {
                     var updated = false;
                     var matchIndex = 0;
@@ -211,7 +211,8 @@ namespace ApplicationSource.Services
                 }
                 else
                 {
-                    model.ErrorMessage = "Please scan single items first. Then scan kits";
+                    //model.ErrorMessage = "Please scan single items first. Then scan kits";
+
                 }
             }
             else
