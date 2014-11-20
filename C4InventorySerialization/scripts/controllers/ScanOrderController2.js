@@ -151,9 +151,6 @@ app.controller("ScanController", function ($scope, $modal, $filter, $timeout, ng
                         scan.ActiveKit.push(item);
                         scan.Delivery.NotScannedItems.remove(item);
                     });
-                    //item scan.orderdeliveryservice.updatescanbyuser(item) repo call and sets the particular serial num with the scan by user of the current user
-                   
-
                     if (!scan.Delivery.ActiveKits) {
                         newKit.Value = scan.ActiveKit;
                         scan.Delivery.ActiveKits = [];
@@ -165,7 +162,6 @@ app.controller("ScanController", function ($scope, $modal, $filter, $timeout, ng
         scan.TableParams3.reload();
         scan.TableParams.reload();
         scan.Delivery.$save();
-
     }
 
     //Public Functions
