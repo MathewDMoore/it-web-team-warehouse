@@ -209,11 +209,6 @@ namespace ApplicationSource.Services
                         model.UpdatedItem = match.Map<SerialNumberItem, DeliveryOrderItemModel>();
                     }
                 }
-                else
-                {
-                    //model.ErrorMessage = "Please scan single items first. Then scan kits";
-
-                }
             }
             else
             {
