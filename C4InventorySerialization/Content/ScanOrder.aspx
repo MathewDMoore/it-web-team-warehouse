@@ -64,11 +64,11 @@
                             </div>
                         </div>
                     </div>
-                    <div class="panel-body" style="max-height: 160px;">
+                    <div class="panel-body" style="min-height: 160px;">
                         <h3 style="margin-top: 0px;">Dealer: {{scan.Delivery.DealerName}}/<small>{{scan.Delivery.DealerId}}</small></h3>
                         <div ng-if="scan.Delivery.IsInternal" class="verified text-danger" style="float: right;">[ Internal Order ]</div>
                         <label>Address: {{scan.Delivery.Address}}</label><br />
-                        <label>Comments: {{scan.Delivery.Comments}}</label><br />
+                        <label style="width:60%">Comments: {{scan.Delivery.Comments}}</label><br />
                         <div style="float: right; margin-top: 20px;">
                             <button class="btn btn-warning" id="returnDelivery" ng-click="scan.ReturnDelivery(scan.Delivery)">Return Entire Delivery</button>
                             <button class="btn btn-danger" id="clearDelivery" ng-click="scan.ClearDelivery(scan.Delivery.DeliveryNumber)">Clear Delivery</button>
