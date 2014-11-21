@@ -39,7 +39,7 @@
             <form style="display: inline-block;" ng-submit="scan.LookUp(scan.OrderIdLookUp,scan.LookUpIsInternal)" <%=init %>>
                 <div class="input-group" style="width: 300px;">
                     <input class="form-control" placeholder="Delivery Number or MacId" ng-disabled="scan.IsSearching" focus-select="scan.FocusDeliveryInput" id="orderIdInput" type="text" ng-model="scan.OrderIdLookUp" />
-                    <span class="input-group-addon " style="cursor: pointer" id="loadDelivery">{{scan.IsSearching?'Loading...':'Load Delivery'}}</span>
+                    <span class="input-group-addon " style="cursor: pointer" ng-click="scan.LookUp(scan.OrderIdLookUp,scan.LookUpIsInternal)" id="loadDelivery">{{scan.IsSearching?'Loading...':'Load Delivery'}}</span>
                 </div>
                 <div style="display: inline-block;">
                     <input name="IsInternal" type="radio" ng-model="scan.LookUpIsInternal" ng-value="false" />Dealer Order
