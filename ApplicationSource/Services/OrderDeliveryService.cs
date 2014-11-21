@@ -294,11 +294,6 @@ namespace ApplicationSource.Services
             });
             deliveryModel.ActiveKits = kitGroups;
         }
-        private bool UpdateRecord(string serialCode, string macId, int id, bool isInternal, int serialNum, int docNum)
-        {
-            var success = _repo.UpdateSerialNumberItem(new SerialNumberItem { Id = id, MacId = macId, SerialCode = serialCode, ScannedBy = HttpContext.Current.User.Identity.Name, SerialNum = serialNum, DocNum = docNum }, isInternal);
-            return success;
-        }
         private void SmartMacCheck(SerialNumberItem item, out string errorMessage)
         {
             item.MacId = item.SerialCode.Length >= 29 ? item.SerialCode.Remove(item.SerialCode.Length - 17, 17) : item.SerialCode;
