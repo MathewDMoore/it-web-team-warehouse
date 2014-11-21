@@ -201,63 +201,6 @@ namespace ApplicationSource.Services
         }
 
 
-
-        public VerifyUniqueMacModel SaveDeliveryItem(VerifyUniqueMacModel model)
-        {
-            var macId = model.MacId.Trim();
-            macId = macId.Replace(" ", "");
-            var productGroup = model.ProductGroup;
-
-            if (!string.IsNullOrEmpty(model.MacId) || !string.IsNullOrEmpty(productGroup))
-            {
-                var parsedMacId = macId.Length >= 29 ? macId.Remove(macId.Length - 17, 17) : macId;
-                try
-                {
-                    if (parsedMacId.Length == 12 || parsedMacId.Length == 16 || !model.IsUnique)
-                    {
-
-                        SerialNumberItem serialItem = null;
-
-                        if (model.IsUnique)
-                        {
-                            serialItem = _repo.SelectSmartMac(new SerialNumberItemQuery
-                           {
-                               MacId = parsedMacId,
-                               ProductGroup = productGroup
-                           });
-
-                            if (serialItem != null)
-                            {
-                                model.ErrorMessage = "This item has been scanned on another delivery order - #";
-                                model.ErrorDeliveryNumber = serialItem.DocNum;
-                                return model;
-                            }
-
-                        }
-                        model.AlreadyScanned = _repo.IsScanned(new SerialNumberItem { SerialNum = model.SerialNum, DocNum = model.DocNum });
-
-                        if (!model.AlreadyScanned && !UpdateRecord(model.SerialCode, parsedMacId, model.Id, model.IsInternal, model.SerialNum, model.DocNum))
-                        {
-                            model.ErrorMessage =
-                                "There was an error saving this item into the database. Please review the SerialCode or contact IT support.";
-                        }
-                    }
-
-                }
-                catch (Exception e)
-                {
-                    model.IsUnique = false;
-                    model.ErrorMessage = e.Message;
-                }
-            }
-            else
-            {
-                model.ErrorMessage =
-                               "There was an error saving this item into the database. Please review the SerialCode or contact IT support.";
-            }
-            return model;
-        }
-
         public bool ReturnDelivery(ClearDeliveryModel delivery)
         {
             if (delivery.DeliveryNumber > 0)

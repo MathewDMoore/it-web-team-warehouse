@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Runtime.InteropServices;
 using System.Security.Principal;
 using ApplicationSource;
 using ApplicationSource.Interfaces;
@@ -160,5 +159,62 @@ namespace UnitTests
             var actual = new OrderDeliveryService(_repo, _settings, _identity).UpdateScanByUser(model);
             Assert.IsTrue(actual);
         }
+
+        [Test]
+        public void ReturnDelivery_HappyPath()
+        {
+            _identity.Stub(i => i.Name).Return("USER");
+            _repo.Stub(r => r.ReturnDelivery(Arg<DeliveryOrderQuery>.Matches(a=>a.DocNum.Equals(123)&&a.IsInternal.Equals(false)&& a.Username.Equals("USER")))).Return(true);
+            var actual = new OrderDeliveryService(_repo, _settings, _identity).ReturnDelivery(new ClearDeliveryModel { DeliveryNumber = 123 });
+            _repo.AssertWasCalled(r=>r.ReturnDelivery(Arg<DeliveryOrderQuery>.Is.Anything));
+            Assert.IsTrue(actual);
+        }
+        [Test]
+        public void ReturnDelivery_DeliveryNumber_Is_0_ReturnsFalse()
+        {
+            var actual = new OrderDeliveryService(_repo, _settings, _identity).ReturnDelivery(new ClearDeliveryModel { });
+            _repo.AssertWasNotCalled(r=>r.ReturnDelivery(Arg<DeliveryOrderQuery>.Is.Anything));
+            Assert.IsFalse(actual);
+        }
+        
+        [Test]
+        public void ReturnDelivery_RepoThrowsException_Returns_False()
+        {
+            _repo.Stub(r=>r.ReturnDelivery(Arg<DeliveryOrderQuery>.Is.Anything)).Throw(new Exception());
+            var actual = new OrderDeliveryService(_repo, _settings, _identity).ReturnDelivery(new ClearDeliveryModel {DeliveryNumber = 123});
+            _repo.AssertWasCalled(r => r.ReturnDelivery(Arg<DeliveryOrderQuery>.Is.Anything));
+            Assert.IsFalse(actual);
+        }
+        [Test]
+        public void ReturnDeliveryLineItem_HappyPath()
+        {
+            _identity.Stub(i => i.Name).Return("USER");
+            _repo.Stub(r => r.ReturnDelivery(Arg<DeliveryOrderQuery>.Matches(a=>a.DocNum.Equals(123)&&a.IsInternal.Equals(false)&& a.Username.Equals("USER")))).Return(true);
+            var returnModel = new ReturnModel{ DeliveryNumber = 123,SelectedList = new List<SerialNumberItem>
+            {
+                new SerialNumberItem{Id = 1, SerialNum = 456},
+                new SerialNumberItem{Id = 2, SerialNum = 789}
+            }};
+            var actual = new OrderDeliveryService(_repo, _settings, _identity).ReturnDeliveryLineItem(returnModel);
+            _repo.AssertWasCalled(r=>r.ReturnDeliveryLineItem(Arg<SerialNumberItem>.Matches(a=>a.DocNum.Equals(123)&&a.Id.Equals(1)&& a.Username.Equals("USER")&&a.SerialNum.Equals(456)),Arg<bool>.Is.Equal(false)));
+            _repo.AssertWasCalled(r=>r.ReturnDeliveryLineItem(Arg<SerialNumberItem>.Matches(a=>a.DocNum.Equals(123)&&a.Id.Equals(2)&& a.Username.Equals("USER")&&a.SerialNum.Equals(789)),Arg<bool>.Is.Equal(false)));
+            Assert.IsTrue(actual);
+        }
+        [Test]
+        public void ReturnDeliveryLineItem_DeliveryNumber_Is_0_ReturnsFalse()
+        {
+            var actual = new OrderDeliveryService(_repo, _settings, _identity).ReturnDeliveryLineItem(new ReturnModel());
+            _repo.AssertWasNotCalled(r=>r.ReturnDelivery(Arg<DeliveryOrderQuery>.Is.Anything));
+            Assert.IsFalse(actual);
+        }
+        
+        [Test]
+        public void ReturnDeliveryLineItem_RepoThrowsException_Returns_False()
+        {
+            _repo.Stub(r=>r.ReturnDelivery(Arg<DeliveryOrderQuery>.Is.Anything)).Throw(new Exception());
+            var actual = new OrderDeliveryService(_repo, _settings, _identity).ReturnDeliveryLineItem(new ReturnModel{DeliveryNumber = 123});
+            Assert.IsFalse(actual);
+        }
+
     }
 }

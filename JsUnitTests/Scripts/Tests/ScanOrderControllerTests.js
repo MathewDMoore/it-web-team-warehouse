@@ -1,11 +1,12 @@
 ﻿/// <reference path="../libs/jasmine.js" />
 /// <reference path="../libs/jquery.min.js"/>
-/// <reference path="../libs/angular-animate.min.js" />
-/// <reference path="../libs/angular-resource.min.js" />
-/// <reference path="../angular-sanitize.min.js" />
+
 
 /// <reference path="../../../c4inventoryserialization/scripts/angular.min.js" />
 /// <reference path="../libs/angular-mocks.js" />
+/// <reference path="../libs/angular-animate.min.js" />
+/// <reference path="../libs/angular-resource.min.js" />
+/// <reference path="../angular-sanitize.min.js" />
 /// <reference path="../../../c4inventoryserialization/scripts/libs/angular-bootstrap/ui-bootstrap.min.js" />
 /// <reference path="../../../c4inventoryserialization/scripts/libs/angular.audio.js" />
 /// <reference path="../../../c4inventoryserialization/scripts/ng-table-export.js" />
