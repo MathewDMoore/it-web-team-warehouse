@@ -64,39 +64,13 @@ namespace ApplicationSource.Services
                 });
                 var dictionary = new Dictionary<string, int>();
                 var grouped = items.Where(i => i.RealItemCode != null).GroupBy(i => i.RealItemCode).ToList();
-                grouped.ForEach(g => dictionary.Add(g.Key, g.Count()));
+                grouped.OrderBy(g=>g.Count()).ToList().ForEach(g => dictionary.Add(g.Key, g.Count()));                
                 deliveryModel.ChartData = dictionary;
             }
             return deliveryModel;
         }
 
-        private void FindActiveKits(List<SerialNumberItem> items, OrderDeliveryModel deliveryModel)
-        {
-            var kits = items.Where(x => x.KitId > 0 && x.KitCounter > 0 && !string.IsNullOrEmpty(x.ScannedBy)).GroupBy(x => x.ScannedBy);
-            var kitGroups = new Dictionary<string, List<DeliveryOrderItemModel>>();
-            kits.ToList().ForEach(group =>
-            {
-                var matched = group.FirstOrDefault();
-                var kitItems = items.Where(i => i.KitCounter.Equals(matched.KitCounter) && i.KitId.Equals(matched.KitId));
-                if (!kitGroups.ContainsKey(group.Key))
-                {
-                    kitGroups.Add(group.Key, kitItems.Map<IEnumerable<SerialNumberItem>, List<DeliveryOrderItemModel>>());
-                }
-                else
-                {
-                    kitGroups[group.Key].AddRange(kitItems.Map<IEnumerable<SerialNumberItem>, List<DeliveryOrderItemModel>>());
-                }
-                if (kitGroups[group.Key].All(i => !string.IsNullOrEmpty(i.SerialCode)))
-                {
-                    kitGroups.Remove(group.Key);
-                }
-                else
-                {
-                    kitItems.ToList().ForEach(ki => items.Remove(ki));
-                }
-            });
-            deliveryModel.ActiveKits = kitGroups;
-        }
+
 
         public MacDeliveryModel LocateMacIds(string macId)
         {
@@ -227,34 +201,6 @@ namespace ApplicationSource.Services
         }
 
 
-        private void SmartMacCheck(SerialNumberItem item, out string errorMessage)
-        {
-            item.MacId = item.SerialCode.Length >= 29 ? item.SerialCode.Remove(item.SerialCode.Length - 17, 17) : item.SerialCode;
-            var isUnique = !item.SmartCodeOnly && !item.NoSerialization;
-            if (item.MacId.Length == 12 || item.MacId.Length == 16 || !isUnique)
-            {
-
-                SerialNumberItem serialItem = null;
-
-                if (isUnique)
-                {
-                    serialItem = _repo.SelectSmartMac(new SerialNumberItemQuery
-                   {
-                       MacId = item.MacId,
-                       ProductGroup = item.ProductGroup
-                   });
-
-                    if (serialItem != null)
-                    {
-                        errorMessage = "This item has been scanned on another delivery order - #" + serialItem.DocNum;
-                        return;
-                    }
-
-                }
-
-            }
-            errorMessage = null;
-        }
 
         public VerifyUniqueMacModel SaveDeliveryItem(VerifyUniqueMacModel model)
         {
@@ -378,10 +324,65 @@ namespace ApplicationSource.Services
             return _repo.VerifyDelivery(query);
         }
 
+        private void FindActiveKits(List<SerialNumberItem> items, OrderDeliveryModel deliveryModel)
+        {
+            var kits = items.Where(x => x.KitId > 0 && x.KitCounter > 0 && !string.IsNullOrEmpty(x.ScannedBy)).GroupBy(x => x.ScannedBy);
+            var kitGroups = new Dictionary<string, List<DeliveryOrderItemModel>>();
+            kits.ToList().ForEach(group =>
+            {
+                var matched = group.FirstOrDefault();
+                var kitItems = items.Where(i => i.KitCounter.Equals(matched.KitCounter) && i.KitId.Equals(matched.KitId));
+                if (!kitGroups.ContainsKey(group.Key))
+                {
+                    kitGroups.Add(group.Key, kitItems.Map<IEnumerable<SerialNumberItem>, List<DeliveryOrderItemModel>>());
+                }
+                else
+                {
+                    kitGroups[group.Key].AddRange(kitItems.Map<IEnumerable<SerialNumberItem>, List<DeliveryOrderItemModel>>());
+                }
+                if (kitGroups[group.Key].All(i => !string.IsNullOrEmpty(i.SerialCode)))
+                {
+                    kitGroups.Remove(group.Key);
+                }
+                else
+                {
+                    kitItems.ToList().ForEach(ki => items.Remove(ki));
+                }
+            });
+            deliveryModel.ActiveKits = kitGroups;
+        }
         private bool UpdateRecord(string serialCode, string macId, int id, bool isInternal, int serialNum, int docNum)
         {
             var success = _repo.UpdateSerialNumberItem(new SerialNumberItem { Id = id, MacId = macId, SerialCode = serialCode, ScannedBy = HttpContext.Current.User.Identity.Name, SerialNum = serialNum, DocNum = docNum }, isInternal);
             return success;
+        }
+        private void SmartMacCheck(SerialNumberItem item, out string errorMessage)
+        {
+            item.MacId = item.SerialCode.Length >= 29 ? item.SerialCode.Remove(item.SerialCode.Length - 17, 17) : item.SerialCode;
+            var isUnique = !item.SmartCodeOnly && !item.NoSerialization;
+            if (item.MacId.Length == 12 || item.MacId.Length == 16 || !isUnique)
+            {
+
+                SerialNumberItem serialItem = null;
+
+                if (isUnique)
+                {
+                    serialItem = _repo.SelectSmartMac(new SerialNumberItemQuery
+                    {
+                        MacId = item.MacId,
+                        ProductGroup = item.ProductGroup
+                    });
+
+                    if (serialItem != null)
+                    {
+                        errorMessage = "This item has been scanned on another delivery order - #" + serialItem.DocNum;
+                        return;
+                    }
+
+                }
+
+            }
+            errorMessage = null;
         }
     }
 }

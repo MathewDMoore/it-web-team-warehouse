@@ -1,1 +1,1 @@
-﻿var myApp = angular.module('shipApp', ['myDirectives', 'ngTable', 'ui.bootstrap', 'ngTableExport', 'Shipping.Filters', 'firebase', 'ngAudio']);
+﻿var myApp = angular.module('shipApp', ['myDirectives','ngAnimate', 'ngTable', 'ui.bootstrap', 'ngTableExport', 'Shipping.Filters', 'firebase', 'ngAudio']);

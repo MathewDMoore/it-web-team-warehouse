@@ -7,7 +7,7 @@
     <script type="text/javascript" src="../scripts/services/ScanOrderService.js"></script>
     <script type="text/javascript" src="../scripts/services/firebaseDeliveryService.js"></script>
     <script type="text/javascript" src="../scripts/controllers/ScanOrderController2.js"></script>
-    <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet" />
+    <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet" />
     <script src="https://cdn.firebase.com/js/simple-login/1.6.3/firebase-simple-login.js"></script>
     <script type="text/javascript">
         var app = angular.module("shipApp");
@@ -78,9 +78,9 @@
 
                     </div>
                 </div>
-                <div ng-show="false" class="animate-show">
-                    <div id="donut-container" class="onethird" style="margin-right: 20px;">
-                        <div class="well" style="width: 50%;">
+                <div >
+                    <div id="donut-container" class="animate" style="margin-right: 20px;float:left;width:50%;box-shadow: 0 0 2px rgba(0,0,0,.12),0 2px 4px rgba(0,0,0,.24);" ng-show="scan.ShowChart">
+                        <div class="well">
                             <div>
                                 <button class="btn pull-right" ng-if="scan.Filtered"><i class="glyphicon glyphicon-arrow-left"></i></button>
                                 <h2>Item Types</h2>
@@ -88,8 +88,9 @@
                             </div>
                         </div>
                     </div>
+                    <div ng-click="scan.ShowChart = !scan.ShowChart" class="btn btn-info" style="box-shadow: 0 0 2px rgba(0,0,0,.12),0 2px 4px rgba(0,0,0,.24);font-size: 23px;width: 56px;position: relative;left: -20px;top:10px;text-align: center;border-radius: 0px 5px 5px 0px;float:left;"><i class="fa fa-pie-chart"></i></div>
                 </div>
-                <div style="float: left; margin-bottom: 20px;">
+                <div style="float: left; margin-bottom: 20px;clear:both;margin-top:20px">
                     <form style="display: inline-block;" ng-submit="scan.VerifyLineitem(scan.SerialCodeLookUp)" <%=init %>>
                         <label>Enter Serial Code: </label>
                         <div class="input-group" style="width: 328px">

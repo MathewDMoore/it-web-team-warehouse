@@ -45,6 +45,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="MacIdItemTests.cs" />
     <Compile Include="OrderDeliveryModelTests.cs" />
     <Compile Include="OrderDeliveryServiceTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

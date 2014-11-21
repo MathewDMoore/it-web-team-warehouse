@@ -16,7 +16,7 @@ namespace ApplicationSource.Models
         [DataMember]
         public bool HasErrors
         {
-            set { var hasErrors = value; }
+            set {  }
             get { return !string.IsNullOrEmpty(ErrorMessage); }
         }
 

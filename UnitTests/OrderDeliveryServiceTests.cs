@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Runtime.InteropServices;
 using System.Security.Principal;
 using ApplicationSource;
 using ApplicationSource.Interfaces;
@@ -86,7 +88,7 @@ namespace UnitTests
             _repo.Stub(r => r.FindUnScannedMatch(Arg<SerialNumberItemQuery>.Is.Anything)).Return(expected);
             var model = new MatchModel {SerialCode = RSK_PRIMARY, IsInternal = false, DocNumber = DOCNUM};
             var actual = new OrderDeliveryService(_repo, _settings, _identity).MatchAndSave(model);
-            Assert.AreEqual(actual.ErrorMessage, "Please scan single items first. Then scan kits");
+            Assert.AreEqual(actual.ErrorMessage, "All matches already scanned");
 
         }
 
@@ -95,7 +97,10 @@ namespace UnitTests
         {
             var lookup = new MacDeliveryModel { DeliveryNumber = 1234, IsInternal = false };
             var expectedDelivery = new Delivery { Address = "ADDRESS" };
-            var expectedItems = new List<SerialNumberItem> { new SerialNumberItem { DocEntry = 1 } };
+            var expectedChartData = new Dictionary<string, int>();
+            expectedChartData.Add("REALITEM1", 1);
+            expectedChartData.Add("REALITEM2", 1);
+            var expectedItems = new List<SerialNumberItem> { new SerialNumberItem { DocEntry = 1, RealItemCode = "REALITEM1"},new SerialNumberItem{MacId = "SERIAL",RealItemCode = "REALITEM2"} };
             _identity.Stub(i => i.Name).Return("USERNAME");
             _settings.Stub(s => s.GetServerLocation).Return("SERVER");
             _repo.Expect(r => r.GetDelivery(Arg<DeliveryOrderQuery>.Matches(a => a.IsInternal.Equals(false) && a.DocNum.Equals(lookup.DeliveryNumber) && a.ServerLocation.Equals("SERVER")))).Return(expectedDelivery);
@@ -105,7 +110,9 @@ namespace UnitTests
 
             Assert.AreEqual("ADDRESS", actual.Address);
             Assert.AreEqual(lookup.DeliveryNumber, actual.DeliveryNumber);
-
+            Assert.AreEqual(actual.ScannedItems.Count, 1);
+            Assert.AreEqual(actual.NotScannedItems.Count,1 );
+            Assert.AreEqual(actual.ChartData,expectedChartData);
         }
 
         [Test]
@@ -128,10 +135,30 @@ namespace UnitTests
         [Test]
         public void ClearDelivery_DeliveryNumber_123()
         {
-            //_repo.Stub(r=>r.ClearDelivery(Arg<DeliveryOrderQuery>.Matches(a=>a.)))
+            _repo.Stub(r => r.ClearDelivery(Arg<DeliveryOrderQuery>.Matches(a => a.DocNum.Equals(123)))).Return(true);
+            var actual = new OrderDeliveryService(_repo, _settings, _identity).ClearDelivery(new ClearDeliveryModel {DeliveryNumber = 123});
+            Assert.IsTrue(actual);
+
+        }
+        
+        [Test]
+        public void ClearDelivery_DeliveryNumber_123_ThrowsException()
+        {
+            _repo.Stub(r => r.ClearDelivery(Arg<DeliveryOrderQuery>.Is.Anything)).Throw(new Exception());
             var actual = new OrderDeliveryService(_repo, _settings, _identity).ClearDelivery(new ClearDeliveryModel {DeliveryNumber = 123});
             Assert.IsFalse(actual);
 
+        }
+
+        [Test]
+        public void UpdateScanByUser_HappyPath()
+        {
+            var model = new UpdateUserNameModel{DocNum = 123, SerialNum = 456};
+            _identity.Stub(i => i.Name).Return("USERNAME");
+            _repo.Stub(r => r.UpdateScanByUser(Arg<UpdateUserNameQuery>.Matches(a => a.UserName.Equals("USERNAME") && a.DocNum.Equals(123) && a.SerialNum.Equals(456)))).Return(true);
+
+            var actual = new OrderDeliveryService(_repo, _settings, _identity).UpdateScanByUser(model);
+            Assert.IsTrue(actual);
         }
     }
 }
