@@ -272,22 +272,28 @@ body {
 }
 
 .animate {
-    opacity: 1;
-    left: 0px;
+    max-width: 50%;
 }
 
-    .animate.ng-hide-add.ng-hide-add-active,
-    .animate.ng-hide-remove.ng-hide-remove-active {
-        -webkit-transition: all linear 0.5s;
+    .animate.ng-hide-add.ng-hide-add-active, .animate.ng-hide-remove.ng-hide-remove-active {
+              -webkit-transition: all linear 0.5s;
         transition: all linear 0.5s;
     }
 
     .animate.ng-hide {
-        left: -100px;
-        opacity: 0;
+        max-width: 0px;
+    }
+    
+.fadeIt {
+    opacity: 1;
+}
+
+    .fadeIt.ng-hide-add.ng-hide-add-active,
+    .fadeIt.ng-hide-remove.ng-hide-remove-active {
+        -webkit-transition: all linear 0.3s;
+        transition: all linear 0.3s;
     }
 
-.animate-show {
-    opacity: 1;
-    left: 0px;
-}
+    .fadeIt.ng-hide {
+        opacity: 0;
+    }

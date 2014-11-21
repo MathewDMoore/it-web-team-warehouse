@@ -38,7 +38,7 @@
                }%>
             <form style="display: inline-block;" ng-submit="scan.LookUp(scan.OrderIdLookUp,scan.LookUpIsInternal)" <%=init %>>
                 <div class="input-group" style="width: 300px;">
-                    <input class="form-control" placeholder="Delivery Number or MacId" ng-disabled="scan.IsSearching" focus-select="scan.FocusDeliveryInput"  id="orderIdInput" type="text" ng-model="scan.OrderIdLookUp" />
+                    <input class="form-control" placeholder="Delivery Number or MacId" ng-disabled="scan.IsSearching" focus-select="scan.FocusDeliveryInput" id="orderIdInput" type="text" ng-model="scan.OrderIdLookUp" />
                     <span class="input-group-addon " style="cursor: pointer" id="loadDelivery">{{scan.IsSearching?'Loading...':'Load Delivery'}}</span>
                 </div>
                 <div style="display: inline-block;">
@@ -78,19 +78,17 @@
 
                     </div>
                 </div>
-                <div >
-                    <div id="donut-container" class="animate" style="margin-right: 20px;float:left;width:50%;box-shadow: 0 0 2px rgba(0,0,0,.12),0 2px 4px rgba(0,0,0,.24);" ng-show="scan.ShowChart">
-                        <div class="well">
-                            <div>
-                                <button class="btn pull-right" ng-if="scan.Filtered"><i class="glyphicon glyphicon-arrow-left"></i></button>
-                                <h2>Item Types</h2>
-                                <pie-chart data="scan.ChartData" colors="{{scan.Colors}}" filter="scan.ChartFilter"></pie-chart>
-                            </div>
+                <div>
+                    <div id="donut-container" class="animate" style="padding:10px;margin-right: 20px;width:50%; float: left; box-shadow: 0 0 2px rgba(0,0,0,.12),0 2px 4px rgba(0,0,0,.24);" ng-show="scan.ShowChart">
+                         <div class="fadeIt" ng-show="scan.ShowChart">
+                            <button class="btn pull-right" ng-if="scan.Filtered"><i class="glyphicon glyphicon-arrow-left"></i></button>
+                            <h2>Item Types</h2>
+                            <pie-chart data="scan.ChartData" colors="{{scan.Colors}}" filter="scan.ChartFilter"></pie-chart>
                         </div>
                     </div>
-                    <div ng-click="scan.ShowChart = !scan.ShowChart" class="btn btn-info" style="box-shadow: 0 0 2px rgba(0,0,0,.12),0 2px 4px rgba(0,0,0,.24);font-size: 23px;width: 56px;position: relative;left: -20px;top:10px;text-align: center;border-radius: 0px 5px 5px 0px;float:left;"><i class="fa fa-pie-chart"></i></div>
+                    <div ng-click="scan.ShowChart = !scan.ShowChart" class="btn btn-info" style="box-shadow: 0 0 2px rgba(0,0,0,.12),0 2px 4px rgba(0,0,0,.24); font-size: 23px; width: 56px; position: relative; left: -20px; top: 10px; text-align: center; border-radius: 0px 5px 5px 0px; float: left;"><i class="fa fa-pie-chart"></i></div>
                 </div>
-                <div style="float: left; margin-bottom: 20px;clear:both;margin-top:20px">
+                <div style="float: left; margin-bottom: 20px; clear: both; margin-top: 20px">
                     <form style="display: inline-block;" ng-submit="scan.VerifyLineitem(scan.SerialCodeLookUp)" <%=init %>>
                         <label>Enter Serial Code: </label>
                         <div class="input-group" style="width: 328px">

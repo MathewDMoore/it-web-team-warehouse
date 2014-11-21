@@ -398,6 +398,8 @@ app.controller("ScanController", function ($scope, $modal, $filter, $timeout, ng
                             item.IsSelected = false;
                             scan.Delivery.ScannedItems.remove(item);
                             scan.Delivery.NotScannedItems.push(item);
+                            scan.TableParams.reload();
+                            scan.TableParams2.reload();
                         });
                         //                        scan.Delivery.$save();
                     }
@@ -414,6 +416,8 @@ app.controller("ScanController", function ($scope, $modal, $filter, $timeout, ng
                             item.IsSelected = false;
                             scan.Delivery.ScannedItems.remove(item);
                             scan.Delivery.NotScannedItems.push(item);
+                            scan.TableParams.reload();
+                            scan.TableParams2.reload();
                         });
                         //                        scan.Delivery.$save();
                     }
