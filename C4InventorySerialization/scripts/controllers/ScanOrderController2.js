@@ -1,5 +1,5 @@
 ﻿var app = angular.module("shipApp");
-app.constant("FIREBASE_URL", "https://c4shiptool.firebaseio.com/dev/");
+app.constant("FIREBASE_URL", "https://c4shiptool.firebaseio.com/");
 app.controller("ScanController", function ($scope, $modal, $filter, $timeout, ngTableParams, ScanOrderService, FirebaseDeliveryService, ngAudio, CURRENTUSER) {
     var scan = this;
     //Properties
@@ -105,12 +105,12 @@ app.controller("ScanController", function ($scope, $modal, $filter, $timeout, ng
     });
     //Private Functions
     function _errorSound() {
-        ngAudio.play("/content/error1.mp3");
+        ngAudio.play("../content/error1.mp3");
         scan.SavingItem = false;
         scan.ShouldSelect = true;
     }
     function _successSound() {
-        ngAudio.play("/content/success.mp3");
+        ngAudio.play("../content/success.mp3");
         scan.SavingItem = false;
         scan.ShouldSelect = true;
         scan.Delivery.$save();

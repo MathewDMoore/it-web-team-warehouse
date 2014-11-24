@@ -14,12 +14,12 @@ app.controller("ScanController", function ($scope, $modal, $filter, $timeout, ng
     scan.FocusDeliveryInput = true;
     scan.Colors = ['#ffb81e', '#2a767d', '#3ebebe', '#d85927', '#c6b912', '#7e6591', '#ca4346', '#67773f', '#f49630', '#aa8965', '#4fa0bf', '#b9e1e5', '#ffb81e', '#2a767d', '#3ebebe', '#d85927', '#c6b912', '#7e6591', '#ca4346', '#67773f', '#f49630', '#aa8965', '#4fa0bf', '#b9e1e5'];
     function _errorSound() {
-        ngAudio.play("/content/error1.mp3");
+        ngAudio.play("../content/error1.mp3");
         scan.SavingItem = false;
         scan.ShouldSelect = true;
     }
     function _successSound() {
-        ngAudio.play("/content/success.mp3");
+        ngAudio.play("../content/success.mp3");
         scan.SavingItem = false;
         scan.ShouldSelect = true;
     }

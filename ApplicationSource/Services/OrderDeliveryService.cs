@@ -9,6 +9,7 @@ using ApplicationSource.Interfaces;
 using ApplicationSource.Models;
 using Domain;
 using Persistence.Repositories.Interfaces;
+using StructureMap.Diagnostics;
 
 namespace ApplicationSource.Services
 {
@@ -64,7 +65,7 @@ namespace ApplicationSource.Services
                 });
                 var dictionary = new Dictionary<string, int>();
                 var grouped = items.Where(i => i.RealItemCode != null).GroupBy(i => i.RealItemCode).ToList();
-                grouped.OrderBy(g=>g.Count()).ToList().ForEach(g => dictionary.Add(g.Key, g.Count()));                
+                grouped.OrderBy(g => g.Count()).ToList().ForEach(g => dictionary.Add(g.Key, g.Count()));
                 deliveryModel.ChartData = dictionary;
             }
             return deliveryModel;
@@ -311,28 +312,40 @@ namespace ApplicationSource.Services
         private void SmartMacCheck(SerialNumberItem item, out string errorMessage)
         {
             item.MacId = item.SerialCode.Length >= 29 ? item.SerialCode.Remove(item.SerialCode.Length - 17, 17) : item.SerialCode;
+
+            //Check if its unique
             var isUnique = !item.SmartCodeOnly && !item.NoSerialization;
-            if (item.MacId.Length == 12 || item.MacId.Length == 16 || !isUnique)
+            //Check if its repeatable
+            var isRepeatable = item.SmartCodeOnly && !item.NoSerialization;
+            //If its repeatable, allow it.
+            if (!isRepeatable)
             {
-
-                SerialNumberItem serialItem = null;
-
-                if (isUnique)
+                if (item.MacId.Length == 12 || item.MacId.Length == 16 || !isUnique)
                 {
-                    serialItem = _repo.SelectSmartMac(new SerialNumberItemQuery
-                    {
-                        MacId = item.MacId,
-                        ProductGroup = item.ProductGroup
-                    });
 
-                    if (serialItem != null)
+                    SerialNumberItem serialItem = null;
+
+                    if (isUnique)
                     {
-                        errorMessage = "This item has been scanned on another delivery order - #" + serialItem.DocNum;
-                        return;
+                        serialItem = _repo.SelectSmartMac(new SerialNumberItemQuery
+                        {
+                            MacId = item.MacId,
+                            ProductGroup = item.ProductGroup
+                        });
+
+                        if (serialItem != null)
+                        {
+                            errorMessage = "This item has been scanned on another delivery order - #" +
+                                           serialItem.DocNum;
+                            return;
+                        }
                     }
-
                 }
-
+                else
+                {
+                    errorMessage = "Mac is the wrong size. Please enter one the correct length.";
+                    return;
+                }
             }
             errorMessage = null;
         }

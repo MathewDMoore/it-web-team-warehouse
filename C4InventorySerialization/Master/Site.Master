@@ -20,7 +20,7 @@
     <script type="text/javascript" src="../scripts/ng-table.js"></script>
     <script type="text/javascript" src="../scripts/jquery.cookie.js"></script>
     <script type="text/javascript" src="../scripts/common.js"></script>
-    <link href="/Master/C4Styles.css" rel="stylesheet" type="text/css" />
+    <link href="/ship/Master/C4Styles.css" rel="stylesheet" type="text/css" />
 
     <script type="text/javascript">
         var myApp = angular.module('shipApp', ['myDirectives']);

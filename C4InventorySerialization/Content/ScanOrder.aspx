@@ -16,16 +16,16 @@
         app.constant("SERVICES_PATH", "/ship/services/");
     </script>
     <!-- USED FOR EASY PIE CHARTS -->
-    <script src="/Scripts/libs/jquery.easypiechart.min.js"></script>
+    <script src="../Scripts/libs/jquery.easypiechart.min.js"></script>
 
-    <script src="/Scripts/libs/jquery.flot.min.js"></script>
-    <script src="/Scripts/libs/jquery.flot.time.min.js"></script>
-    <script src="/Scripts/libs/jquery.flot.min.js"></script>
-    <script src="/Scripts/libs/jquery.flot.time.min.js"></script>
-    <script src="/Scripts/libs/jquery.flot.tooltip.min.js"></script>
-    <script src="/Scripts/libs/jquery.flot.resize.min.js"></script>
-    <script src="/Scripts/libs/jquery.flot.orderBars.js"></script>
-    <script src="/Scripts/libs/jquery.flot.pie.min.js"></script>
+    <script src="../Scripts/libs/jquery.flot.min.js"></script>
+    <script src="../Scripts/libs/jquery.flot.time.min.js"></script>
+    <script src="../Scripts/libs/jquery.flot.min.js"></script>
+    <script src="../Scripts/libs/jquery.flot.time.min.js"></script>
+    <script src="../Scripts/libs/jquery.flot.tooltip.min.js"></script>
+    <script src="../Scripts/libs/jquery.flot.resize.min.js"></script>
+    <script src="../Scripts/libs/jquery.flot.orderBars.js"></script>
+    <script src="../Scripts/libs/jquery.flot.pie.min.js"></script>
     <div style="min-height: 140px;">
         <h2>Deliveries</h2>
         <div ng-controller="ScanController as scan" class="well" ng-init="scan.Username='<%=User.Identity.Name %>'">
