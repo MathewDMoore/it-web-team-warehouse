@@ -390,6 +390,7 @@ app.controller("ScanController", function ($scope, $modal, $filter, $timeout, ng
 
                 ScanOrderService.ReturnSelectedItems(selected, scan.Delivery.IsInternal, scan.Delivery.DeliveryNumber).then(function (result) {
                     //TODO: Add success instead of just doing it.
+                    scan.Delivery.NotScannedItems = scan.Delivery.NotScannedItems || [];
                     if (result.data) {
                         _.each(selected, function (item) {
                             // delete item.IsSelected;
@@ -408,6 +409,7 @@ app.controller("ScanController", function ($scope, $modal, $filter, $timeout, ng
                 //var ids = _.pluck(selected, 'Id');
                 ScanOrderService.ReturnSelectedItems(selected, scan.Delivery.IsInternal, scan.Delivery.DeliveryNumber).then(function (result) {
                     //TODO: Add success instead of just doing it.
+                    scan.Delivery.NotScannedItems = scan.Delivery.NotScannedItems || [];
                     if (result.data) {
                         _.each(selected, function (item) {
                             // delete item.IsSelected;

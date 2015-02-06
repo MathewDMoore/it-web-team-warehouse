@@ -106,106 +106,118 @@ namespace ApplicationSource.Services
         public SaveScanModel MatchAndSave(MatchModel scanModel)
         {
             var model = new SaveScanModel();
-            if (!string.IsNullOrEmpty(scanModel.SerialCode) && scanModel.SerialCode.Length >= 7)
+            if (IsUserTimedOut())
             {
-                var productId = scanModel.SerialCode.Substring(scanModel.SerialCode.Length - 7, 5);
-                var color = scanModel.SerialCode.Substring(scanModel.SerialCode.Length - 2, 2);
-                var matches =
-                    _repo.FindUnScannedMatch(new SerialNumberItemQuery
-                    {
-                        ProductId = productId,
-                        Color = color,
-                        DocNum = scanModel.DocNumber
-                    });
-                //Verify there are matches
-                if (matches.Any())
-                {
-                    //check if match requires smart code
-                    //All Singles
 
-                    var updated = false;
-                    var matchIndex = 0;
-                    SerialNumberItem match = null;
-                    if (scanModel.KitId > 0)
-                    {
-                        match =
-                            matches.FirstOrDefault(
-                                m => m.KitCounter.Equals(scanModel.KitCounter) && m.KitId.Equals(scanModel.KitId));
-                        if (match != null)
+
+                if (!string.IsNullOrEmpty(scanModel.SerialCode) && scanModel.SerialCode.Length >= 7)
+                {
+                    var productId = scanModel.SerialCode.Substring(scanModel.SerialCode.Length - 7, 5);
+                    var color = scanModel.SerialCode.Substring(scanModel.SerialCode.Length - 2, 2);
+                    var matches =
+                        _repo.FindUnScannedMatch(new SerialNumberItemQuery
                         {
-                            match.ScannedBy = _identity.Name;
-                            match.SerialCode = scanModel.SerialCode;
-                            var error = string.Empty;
-                            SmartMacCheck(match, out error);
-                            if (string.IsNullOrEmpty(error))
+                            ProductId = productId,
+                            Color = color,
+                            DocNum = scanModel.DocNumber
+                        });
+                    //Verify there are matches
+                    if (matches.Any())
+                    {
+                        //check if match requires smart code
+                        //All Singles
+
+                        var updated = false;
+                        var matchIndex = 0;
+                        SerialNumberItem match = null;
+                        if (scanModel.KitId > 0)
+                        {
+                            match =
+                                matches.FirstOrDefault(
+                                    m => m.KitCounter.Equals(scanModel.KitCounter) && m.KitId.Equals(scanModel.KitId));
+                            if (match != null)
                             {
-                                _repo.UpdateSerialNumberItem(match, scanModel.IsInternal);
+                                match.ScannedBy = _identity.Name;
+                                match.SerialCode = scanModel.SerialCode;
+                                var error = string.Empty;
+                                SmartMacCheck(match, out error);
+                                if (string.IsNullOrEmpty(error))
+                                {
+                                    _repo.UpdateSerialNumberItem(match, scanModel.IsInternal);
+                                }
+                                else
+                                {
+                                    model.ErrorMessage = error;
+                                }
                             }
                             else
                             {
-                                model.ErrorMessage = error;
+                                model.ErrorMessage =
+                                    "No matches found in kit. You may have scanned the bar code incorrectly";
                             }
                         }
                         else
                         {
-                            model.ErrorMessage =
-                                "No matches found in kit. You may have scanned the bar code incorrectly";
-                        }
-                    }
-                    else
-                    {
-                        var list = matches.All(m => m.KitId == 0) || matches.All(m => m.KitId > 0)
-                            ? matches
-                            : matches.Where(m => m.KitId.Equals(0)).ToList();
-                        while (!updated && matchIndex <= list.Count - 1)
-                        {
-                            var item = list[matchIndex];
-                            item.ScannedBy = _identity.Name;
-                            item.SerialCode = scanModel.SerialCode;
-                            var error = string.Empty;
-                            SmartMacCheck(item, out error);
-                            if (string.IsNullOrEmpty(error))
+                            var list = matches.All(m => m.KitId == 0) || matches.All(m => m.KitId > 0)
+                                ? matches
+                                : matches.Where(m => m.KitId.Equals(0)).ToList();
+                            while (!updated && matchIndex <= list.Count - 1)
                             {
-                                updated = _repo.UpdateSerialNumberItem(item, scanModel.IsInternal);
-                                if (!updated)
+                                var item = list[matchIndex];
+                                item.ScannedBy = _identity.Name;
+                                item.SerialCode = scanModel.SerialCode;
+                                var error = string.Empty;
+                                SmartMacCheck(item, out error);
+                                if (string.IsNullOrEmpty(error))
                                 {
-                                    matchIndex++;
+                                    updated = _repo.UpdateSerialNumberItem(item, scanModel.IsInternal);
+                                    if (!updated)
+                                    {
+                                        matchIndex++;
+                                    }
+                                    else
+                                    {
+                                        match = list[matchIndex];
+                                        break;
+                                    }
                                 }
                                 else
                                 {
-                                    match = list[matchIndex];
+                                    model.ErrorMessage = error;
                                     break;
                                 }
                             }
-                            else
-                            {
-                                model.ErrorMessage = error;
-                                break;
-                            }
                         }
-                    }
 
 
-                    if (match == null && string.IsNullOrEmpty(model.ErrorMessage))
-                    {
-                        model.ErrorMessage = "All matches already scanned";
+                        if (match == null && string.IsNullOrEmpty(model.ErrorMessage))
+                        {
+                            model.ErrorMessage = "All matches already scanned";
+                        }
+                        else
+                        {
+                            model.UpdatedItem = match.Map<SerialNumberItem, DeliveryOrderItemModel>();
+                        }
                     }
                     else
                     {
-                        model.UpdatedItem = match.Map<SerialNumberItem, DeliveryOrderItemModel>();
+                        model.ErrorMessage = "No items found that match that MacId";
                     }
                 }
                 else
                 {
-                    model.ErrorMessage = "No items found that match that MacId";
+                    model.ErrorMessage = "Scanned serial code invalid, length is too short";
                 }
+                //return unique row number, js will need to find this and remove to proper table on view
+                return model;
             }
-            else
-            {
-                model.ErrorMessage = "Scanned serial code invalid, length is too short";
-            }
-            //return unique row number, js will need to find this and remove to proper table on view
+            model.ErrorMessage = "You have been logged out! Please sign back into the ship tool.";
             return model;
+        }
+
+        private bool IsUserTimedOut()
+        {
+            return !string.IsNullOrEmpty(_identity.Name);
         }
 
         public bool UpdateScanByUser(UpdateUserNameModel updateModel)

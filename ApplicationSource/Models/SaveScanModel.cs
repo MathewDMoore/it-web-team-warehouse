@@ -6,5 +6,6 @@ namespace ApplicationSource.Models
     {
         public string ErrorMessage { get; set; }
         public DeliveryOrderItemModel UpdatedItem { get; set; }
+        public bool LoggedOut { get; set; }
     }
 }
