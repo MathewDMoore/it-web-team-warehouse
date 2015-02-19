@@ -190,9 +190,9 @@
     <update id="UpdateSerialNumberIR" parameterMap="UpdateSerialNumberPM" >
       sp_ScanSerialIRCode
     </update>
-    <update id="UpdateSerialNumber" parameterMap="UpdateSerialNumberPM" >
+    <procedure id="UpdateSerialNumber" parameterMap="UpdateSerialNumberPM" >
       sp_ScanSerialCode
-    </update>
+    </procedure>
     <update id="UpdateVerifiedOrder" parameterClass="DeliveryOrderQuery">
       UPDATE C4_SERIALNUMBERS_OUT
       SET VERIFIED = 1,
