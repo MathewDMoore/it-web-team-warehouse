@@ -238,7 +238,7 @@ namespace ApplicationSource.Services
                 {
                     success = _repo.ReturnDelivery(new DeliveryOrderQuery { DocNum = delivery.DeliveryNumber, IsInternal = delivery.IsInternal, Username = _identity.Name });
                 }
-                catch (Exception)
+                catch (Exception e)
                 {
 
                     success = false;

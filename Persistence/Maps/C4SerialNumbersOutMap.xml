@@ -187,10 +187,10 @@
     <procedure  id="ReturnDelivery" parameterMap="ReturnDeliveryOrderPM">
       sp_ReturnDelivery
     </procedure>
-    <update id="UpdateSerialNumberIR" parameterClass="SerialNumberItem" >
-      Update C4_GOODSISSUE_IR_OUT WITH(ROWLOCK) set SERIALCODE= UPPER(#SerialCode#), ScannedBy= #ScannedBy#, MACID =#MacId#, RETURNEDBYUSER = null where DOCNUM = #DocNum# and SERIALNUM = #SerialNum# AND SERIALCODE IS NULL;
+    <update id="UpdateSerialNumberIR" parameterMap="UpdateSerialNumberPM" >
+      sp_ScanSerialIRCode
     </update>
-    <update id="UpdateSerialNumber" parameterClass="UpdateSerialNumberPM" >
+    <update id="UpdateSerialNumber" parameterMap="UpdateSerialNumberPM" >
       sp_ScanSerialCode
     </update>
     <update id="UpdateVerifiedOrder" parameterClass="DeliveryOrderQuery">
