@@ -275,15 +275,15 @@ namespace ApplicationSource.Services
                 {
                     success = _repo.ClearDelivery(new DeliveryOrderQuery { DocNum = delivery.DeliveryNumber, IsInternal = delivery.IsInternal, Username = _identity.Name });
                 }
-                catch (Exception)
+                catch (Exception ex)
                 {
-
+                    
                     success = false;
                 }
 
                 return success;
             }
-
+             
             return false;
         }
 
