@@ -136,10 +136,10 @@
   <statements>
     <select id="GetDeliveryByMacId" parameterClass="string" resultMap="DeliveryLiteRM">
       SELECT DOCNUM, 0 AS ISIRDELIVERY FROM C4_SERIALNUMBERS_OUT
-      WHERE MACID = #value#
+      WHERE MACID LIKE #value#+'%'
       UNION ALL
       SELECT DOCNUM, 1 AS ISIRDELIVERY FROM C4_GOODSISSUE_IR_OUT
-      WHERE MACID = #value#
+      WHERE MACID LIKE #value#+'%'
     </select>
     <select id="FindUnScannedMatches" parameterClass="SerialNumberItemQuery" resultMap="SerialNumberItemLiteRM">
       SELECT ID,SERIALNUM,PRODUCTID,PRODUCTGROUP, COLOR,NOSERIALIZATION,SMARTCODEONLY,KitId,KitCounter,DOCNUM
