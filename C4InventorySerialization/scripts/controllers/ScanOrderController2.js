@@ -268,7 +268,7 @@ app.controller("ScanController", function ($scope, $modal, $filter, $timeout, ng
                 scan.IsSearching = false;
 
                 if (result.data.DeliveryNumber > 0) {
-                    scan.LookUp(result.data.DeliveryNumber);
+                    scan.LookUp(result.data.DeliveryNumber,result.data.IsInternal);
                 } else {
                     scan.DeliveryActionMessage = "Delivery Not Found";
                     scan.FocusDeliveryInput = true;
