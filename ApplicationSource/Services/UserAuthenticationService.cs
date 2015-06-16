@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Configuration;
 using System.Linq;
+using System.Security.Principal;
 using System.ServiceModel;
 using System.ServiceModel.Activation;
 using System.Web;
@@ -25,12 +26,12 @@ namespace ApplicationSource.Services
                 var isAuthd = adAuth.IsAuthenticated(userName, password);
                 if (isAuthd)
                 {
-                    var user = new User()
+                    var scanName = contractorName == null ? userName : contractorName + "-contractor";
+                    var user = new User(scanName, scanName, true)
                         {
                             Groups = adAuth.GetGroups().Split('|').ToList(),
-                            UserName = contractorName == null ? userName : contractorName + "-contractor"
+                            UserName = userName
                         };
-
                     HttpContext.Current.Session.Add("User", user);
                     HttpContext.Current.Session.Timeout = 30;
 

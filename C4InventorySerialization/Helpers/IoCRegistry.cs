@@ -22,11 +22,22 @@ namespace C4InventorySerialization.Helpers
             var stopwatch = Stopwatch.StartNew();
             For<ISqlMapperFactory>().Use((context) => new SqlMapperFactory(new SqlMapperWrapper(), context.GetInstance<ILogger>()));
             For<IInventoryRepository>().Use((context) => new InventoryRepository(context.GetInstance<ISqlMapperFactory>()));
-            For<IIdentity>().Use((context) => HttpContext.Current.User.Identity);
+            For<IIdentity>().Use((context) => Identity());
             For<ISettings>().Singleton().Use<SettingsWrapper>();
             For<ILogger>().Use((context) => new Logger(HttpContext.Current.Session != null ? HttpContext.Current.Session.SessionID : "", "", HttpContext.Current.Server.MachineName, ""));
             stopwatch.Stop();
             _log.Debug("Completed IoC container configuration in " + stopwatch.Elapsed + " milliseconds.");
+        }
+
+        private static IIdentity Identity()
+        {
+            var foundUser= HttpContext.Current.User.Identity;
+            if (string.IsNullOrEmpty(foundUser.Name))
+            {
+                foundUser = HttpContext.Current.Session["User"] as User;
+
+            }
+            return foundUser;
         }
     }
 

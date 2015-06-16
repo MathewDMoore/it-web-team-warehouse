@@ -3,6 +3,7 @@
 <asp:Content ID="Content1" ContentPlaceHolderID="MainContent" runat="server">
     <asp:ScriptManager ID="ScriptManager1" runat="server" EnablePageMethods="True"></asp:ScriptManager>
     <script src="../scripts/LogIn.js" type="text/javascript"></script>
+    <script type="text/javascript" src="../scripts/services/LoginService.js"></script>
     <link href="//netdna.bootstrapcdn.com/bootstrap/3.0.3/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
     <h3><asp:Label ID="loggedUser" runat="server" ForeColor="Red" /></h3>
     <h1>Please Log In</h1>
@@ -21,8 +22,8 @@
         </tr>
         <tr>
             <td>
-                <asp:Button ID="LoginBtn" Text="Log In" OnClick="Login_Click" runat="server" /></td>
-            <%--<input type="button" id="LoginBtn" value="Log In" onclick="UserNameCheck()" />--%>
+                <%--<asp:Button ID="LoginBtn" Text="Log In" OnClick="Login_Click" runat="server" /></td>--%>
+            <input type="button" id="LoginBtn" value="Log In" onclick="UserNameCheck()" />
             <td></td>
         </tr>
     </table>
@@ -36,7 +37,7 @@
     </h4>
         
     <!-- Modal code for Contractor Login. -->
-    <%--<div class="modal fade" id="myModal">
+    <div class="modal fade" id="myModal">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
@@ -50,6 +51,9 @@
                     Last Name: 
                     <input type="text" id="modalLastName" />
                 </div>
+                <div class="alert alert-danger">
+                    
+                </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
                     <button type="button" class="btn btn-primary" onclick="SubmitContractorDetails()">Save changes</button>
@@ -58,5 +62,5 @@
             <!-- /.modal-content -->
         </div>
         <!-- /.modal-dialog -->
-    </div>--%>
+    </div>
 </asp:Content>
