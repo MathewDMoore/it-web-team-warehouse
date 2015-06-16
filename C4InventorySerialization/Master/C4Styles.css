@@ -264,6 +264,9 @@ body {
     color: red;
 }
 
+.errorMessage {
+    color: red;
+}
 .verified {
     text-shadow: 0px 1px 1px #4d4d4d;
     color: #222;

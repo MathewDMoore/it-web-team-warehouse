@@ -3,7 +3,7 @@
     document.getElementById('ctl00_MainContent_UserName').select();
 };
 
-var EnteredUserName, Password, ContractorFirstName, ContractorLastName;
+var EnteredUserName, Password, ContractorFirstName, ContractorLastName, errorDiv;
 
 function capLock(e) {
     kc = e.keyCode ? e.keyCode : e.which;
@@ -19,6 +19,8 @@ function UserNameCheck() {
     Password = document.getElementById('ctl00_MainContent_Password').value;
     if (EnteredUserName.toLowerCase() === 'contractshipping') {
         $('#myModal').modal({ show: true, keyboard: false, backdrop: 'static' });
+        errorDiv = $('.alert');
+        errorDiv.hide();
         $("#modalFirstName").focus();
     }
     else {
@@ -30,8 +32,15 @@ function UserNameCheck() {
 function SubmitContractorDetails() {
     ContractorFirstName = document.getElementById('modalFirstName').value;
     ContractorLastName = document.getElementById('modalLastName').value;
-    $('#myModal').modal('hide');
-    SubmitLogin();
+
+    if (ContractorFirstName && ContractorLastName) {
+        SubmitLogin();
+        $('#myModal').modal('hide');
+    } else {
+        errorDiv.show();
+        errorDiv.text("Please enter First and Last names.");
+ 
+    }
 }
 
 function SubmitLogin() {
@@ -43,7 +52,7 @@ function SubmitLogin() {
     var preparedData = $.toJSON(loginData);
     $.ajax({
         type: "POST",
-        url: "/services/UserAuthenticationService.svc/UserAuthenticationLogin",
+        url: "/ship/services/UserAuthenticationService.svc/UserAuthenticationLogin",
         data: preparedData,
         contentType: "application/json; charset=utf-8",
         dataType: "json",
@@ -56,7 +65,7 @@ function SubmitLogin() {
                 $.cookie(result.CookieName, result.EncryptedTicket);
                 var returnUrl = $.getUrlVar('ReturnUrl');
                 if (returnUrl === undefined) {
-                    returnUrl = '/Content/ScanOrder.aspx/';
+                    returnUrl = '/Content/ScanOrder.aspx';
                 }
                 window.location = unescape(returnUrl);
             }
