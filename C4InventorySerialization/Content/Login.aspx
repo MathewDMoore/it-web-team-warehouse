@@ -3,7 +3,6 @@
 <asp:Content ID="Content1" ContentPlaceHolderID="MainContent" runat="server">
     <asp:ScriptManager ID="ScriptManager1" runat="server" EnablePageMethods="True"></asp:ScriptManager>
     <script src="../scripts/LogIn.js" type="text/javascript"></script>
-    <script type="text/javascript" src="../scripts/services/LoginService.js"></script>
     <link href="//netdna.bootstrapcdn.com/bootstrap/3.0.3/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
     <h3><asp:Label ID="loggedUser" runat="server" ForeColor="Red" /></h3>
     <h1>Please Log In</h1>
@@ -33,7 +32,7 @@
     <h4>
         <h3>
             <asp:Label ID="Output" runat="server" /></h3>
-        <label id="errorMessage" />
+        <label id="errorMessage"></label>
     </h4>
         
     <!-- Modal code for Contractor Login. -->

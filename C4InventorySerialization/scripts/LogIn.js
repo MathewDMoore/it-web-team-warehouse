@@ -35,7 +35,7 @@ function SubmitContractorDetails() {
 
     if (ContractorFirstName && ContractorLastName) {
         SubmitLogin();
-        $('#myModal').modal('hide');
+       
     } else {
         errorDiv.show();
         errorDiv.text("Please enter First and Last names.");
@@ -59,14 +59,15 @@ function SubmitLogin() {
         success: function (result) {
 
             if (result.ErrorMessage != null && result.ErrorMessage != '') {
-                $('#errorMessage').text(result.ErrorMessage);
+                errorDiv.show();
+                errorDiv.text(result.ErrorMessage);
             }
             else {
                 $.cookie(result.CookieName, result.EncryptedTicket);
                 var returnUrl = $.getUrlVar('ReturnUrl');
                 if (returnUrl === undefined) {
                     returnUrl = '/Content/ScanOrder.aspx';
-                }
+                }   
                 window.location = unescape(returnUrl);
             }
         }

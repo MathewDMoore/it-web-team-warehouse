@@ -13,10 +13,12 @@ namespace C4InventorySerialization
     {
         protected void Page_Load(object sender, EventArgs e)
         {
-            string username = User.Identity.Name;
-            if (username != "")
+            User user = HttpContext.Current.Session["User"] as User;
+            var userName = user == null ? "" : user.UserName;
+            if (string.IsNullOrEmpty(userName))
             {
-                loggedUser.Text = "Currently logged in as: " + username +
+                
+                loggedUser.Text = "Currently logged in as: " + userName +
                                   ". You need Administrator permissions to process Returns and Maintain Kits/Products.";
             }
             else
