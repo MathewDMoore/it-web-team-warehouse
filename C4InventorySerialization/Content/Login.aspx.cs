@@ -15,13 +15,13 @@ namespace C4InventorySerialization
         {
             User user = HttpContext.Current.Session["User"] as User;
             var userName = user == null ? "" : user.UserName;
-            if (string.IsNullOrEmpty(userName))
+            if (user!= null && !user.Groups.Contains("Admin"))
             {
                 
                 loggedUser.Text = "Currently logged in as: " + userName +
                                   ". You need Administrator permissions to process Returns and Maintain Kits/Products.";
             }
-            else
+            else if (string.IsNullOrEmpty(userName))
             {
                 loggedUser.Text = "Welcome to Serialization Application." +
                                   "You must first login prior to processing deliveries and inventory requests.";

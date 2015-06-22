@@ -1,6 +1,20 @@
 ﻿window.onload = function () {
     document.getElementById('ctl00_MainContent_UserName').focus();
     document.getElementById('ctl00_MainContent_UserName').select();
+    $("#ctl00_MainContent_Password").keypress(function (e) {
+        if (e.which === 13) {
+            $("#LoginBtn").click();
+        }
+    });
+    $("#modalLastName").keypress(function (e) {
+        if (e.which === 13) {
+            $("#submitName").click();
+        }
+    }); $("#modalFirstName").keypress(function (e) {
+        if (e.which === 13) {
+            $("#submitName").click();
+        }
+    });
 };
 
 var EnteredUserName, Password, ContractorFirstName, ContractorLastName, errorDiv;
@@ -19,6 +33,10 @@ function UserNameCheck() {
     Password = document.getElementById('ctl00_MainContent_Password').value;
     if (EnteredUserName.toLowerCase() === 'contractshipping') {
         $('#myModal').modal({ show: true, keyboard: false, backdrop: 'static' });
+
+        setTimeout(function() {
+            $('#modalFirstName').focus();
+        }, 300);       
         errorDiv = $('.alert');
         errorDiv.hide();
         $("#modalFirstName").focus();
