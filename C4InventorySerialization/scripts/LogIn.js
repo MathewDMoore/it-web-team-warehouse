@@ -77,8 +77,7 @@ function SubmitLogin() {
         success: function (result) {
 
             if (result.ErrorMessage != null && result.ErrorMessage != '') {
-                errorDiv.show();
-                errorDiv.text(result.ErrorMessage);
+                $("#ctl00_MainContent_loggedUser").text(result.ErrorMessage);
             }
             else {
                 $.cookie(result.CookieName, result.EncryptedTicket);

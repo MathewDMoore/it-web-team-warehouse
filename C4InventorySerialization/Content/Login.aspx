@@ -23,7 +23,7 @@
             <td>
                 <%--<asp:Button ID="LoginBtn" Text="Log In" OnClick="Login_Click" runat="server" /></td>--%>
             <input type="button" id="LoginBtn" value="Log In" onclick="UserNameCheck()" />
-            <td></td>
+            </td>
         </tr>
     </table>
 
