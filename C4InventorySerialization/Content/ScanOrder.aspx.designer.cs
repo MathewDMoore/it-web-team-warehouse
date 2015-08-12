@@ -10,6 +10,9 @@
 namespace C4InventorySerialization.Content {
     
     
-    public partial class ScanOrder1 {
+    public partial class ScanOrder1
+    {
+ 
+  
     }
 }

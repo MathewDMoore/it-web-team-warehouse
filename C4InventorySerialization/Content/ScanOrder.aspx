@@ -1,20 +1,24 @@
 ﻿<%@ Page Language="C#" MasterPageFile="~/Master/Redesign.master" AutoEventWireup="true" CodeBehind="ScanOrder.aspx.cs" Inherits="C4InventorySerialization.Content.ScanOrder1" %>
 
 <%@ Import Namespace="ApplicationSource" %>
-
-<asp:Content ID="Content1" ContentPlaceHolderID="MainContent" runat="server">
-    <script type="text/javascript" src="../scripts/underscore-min.js"></script>
-    <script type="text/javascript" src="../scripts/services/ScanOrderService.js"></script>
-    <script type="text/javascript" src="../scripts/services/firebaseDeliveryService.js"></script>
-    <script type="text/javascript" src="../scripts/controllers/ScanOrderController2.js"></script>
-    <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet" />
-    <script src="https://cdn.firebase.com/js/simple-login/1.6.3/firebase-simple-login.js"></script>
-    <script type="text/javascript">
+<asp:Content ContentPlaceHolderID="Header" runat="server" ID="Header">
+        <script type="text/javascript">
         var app = angular.module("shipApp");
         app.constant("AUTH_TOKEN", "<%=Token%>");
         app.constant("CURRENTUSER", "<%=User.Identity.Name%>");
         app.constant("SERVICES_PATH", "/ship/services/");
     </script>
+</asp:Content>
+
+<asp:Content ID="Content1" ContentPlaceHolderID="MainContent" runat="server">
+    <script type="text/javascript" src="../scripts/underscore-min.js"></script>
+    <script type="text/javascript" src="../scripts/services/firebaseDeliveryService.js"></script>
+    <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet" />
+    <script src="https://cdn.firebase.com/js/simple-login/1.6.3/firebase-simple-login.js"></script>
+
+    <script type="text/javascript" src="../scripts/services/ScanOrderService.js"></script>
+    <script type="text/javascript" src="../scripts/controllers/ScanOrderController2.js"></script>
+
     <!-- USED FOR EASY PIE CHARTS -->
     <script src="../Scripts/libs/jquery.easypiechart.min.js"></script>
 
@@ -77,7 +81,7 @@
                     </div>
                 </div>
                 <div>
-                    <div id="donut-container" class="animate" style="padding:10px;margin-right: 20px;width:50%; float: left; box-shadow: 0 0 2px rgba(0,0,0,.12),0 2px 4px rgba(0,0,0,.24);" ng-show="scan.ShowChart">
+                    <div id="donut-container" class="animate" style="padding:10px;margin-right: 20px;width:50%; float: left; box-shadow: 0 0 2px rgba(0,0,0,.12),0 2px 4px rgba(0,0,0,.24);background-color: #fff" ng-show="scan.ShowChart">
                          <div class="fadeIt" ng-show="scan.ShowChart">
                             <button class="btn pull-right" ng-if="scan.Filtered"><i class="glyphicon glyphicon-arrow-left"></i></button>
                             <h2>Item Types</h2>
