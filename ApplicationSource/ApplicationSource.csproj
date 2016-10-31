@@ -57,6 +57,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="DomainModelMapper.cs" />
+    <Compile Include="Helpers\ServiceAuthorization.cs" />
     <Compile Include="Interfaces\IOrderDeliveryService.cs" />
     <Compile Include="Interfaces\ISettings.cs" />
     <Compile Include="Interfaces\IUserAuthenticationService.cs" />

@@ -4,213 +4,219 @@
   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
   xmlns="http://ibatis.apache.org/mapping"
  >
-  <alias>
-    <typeAlias alias="SerialNumberItem" type="Domain.SerialNumberItem" />
-    <typeAlias alias="DeliveryOrderItemsQuery" type="Domain.DeliveryOrderItemsQuery" />
-    <typeAlias alias="DeliveryOrderQuery" type="Domain.DeliveryOrderQuery" />
-    <typeAlias alias="SerialNumberItemQuery" type="Domain.SerialNumberItemQuery" />
-    <typeAlias alias="UpdateUserNameQuery" type="Domain.UpdateUserNameQuery" />
-    <typeAlias alias="Delivery" type="Domain.Delivery" />
-  </alias>
-  <resultMaps>
-    <resultMap id="SerialNumberItemRM" class="SerialNumberItem">
-      <result property="Id" column="ID"/>
-      <result property="DocType" column="DOCTYPE"/>
-      <result property="Date" column="DATE"/>
-      <result property="DocNum" column="DOCNUM"/>
-      <result property="SerialNum" column="SERIALNUM"/>
-      <result property="DocEntry" column="DOCENTRY"/>
-      <result property="DocDate" column="DOCDATE"/>
-      <result property="LineNum" column="LINENUM"/>
-      <result property="ItemCode" column="ITEMCODE"/>
-      <result property="Description" column="DSCRIPTION"/>
-      <result property="AltText" column="ALTTEXT"/>
-      <result property="Quantity" column="QUANTITY"/>
-      <result property="ProductId" column="PRODUCTID"/>
-      <result property="Color" column="COLOR"/>
-      <result property="NoSerialization" column="NOSERIALIZATION"/>
-      <result property="SmartCodeOnly" column="SMARTCODEONLY"/>
-      <result property="SerialCode" column="SERIALCODE"/>
-      <result property="IsVerified" column="VERIFIED"/>
-      <result property="Username" column="USERNAME"/>
-      <result property="MacId" column="MACID"/>
-      <result property="RealItemCode" column="REALITEMCODE"/>
-      <result property="ProductGroup" column="PRODUCTGROUP"/>
-      <result property="ProductFamily" column="PRODUCTFAMILY"/>
-      <result property="ProductPillar" column="PRODUCTPILLAR"/>
-      <result property="ReturnedByUser" column="RETURNEDBYUSER" />
-      <result property="KitId" column="KitId" />
-      <result property="KitCounter" column="KitCounter" />
-      <result property="ScannedBy" column="ScannedBy" />
-    </resultMap>
-    <resultMap id="SerialNumberItemLiteRM" class="SerialNumberItem">
-      <result property="Id" column="ID"/>
-      <result property="DocNum" column="DOCNUM"/>
-      <result property="SerialNum" column="SERIALNUM"/>
-      <result property="ProductId" column="PRODUCTID"/>
-      <result property="Color" column="COLOR"/>
-      <result property="NoSerialization" column="NOSERIALIZATION"/>
-      <result property="ProductGroup" column="PRODUCTGROUP"/>
-      <result property="SmartCodeOnly" column="SMARTCODEONLY"/>
-      <result property="KitId" column="KitId" />
-      <result property="KitCounter" column="KitCounter" />
-    </resultMap>
-    <resultMap id="DeliveryItemRM" class="SerialNumberItem">
-      <result property="Id" column="ID"/>
-      <result property="DocNum" column="DOCNUM"/>
-      <result property="SerialNum" column="SERIALNUM"/>
-      <result property="ItemCode" column="ITEMCODE"/>
-      <result property="Description" column="DSCRIPTION"/>
-      <result property="AltText" column="ALTTEXT"/>
-      <result property="Quantity" column="QUANTITY"/>
-      <result property="ProductId" column="PRODUCTID"/>
-      <result property="Color" column="COLOR"/>
-      <result property="NoSerialization" column="NOSERIALIZATION"/>
-      <result property="SmartCodeOnly" column="SMARTCODEONLY"/>
-      <result property="SerialCode" column="SERIALCODE"/>
-      <result property="MacId" column="MACID"/>
-      <result property="RealItemCode" column="REALITEMCODE"/>
-      <result property="ProductGroup" column="PRODUCTGROUP"/>
-      <result property="ProductFamily" column="PRODUCTFAMILY"/>
-      <result property="ProductPillar" column="PRODUCTPILLAR"/>
-      <result property="ReturnedByUser" column="RETURNEDBYUSER" />
-      <result property="Username" column="USERNAME" />
-      <result property="KitId" column="KitId" />
-      <result property="KitCounter" column="KitCounter" />
-      <result property="ScannedBy" column="ScannedBy" />
-      <result property="IsVerified" column="VERIFIED" />
-    </resultMap>
-    <resultMap id="DeliveryOrderRM" class="Delivery">
-      <result column="DealerName" property="DealerName"/>
-      <result column="DealerId" property="DealerId"/>
-      <result column="Address2" property="Address"/>
-      <result column="Comments" property="Comments"/>
-    </resultMap>
-    <resultMap id="DeliveryLiteRM" class="Delivery">
-      <result column="DOCNUM" property="DeliveryNumber"/>
-      <result column="IsIrDelivery" property="IsIrDelivery"/>
-    </resultMap>
-  </resultMaps>
-  <parameterMaps>
-    <parameterMap id="SerialNumberItemPM" class="SerialNumberItem">
-      <parameter property="ProductGroup" column="ProductGroup"/>
-      <parameter property="MacId" column="MACID"/>
-    </parameterMap>
-    <parameterMap id="UpdateSerialNumberPM" class="SerialNumberItem">
-      <parameter property="SerialCode" column="SerialCode"/>
-      <parameter property="ScannedBy" column="ScannedBy"/>
-      <parameter property="MacId" column="MacId"/>
-      <parameter property="DocNum" column="DocNum"/>
-      <parameter property="SerialNum" column="SerialNum"/>
-    </parameterMap>
-    <parameterMap id="DeliveryOrderPM" class="DeliveryOrderQuery">
-      <parameter property="ServerLocation" column="SERVERLOCATION"/>
-      <parameter property="DocNum" column="DOCNUM"/>
-    </parameterMap>
-    <parameterMap id="ClearDeliveryOrderPM" class="DeliveryOrderQuery">
-      <parameter property="Username" column="USERNAME"/>
-      <parameter property="DocNum" column="DELIVERYNUMBER"/>
-    </parameterMap>
-    <parameterMap id="ReturnSerialNumberItemPM" class="SerialNumberItem">
-      <parameter property="Username" column="USERNAME"/>
-      <parameter property="Id" column="ID"/>
-      <parameter property="SerialNum" column="SERIALNUM"/>
-      <parameter property="DocNum" column="DOCNUM"/>
-    </parameterMap>
-    <parameterMap id="ReturnDeliveryOrderPM" class="DeliveryOrderQuery">
-      <parameter property="Username" column="USERNAME"/>
-      <parameter property="DocNum" column="DOCNUM"/>
-    </parameterMap>
-    <parameterMap id="ReturnSerialNumberItemPM" class="SerialNumberItem">
-      <parameter property="Username" column="USERNAME"/>
-      <parameter property="Id" column="ID"/>
-      <parameter property="SerialNum" column="SERIALNUM"/>
-      <parameter property="DocNum" column="DOCNUM"/>
-    </parameterMap>
-    <parameterMap id="DeliveryOrderItemsPM" class="DeliveryOrderItemsQuery">
-      <parameter property="ServerLocation" column="SERVERLOCATION"/>
-      <parameter property="DocNum" column="DOCNUM"/>
-      <parameter property="Username" column="USERNAME"/>
-    </parameterMap>
-  </parameterMaps>
-  <statements>
-    <select id="GetDeliveryByMacId" parameterClass="string" resultMap="DeliveryLiteRM">
-      SELECT DOCNUM, 0 AS ISIRDELIVERY FROM C4_SERIALNUMBERS_OUT
-      WHERE MACID LIKE #value#+'%'
-      UNION ALL
-      SELECT DOCNUM, 1 AS ISIRDELIVERY FROM C4_GOODSISSUE_IR_OUT
-      WHERE MACID LIKE #value#+'%'
-    </select>
-    <select id="FindUnScannedMatches" parameterClass="SerialNumberItemQuery" resultMap="SerialNumberItemLiteRM">
-      SELECT ID,SERIALNUM,PRODUCTID,PRODUCTGROUP, COLOR,NOSERIALIZATION,SMARTCODEONLY,KitId,KitCounter,DOCNUM
-      FROM C4_SERIALNUMBERS_OUT WHERE PRODUCTID = #ProductId# AND COLOR = #Color# AND DOCNUM=#DocNum# AND SERIALCODE IS NULL
-    </select>
-    <select id="IsScanned" parameterClass="SerialNumberItem" resultMap="SerialNumberItemRM">
-      SELECT * FROM C4_SERIALNUMBERS_OUT
-      WHERE DOCNUM = #DocNum#
-      AND SERIALNUM = #SerialNum#
-      AND SERIALCODE IS NOT NULL
-    </select>
-    <procedure  id="sp_ClearDelivery" parameterMap="ClearDeliveryOrderPM">
-      sp_ClearDelivery
-    </procedure>
-    <procedure  id="sp_ClearDeliveryIR" parameterMap="ClearDeliveryOrderPM">
-      sp_ClearIRDelivery
-    </procedure>
-    <procedure  id="SelectSmartMac" parameterMap="SerialNumberItemPM" resultMap="SerialNumberItemRM">
-      sp_LocateSmartMac
-    </procedure>
-    <procedure  id="SelectDeleiveryOrderItems" parameterMap="DeliveryOrderItemsPM" resultMap="DeliveryItemRM">
-      sp_delivery_synch
-    </procedure>
-    <procedure  id="SelectDeleiveryOrderItemsIR" parameterMap="DeliveryOrderItemsPM" resultMap="DeliveryItemRM">
-      sp_GoodsIssue_IR_Synch
-    </procedure>
-    <procedure  id="SelectInternalDeleiveryOrderItems" parameterMap="DeliveryOrderItemsPM" resultMap="DeliveryItemRM">
-      sp_GoodsIssue_IR_Synch
-    </procedure>
-    <procedure  id="SelectDeliveryByDeliveryNumber" parameterMap="DeliveryOrderPM" resultMap="DeliveryOrderRM">
-      sp_Delivery_Header
-    </procedure>
-    <statement  id="SelectDeliveryByDeliveryNumberIR" parameterClass="DeliveryOrderQuery" resultMap="DeliveryOrderRM">
-      Select CardCode as DealerId,CardName as DealerName,Address2, Comments from $ServerLocation$.oige t1 where docnum = #DocNum#
-    </statement>
-    <procedure  id="ReturnDeliveryByLineItem" parameterMap="ReturnSerialNumberItemPM">
-      sp_ReturnDeliveryByLineItem
-    </procedure>
-    <procedure  id="ReturnDeliveryByLineItemIR" parameterMap="ReturnSerialNumberItemPM">
-      sp_ReturnIRByLineItem
-    </procedure>
-    <procedure  id="ReturnDeliveryIR" parameterMap="ReturnDeliveryOrderPM">
-      sp_ReturnGoodsIssue_IR
-    </procedure>
-    <procedure  id="ReturnDelivery" parameterMap="ReturnDeliveryOrderPM">
-      sp_ReturnDelivery
-    </procedure>
-    <update id="UpdateSerialNumberIR" parameterMap="UpdateSerialNumberPM" >
-      sp_ScanSerialIRCode
-    </update>
-    <procedure id="UpdateSerialNumber" parameterMap="UpdateSerialNumberPM" >
-      sp_ScanSerialCode
-    </procedure>
-    <update id="UpdateVerifiedOrder" parameterClass="DeliveryOrderQuery">
-      UPDATE C4_SERIALNUMBERS_OUT
-      SET VERIFIED = 1,
-      [USERNAME] = #Username#
-      WHERE DOCNUM = #DocNum#
-    </update>
-    <update id="UpdateVerifiedOrderIR" parameterClass="DeliveryOrderQuery">
-      UPDATE C4_GOODSISSUE_IR_OUT
-      SET VERIFIED = 1,
-      [USERNAME] = #Username#
-      WHERE DOCNUM = #DocNum#
-    </update>
-    <update id="UpdateScanByUser" parameterClass="UpdateUserNameQuery">
-      UPDATE C4_SERIALNUMBERS_OUT
-      SET SCANNEDBY = #UserName#
-      WHERE
-      DOCNUM = #DocNum#
-      AND SERIALNUM = #SerialNum#
-    </update>
-  </statements>
+	<alias>
+		<typeAlias alias="SerialNumberItem" type="Domain.SerialNumberItem" />
+		<typeAlias alias="DeliveryOrderItemsQuery" type="Domain.DeliveryOrderItemsQuery" />
+		<typeAlias alias="DeliveryOrderQuery" type="Domain.DeliveryOrderQuery" />
+		<typeAlias alias="SerialNumberItemQuery" type="Domain.SerialNumberItemQuery" />
+		<typeAlias alias="UpdateUserNameQuery" type="Domain.UpdateUserNameQuery" />
+		<typeAlias alias="Delivery" type="Domain.Delivery" />
+	</alias>
+	<resultMaps>
+		<resultMap id="SerialNumberItemRM" class="SerialNumberItem">
+			<result property="Id" column="ID"/>
+			<result property="DocType" column="DOCTYPE"/>
+			<result property="Date" column="DATE"/>
+			<result property="DocNum" column="DOCNUM"/>
+			<result property="SerialNum" column="SERIALNUM"/>
+			<result property="DocEntry" column="DOCENTRY"/>
+			<result property="DocDate" column="DOCDATE"/>
+			<result property="LineNum" column="LINENUM"/>
+			<result property="ItemCode" column="ITEMCODE"/>
+			<result property="Description" column="DSCRIPTION"/>
+			<result property="AltText" column="ALTTEXT"/>
+			<result property="Quantity" column="QUANTITY"/>
+			<result property="ProductId" column="PRODUCTID"/>
+			<result property="Color" column="COLOR"/>
+			<result property="NoSerialization" column="NOSERIALIZATION"/>
+			<result property="SmartCodeOnly" column="SMARTCODEONLY"/>
+			<result property="SerialCode" column="SERIALCODE"/>
+			<result property="IsVerified" column="VERIFIED"/>
+			<result property="Username" column="USERNAME"/>
+			<result property="MacId" column="MACID"/>
+			<result property="RealItemCode" column="REALITEMCODE"/>
+			<result property="ProductGroup" column="PRODUCTGROUP"/>
+			<result property="ProductFamily" column="PRODUCTFAMILY"/>
+			<result property="ProductPillar" column="PRODUCTPILLAR"/>
+			<result property="ReturnedByUser" column="RETURNEDBYUSER" />
+			<result property="KitId" column="KitId" />
+			<result property="KitCounter" column="KitCounter" />
+			<result property="ScannedBy" column="ScannedBy" />
+		</resultMap>
+		<resultMap id="SerialNumberItemLiteRM" class="SerialNumberItem">
+			<result property="Id" column="ID"/>
+			<result property="DocNum" column="DOCNUM"/>
+			<result property="SerialNum" column="SERIALNUM"/>
+			<result property="ProductId" column="PRODUCTID"/>
+			<result property="Color" column="COLOR"/>
+			<result property="NoSerialization" column="NOSERIALIZATION"/>
+			<result property="ProductGroup" column="PRODUCTGROUP"/>
+			<result property="SmartCodeOnly" column="SMARTCODEONLY"/>
+			<result property="KitId" column="KitId" />
+			<result property="KitCounter" column="KitCounter" />
+		</resultMap>
+		<resultMap id="DeliveryItemRM" class="SerialNumberItem">
+			<result property="Id" column="ID"/>
+			<result property="DocNum" column="DOCNUM"/>
+			<result property="SerialNum" column="SERIALNUM"/>
+			<result property="ItemCode" column="ITEMCODE"/>
+			<result property="Description" column="DSCRIPTION"/>
+			<result property="AltText" column="ALTTEXT"/>
+			<result property="Quantity" column="QUANTITY"/>
+			<result property="ProductId" column="PRODUCTID"/>
+			<result property="Color" column="COLOR"/>
+			<result property="NoSerialization" column="NOSERIALIZATION"/>
+			<result property="SmartCodeOnly" column="SMARTCODEONLY"/>
+			<result property="SerialCode" column="SERIALCODE"/>
+			<result property="MacId" column="MACID"/>
+			<result property="RealItemCode" column="REALITEMCODE"/>
+			<result property="ProductGroup" column="PRODUCTGROUP"/>
+			<result property="ProductFamily" column="PRODUCTFAMILY"/>
+			<result property="ProductPillar" column="PRODUCTPILLAR"/>
+			<result property="ReturnedByUser" column="RETURNEDBYUSER" />
+			<result property="Username" column="USERNAME" />
+			<result property="KitId" column="KitId" />
+			<result property="KitCounter" column="KitCounter" />
+			<result property="ScannedBy" column="ScannedBy" />
+			<result property="IsVerified" column="VERIFIED" />
+		</resultMap>
+		<resultMap id="DeliveryOrderRM" class="Delivery">
+			<result column="DealerName" property="DealerName"/>
+			<result column="DealerId" property="DealerId"/>
+			<result column="Address2" property="Address"/>
+			<result column="Comments" property="Comments"/>
+		</resultMap>
+		<resultMap id="DeliveryLiteRM" class="Delivery">
+			<result column="DOCNUM" property="DeliveryNumber"/>
+			<result column="IsIrDelivery" property="IsIrDelivery"/>
+		</resultMap>
+	</resultMaps>
+	<parameterMaps>
+		<parameterMap id="SerialNumberItemPM" class="SerialNumberItem">
+			<parameter property="ProductGroup" column="ProductGroup"/>
+			<parameter property="MacId" column="MACID"/>
+		</parameterMap>
+		<parameterMap id="UpdateSerialNumberPM" class="SerialNumberItem">
+			<parameter property="SerialCode" column="SerialCode"/>
+			<parameter property="ScannedBy" column="ScannedBy"/>
+			<parameter property="MacId" column="MacId"/>
+			<parameter property="DocNum" column="DocNum"/>
+			<parameter property="SerialNum" column="SerialNum"/>
+		</parameterMap>
+		<parameterMap id="DeliveryOrderPM" class="DeliveryOrderQuery">
+			<parameter property="ServerLocation" column="SERVERLOCATION"/>
+			<parameter property="DocNum" column="DOCNUM"/>
+		</parameterMap>
+		<parameterMap id="ClearDeliveryOrderPM" class="DeliveryOrderQuery">
+			<parameter property="Username" column="USERNAME"/>
+			<parameter property="DocNum" column="DELIVERYNUMBER"/>
+		</parameterMap>
+		<parameterMap id="ReturnSerialNumberItemPM" class="SerialNumberItem">
+			<parameter property="Username" column="USERNAME"/>
+			<parameter property="Id" column="ID"/>
+			<parameter property="SerialNum" column="SERIALNUM"/>
+			<parameter property="DocNum" column="DOCNUM"/>
+		</parameterMap>
+		<parameterMap id="ReturnDeliveryOrderPM" class="DeliveryOrderQuery">
+			<parameter property="Username" column="USERNAME"/>
+			<parameter property="DocNum" column="DOCNUM"/>
+		</parameterMap>
+		<parameterMap id="ReturnSerialNumberItemPM" class="SerialNumberItem">
+			<parameter property="Username" column="USERNAME"/>
+			<parameter property="Id" column="ID"/>
+			<parameter property="SerialNum" column="SERIALNUM"/>
+			<parameter property="DocNum" column="DOCNUM"/>
+		</parameterMap>
+		<parameterMap id="DeliveryOrderItemsPM" class="DeliveryOrderItemsQuery">
+			<parameter property="ServerLocation" column="SERVERLOCATION"/>
+			<parameter property="DocNum" column="DOCNUM"/>
+			<parameter property="Username" column="USERNAME"/>
+		</parameterMap>
+	</parameterMaps>
+	<statements>
+		<select id="GetDeliveryByMacId" parameterClass="string" resultMap="DeliveryLiteRM">
+			SELECT DOCNUM, 0 AS ISIRDELIVERY FROM C4_SERIALNUMBERS_OUT
+			WHERE MACID LIKE #value#+'%'
+			UNION ALL
+			SELECT DOCNUM, 1 AS ISIRDELIVERY FROM C4_GOODSISSUE_IR_OUT
+			WHERE MACID LIKE #value#+'%'
+		</select>
+		<select id="FindUnScannedMatches" parameterClass="SerialNumberItemQuery" resultMap="SerialNumberItemLiteRM">
+			SELECT ID, SERIALNUM, PRODUCTID, PRODUCTGROUP, COLOR, NOSERIALIZATION, SMARTCODEONLY,KitId,KitCounter,DOCNUM
+			FROM C4_SERIALNUMBERS_OUT
+			WHERE PRODUCTID = #ProductId#
+			AND COLOR = #Color#
+			AND DOCNUM = #DocNum#
+			AND SERIALCODE IS NULL
+		</select>
+		<select id="IsScanned" parameterClass="SerialNumberItem" resultMap="SerialNumberItemRM">
+			SELECT * FROM C4_SERIALNUMBERS_OUT
+			WHERE DOCNUM = #DocNum#
+			AND SERIALNUM = #SerialNum#
+			AND SERIALCODE IS NOT NULL
+		</select>
+		<procedure  id="sp_ClearDelivery" parameterMap="ClearDeliveryOrderPM">
+			sp_ClearDelivery
+		</procedure>
+		<procedure  id="sp_ClearDeliveryIR" parameterMap="ClearDeliveryOrderPM">
+			sp_ClearIRDelivery
+		</procedure>
+		<procedure  id="SelectSmartMac" parameterMap="SerialNumberItemPM" resultMap="SerialNumberItemRM">
+			sp_LocateSmartMac
+		</procedure>
+		<procedure  id="SelectDeleiveryOrderItems" parameterMap="DeliveryOrderItemsPM" resultMap="DeliveryItemRM">
+			sp_delivery_synch
+		</procedure>
+		<procedure  id="SelectDeleiveryOrderItemsIR" parameterMap="DeliveryOrderItemsPM" resultMap="DeliveryItemRM">
+			sp_GoodsIssue_IR_Synch
+		</procedure>
+		<procedure  id="SelectInternalDeleiveryOrderItems" parameterMap="DeliveryOrderItemsPM" resultMap="DeliveryItemRM">
+			sp_GoodsIssue_IR_Synch
+		</procedure>
+		<procedure  id="SelectDeliveryByDeliveryNumber" parameterMap="DeliveryOrderPM" resultMap="DeliveryOrderRM">
+			sp_Delivery_Header
+		</procedure>
+		<statement  id="SelectDeliveryByDeliveryNumberIR" parameterClass="DeliveryOrderQuery" resultMap="DeliveryOrderRM">
+			Select CardCode as DealerId, CardName as DealerName, Address2, Comments 
+			from $ServerLocation$.oige t1 
+			where docnum = #DocNum#
+		</statement>
+		<procedure  id="ReturnDeliveryByLineItem" parameterMap="ReturnSerialNumberItemPM">
+			sp_ReturnDeliveryByLineItem
+		</procedure>
+		<procedure  id="ReturnDeliveryByLineItemIR" parameterMap="ReturnSerialNumberItemPM">
+			sp_ReturnIRByLineItem
+		</procedure>
+		<procedure  id="ReturnDeliveryIR" parameterMap="ReturnDeliveryOrderPM">
+			sp_ReturnGoodsIssue_IR
+		</procedure>
+		<procedure  id="ReturnDelivery" parameterMap="ReturnDeliveryOrderPM">
+			sp_ReturnDelivery
+		</procedure>
+		<update id="UpdateSerialNumberIR" parameterMap="UpdateSerialNumberPM" >
+			sp_ScanSerialIRCode
+		</update>
+		<procedure id="UpdateSerialNumber" parameterMap="UpdateSerialNumberPM" >
+			sp_ScanSerialCode
+		</procedure>
+		<update id="UpdateVerifiedOrder" parameterClass="DeliveryOrderQuery">
+			UPDATE C4_SERIALNUMBERS_OUT
+			SET VERIFIED = 1,
+			[USERNAME] = #Username#
+			WHERE DOCNUM = #DocNum#
+		</update>
+		<update id="UpdateVerifiedOrderIR" parameterClass="DeliveryOrderQuery">
+			UPDATE C4_GOODSISSUE_IR_OUT
+			SET VERIFIED = 1,
+			[USERNAME] = #Username#
+			WHERE DOCNUM = #DocNum#
+		</update>
+		<update id="UpdateScanByUser" parameterClass="UpdateUserNameQuery">
+			UPDATE C4_SERIALNUMBERS_OUT
+			SET SCANNEDBY = #UserName#
+			WHERE
+			DOCNUM = #DocNum#
+			AND SERIALNUM = #SerialNum#
+		</update>
+	</statements>
 </sqlMap>

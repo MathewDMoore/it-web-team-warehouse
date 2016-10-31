@@ -7,7 +7,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace C4InventorySerialization {
+namespace C4InventorySerialization.Content {
     
     
     public partial class Login {

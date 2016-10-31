@@ -9,7 +9,7 @@ var ScanController = (function () {
         this.FirebaseDeliveryService = FirebaseDeliveryService;
         this.ngAudio = ngAudio;
         this.CURRENTUSER = CURRENTUSER;
-        this.Colors = ['#ffb81e', '#2a767d', '#3ebebe', '#d85927', '#c6b912', '#7e6591', '#ca4346', '#67773f', '#f49630', '#aa8965', '#4fa0bf', '#b9e1e5', '#ffb81e', '#2a767d', '#3ebebe', '#d85927', '#c6b912', '#7e6591', '#ca4346', '#67773f', '#f49630', '#aa8965', '#4fa0bf', '#b9e1e5'];
+        this.Colors = ["#ffb81e", "#2a767d", "#3ebebe", "#d85927", "#c6b912", "#7e6591", "#ca4346", "#67773f", "#f49630", "#aa8965", "#4fa0bf", "#b9e1e5", "#ffb81e", "#2a767d", "#3ebebe", "#d85927", "#c6b912", "#7e6591", "#ca4346", "#67773f", "#f49630", "#aa8965", "#4fa0bf", "#b9e1e5"];
         this.ChartData = { Chart: null };
         this.ChartFilter = { value: null, filter: null };
         this.SavingItem = false;
@@ -265,7 +265,7 @@ var ScanController = (function () {
         modalInstance.result.then(function () {
             _this.ScanOrderService.ClearDelivery({ DeliveryNumber: docNumber, IsInternal: _this.Delivery.IsInternal }).then(function (result) {
                 if (result.data) {
-                    _this.FirebaseDeliveryService.Delete(_this.Delivery).then(function (ref) {
+                    _this.FirebaseDeliveryService.Delete(_this.Delivery).then(function () {
                         _this.Delivery.$destroy();
                         _this.Delivery = null;
                         _this.DeliveryActionMessage = "Successfully cleared delivery " + docNumber;
@@ -302,7 +302,6 @@ var ScanController = (function () {
                 }
             });
         }, function () {
-            //$log.info('Modal dismissed at: ' + new Date());
         });
     };
     ScanController.prototype.VerifyLineitem = function (serialCode) {
@@ -359,13 +358,11 @@ var ScanController = (function () {
         this.Delivery.NotScannedItems = (this.Delivery.NotScannedItems || []);
         if (selected.length > 0) {
             if (selected[0].KitId > 0 && !selected[0].IsVerified) {
-                //var ids = _.where(scan.Delivery.ScannedItems, { KitId: selected.KitId });
                 this.ScanOrderService.ReturnSelectedItems(selected, this.Delivery.IsInternal, this.Delivery.DeliveryNumber).then(function (result) {
                     //TODO: Add success instead of just doing it.
                     _this.Delivery.NotScannedItems = (_this.Delivery.NotScannedItems || []);
                     if (result.data) {
                         _.each(selected, function (item) {
-                            // delete item.IsSelected;
                             item.SerialCode = null;
                             item.ScannedBy = null;
                             item.IsSelected = false;
@@ -377,13 +374,11 @@ var ScanController = (function () {
                 });
             }
             else if (!selected.filter(function (i) { return !i.IsVerified; })) {
-                //var ids = _.pluck(selected, 'Id');
                 this.ScanOrderService.ReturnSelectedItems(selected, this.Delivery.IsInternal, this.Delivery.DeliveryNumber).then(function (result) {
                     //TODO: Add success instead of just doing it.
                     _this.Delivery.NotScannedItems = (_this.Delivery.NotScannedItems || []);
                     if (result.data) {
                         _.each(selected, function (item) {
-                            // delete item.IsSelected;
                             item.SerialCode = null;
                             item.ScannedBy = null;
                             item.IsSelected = false;
@@ -422,7 +417,6 @@ var ScanController = (function () {
                 }
             });
         }, function () {
-            //$log.info('Modal dismissed at: ' + new Date());
         });
     };
     ScanController.prototype.ExportCSV = function () {
@@ -436,31 +430,16 @@ var ScanController = (function () {
         var csvContent = "data:text/csv;charset=utf-8,";
         csvContent += _.keys(firstItem).join(",");
         csvContent += "\n";
-        _.each(data, function (item, index) {
+        _.each(data, function (item) {
             var values = _.values(item);
-            _.each(values, function (text, index) {
+            _.each(values, function (text, columnIndex) {
                 if (_.isString(text)) {
-                    values[index] = text.replace(",", " ");
+                    values[columnIndex] = text.replace(",", " ");
                 }
             });
             var dataString = values.join(",");
-            csvContent += index < values.length ? dataString + "\n" : dataString;
+            csvContent += dataString + "\n";
         });
-        var encodedUri = encodeURI(csvContent);
-        var link = document.createElement("a");
-        link.setAttribute("href", encodedUri);
-        link.setAttribute("download", this.Delivery.DeliveryNumber + "_export.csv");
-        link.click();
-    };
-    ScanController.prototype.ExportMacId = function () {
-        var data = _.map(this.Delivery.ScannedItems, function (item) {
-            return {
-                Id: item.Id, SerialCode: item.SerialCode, ItemCode: item.ItemCode
-            };
-        });
-        var csvContent = "data:text/csv;charset=utf-8,";
-        csvContent += "SerialCode \n";
-        csvContent += data.join("\n");
         var encodedUri = encodeURI(csvContent);
         var link = document.createElement("a");
         link.setAttribute("href", encodedUri);
@@ -471,27 +450,22 @@ var ScanController = (function () {
         return this.Delivery.IsVerified ? "Delivery Verified!" : "Delivery Not Verified!";
     };
     ScanController.prototype.IsScanComplete = function () {
-        var notScannedValid = this.Delivery.NotScannedItems.filter(function (i) { return (!i.ProductId || i.SmartCodeOnly && i.NoSerialRequired || (i.SmartCodeOnly && !i.NoSerialRequired)); }).length === 0;
-        //         _.any(this.Delivery.NotScannedItems, (i:IScanItem) => { return (i.ProductId || i.SmartCodeOnly && i.NoSerialRequired || (i.SmartCodeOnly && !i.NoSerialRequired))});
-        //            return (i.ProductId || i.SmartCodeOnly && i.NoSerialRequired || (i.SmartCodeOnly && !i.NoSerialRequired))
-        //    }).length ===0;
+        var notScannedValid = (this.Delivery.NotScannedItems && this.Delivery.NotScannedItems.length > 0) ? this.Delivery.NotScannedItems.filter(function (i) { return (!i.ProductId || i.SmartCodeOnly && i.NoSerialRequired || (i.SmartCodeOnly && !i.NoSerialRequired)); }).length === 0 : true;
         var noActiveKits = (this.Delivery.ActiveKits == undefined || this.Delivery.ActiveKits && this.Delivery.ActiveKits.length === 0);
         return notScannedValid && noActiveKits;
     };
     ScanController.prototype.GetDeliveryStatusText = function () {
         var successful = this.GetDeliveryStatus();
-        if (successful) {
+        if (successful)
             return "Delivery Verified!";
-        }
         return "Delivery Not Verified!";
     };
     ScanController.prototype.EnablVerification = function () {
         var items1 = _.filter(this.Delivery.NotScannedItems, function (item) {
             return !item.NoSerialRequired;
         });
-        if (this.Delivery.NotScannedItems.length === 0 || items1.length === 0) {
+        if (this.Delivery.NotScannedItems.length === 0 || items1.length === 0)
             return true;
-        }
         return false;
     };
     ScanController.prototype.SaveAndRefresh = function () {
@@ -500,15 +474,14 @@ var ScanController = (function () {
             tables[_i - 0] = arguments[_i];
         }
         for (var index in tables) {
-            if (tables.hasOwnProperty(index)) {
+            if (tables.hasOwnProperty(index))
                 tables[index].reload();
-            }
         }
         this.Delivery.$save();
     };
     ScanController.$inject = ["$scope", "$modal", "$filter", "$timeout", "ngTableParams", "ScanOrderService", "FirebaseDeliveryService", "ngAudio", "CURRENTUSER"];
     return ScanController;
-})();
+}());
 var ClearModalCtrl = (function () {
     function ClearModalCtrl($scope, $modalInstance, docNum) {
         $scope.DocNum = docNum;
@@ -516,12 +489,12 @@ var ClearModalCtrl = (function () {
             $modalInstance.close();
         };
         $scope.cancel = function () {
-            $modalInstance.dismiss('cancel');
+            $modalInstance.dismiss("cancel");
         };
     }
     ClearModalCtrl.$inject = ["$scope", "$modalInstance", "docNum"];
     return ClearModalCtrl;
-})();
+}());
 var VerifyModalCtrl = (function () {
     function VerifyModalCtrl($scope, $modalInstance, docNum) {
         $scope.DocNum = docNum;
@@ -529,12 +502,12 @@ var VerifyModalCtrl = (function () {
             $modalInstance.close();
         };
         $scope.cancel = function () {
-            $modalInstance.dismiss('cancel');
+            $modalInstance.dismiss("cancel");
         };
     }
     VerifyModalCtrl.$inject = ["$scope", "$modalInstance", "docNum"];
     return VerifyModalCtrl;
-})();
+}());
 var ReturnDeliveryModalCtrl = (function () {
     function ReturnDeliveryModalCtrl($scope, $modalInstance, docNum) {
         $scope.DocNum = docNum;
@@ -547,7 +520,7 @@ var ReturnDeliveryModalCtrl = (function () {
     }
     ReturnDeliveryModalCtrl.$inject = ["$scope", "$modalInstance", "docNum"];
     return ReturnDeliveryModalCtrl;
-})();
+}());
 ;
 (function (angular) {
     var mod = angular.module("shipApp");

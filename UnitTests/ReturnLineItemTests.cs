@@ -1,5 +1,4 @@
-﻿using System;
-using ApplicationSource.Models;
+﻿using ApplicationSource.Models;
 using NUnit.Framework;
 
 namespace UnitTests

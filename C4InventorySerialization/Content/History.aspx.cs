@@ -1,16 +1,10 @@
 ﻿using System;
-using System;
 using System.Collections.Specialized;
 using System.Data;
 using System.Data.SqlClient;
 using System.Configuration;
-using System.Runtime.Remoting.Contexts;
 using System.Web;
-using System.Web.Management;
-using System.Web.Services;
 using System.Web.UI;
-using Obout.Grid;
-using System.Security.Principal;
 
 
 namespace C4InventorySerialization.Content

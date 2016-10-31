@@ -1,6 +1,4 @@
 ﻿<%@ Page Title="Search Mac ID" Language="C#" MasterPageFile="~/Master/Site.Master" AutoEventWireup="true" CodeBehind="Search.aspx.cs" Inherits="C4InventorySerialization.Content.Search" %>
-
-<%@ Register TagPrefix="obout" Namespace="Obout.Grid" Assembly="obout_Grid_NET" %>
 <asp:Content ID="Content1" ContentPlaceHolderID="MainContent" runat="server">
     <script type="text/jscript" src="../scripts/SearchSmartMac.js"></script>
     <div id="searchMac">

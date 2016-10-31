@@ -1,14 +1,11 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
 using System.ServiceModel;
 using System.ServiceModel.Activation;
-using System.Web;
 using ApplicationSource.Interfaces;
 using ApplicationSource.Models;
 using System.Configuration;
-using Domain;
 
 namespace ApplicationSource.Services
 {

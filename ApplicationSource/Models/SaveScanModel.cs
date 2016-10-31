@@ -1,6 +1,4 @@
-﻿using Domain;
-
-namespace ApplicationSource.Models
+﻿namespace ApplicationSource.Models
 {
     public class SaveScanModel
     {

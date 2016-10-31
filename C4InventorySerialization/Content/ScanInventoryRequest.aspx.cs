@@ -3,7 +3,6 @@ using System.Data;
 using System.Data.SqlClient;
 using System.Configuration;
 using Obout.Grid;
-using System.Security.Principal;
 using System.Web.UI.WebControls;
 
 namespace C4InventorySerialization.Content

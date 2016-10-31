@@ -2,7 +2,6 @@
 using System.Data;
 using System.Data.SqlClient;
 using System.Configuration;
-using Obout.Grid;
 
 namespace C4InventorySerialization.Content
 {

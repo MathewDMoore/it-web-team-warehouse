@@ -1,7 +1,6 @@
 ﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="MaintainKits.aspx.cs" Inherits="C4InventorySerialization.Admin.MaintainKits" MasterPageFile="~/Master/Site.Master" %>
 
 <%@ Register Assembly="obout_Grid_NET" Namespace="Obout.Grid" TagPrefix="cc1" %>
-<%@ Register TagPrefix="obout" Namespace="Obout.ComboBox" Assembly="obout_ComboBox" %>
 <%@ Register TagPrefix="combo" Namespace="OboutInc.Combobox" Assembly="obout_Combobox_Net" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="MainContent" runat="server">

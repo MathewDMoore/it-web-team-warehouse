@@ -25,7 +25,7 @@ namespace Persistence.Repositories
                     _transactionInProcess = _sqlMapperFactory.BeginTransaction();
                 }
             }
-            catch (DataMapperException dex)
+            catch (DataMapperException)
             {
                 // We already started a transaction
             }
