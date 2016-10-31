@@ -2,8 +2,6 @@
 using System.Data;
 using System.Configuration;
 using System.Data.SqlClient;
-using System.Web.UI.WebControls;
-using Obout.ComboBox;
 using Obout.Grid;
 
 namespace C4InventorySerialization.Admin

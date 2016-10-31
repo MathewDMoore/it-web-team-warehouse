@@ -1,20 +1,12 @@
 ﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Data;
-using System.Data.SqlClient;
-using System.Linq;
-using System.Runtime.Remoting.Contexts;
 using System.Security.Principal;
 using System.ServiceModel;
 using System.ServiceModel.Activation;
 using System.Web;
 using ApplicationSource.Interfaces;
-using System.Configuration;
 using ApplicationSource.Models;
 using Domain;
 using Persistence.Repositories.Interfaces;
-using StructureMap;
 
 namespace ApplicationSource.Services
 {

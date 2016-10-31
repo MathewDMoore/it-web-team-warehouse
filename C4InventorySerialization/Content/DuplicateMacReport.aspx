@@ -1,7 +1,5 @@
 ﻿<%@ Page Title="" Language="C#" MasterPageFile="~/Master/Site.Master" AutoEventWireup="true" CodeBehind="DuplicateMacReport.aspx.cs" Inherits="C4InventorySerialization.Content.DuplicateMacReport" %>
 
-<%@ Register Assembly="obout_Interface" Namespace="Obout.Interface" TagPrefix="cc1" %>
-
 <%@ Register TagPrefix="obout" Namespace="Obout.Grid" Assembly="obout_Grid_NET" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="MainContent" runat="server">

@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace ApplicationSource.Models
+﻿namespace ApplicationSource.Models
 {
     public class DeliveryOrderItemModel
     {
@@ -21,5 +19,6 @@ namespace ApplicationSource.Models
         public int KitId { get; set; }
         public int KitCounter { get; set; }
         public string ScannedBy { get; set; }
-    }
+		public string MacId { get; set; }
+	}
 }

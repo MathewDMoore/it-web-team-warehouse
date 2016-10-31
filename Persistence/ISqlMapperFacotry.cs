@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using Persistence.Repositories.Interfaces;
+﻿using Persistence.Repositories.Interfaces;
 
 namespace Persistence
 {

@@ -1,6 +1,5 @@
 ﻿using System;
 using System.IO;
-using System.Linq;
 using System.Reflection;
 using System.ServiceModel;
 using System.ServiceModel.Channels;
@@ -8,6 +7,7 @@ using System.ServiceModel.Description;
 using System.ServiceModel.Dispatcher;
 using System.Text;
 using System.Xml;
+using ApplicationSource.Helpers;
 using StructureMap;
 
 namespace ApplicationSource.Services
@@ -128,47 +128,9 @@ namespace ApplicationSource.Services
 
         public object BeforeCall(string operationName, object[] inputs)
         {
-            Type serviceType = OperationContext.Current.EndpointDispatcher.DispatchRuntime.Type;
-            MethodInfo methodInfo = serviceType.GetMethod(operationName);
-            ParameterInfo[] parameters = methodInfo.GetParameters();
-            //            var ssoCookie = new SSOCookie(HttpContext.Current.Request.Cookies[ConfigurationManager.AppSettings["SSO_CookieName"]]);
-            //Validate contract objects using DataAnnotation Attributes
-            //            methodInfo.Attributes
-            //            var authorization = methodInfo.GetCustomAttributes(true).SingleOrDefault(a => a.GetType().Equals(typeof(ServiceAuthorization))) as ServiceAuthorization;
-            //            if (authorization != null)
-            //            {
-            //                authorization.Authorize();
-            //            }
-            //            inputs.Where(i => i != null && i.GetType().BaseType == typeof(ModelBase)).ToList().ForEach(i => i.Validate());
+			ServiceAuthorization.Authorize();
 
-            try
-            {
-                // Log that we're starting the call, who the caller is, etc.
-                OperationContext context = OperationContext.Current;
-                MessageProperties incomingMessageProperties = context.IncomingMessageProperties;
-
-                RemoteEndpointMessageProperty endpoint = incomingMessageProperties[RemoteEndpointMessageProperty.Name] as RemoteEndpointMessageProperty;
-                string clientIP = endpoint.Address;
-
-                _log.Info(string.Format("Beginning execution of {0}.{1} called from [{2}]", serviceType, operationName, clientIP));
-            }
-            catch (Exception exception)
-            {
-                _log.Error(string.Format("Error in BeforeCall.  {0}", exception.Message), exception);
-                throw;
-            }
-
-            //         	try
-            //			{
-            //				OperationState.State["StartDateTime"] = Stopwatch.StartNew();
-            //				return null;
-            //			}
-            //			catch (Exception exception)
-            //			{
-            //				_log.Error("Error in BeforeCall.  " + exception.Message, exception);
-            //				throw;
-            //			}
-            return null;
+			return null;
         }
 
         public void ProvideFault(Exception error, MessageVersion version, ref Message fault)

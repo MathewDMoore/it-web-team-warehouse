@@ -1,7 +1,5 @@
 ﻿<%@ Page Language="C#" MasterPageFile="~/Master/Site.Master" AutoEventWireup="true" CodeBehind="ScanSerialNumber.aspx.cs" Inherits="C4InventorySerialization.Content.ScanSerialNumber" %>
 
-<%@ Register Assembly="obout_Interface" Namespace="Obout.Interface" TagPrefix="cc1" %>
-
 <%@ Register TagPrefix="obout" Namespace="Obout.Grid" Assembly="obout_Grid_NET" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="MainContent" runat="server">
