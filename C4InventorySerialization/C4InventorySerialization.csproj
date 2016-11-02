@@ -83,7 +83,7 @@
       <HintPath>..\Libs\Obout\obout_Interface.dll</HintPath>
     </Reference>
     <Reference Include="StructureMap">
-      <HintPath>..\..\..\Projects\ProexBusinessManager\Libs\StructureMap\StructureMap.dll</HintPath>
+      <HintPath>..\Libs\StructureMap\StructureMap.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
