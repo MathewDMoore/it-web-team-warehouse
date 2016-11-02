@@ -323,13 +323,6 @@
     <Compile Include="Admin\ReturnDelivery.aspx.designer.cs">
       <DependentUpon>ReturnDelivery.aspx</DependentUpon>
     </Compile>
-    <Compile Include="Content\PackingSlip.aspx.cs">
-      <DependentUpon>PackingSlip.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="Content\PackingSlip.aspx.designer.cs">
-      <DependentUpon>PackingSlip.aspx</DependentUpon>
-    </Compile>
     <Compile Include="Content\ScanSerialNumber.aspx.cs">
       <DependentUpon>ScanSerialNumber.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -432,7 +425,6 @@
     <Content Include="Content\Logout.aspx" />
     <Content Include="Admin\MaintainKits.aspx" />
     <Content Include="Admin\ReturnDelivery.aspx" />
-    <Content Include="Content\PackingSlip.aspx" />
     <Content Include="Content\ScanSerialNumber.aspx" />
     <Content Include="default.aspx" />
     <Content Include="Global.asax">
